@@ -1,0 +1,82 @@
+var Customer = new Schema({
+    _id : Number,
+    Title : String,
+    FirstName : String
+})
+
+var Product = new Schema({
+    _id: Number,
+    ProductName: {
+        TH: String,
+        EN: String,
+        CN: String
+    },
+    Description: {
+        TH: String,
+        EN: String,
+        CN: String
+    },
+    Price: {
+        Cost: Number,
+        Retail: Number,
+        Wholesale: Number,
+        Special: Number
+    }
+})
+    // Insert data
+db.AAAA.insert({
+    ProductName: {
+        TH: "ไม้",
+        EN: "wood",
+        CN: "木"
+    },
+    Description: {
+        TH: "สวยงาม",
+        EN: "beautiful",
+        CN: "美丽"
+    },
+    Price: {
+        Cost: 1,
+        Retail: 5,
+        Wholesale: 3,
+        Special: 2
+    }
+})
+
+var ProductCategory = new Schema({
+    _id: Number,
+    ProductCategory: {
+        TH: String,
+        EN: String,
+        CN: String
+    }
+
+})
+var Province = new Schema({
+    _id: Number,
+    ProvinceName: {
+        TH: String,
+        EN: String,
+        CN: String,
+    }
+})
+var Amphoe = new Schema({
+    _id: Number,
+    AmphoeName: {
+        TH: "",
+        EN: "",
+        CN: "",
+    },
+    ProvinceId: Number
+})
+var Tambon = new Schema({
+    _id: Number,
+    Tambon: {
+        TH: "",
+        EN: "",
+        CN,
+        ""
+    },
+    ZipCode: String,
+    AmphoeId: Number
+})

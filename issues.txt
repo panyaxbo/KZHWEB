@@ -1,0 +1,14 @@
+Issues
+
+1. 28/02/58 How to hide javascript source code when debugging (F12) in browser?
+    - HTML Encrypter? 
+    - Hide Algorithm in server-side ?
+    
+2. 27/2/58 How to join between 2 collections or more in MongoDB ?
+	- using 
+
+3. 28/2/58 How send email via Angular and NodeJs ?
+
+    
+    
+    

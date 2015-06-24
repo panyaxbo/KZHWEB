@@ -1,0 +1,72 @@
+{
+	"connection_url" : "mongodb://localhost:27017/",
+	"collection_name" : "NodeDB",
+	"nodejs_port" : "3030",
+
+	"mongodb" : {
+		"product" : {
+			"name" : "Product"
+		},
+		"product_type" : {
+			"name" : "ProductType"
+		},
+		"product_category" : {
+			"name" : "ProductCategory"
+		},
+		"appconfig" : {
+			"name" : "AppConfig"
+		},
+		"customer" : {
+			"name" : "Customer"
+		},
+		"customer_type" : {
+			"name" : "CustomerType"
+		},
+		"province" : {
+			"name" : "Province"
+		},
+		"district" : {
+			"name" : "District"
+		},
+		"subdistrict" : {
+			"name" : "SubDistrict"
+		},
+		"staff" : {
+			"name" : "Staff"
+		},
+		"user" : {
+			"name" : "User"
+		},
+		"role" : {
+			"name" : "Role"
+		},
+		"uom" : {
+			"name" : "Uom"
+		},
+		"rohead" : {
+			"name" : "ROHead"
+		},
+		"roline" : {
+			"name" : "ROLine"
+		}
+	},
+	"url" : {
+		"product" : {
+			"home" : "/",
+			"loadAllProduct" : "/LoadProduct",
+			"loadProductByObjId" : "/LoadProductByObjId/:ProductId",
+			"loadProductById" : "/LoadProductById/:ProductId",
+			"loadProductByProductCode" : "/LoadProductByCode/:ProductCode",
+			"loadProductByProductCategoryCode" : "/LoadProductByProductCategoryCode/:ProductCategoryCode",
+			"createProduct" : "/CreateProduct",
+			"updateProduct" : "/UpdateProduct",
+			"deleteProductByProductId" : "/DeleteProduct/:ProductId"
+		},
+		"product_type" : {
+			"name" : "ProductType"
+		},
+		"product_category" : {
+			"name" : "ProductCategory"
+		}
+	}
+}

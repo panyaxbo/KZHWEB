@@ -1,0 +1,1 @@
+app.controller("SettingController", function ($scope) {});

@@ -1,0 +1,2371 @@
+<!doctype html>
+<html class="no-js" ng-app="KZHWEB">
+
+<head>
+    <meta charset="utf-8">
+    <title translate="TITLE.NAME"></title>
+    <meta name="description" content="" translate="TITLE.DESCRIPTION">
+    <meta name="viewport" content="width=device-width">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <link rel="stylesheet" href="/bower_components/fontawesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="/bower_components/bootstrap-social/bootstrap-social.css" />
+    <link rel="stylesheet" href="/bower_components/angular-native-picker/build/themes/default.css" />
+    <link rel="stylesheet" href="/bower_components/angular-native-picker/build/themes/default.date.css" />
+    <link rel="stylesheet" href="/bower_components/angular-native-picker/build/themes/default.time.css" />
+    <link rel="stylesheet" href="/bower_components/ng-table/dist/ng-table.css">
+    <link rel="stylesheet" href="/bower_components/sweetalert/lib/sweet-alert.css">
+    <link rel="stylesheet" href="/bower_components/select2/dist/css/select2.css">
+    <link rel="stylesheet" href="/styles/bootstrap-magnify.css">
+    <link rel="stylesheet" href="/bower_components/pnotify/pnotify.core.css">
+    <link rel="stylesheet" href="/styles/step.css">
+    <link rel="import" href="/bower_components/number-format/src/number-format.html">
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+</head>
+
+<body>
+    <!--[if lt IE 10]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <div class="container">
+        <div class="header" id="div-header" ng-controller="HeaderController">
+
+            <a href="#/">
+                <img src="images/KZH%20Logo.png" width="150px" height="50px">
+            </a>
+            <button ng-click="PDF()"> PDF</button>
+            <ul class="nav nav-pills pull-right">
+                <li>
+                    <a href="#product-section" ng-click="SelectedHeadMenu('product')" class="head-menu">{{'HEAD.MENU.PRODUCT' | translate}}</a>
+                </li>
+                <li>
+                    <a href="#webboard-section" ng-click="SelectedHeadMenu('webboard')" class="head-menu">{{'HEAD.MENU.WEBBOARD' | translate}}</a>
+                </li>
+                <li>
+                    <a href="#payment-section" ng-click="SelectedHeadMenu('payment')" class="head-menu">{{'HEAD.MENU.PAYMENT' | translate}}</a>
+                </li>
+                <li>
+                    <a href="#about-section" ng-click="SelectedHeadMenu('about')" class="head-menu">{{'HEAD.MENU.ABOUT' | translate}}</a>
+                </li>
+                <li>
+                    <div>
+                        <button id="CartButton" class="btn btn-success" data-toggle="modal" data-target="#CartModal" ng-click="ViewCart()">
+                            <span class="glyphicon glyphicon-shopping-cart"></span> ({{ROLineList.length}}) {{'HEAD.CART' | translate}}
+                        </button>
+                        <div class="modal fade" id="CartModal">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h4 class="modal-title">{{'HEAD.MODAL_CART.PRODUCT_CART' | translate}}</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="container">
+                    
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-10 col-md-offset-1">
+                                                <div ng-show="ROHead.ROLineList.length <= 0">
+                                                    <h3 class="text-center">--------- {{'HEAD.MODAL_CART.EMPTY_CART' | translate}} ---------</h3>
+                                                </div>
+                                                <table id="CartTable" class="table table-hover table table-condensed" ng-show="ROHead.ROLineList.length > 0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>{{'HEAD.MODAL_CART.SEQ' | translate}}</th>
+                                                            <th class="text-left">{{'HEAD.MODAL_CART.ITEM_NAME' | translate}}</th>
+                                                            <th class="text-right">{{'HEAD.MODAL_CART.QTY' | translate}}</th>
+                                                            <th class="text-left">{{'HEAD.MODAL_CART.UOM' | translate}}</th>
+                                                            <th class="text-right">{{'HEAD.MODAL_CART.PRICE' | translate}}</th>
+                                                            <th class="text-right">{{'HEAD.MODAL_CART.DISCOUNT' | translate}}</th>
+                                                            <th class="text-right">{{'HEAD.MODAL_CART.AMOUNT' | translate}}</th>
+                                                            <th> </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="ro in ROHead.ROLineList" id="CartRow{{$index}}">
+                                                            <td class="col-sm-1 col-md-1" style="text-align: center">
+                                                                {{$index+1}}.
+                                                            </td>
+                                                            <td class="col-sm-6 col-md-6 text-left">
+                                                                <div class="media">
+                                                                    <div class="media-body">
+                                                                        {{ro.ProductNameTh}}
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="col-xs-1 col-sm-1 col-md-1" style="text-align: right">
+                                                                <input type="text" class="form-control input-sm" id="BuyQty" ng-model="ro.Quantity" 
+                                                                ng-keydown="UpdateCartBuyQty()">
+                                                            </td>
+                                                            <td class="col-sm-1 col-md-1" style="text-align: center">
+                                                                <select id="SelectUomList" name="selectbasic" class="form-control input-sm" ng-model="ro.UomCode" ng-options="Uom.UomCode as Uom.UomNameTh for Uom in ro.Uoms" ng-change="UpdateCartUom(ro, ro.UomCode, $index)">
+                                                                </select>
+                                                            </td>
+                                                            <td class="col-sm-2 col-md-2 text-right"><strong>{{CurrencySymbol}} {{(ro.Price * Multiplier) | currency:''}}</strong>
+                                                            </td>
+                                                            <td class="col-sm-1 col-md-1 text-right"><strong>{{CurrencySymbol}} {{(ro.DiscountAmount * Multiplier) | currency:''}}</strong>
+                                                            </td>
+                                                            <td class="col-sm-4 col-md-4 text-right"><strong>{{CurrencySymbol}} {{(ro.Amount * Multiplier) | currency:''}}</strong>
+                                                            </td>
+                                                            <td class="col-sm-1 col-md-1">
+                                                                <button type="button" class="btn btn-danger btn-xs" ng-click="DeleteCartProduct(this, ro, $index)">
+                                                                    <span class="glyphicon glyphicon-trash"></span> 
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3"> </td>
+                                                            <td colspan="2">  
+                                                                <h5>{{'HEAD.MODAL_CART.SUMAMT' | translate}}</h5> 
+                                                            </td>
+                                                            <td colspan="2" class="text-right">  
+                                                                <h5><strong>{{CurrencySymbol}} {{(ROHead.SumAmount * Multiplier)  | currency:''}}</strong></h5> 
+                                                            </td>
+                                                            <td>   </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3"> </td>
+                                                            <td colspan="2">  
+                                                                <h5>{{'HEAD.MODAL_CART.SUMDISCAMT' | translate}}</h5>
+                                                            </td>
+                                                            <td colspan="2" class="text-right">  
+                                                                <h5><strong>{{CurrencySymbol}} {{(ROHead.SumDiscountAmount * Multiplier) | currency:''}}</strong></h5>
+                                                            </td>
+                                                            <td>   </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3"> </td>
+                                                            <td colspan="2">  
+                                                                <h5>{{'HEAD.MODAL_CART.SUMVATAMT' | translate}}</h5>
+                                                            </td>
+                                                            <td colspan="2" class="text-right">  
+                                                                <h5><strong>{{CurrencySymbol}} {{(ROHead.SumVatAmount * Multiplier) | currency:''}}</strong></h5>
+                                                            </td>
+                                                            <td>   </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3"> </td>
+                                                            <td colspan="2">  
+                                                                <h4>{{'HEAD.MODAL_CART.NETAMT' | translate}}</h4>
+                                                            </td>
+                                                            <td colspan="2" class="text-right">  
+                                                                <h4><strong>{{CurrencySymbol}} {{(ROHead.NetAmount * Multiplier) | currency:''}}</strong></h4>
+                                                            </td>
+                                                            <td>   </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="8">
+                                                                <div class="col-sm-offset-2 col-sm-10">
+                                                                    <div class="pull-right">
+                                                                        <button type="button" class="btn btn-default" ng-click="ContinueShopping()">
+                                                                        <span class="glyphicon glyphicon-shopping-cart"></span> {{'HEAD.MODAL_CART.SHOP_BUTTON' | translate}}
+                                                                    </button>
+
+                                                                        <button type="button" class="btn btn-danger" ng-click="ClearCart()">
+                                                                        <span class="glyphicon glyphicon-trash"></span> {{'HEAD.MODAL_CART.CLEAR_BUTTON' | translate}}
+                                                                    </button>
+
+                                                                        <button type="button" class="btn btn-success" ng-click="ShipmentProcess()">
+                                                                        {{'HEAD.MODAL_CART.CHECKOUT_BUTTON' | translate}} <span class="glyphicon glyphicon-play"></span>
+                                                                    </button>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <!--Shopping Cart Modal /.modal-content -->
+                            </div>
+                            <!-- Shopping Cart Modal /.modal-dialog -->
+                        </div>
+                        <!-- Shopping Cart Modal /.modal -->
+                    </div>
+                </li>
+                <li>
+                    <button id="LoginButton" class="btn btn-primary" data-toggle="modal" data-target="#LoginModal" ng-show="!IsLogin">
+                        <span class="glyphicon glyphicon-log-in"></span> {{'HEAD.SIGNIN' | translate}}
+                    </button>
+                    <button id="LogoutButton" class="btn btn-danger" ng-click="Logout()" ng-show="IsLogin">
+                        <span class="glyphicon glyphicon-log-out"></span> Log out
+                    </button>
+                    <div class="modal fade" id="LoginModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h4 class="modal-title">Please Sign in</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <div class="well">
+                                                <form id="loginForm" novalidate="validate" data-toggle="validator" role="form">
+                                                    <div class="form-group">
+                                                        <label for="username" class="control-label">Username</label>
+                                                        <input type="text" class="form-control" id="username" name="username" value="" required title="Please enter you username" placeholder="example@gmail.com" ng-model="username" data-error="Bruh, that email address is invalid">
+                                                        <span class="help-block"></span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="password" class="control-label">Password</label>
+                                                        <input type="password" class="form-control" id="password" name="password" value="" required ng-model="password">
+                                                        <span class="help-block"></span>
+                                                    </div>
+                                                     <div class="controls">
+                                                        <div id="LoginErrorAlert" class="alert alert-danger fade in" style="display: none">
+                                                            <!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
+                                                            <strong>{{LoginErrorMessage}}</strong> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" name="remember" id="remember"> Remember login
+                                                        </label>
+                                                        <p class="help-block">(if this is a private computer)</p>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-success btn-block" ng-click="Login()">
+                                                        <span class="glyphicon glyphicon-log-in" ></span> Login</button>
+                                                    
+                                                    <hr>
+                                                    <p class="text-center" style="margin-top:10px;">OR</p>
+                                                    <a class="btn btn-block btn-social btn-facebook" ng-click="loginFacebook()">
+                                                        <i class="fa fa-facebook"></i> {{'HEAD.MODAL_SIGNIN.FACEBOOK_SIGNIN' | translate}}
+                                                    </a>
+                                                    <!--
+                                                    <a class="btn btn-block btn-social btn-twitter">
+                                                        <i class="fa fa-twitter"></i> {{'HEAD.MODAL_SIGNIN.TWITTER_SIGNIN' | translate}}
+                                                    </a>
+                                                    <a class="btn btn-block btn-social btn-google-plus">
+                                                        <i class="fa fa-google-plus"></i> {{'HEAD.MODAL_SIGNIN.GOOGLE_PLUS_SIGNIN' | translate}}
+                                                    </a>-->
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <div class="well">
+                                            <form id="SignupForm" novalidate="validate" data-toggle="validator" role="form">
+                                                    <div class="form-group">
+                                                        <label class="control-label" for="inputFirst">First Name</label>
+                                                        <div class="controls">
+                                                            <input id="FirstName" ng-model="FirstName" placeholder="E.g. Ashwin" type="text" 
+                                                            class="form-control">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="control-label" for="inputLast">Last Name</label>
+                                                        <div class="controls">
+                                                            <input id="LastName" ng-model="LastName" placeholder="E.g. Hegde" type="text" 
+                                                            class="form-control">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="control-label" for="inputEmail">Email</label>
+                                                        <div class="controls">
+                                                            <input id="Email" ng-model="Email" placeholder="E.g. ashwinh@cybage.com" 
+                                                            type="text" class="form-control" ng-keyup="ValidateEmail()" />
+                                                        </div>
+                                                        <div class="controls">
+                                                        <!--    <img id="ValidateSignupEmail" src="" width="30" height="30">-->
+                                                            <div id="EmailAlert" class="alert alert-warning fade in" style="display: none">
+                                                                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                                                <strong>{{EmailValidateMessage}} </strong> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label" for="inputUser">Username</label>
+                                                        <div class="controls">
+                                                            <input id="Username" ng-model="Username" placeholder="E.g. ashwinhegde" 
+                                                            type="text" class="form-control" ng-blur="ValidateExistUsername()">
+                                                        </div>
+                                                        <div class="controls">
+                                                            <div id="UsernameAlert" class="alert alert-warning fade in" style="display: none">
+                                                                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                                                <strong>{{UsernameValidateMessage}}</strong> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="control-label" for="inputPassword">Password</label>
+                                                        <div class="controls">
+                                                            <input id="Password" ng-model="Password" placeholder="Min. 8 Characters" type="password" 
+                                                            class="form-control" >
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="control-label">Strength</label>
+                                                        <div class="controls">
+                                                            <div ng-password-strength="Password" strength="passStrength" inner-class="progress-bar" 
+                                                            inner-class-prefix="progress-bar-"></div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <div class="controls">
+                                                            <label class="checkbox"><input type="checkbox">
+                                                            I agree all your 
+                                                            <a href="#">Terms of Services</a></label> 
+                                                        </div>
+                                                    </div>
+                                                    <button class="btn btn-primary" type="submit" ng-click="Signup()" 
+                                                    ng-disabled="ExistUsername || ExistEmail || !ValidEmail">
+                                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Sign Up
+                                                    </button> 
+                                            </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal-content -->
+
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                            <!-- /.modal -->
+                        </div>
+                    </div>
+                </li>
+
+                <li class="dropdown" class="head-menu" style="margin-top:-10px">
+                     <a href="#" class="dropdown-toggle head-menu" data-toggle="dropdown"><span id="SelectedDropdownLanguage"><img src="/images/th.png"></span><b class="caret"></b></a>
+                      <ul id="DropdownLanguage" class="dropdown-menu">
+                        <li><a href="#" ng-click="SelectedLocale('th')"><img src="/images/th.png"></a>
+                        </li>
+                        <li><a href="#" ng-click="SelectedLocale('us')"><img src="/images/us.png"></a>
+                        </li>
+                        <li><a href="#" ng-click="SelectedLocale('cn')"><img src="/images/cn.png"></a>
+                        </li>
+                      </ul>
+                </li>
+                <li class="dropdown" class="head-menu" style="margin-top:5px">
+                    <div>
+                        <!-- code to render a large video block-->
+                        <a href="#" class="dropdown-toggle head-menu" data-toggle="dropdown">
+                        <span id="SelectedDropdownCurrency">฿ THB</span><b class="caret"></b></a>
+                        <ul id="DropdownCurrency" class="dropdown-menu">
+                            <li><a href="#" ng-click="SelectedHeadCurrency('thb')" id="THB" class="head-menu">
+                                ฿ THB</a>
+                            </li>
+                            <li><a href="#" ng-click="SelectedHeadCurrency('usd')" id="USD" class="head-menu">
+                                $ USD</a>
+                            </li>
+                            <li><a href="#" ng-click="SelectedHeadCurrency('eur')" id="EUR" class="head-menu">
+                                € EUR</a>
+                            </li>
+                            <li><a href="#" ng-click="SelectedHeadCurrency('gbp')" id="GBP" class="head-menu">
+                                £ GBP</a>
+                            </li>
+                            <li><a href="#" ng-click="SelectedHeadCurrency('cny')" id="CNY" class="head-menu">
+                                ¥ CNY</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="dropdown" class="head-menu" style="margin-top:5px">
+                    <div>
+                        <div ng-show="IsAdmin && !IsGuest">
+                            <!-- code to render a large video block-->
+                            <a href="#" class="dropdown-toggle head-menu" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
+                             {{User.Staff.Firstname}}<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#account-section" ng-click="SelectedHeadMenu('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}} </a>
+                                </li>
+                                <li><a href="#history-section" ng-click="SelectedHeadMenu('history')"><span class="glyphicon glyphicon-time"></span> {{'HEAD.MENU.HISTORY' | translate}}</a>
+                                </li>
+                                <li><a href="#setting-section" ng-click="SelectedHeadMenu('setting')"><span class="glyphicon glyphicon-cog"></span> {{'HEAD.MENU.GENERAL' | translate}}</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li><a href="#" ng-click="Logout()"><span class="glyphicon glyphicon-off"></span> {{'HEAD.MENU.LOGOUT' | translate}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div ng-show="!IsAdmin && !IsGuest">
+                            <!-- code to render the regular video block -->
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
+                             {{User.Staff.Firstname}}<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#account-section" ng-click="SelectedHeadMenu('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}}</a>
+                                </li>
+                                <li> <a href="#history-section" ng-click="SelectedHeadMenu('history')"><span class="glyphicon glyphicon-time"></span> {{'HEAD.MENU.HISTORY' | translate}}</a>
+                                <li class="divider"></li>
+                                <li><a ng-href="#" ng-click="Logout()"><span class="glyphicon glyphicon-off"></span> {{'HEAD.MENU.LOGOUT' | translate}}</a>
+                                    </li>
+                                </li>
+                            </ul>
+                        </div>
+                        <div ng-show="!IsAdmin && IsGuest">
+                            <!-- code to render the regular video block -->
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
+                             {{User.Staff.Firstname}}<b class="caret"></b></a>
+                        </div>
+                    </div>
+                </li>
+        </div>
+        <div id="div-body" ng-controller="BodyController">
+            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                <!-- Indicators -->
+                <ol class="carousel-indicators">
+                    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="4"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="5"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="6"></li>
+                </ol>
+
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner">
+                    <div class="item active" align="center">
+                        <img src="/images/kzh01.jpg" alt="...">
+                        <div class="carousel-caption">
+                            <h3>AAAAAA</h3>
+                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                        </div>
+                    </div>
+                    <div class="item" align="center">
+                        <img src="/images/kzh02.jpg" alt="...">
+                        <div class="carousel-caption ">
+                            <h3>AAAAAA</h3>
+                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                        </div>
+                    </div>
+                    <div class="item" align="center">
+                        <img src="/images/kzh03.jpg" alt="...">
+                        <div class="carousel-caption ">
+
+                        </div>
+                    </div>
+                    <div class="item" align="center">
+                        <img src="/images/kzh04.jpg" alt="...">
+                        <div class="carousel-caption ">
+
+                        </div>
+                    </div>
+                    <div class="item" align="center">
+                        <img src="/images/kzh05.jpg" alt="...">
+                        <div class="carousel-caption ">
+
+                        </div>
+                    </div>
+                    <div class="item" align="center">
+                        <img src="/images/kzh06.jpg" alt="...">
+                        <div class="carousel-caption ">
+
+                        </div>
+                    </div>
+                    <div class="item" align="center">
+                        <img src="/images/kzh07.jpg" alt="...">
+                        <div class="carousel-caption ">
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Controls -->
+                <a class="left carousel-control " href="#carousel-example-generic" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+                <a class="right carousel-control " href="#carousel-example-generic" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+            </div>
+            <!-- End Carousel -->
+            <hr>
+            <div id="nav">
+                <!-- Display Product type-->
+                <table id="ProductTypeTable" ng-init="LoadProductCategory()">
+                    <tr ng-repeat="pc in ProductCategory" ng-animate="animate">
+                        <td>
+                            <a href="#" ng-click="LoadProductByProductCategoryCode(pc.ProductCategoryCode)" ng-show="SelectedLocale=='th'">{{pc.ProductCategoryNameTh}}</a>
+                            <a href="#" ng-click="LoadProductByProductCategoryCode(pc.ProductCategoryCode)" ng-show="SelectedLocale=='en'">{{pc.ProductCategoryNameEn}}</a>
+                            <a href="#" ng-click="LoadProductByProductCategoryCode(pc.ProductCategoryCode)" ng-show="SelectedLocale=='cn'">{{pc.ProductCategoryNameCn}}</a>
+                        </td>
+                    </tr>
+                </table>
+                <!-- Google Map & Thai-Post Image-->
+                <table>
+                    <tr>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="center">
+                            <a href="#google-map-section" ng-click="SelectedBodyMenu('google-map')">
+                            <img src="/images/google-map.png" width="100px " height="50px">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="center">
+                            <a href="#thai-post-section" ng-click="SelectedBodyMenu('thai-post')"><img src="/images/thaipost.png" width="100px" height="50px">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!-- div-nav-->
+            <div id="div-change-view">
+                <!-- <div> product to cart-->
+                <div id="product-section" name="product-section" ng-init="LoadProduct()" class="section animated fadeIn" ng-show="SelectedMenu=='product'">
+                    <div class="row ">
+                        <div class="col-lg-3 col-sm-4 col-xs-6" ng-repeat="p in Product">
+                            <div class="mag">
+                                <img src="/images/no-image.png" class="img-responsive" ng-show="p.Image.length == 0">
+                                <img data-toggle="magnify" src="/images/3k%20bat.gif" class="img-responsive" ng-show="!p.Image || p.Image.length > 0">
+                            </div>
+                            <div class="caption">
+                                <h5 style="color:white;" ng-show="SelectedLocale=='th'">{{p.ProductNameTh}}</h5>
+                                <h5 style="color:white;" ng-show="SelectedLocale=='en'">{{p.ProductNameEn}}</h5>
+                                <h5 style="color:white;" ng-show="SelectedLocale=='cn'">{{p.ProductNameCn}}</h5>
+                                <p style="color:white;">{{'BODY.SECTION.PRODUCT.PRICE' | translate}} {{CurrencySymbol}} {{(p.RetailPrice * Multiplier) | currency:''}}</p>
+                                <p style="color:white; ">
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            {{'BODY.SECTION.PRODUCT.QTY' | translate}}
+                                        </div>
+                                        <div class="col-sm-4">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="number" class="form-control" placeholder="0" ng-model="BuyQty">
+                                        </div>
+                                    </div>
+                                </p>
+                                <p>
+                                    <!--<div class="col-md-6 ">
+                                        <a class="btn btn-primary btn-product">
+                                        <span class="glyphicon glyphicon-thumbs-up"></span>  {{'BODY.SECTION.PRODUCT.LIKE' | translate}}</a>
+                                    </div> -->
+                                    <div class="col-md-8">
+                                        <a href="#" class="btn btn-success btn-product" ng-click="AddCart(p, BuyQty, $index)"><span class="glyphicon glyphicon-shopping-cart"></span> {{'BODY.SECTION.PRODUCT.BUY' | translate}}</a>
+                                    </div>
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div id="AddCartModal" class="modal fade">
+
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                                    <h4>Header</h4>
+                                </div>
+                                <div class="modal-body">
+                                    Modal Content
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div> article -->
+                <div id="article-section" name="article-section" class="section" ng-show="SelectedMenu=='article'">
+                    <h1>Article</h1>
+                </div>
+                <!-- <div> article -->
+                <div id="webboard-section" name="webboard-section" class="section" ng-show="SelectedMenu=='webboard'">
+                    <h1>Webboard</h1>
+                </div>
+                <!-- <div> payment method -->
+                <div id="payment-section"  name="payment-section" class="section" ng-show="SelectedMenu=='payment'">
+                    <h1>Payment</h1>
+                    <table>
+                        <tr>
+                            <td>
+                                1.
+                            </td>
+                            <td>
+                                <img src="/images/bbl.png " width="40px " height="40px" />
+                            </td>
+                            <td translate="BODY.SECTION.PAYMENT.BBL_ACC ">
+                                หมายเลข 440-99934-3454
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                2.
+                            </td>
+                            <td>
+                                <img src="/images/kbank.png " width="40px " height="40px" />
+                            </td>
+                            <td translate="BODY.SECTION.PAYMENT.KBANK_ACC">
+                                หมายเลข 440-99934-3454
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                3.
+                            </td>
+                            <td>
+                                <img src="images/scb.png " width="40px " height="40px " />
+                            </td>
+                            <td translate="BODY.SECTION.PAYMENT.SCB_ACC">
+                                หมายเลข 440-99934-3454
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                4.
+                            </td>
+                            <td>
+                                <img src="images/ktb.png " width="40px " height="40px " />
+                            </td>
+                            <td translate="BODY.SECTION.PAYMENT.KTB_ACC">
+                                หมายเลข 440-99934-3454
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                5.
+                            </td>
+                            <td>
+                                <img src="images/kcc.png " width="40px" height="40px" />
+                            </td>
+                            <td translate="BODY.SECTION.PAYMENT.KCC_ACC">
+                                หมายเลข 440-99934-3454
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- <div> about us -->
+                <div id="about-section" name="about-section" class="section" ng-show="SelectedMenu=='about'">
+                    <h1>ABOUT</h1>
+                </div>
+                <!-- <div> google map -->
+                <div id="google-map-section" name="google-map-section" class="section" ng-show="SelectedMenu=='google-map'">
+                    <h1>MAP</h1>
+                    <div class="row-fluid">
+                        <div class="span8">
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- <div> thai-post -->
+                <div id="thai-post-section" name="thai-post-section" class="section" ng-show="SelectedMenu=='thai-post'">
+                    <h1>THAI POST</h1>
+                </div>
+                <!-- <div> Shipment Process -->
+                <div id="shipment-section" name="shipment-section" class="section" ng-show="SelectedMenu=='shipment'" ng-init="InitShipment()">
+                        <h1>Shipment</h1>
+                        <div class="stepwizard">
+                            <div class="stepwizard-row setup-panel">
+                                <div class="stepwizard-step">
+                                    <a id="nav-step1" href="#step-1" type="button" class="btn btn-primary btn-circle" ng-click="SelectStep(1)">1</a>
+                                    <p>Billing</p>
+                                </div>
+                                <div class="stepwizard-step">
+                                    <a id="nav-step2" href="#step-2" type="button" class="btn btn-default btn-circle" ng-click="SelectStep(2)" disabled="disabled">2</a>
+                                    <p>Payment</p>
+                                </div>
+                                <div class="stepwizard-step">
+                                    <a id="nav-step3" href="#step-3" type="button" class="btn btn-default btn-circle" ng-click="SelectStep(3)" disabled="disabled">3</a>
+                                    <p>Finish</p>
+                                </div>
+                            </div>
+                        </div>
+                        <form role="form">
+                            <div class="row" id="step-1" ng-show="step == 1">
+                                <div class="col-xs-12">
+                                    <div class="col-md-12">
+                                        <h3>Billing Address</h3>
+                                        <div class="row form-group">
+                                            <div>
+                                              <form class="form-horizontal" role="form">
+                                                  <!-- Form Name -->
+                                                  <legend>Address Details</legend>
+
+                                                  <!-- Text input-->
+                                                  <div class="form-group">
+                                                        <label class="col-md-4 control-label">Name :</label>
+                                                        <div class="col-md-8">
+                                                            <input maxlength="200" type="text" ng-model="ROHead.BillingName" required="required" 
+                                                            class="form-control" placeholder="Enter Company Name" />
+                                                        </div>
+                                                  </div>
+                                                  <div class="form-group"></div>
+                                                  <div class="form-group">
+                                                    <label class="col-sm-4 control-label" for="textinput">Address :</label>
+                                                    <div class="col-sm-8">
+                                                      <input type="text" ng-model="ROHead.BillingAddress" required="required" placeholder="Address" class="form-control">
+                                                    </div>
+                                                  </div>
+                                                  <div class="form-group"></div>
+                                                  <!-- Text input-->
+                                                  <div class="form-group">
+                                                    <label class="col-md-4 control-label" for="textinput">Province :</label>
+                                                    <div class="col-md-8">
+                                                      <select id="SelectProvince" name="selectbasic" class="form-control input-md" 
+                                                   ng-model="ROHead.ProvinceId" ng-options="Province._id as Province.Province for Province in SelectProvinceList" ng-change="UpdateProvince()" required="required">
+                                                            <option value="">-- Choose Province --</option>
+                                                       </select>
+                                                    </div>
+                                                  </div>
+                                                  <div class="form-group"></div>
+                                                  <!-- Text input-->
+                                                  <div class="form-group">
+                                                    <label class="col-sm-4 control-label" for="textinput">District :</label>
+                                                    <div class="col-sm-8">
+                                                       <select id="SelectDistrictList" name="selectbasic" class="form-control input-md"  
+                                                       required="required"
+                                                       ng-model="ROHead.DistrictId" ng-options="District._id as District.District for District in SelectDistrictList" ng-change="UpdateDistrict(District._id)">
+                                                            <option value="">-- Choose District --</option>
+                                                       </select>
+                                                    </div>
+                                                  </div>
+                                                  <div class="form-group"></div>
+                                                  <!-- Text input-->
+                                                  <div class="form-group">
+                                                    <label class="col-sm-4 control-label" for="textinput">Sub-District</label>
+                                                    <div class="col-sm-8">
+                                                      <select id="SelectSubDistrictList" name="selectbasic" class="form-control input-md" 
+                                                       required="required" ng-model="ROHead.SubDistrictId" ng-options="SubDistrict._id as SubDistrict.SubDistrict for SubDistrict in SelectSubDistrictList" ng-change="UpdateSubDistrict()">
+                                                            <option value="">-- Choose SubDistrict --</option>
+                                                       </select>
+                                                    </div>
+                                                    <label class="col-sm-4 control-label" for="textinput">Zipcode</label>
+                                                    <div class="col-sm-8">
+                                                      <select id="SelectZipCodeList" name="selectbasic" class="form-control input-md" ng-model="ROHead.ZipCode" ng-options="ZipCode._id as ZipCode.ZipCode for ZipCode in SelectZipCodeList"  required="required">
+                                                            <option value="">-- Choose ZipCode --</option>
+                                                      </select>
+                                                    </div>
+                                                  </div>
+                                              </form>
+                                            </div><!-- /.col-lg-12 -->
+                                        </div><!-- /.row -->
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-primary btn-lg center-block" type="button" ng-click="ValidateBilling()">  
+                                            <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Next
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="step-2" ng-show="step == 2">
+                                <div class="col-xs-12">
+                                    <div class="col-md-12">
+                                        <h3>Payment</h3>
+                                        <div class="row form-group">
+                                            <!-- You can make it whatever width you want. I'm making it full width
+                                                 on <= small devices and 4/12 page width on >= medium devices -->  
+                                            <div class="col-xs-12">
+                                                <div class="col-xs-4">
+                                                     <label style="color:white">Payment Type :</label>
+                                                </div>
+                                                <div class="col-xs-8">
+                                                    <select class="form-control" ng-model="PaymentType" required="required">
+                                                        <option value="">-- Choose Payment Type --</option>
+                                                        <option value="Transfer">Transfer</option>
+                                                        <option value="Credit">Credit</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12">
+                                            </div>
+                                            <div class="col-xs-12">
+                                            </div>
+                                            <div class="col-xs-12"> 
+                                                 <div class="col-xs-2">
+                                                 </div>
+                                                 <div class="col-xs-10" ng-show="PaymentType == 'Transfer'">
+                                                <!-- TRANSFER FORM STARTS HERE -->
+                                                <div class="panel panel-default transfer-box">
+                                                    <div class="panel-heading display-table">
+                                                        <div class="row display-tr" >
+                                                            <h3 class="panel-title display-td">Payment Details</h3>
+                                                            <div class="display-td" >                            
+                                                                
+                                                            </div>
+                                                        </div>                    
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <form role="form" id="transfer-form">
+                                                            <div class="row">
+                                                                <table class="table table-condense">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="text-center" style="color:black">{{'HEAD.MODAL_CART.SEQ' | translate}}</th>
+                                                                            <th class="text-center" style="color:black">Bank</th>
+                                                                            <th class="text-left" style="color:black">Account No</th>
+                                                                            <th class="text-left" style="color:black">Account Type</th>
+                                                                            <th class="text-left" style="color:black">Branch</th>
+                                                                            <th class="text-left" style="color:black">Account Name</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td class="text-center">
+                                                                                <input type="radio" name="bank" ng-model="PaymentBank" value="bbl" required="required"/>
+                                                                            </td>
+                                                                            <td class="text-center">
+                                                                                <img src="/images/bbl.png" width="40" height="40">
+                                                                            </td>
+                                                                            <td>
+                                                                                <label style="color:black">111-2345-123</label>
+                                                                            </td>
+                                                                            <td>
+                                                                               <label style="color:black">Saving</label>
+                                                                            </td>
+                                                                            <td>
+                                                                               <label style="color:black">Surin</label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <label style="color:black">นายปัญญา บุญยกุลศรีรุ่ง</label>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="text-center">
+                                                                                <input type="radio" name="bank" ng-model="PaymentBank" value="kbank" required="required"/>
+                                                                            </td>
+                                                                            <td class="text-center">
+                                                                                <img src="/images/kbank.png" width="40" height="40">
+                                                                            </td>
+                                                                            <td>
+                                                                               <label style="color:black">111-2345-123</label>
+                                                                            </td>
+                                                                            <td>
+                                                                               <label style="color:black">Saving</label>
+                                                                            </td>
+                                                                            <td>
+                                                                               <label style="color:black">Surin</label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <label style="color:black">นายปัญญา บุญยกุลศรีรุ่ง</label>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="text-center">
+                                                                                  <input type="radio" name="bank" ng-model="PaymentBank" value="scb" required="required"/>
+                                                                              
+                                                                            </td>
+                                                                            <td class="text-center">
+                                                                                <img src="/images/scb.png" width="40" height="40">
+                                                                            </td>
+                                                                            <td>
+                                                                                <label style="color:black">111-2345-123 </label>
+                                                                            </td>
+                                                                            <td>
+                                                                               <label style="color:black">Saving</label>
+                                                                            </td>
+                                                                            <td>
+                                                                               <label style="color:black">Surin</label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <label style="color:black">นายปัญญา บุญยกุลศรีรุ่ง</label>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="text-center">
+                                                                                  <input type="radio" name="bank" ng-model="PaymentBank" value="ktb" required="required"/>
+                                                                            </td >
+                                                                            <td class="text-center">
+                                                                                <img src="/images/ktb.png" width="40" height="40">
+                                                                            </td>
+                                                                            <td>
+                                                                                <label style="color:black">111-2345-123 </label>
+                                                                            </td>
+                                                                            <td>
+                                                                               <label style="color:black">Saving</label>
+                                                                            </td>
+                                                                            <td>
+                                                                               <label style="color:black">Surin</label>
+                                                                            </td>
+                                                                            <td>
+                                                                               <label style="color:black"> นายปัญญา บุญยกุลศรีรุ่ง</label>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="text-center">
+                                                                                  <input type="radio" name="bank" ng-model="PaymentBank" value="kcc" required="required"/>
+                                                                              
+                                                                            </td >
+                                                                            <td class="text-center">
+                                                                                <img src="/images/kcc.png" width="40" height="40">
+                                                                            </td>
+                                                                            <td>
+                                                                                <label style="color:black">111-2345-123 </label>
+                                                                            </td>
+                                                                            <td>
+                                                                               <label style="color:black">Saving</label>
+                                                                            </td>
+                                                                            <td>
+                                                                               <label style="color:black">Surin</label>
+                                                                            </td>
+                                                                            <td>
+                                                                               <label style="color:black"> นายปัญญา บุญยกุลศรีรุ่ง</label>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="text-center">
+                                                                               
+                                                                                <input type="radio" name="bank" ng-model="PaymentBank" value="tmb" required="required"/>
+                                                                             
+                                                                            </td class="text-center">
+                                                                            <td>
+                                                                                <img src="/images/tmb.png" width="60" height="35">
+                                                                            </td>
+                                                                            <td>
+                                                                                <label style="color:black">111-2345-123</label>
+                                                                            </td>
+                                                                            <td>
+                                                                               <label style="color:black">Saving</label>
+                                                                            </td>
+                                                                            <td>
+                                                                               <label style="color:black">Surin</label>
+                                                                            </td>
+                                                                            <td>
+                                                                               <label style="color:black">นายปัญญา บุญยกุลศรีรุ่ง</label>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="text-center">
+                                                                                  <input type="radio" name="bank" ng-model="PaymentBank" value="uob" required="required" />
+                                                                            </td>
+                                                                            <td class="text-center">
+                                                                                <img src="/images/uob.png" width="60" height="30">
+                                                                            </td>
+                                                                            <td>
+                                                                                <label style="color:black">111-2345-123</label>
+                                                                            </td>
+                                                                            <td>
+                                                                               <label style="color:black">Saving</label>
+                                                                            </td>
+                                                                            <td>
+                                                                               <label style="color:black">Surin</label>
+                                                                            </td>
+                                                                            <td>
+                                                                               <label style="color:black"> นายปัญญา บุญยกุลศรีรุ่ง </label>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>            
+                                                <!-- TRANSFER FORM ENDS HERE -->
+                                                 </div>  
+                                            </div>  
+                                            <div class="col-xs-12"> 
+                                                 <div class="col-xs-4">
+                                                 </div>        
+                                                  <div class="col-xs-8" style="font-size: 12pt; line-height: 2em;" ng-show="PaymentType == 'Credit'">
+                                                <!-- CREDIT FORM STARTS HERE -->
+                                                <div class="panel panel-default credit-card-box">
+                                                    <div class="panel-heading display-table" >
+                                                        <div class="row display-tr" >
+                                                            <h3 class="panel-title display-td">Credit Card Details</h3>
+                                                            <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
+                                                        </div>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <form role="form" id="credit-form">
+                                                            <div class="row">
+                                                                <div class="col-xs-12">
+                                                                    <div class="form-group" style="color:black">
+                                                                        CARD NUMBER
+                                                                        <div class="input-group">
+                                                                            <input 
+                                                                                type="tel"
+                                                                                class="form-control"
+                                                                                name="cardNumber"
+                                                                                ng-model="cardNumber"
+                                                                                placeholder="Valid Card Number"
+                                                                                autocomplete="cc-number" payments-format="card"
+                                                                                required="required" autofocus  
+                                                                            />
+                                                                            <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                                                                        </div>
+                                                                    </div>                            
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-xs-6 col-md-6">
+                                                                    <div class="form-group" style="color:black">
+                                                                       EXPIRATION DATE
+                                                                        <input 
+                                                                            type="tel" 
+                                                                            class="form-control" 
+                                                                            name="cardExpiry"
+                                                                            ng-model="cardExpiry"
+                                                                            placeholder="MM / YY"
+                                                                            autocomplete="cc-exp" payments-format="expiry"
+                                                                            required="required" 
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-xs-4 col-md-4 pull-right">
+                                                                    <div class="form-group" style="color:black">
+                                                                        CV CODE
+                                                                        <input 
+                                                                            type="tel" 
+                                                                            class="form-control"
+                                                                            name="cardCVC" payments-format="cvc" 
+                                                                            ng-model="cardCVC"
+                                                                            placeholder="CVC"
+                                                                            autocomplete="cc-csc"
+                                                                            required="required"
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-xs-6">
+                                                                    <div class="form-group" style="color:black">
+                                                                        COUPON CODE
+                                                                        <input type="text" class="form-control" name="couponCode" ng-model="couponCode"/>
+                                                                    </div>
+                                                                </div>                        
+                                                            </div>
+                                                            
+                                                            <div class="row" style="display:none;">
+                                                                <div class="col-xs-6">
+                                                                    <p class="payment-errors"></p>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>            
+                                                <!-- TRANSFER FORM ENDS HERE -->
+                                                  </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-primary btn-lg center-block" type="button" ng-click="ValidatePayment()">
+                                                <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Next
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="step-3" ng-show="step == 3">
+                                <div class="col-xs-12">
+                                    <div class="col-md-12">
+                                        <h3> Step 3</h3>
+                                        <button class="btn btn-success btn-lg center-block" ng-click="ValidateFinish()">Finish!</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+             
+                </div>
+                <!-- <div> HISTORY -->
+                <div id="history-section" name="history-section" class="section" ng-show="SelectedMenu=='history'">
+                    <h1>History</h1> From
+                    <div class="input-append date datepicker" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+                        <input class="span2" size="16" type="text" value="12-02-2012"><span class="add-on"></span>
+                    </div> To
+                    <div class="input-append date datepicker" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+                        <input class="span2" size="16" type="text" value="12-02-2012"><span class="add-on"></span>
+                    </div>
+                    <div id="no-more-tables">
+                        <table class="col-md-12 table-bordered table-striped table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Company</th>
+                                    <th class="numeric">Price</th>
+                                    <th class="numeric">Change</th>
+                                    <th class="numeric">Change %</th>
+                                    <th class="numeric">Open</th>
+                                    <th class="numeric">High</th>
+                                    <th class="numeric">Low</th>
+                                    <th class="numeric">Volume</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td data-title="Code">AAC</td>
+                                    <td data-title="Company">AUSTRALIAN AGRICULTURAL COMPANY LIMITED.</td>
+                                    <td data-title="Price" class="numeric">$1.38</td>
+                                    <td data-title="Change" class="numeric">-0.01</td>
+                                    <td data-title="Change %" class="numeric">-0.36%</td>
+                                    <td data-title="Open" class="numeric">$1.39</td>
+                                    <td data-title="High" class="numeric">$1.39</td>
+                                    <td data-title="Low" class="numeric">$1.38</td>
+                                    <td data-title="Volume" class="numeric">9,395</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <script>
+                        function demo() {
+                            $('.datepicker').datepicker({
+                                todayBtn: "linked",
+                                language: "th",
+                                autoclose: true,
+                                todayHighlight: true
+                            });
+                        }
+                    </script>
+                </div>
+                <!-- <div> Account Setting -->
+                <div id="account-section" name="account-section" class="section" ng-show="SelectedMenu=='account'">
+                    <h1>Account</h1>
+                    <div id="div-account-detail" class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <form class="form-horizontal" role="form">
+                                <fieldset>
+                                    <!-- Form Name -->
+                                    <legend></legend>
+                                    <!-- Text input-->
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label" for="textinput">Email :</label>
+                                        <div class="col-sm-6">
+                                            <input type="email" placeholder="Email" class="form-control" ng-model="ViewAppUserData.Email" />
+                                        </div>
+                                    </div>
+                                    <!-- Text input-->
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label" for="textinput">Password :</label>
+                                        <div class="col-sm-6">
+                                            <input type="password" placeholder="Firstname" class="form-control" ng-model="ViewAppUserData.Password">
+                                        </div>
+                                    </div>
+                                    <!-- Text input-->
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label" for="filebutton">Profile Image</label>
+                                        <div class="col-md-6">
+                                            <input id="ProfileImage" name="filebutton" class="input-file" type="file" ng-Model="ViewAppUserData.ProfileImage">
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <div class="pull-right">
+                                                <button type="submit" class="btn btn-default" ng-click="CancelUser()">
+                                                    <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Cancel
+                                                </button>
+
+                                                <button type="submit" class="btn btn-primary" ng-click="SaveUser()">
+                                                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                        <!-- /.col-lg-12 -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- <div> General Setting -->
+                <div id="setting-section" name="setting-section" class="section" ng-show="SelectedMenu=='setting'">
+                    <div class="tabbable-panel">
+                        <div class="tabbable-line">
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#ProductTypeTab" data-toggle="tab" ng-click="SearchProductType()">Product Type </a>
+                                </li>
+                                <li>
+                                    <a href="#ProductCategoryTab" data-toggle="tab" ng-click="SearchProductCategory()">Product Category </a>
+                                </li>
+                                <li>
+                                    <a href="#ProductTab" data-toggle="tab" ng-click="SearchProduct()">Product </a>
+                                </li>
+                                <li>
+                                    <a href="#CustomerTypeTab" data-toggle="tab" ng-click="SearchCustomerType()">Customer Type</a>
+                                </li>
+                                <li>
+                                    <a href="#CustomerTab" data-toggle="tab" ng-click="SearchCustomer()"> Customer </a>
+                                </li>
+                                <li>
+                                    <a href="#StaffTab"  data-toggle="tab" ng-click="SearchStaff()"> Staff </a>
+                                </li>
+                                <li>
+                                    <a href="#RoleTab" data-toggle="tab" ng-click="SearchRole()"> Role </a>
+                                </li>
+                                <li>
+                                    <a href="#ReceiptTab" data-toggle="tab" ng-click="SearchReceipt()"> Receipt Order </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <!-- Start Product Type Setting -->
+                                <div class="tab-pane" id="ProductTypeTab" name="ProductTypeTab">
+                                    <!-- Start Product Type Detail Setting -->
+                                    <div id="div-product-type-detail" class="row">
+                                        <div class="col-md-8 col-md-offset-2">
+                                            <form class="form-horizontal" role="form">
+                                                <fieldset>
+                                                    <!-- Form Name -->
+                                                    <legend></legend>
+
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Product Type Code :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" background-color="#FFCBCBCB" readonly placeholder="Product Code" class="form-control" ng-model="ViewProductTypeData.ProductTypeCode"></input>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Product Type Name TH :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Product Name TH" class="form-control" ng-model="ViewProductTypeData.ProductTypeNameTh"></input>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Product Type Name EN :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Product Name EN" class="form-control" ng-model="ViewProductTypeData.ProductTypeNameEn"></input>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Product Type Name CN :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Product Name CN" class="form-control" ng-model="ViewProductTypeData.ProductTypeNameCn"></input>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-offset-2 col-sm-10">
+                                                            <div class="pull-right">
+                                                                <button type="submit" class="btn btn-warning" ng-click="NewProductType()">
+                                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New</button>
+                                                                <button type="submit" class="btn btn-primary" ng-click="SaveProductType()">
+                                                                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save</button>
+                                                                <button type="submit" class="btn btn-danger" ng-click="DeleteProductType()">
+                                                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>
+                                                                <button type="submit" class="btn btn-default" ng-click="CancelProductType()">
+                                                                    <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Cancel</button>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                        <!-- /.col-lg-12 --></div>
+                                    <!-- /.row -->
+                                    <!-- Start Product Type Table Setting -->
+                                    <div id="div-product-type-table">
+                                        <legend></legend>
+                                        <button type="submit" class="btn btn-warning" ng-click="NewProductType()">
+                                          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New</button>
+                                        <input type="text" ng-model="SearchProductTypeText" />
+                                        <button ng-click="SearchProductType()" class="btn btn-primary">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+                                        </button>
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>
+                                                        <a href="" ng-click="orderFieldName='ProductCode'; isASC=!isASC"></a>Product Type Code</th>
+                                                    <th><a href="" ng-click="orderFieldName='ProductNameTh'; isASC=!isASC">Product Type Name TH</th>
+                                                    <th><a href="" ng-click="orderFieldName='ProductNameEn'; isASC=!isASC">Product Type Name EN</th>
+                                                    <th><a href="" ng-click="orderFieldName='ProductNameCn'; isASC=!isASC" >Product Type Name CN</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="pt in SearchProductTypes | orderBy : orderFieldName : isASC | filter : SearchProductTypeText">
+                                                    <td>{{$index+1}}</td>
+                                                    <td>{{pt.ProductTypeCode}}</td>
+                                                    <td>{{pt.ProductTypeNameTh}}</td>
+                                                    <td>{{pt.ProductTypeNameEn}}</td>
+                                                    <td>{{pt.ProductTypeNameCn}}</td>
+                                                    <td>
+                                                        <button ng-click="ViewProductType(pt._id)" class="btn btn-primary">
+                                                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button ng-click="DeleteProductType()" class="btn btn-danger">
+                                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </button>
+                                                    </td>
+
+                                                </tr>
+                                            </tbody>
+                                           <tfoot>
+                                                <td colspan="8">
+                                                Record Count : {{SearchProductTypes.length}}
+                                               </td>
+                                           </tfoot>
+                                        </table>
+                                </div>
+                                <!-- End Product Type Table Setting -->
+                                </div>
+                                <!--End Product Type Setting -->
+                                
+                                <!--Start Product Category Setting -->
+                                <div class="tab-pane" id="ProductCategoryTab" name="ProductCategoryTab">
+                                    <!--Start Product Category Detail Setting -->
+                                    <div id="div-product-category-detail" class="row">
+                                        <div class="col-md-8 col-md-offset-2">
+                                            <form class="form-horizontal" role="form">
+                                                <fieldset>
+                                                    <!-- Form Name -->
+                                                    <legend></legend>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Product Category Code :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Product Category Code" class="form-control" ng-model="ViewProductCategoryData.ProductCategoryCode" readonly> 
+                                                        </div>
+                                                    </div>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Product Category Name TH :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Product Category Name TH" class="form-control" ng-model="ViewProductCategoryData.ProductCategoryNameTh">
+                                                        </div>
+                                                    </div>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Product Category Name EN :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Product Category Name EN" class="form-control" ng-model="ViewProductCategoryData.ProductCategoryNameEn">
+                                                        </div>
+                                                    </div>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Product Category Name CN :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Product Category Name CN" class="form-control" ng-model="ViewProductCategoryData.ProductCategoryNameCn">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                      <label class="col-md-4 control-label" for="selectbasic">Product Type :</label>
+                                                        <div class="col-md-4">
+                                                            <select id="SelectProductType" class="form-control"  ng-options="ProductType.ProductTypeCode as ProductType.ProductTypeNameTh for ProductType in SelectProductTypeList"
+                                                            ng-model="SelectedProductType" >
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-offset-2 col-sm-10">
+                                                            <div class="pull-right">
+                                                                <button type="submit" class="btn btn-warning" ng-click="NewProductCategory()">
+                                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New</button>
+                                                                
+                                                                <button type="submit" class="btn btn-primary" ng-click="SaveProductCategory()"> 
+                                                                <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save</button>
+
+                                                                <button type="submit" class="btn btn-danger" ng-click="DeleteProductCategory()">
+                                                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>
+
+                                                                <button type="submit" class="btn btn-default" ng-click="CancelProductCategory()">
+                                                                <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Cancel</button>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </form>
+                                    </div>
+                                    <!-- /.col-lg-12 -->
+                                    </div>
+                                    <!-- /.row -->
+                                    <!--End Product Category Detail Setting -->
+                                    <!--Start Product Category Table Setting -->
+                                    <div id="div-product-category-table">
+                                        <legend></legend>
+                                        <button type="submit" class="btn btn-warning" ng-click="NewProductCategory()">
+                                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New</button>
+                                        <input type="text" ng-model="SearchProductCategoryText" />
+                                        <button ng-click="SearchProductCategory()" class="btn btn-primary">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+                                        </button>
+                                        <p><strong>Page:</strong> {{ProductCategoryTableParams.page()}}</p>
+                                        <p><strong>Count per page:</strong> {{ProductCategoryTableParams.count()}}</p>
+                                        
+                                        <table ng-table="ProductCategoryTableParams" class="table">
+                                            <tr ng-repeat="pc in $data">
+                                                <td data-title="'#'">{{$index+1}}</td>
+                                                <td data-title="'Code'">{{pc.ProductCategoryCode}}</td>
+                                                <td data-title="'Name En'">{{pc.ProductCategoryNameEn}}</td>
+                                                <td data-title="'Name Th'">{{pc.ProductCategoryNameEn}}</td>
+                                                <td data-title="'Name Cn'">{{pc.ProductCategoryNameEn}}</td>
+                                                <td data-title="''">
+                                                    <button ng-click="ViewProductCategory(pc._id)" class="btn btn-primary" alt="View">
+                                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
+                                                    </button>
+                                                </td>
+                                                <td data-title="''">
+                                                    <button ng-click="DeleteProductCategory()" class="btn btn-danger" alt="Delete">
+                                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <script type="text/ng-template" id="custom/pager">
+                                            <ul class="pager ng-cloak">
+                                              <li ng-repeat="page in pages"
+                                                    ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}"
+                                                    ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+                                                <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">&laquo; Previous</a>
+                                                <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Next &raquo;</a>
+                                              </li>
+                                                <li> 
+                                                <div class="btn-group">
+                                                    <button type="button" ng-class="{'active':params.count() == 10}" ng-click="params.count(10)" class="btn btn-default">10</button>
+                                                    <button type="button" ng-class="{'active':params.count() == 25}" ng-click="params.count(25)" class="btn btn-default">25</button>
+                                                    <button type="button" ng-class="{'active':params.count() == 50}" ng-click="params.count(50)" class="btn btn-default">50</button>
+                                                    <button type="button" ng-class="{'active':params.count() == 100}" ng-click="params.count(100)" class="btn btn-default">100</button>
+                                                </div>
+                                                </li>
+                                            </ul>
+                                        </script>
+                                   <!--End Product Category Table Setting -->
+                                    </div>
+                                </div>
+                                <!--End Product Category Setting -->
+
+                                <!-- Start Product Setting -->
+                                <div class="tab-pane" id="ProductTab" name="ProductTab">
+                                    <!--Start Product Detail Setting -->
+                                    <div id="div-product-detail" class="row">
+                                        <div class="col-md-8 col-md-offset-2">
+                                        <form class="form-horizontal" role="form">
+                                            <fieldset>
+                                                <!-- Form Name -->
+                                                <legend></legend>
+                                                <!-- Text input-->
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label" for="textinput">Product Code :</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" placeholder="Product Code" class="form-control" ng-model="ViewProductData.ProductCode" readonly>
+                                                 </div>
+                                                </div>
+                                                <!-- Text input-->
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label" for="textinput">Product Name TH :</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" placeholder="Product Name TH" class="form-control" ng-model="ViewProductData.ProductNameTh" required>
+                                                    </div>
+
+                                                </div>
+                                                <!-- Text input-->
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label" for="textinput">Product Name EN :</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" placeholder="Product Name EN" class="form-control" ng-model="ViewProductData.ProductNameEn">
+                                                    </div>
+                                                </div>
+                                                <!-- Text input-->
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label" for="textinput">Product Name CN :</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" placeholder="Product Name CN" class="form-control" ng-model="ViewProductData.ProductNameCn">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                  <label class="col-md-4 control-label" for="selectbasic">Product Category :</label>
+                                                    <div class="col-md-4">
+                                                        <select id="SelectProductCategory" class="form-control" ng-model="SelectedProductCategory" ng-options="ProductCategory.ProductCategoryCode as ProductCategory.ProductCategoryNameTh for ProductCategory in SelectProductCategoryList">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- Input Cost Price -->
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label" for="textinput">Cost :</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" placeholder="0.00" class="form-control" ng-model="ViewProductData.CostPrice">
+                                                    </div>
+                                                </div>
+                                                <!-- Input Retail Price -->
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label" for="textinput">Retail Price :</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" placeholder="0.00" class="form-control" ng-model="ViewProductData.RetailPrice">
+                                                    </div>
+                                                </div>
+                                                <!-- Input Wholesale Price -->
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label" for="textinput">Wholesale Price :</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" placeholder="0.00" class="form-control" ng-model="ViewProductData.WholesalePrice">
+                                                    </div>
+                                                </div>
+                                                <!-- Input Uom -->
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" for="selectbasic">Uom :</label>
+                                                    <div class="col-md-4">
+                                                         <select id="SelectUom" class="form-control" ng-model="SelectedUom" ng-options="Uom.UomCode as Uom.UomNameTh for Uom in SelectUomList">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- Input Contain Uom -->
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" for="selectbasic">Contain Uom :</label>
+                                                    <div class="col-md-4">
+                                                        <select id="SelectContainUom" name="selectbasic" class="form-control" ng-model="SelectedContainUom" ng-options="Uom.UomCode as Uom.UomNameTh for Uom in SelectContainUomList">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- Input Contain Quantity -->
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label" for="textinput">Contain Quantity :</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" placeholder="0.00" class="form-control" ng-model="ViewProductData.ContainQuantity">
+                                                    </div>
+                                                </div>
+                                                <!-- Input Contain Cost Price -->
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label" for="textinput">Contain Cost Price :</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" placeholder="0.00" class="form-control" ng-model="ViewProductData.ContainCostPrice">
+                                                    </div>
+                                                </div>
+                                                <!-- Input Contain Wholesale Price -->
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label" for="textinput">Contain Wholesale Price :</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" placeholder="0.00" class="form-control" ng-model="ViewProductData.ContainWholesalePrice">
+                                                    </div>
+                                                </div>
+                                                <!--Product Image Upload -->
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label" for="textinput">Image :</label>
+                                                    <div class="col-sm-6">
+                                                        <div class="button" ngf-select ng-model="ViewProductData.files">Upload using model $watch</div>
+                                                        <!--<div class="button" ngf-select ngf-change="upload($files)">Upload on file change</div>-->
+                                                        Drop File:
+                                                        <div ngf-drop ng-model="ViewProductData.files" class="drop-box" 
+                                                            ngf-drag-over-class="dragover" ngf-multiple="true" ngf-allow-dir="true"
+                                                            ngf-accept="'.jpg,.png,.pdf'">Drop Images or PDFs files here
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label" for="textinput">Image thumbnail:</label>
+                                                    <div class="col-sm-6">
+                                                        <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+                                                        <ul><li ng-repeat="image in ViewProductData.files">
+                                                            <img ngf-src="image">
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div flow-init="{target: '/upload'}"
+                                                         flow-files-submitted="$flow.upload()"
+                                                         flow-file-success="$file.msg = $message">
+
+                                                      <input type="file" flow-btn/>
+                                                      Input OR Other element as upload button
+                                                      <span class="btn" flow-btn>Upload File</span>
+
+                                                      <table>
+                                                        <tr ng-repeat="file in $flow.files">
+                                                            <td>{{$index+1}}</td>
+                                                            <td>{{file.name}}</td>
+                                                            <td>{{file.msg}}</td>
+                                                        </tr>
+                                                      </table>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-sm-offset-2 col-sm-10">
+                                                        <div class="pull-right">
+                                                            <button type="submit" class="btn btn-warning" ng-click="NewProduct()">
+                                                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New</button>
+                                                            
+                                                            <button type="submit" class="btn btn-primary" ng-click="SaveProduct()">
+                                                            <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save</button>
+
+                                                            <button type="submit" class="btn btn-danger" ng-click="DeleteProduct()">
+                                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>
+
+                                                            <button type="submit" class="btn btn-default" ng-click="CancelProduct()">
+                                                            <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                        </div>
+                                    </div>
+                                    <!-- /.col-lg-12 -->
+                                    <!-- /.row -->
+                                    <!--End Product Detail Setting -->
+                                    <!--Start Product Table Setting -->
+                                    <div id="div-product-table">
+                                        <legend></legend>
+                                        <button ng-click="NewProduct()" class="btn btn-warning">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New
+                                        </button>
+                                        <input type="text" ng-model="SearchProductText" />
+                                        <button ng-click="SearchProduct()" class="btn btn-primary">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+                                        </button>
+                                        
+                                        <p><strong>Page:</strong> {{ProductTableParams.page()}}</p>
+                                        <p><strong>Count per page:</strong> {{ProductTableParams.count()}}</p>
+                                        
+                                        <table ng-table="ProductTableParams" class="table table-condense">
+                                            <tr ng-repeat="pd in $data">
+                                                <td data-title="'#'">{{$index + 1}}</td>
+                                                <td data-title="'Product Code'">{{pd.ProductCode}}</td>
+                                                <td data-title="'Product Name En'">{{pd.ProductNameEn}}</td>
+                                                <td data-title="'Product Name Th'">{{pd.ProductNameTh}}</td>
+                                                <td data-title="'Product Name Cn'">{{pd.ProductNameCn}}</td>
+                                                <td data-title="''">
+                                                    <button ng-click="ViewProduct(pd._id)" class="btn btn-primary" alt="View">
+                                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
+                                                    </button>
+                                                </td>
+                                                <td data-title="''">
+                                                    <button ng-click="DeleteProduct()" class="btn btn-danger" alt="Delete">
+                                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <script type="text/ng-template" id="custom/pager">
+                                            <ul class="pager ng-cloak">
+                                              <li ng-repeat="page in pages"
+                                                    ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}"
+                                                    ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+                                                <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">&laquo; Previous</a>
+                                                <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Next &raquo;</a>
+                                              </li>
+                                                <li> 
+                                                <div class="btn-group">
+                                                    <button type="button" ng-class="{'active':params.count() == 10}" ng-click="params.count(10)" class="btn btn-default">10</button>
+                                                    <button type="button" ng-class="{'active':params.count() == 25}" ng-click="params.count(25)" class="btn btn-default">25</button>
+                                                    <button type="button" ng-class="{'active':params.count() == 50}" ng-click="params.count(50)" class="btn btn-default">50</button>
+                                                    <button type="button" ng-class="{'active':params.count() == 100}" ng-click="params.count(100)" class="btn btn-default">100</button>
+                                                </div>
+                                                </li>
+                                            </ul>
+                                        </script>
+                                    </div>
+                                    <!--End Product Table Setting -->
+                                </div>
+                                <!-- End Product Setting -->
+
+                                <!-- Start Customer Type Setting -->
+                                <div class="tab-pane" id="CustomerTypeTab" name="CustomerTypeTab">
+                                    <!-- Start Customer Type Detail Setting -->
+                                    <div id="div-customer-type-detail" class="row">
+                                        <div class="col-md-8 col-md-offset-2">
+                                            <form class="form-horizontal" role="form">
+                                                <fieldset>
+                                                    <!-- Form Name -->
+                                                    <legend></legend>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Customer Type Code :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Customer Type Code" class="form-control" ng-model="ViewCustomerTypeData.CustomerTypeCode" readonly> 
+                                                        </div>
+                                                    </div>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Customer Type Name TH :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Customer Type Name TH" class="form-control" ng-model="ViewCustomerTypeData.CustomerTypeNameTh">
+                                                        </div>
+                                                    </div>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Customer Type Name EN :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Customer Type Name EN" class="form-control" ng-model="ViewCustomerTypeData.CustomerTypeNameEn">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-offset-2 col-sm-10">
+                                                            <div class="pull-right">
+                                                                <button type="submit" class="btn btn-warning" ng-click="NewCustomerType()">
+                                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New</button>
+                                                                <button type="submit" class="btn btn-primary" ng-click="SaveCustomerType()">
+                                                                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save</button>
+                                                                <button type="submit" class="btn btn-danger" ng-click="DeleteCustomerType()">
+                                                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>
+                                                                <button type="submit" class="btn btn-default" ng-click="CancelCustomerType()">
+                                                                    <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                        <!-- /.col-lg-12 -->
+                                    </div>
+                                    <!-- /.row -->
+                                    <!-- Start Customer Type Table Setting -->
+                                    <div id="div-customer-type-table">
+                                        <legend></legend>
+                                        <button ng-click="NewCustomerType()" class="btn btn-warning">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New
+                                        </button>
+                                        <input type="text" ng-model="SearchCustomerTypeText" />
+                                        <button ng-click="SearchCustomerType()" class="btn btn-primary">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+                                        </button>
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>
+                                                        <a href="" ng-click="orderFieldName='CustomerTypeCode'; isASC=!isASC"></a>Customer Type Code</th>
+                                                    <th><a href="" ng-click="orderFieldName='CustomerTypeNameTh'; isASC=!isASC">Customer Type Name TH</th>
+                                                    <th><a href="" ng-click="orderFieldName='CustomerTypeNameEn'; isASC=!isASC">Customer Type Name EN</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="ct in SearchCustomerTypes | orderBy : orderCustomerTypeFieldName : isASC | filter : SearchCustomerTypeText">
+                                                    <td>{{$index+1}}</td>
+                                                    <td>{{ct.CustomerTypeCode}}</td>
+                                                    <td>{{ct.CustomerTypeNameTh}}</td>
+                                                    <td>{{ct.CustomerTypeNameEn}}</td>
+                                                    <td>
+                                                        <button ng-click="ViewCustomerType(ct._id)" class="btn btn-primary">
+                                                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button ng-click="DeleteCustomerType()" class="btn btn-danger">
+                                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                           <tfoot>
+                                                <td colspan="8">
+                                                Record Count : {{SearchCustomerTypes.length}}
+                                               </td>
+                                           </tfoot>
+                                        </table>
+                                        </div>
+                                    <!-- End Customer Type Table Setting -->
+                                </div>
+                                <!-- End Customer Type Setting -->
+
+                                <!-- Start Customer Setting -->
+                                <div class="tab-pane" id="CustomerTab" name="CustomerTab">
+                                    <!-- Start Customer Detail Setting -->
+                                    <div id="div-customer-detail" class="row">
+                                        <div class="col-md-8 col-md-offset-2">
+                                            <form class="form-horizontal" role="form">
+                                                <fieldset>
+                                                    <!-- Form Name -->
+                                                    <legend></legend>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Customer Code :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Customer Code" class="form-control" ng-model="ViewCustomerData.CustomerCode" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Firstname :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Customer Name En" class="form-control" ng-model="ViewCustomerData.CustomerNameEn">
+                                                        </div>
+                                                    </div>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Lastname :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Customer Name Th" class="form-control" ng-model="ViewCustomerData.CustomerNameTh">
+                                                        </div>
+                                                    </div>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Known Name :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Customer Known Name" class="form-control" ng-model="ViewCustomerData.CustomerKnownName">
+                                                        </div>
+                                                    </div>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Tel No :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="TelNo" class="form-control" ng-model="ViewCustomerData.TelNo">
+                                                        </div>
+                                                    </div>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Fax No :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="FaxNo" class="form-control" ng-model="ViewCustomerData.FaxNo">
+                                                        </div>
+                                                    </div>
+                                                     <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Mobile No :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Mobile No" class="form-control" ng-model="ViewCustomerData.MobileNo">
+                                                        </div>
+                                                    </div>
+                                                     <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Email :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Email" class="form-control" ng-model="ViewCustomerData.Email">
+                                                        </div>
+                                                    </div>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Description :</label>
+                                                        <div class="col-sm-6">
+                                                            <textarea placeholder="Description" row="4" class="form-control" ng-model="ViewCustomerData.Description"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-offset-2 col-sm-10">
+                                                            <div class="pull-right">
+                                                                <button type="submit" class="btn btn-warning" ng-click="NewCustomer()">
+                                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New</button>
+                                                                <button type="submit" class="btn btn-primary" ng-click="SaveCustomer()">
+                                                                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save</button>
+                                                                <button type="submit" class="btn btn-danger" ng-click="DeleteCustomer()">
+                                                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>
+                                                                <button type="submit" class="btn btn-default" ng-click="CancelCustomer()">
+                                                                    <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                        <!-- /.col-lg-12 -->
+                                    </div>
+                                    <!-- /.row -->
+                                    <!-- Start Customer Table Setting -->
+                                    <div id="div-customer-table">
+                                        <legend></legend>
+                                        <button ng-click="NewCustomer()" class="btn btn-warning">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New
+                                        </button>
+                                        <input type="text" ng-model="SearchCustomerText" />
+                                        <button ng-click="SearchCustomer()" class="btn btn-primary">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+                                        </button>
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th><a href="" ng-click="orderFieldName='CustomerCode'; isASC=!isASC"></a>Customer Code</th>
+                                                    <th><a href="" ng-click="orderFieldName='CustomerNameEn'; isASC=!isASC">CustomerNameEn</th>
+                                                    <th><a href="" ng-click="orderFieldName='CustomerNameTh'; isASC=!isASC">CustomerNameTh</th>
+                                                    <th><a href="" ng-click="orderFieldName='CustomerTypeName'; isASC=!isASC" >Customer Type</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                        <tbody>
+                                            <tr ng-repeat="cm in SearchCustomers | orderBy : orderCustomerFieldName : isASC | filter : SearchCustomerText">
+                                                <td>{{$index+1}}</td>
+                                                <td>{{cm.CustomerCode}}</td>
+                                                <td>{{cm.CustomerNameEn}}</td>
+                                                <td>{{cm.CustomerNameTh}}</td>
+                                                <td>{{cm.CustomerTypeName}}</td>
+                                                <td>
+                                                    <button ng-click="ViewCustomer(cm._id)" class="btn btn-primary">
+                                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button ng-click="DeleteCustomer()" class="btn btn-danger">
+                                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </button>
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                           <tfoot>
+                                                <td colspan="8">
+                                                Record Count : {{SearchCustomers.length}}
+                                               </td>
+                                           </tfoot>
+                                        </table>
+                                        <!-- End Customer Table Setting -->
+                                   </div>
+                                </div>
+                                <!-- End Customer Setting -->
+                               
+                                <!-- Start Staff Setting -->
+                                <div class="tab-pane" id="StaffTab" name="StaffTab">
+                                    <!-- Start Staff Detail Setting -->
+                                    <div id="div-staff-detail" class="row">
+                                        <div class="col-md-8 col-md-offset-2">
+                                            <form class="form-horizontal" role="form">
+                                                <fieldset>
+                                                    <!-- Form Name -->
+                                                    <legend></legend>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Staff Code :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Staff Code" class="form-control" ng-model="ViewStaffData.StaffCode" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Firstname :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Firstname" class="form-control" ng-model="ViewStaffData.Firstname">
+                                                        </div>
+                                                    </div>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Lastname :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Lastname" class="form-control" ng-model="ViewStaffData.Lastname">
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="form-group">
+                                                        <div class="col-sm-offset-2 col-sm-10">
+                                                            <div class="pull-right">
+                                                                <button type="submit" class="btn btn-warning" ng-click="NewStaff()">
+                                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New</button>
+                                                                <button type="submit" class="btn btn-primary" ng-click="SaveStaff()">
+                                                                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save</button>
+                                                                <button type="submit" class="btn btn-danger" ng-click="DeleteStaff()">
+                                                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>
+                                                                <button type="submit" class="btn btn-default" ng-click="CancelStaff()">
+                                                                    <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                        <!-- /.col-lg-12 -->
+                                    </div>
+                                    <!-- /.row -->
+                                    <!-- Start Staff Table Setting -->
+                                    <div id="div-staff-table">
+                                        <legend></legend>
+                                        <button ng-click="NewStaff()" class="btn btn-warning">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New
+                                        </button>
+                                        <input type="text" ng-model="SearchCustomerText" />
+                                        <button ng-click="SearchStaff()" class="btn btn-primary">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+                                        </button>
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>
+                                                        <a href="" ng-click="orderFieldName='StaffCode'; isASC=!isASC"></a>Staff Code</th>
+                                                    <th><a href="" ng-click="orderFieldName='Firstname'; isASC=!isASC">Firstname</th>
+                                                    <th><a href="" ng-click="orderFieldName='Lastname'; isASC=!isASC">Lastname</th>
+                                                    <th><a href="" ng-click="orderFieldName='Age'; isASC=!isASC" >Age</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="st in SearchStaffs | orderBy : orderStaffFieldName : isASC | filter : SearchStaffText">
+                                                    <td>{{$index+1}}</td>
+                                                    <td>{{st.StaffCode}}</td>
+                                                    <td>{{st.Firstname}}</td>
+                                                    <td>{{st.Lastname}}</td>
+                                                    <td>{{st.Age}}</td>
+                                                    <td>
+                                                        <button ng-click="ViewStaff(st._id)" class="btn btn-primary">
+                                                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button ng-click="DeleteStaff()" class="btn btn-danger">
+                                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </button>
+                                                    </td>
+
+                                                </tr>
+                                            </tbody>
+                                           <tfoot>
+                                                <td colspan="8">
+                                                Record Count : {{SearchStaffs.length}}
+                                               </td>
+                                           </tfoot>
+                                        </table>
+                                        </div>
+                                        <!-- End Staff Table Setting -->
+                                </div>
+                                <!-- End Staff Setting -->
+                                
+                                <!-- Start Role Setting -->
+                                <div class="tab-pane" id="RoleTab" name="RoleTab">
+                                    <!-- Start Role Detail Setting -->
+                                    <div id="div-role-detail" class="row">
+                                        <div class="col-md-8 col-md-offset-2">
+                                            <form class="form-horizontal" role="form">
+                                                <fieldset>
+                                                    <!-- Form Name -->
+                                                    <legend></legend>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Role Code :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Role Code" class="form-control" ng-model="ViewRoleData.RoleCode" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Role Name EN :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Role Name EN" class="form-control" ng-model="ViewRoleData.RoleNameEn">
+                                                        </div>
+                                                    </div>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">Role Name TH :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Role Name TH" class="form-control" ng-model="ViewRoleData.RoleNameTh">
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="form-group">
+                                                        <div class="col-sm-offset-2 col-sm-10">
+                                                            <div class="pull-right">
+                                                                <button type="submit" class="btn btn-warning" ng-click="NewRole()">
+                                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New</button>
+                                                                <button type="submit" class="btn btn-primary" ng-click="SaveRole()">
+                                                                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save</button>
+                                                                <button type="submit" class="btn btn-danger" ng-click="DeleteRole()">
+                                                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>
+                                                                <button type="submit" class="btn btn-default" ng-click="CancelRole()">
+                                                                    <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                        <!-- /.col-lg-12 -->
+                                    </div>
+                                    <!-- /.row -->
+                                    <!-- Start Role Table Setting -->
+                                    <div id="div-role-table">
+                                        <legend></legend>
+                                        <button ng-click="NewRole()" class="btn btn-warning">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New
+                                        </button>
+                                        <input type="text" ng-model="SearchRoleText" />
+                                        <button ng-click="SearchRole()" class="btn btn-primary">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+                                        </button>
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>
+                                                        <a href="" ng-click="orderFieldName='RoleCode'; isASC=!isASC"></a>Role Code</th>
+                                                    <th><a href="" ng-click="orderFieldName='RoleNameEn'; isASC=!isASC">Role Name EN</th>
+                                                    <th><a href="" ng-click="orderFieldName='RoleNameTh'; isASC=!isASC">Role Name TH</th>
+                                            <th></th>
+                                                <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="rl in SearchRoles | orderBy : orderRoleFieldName : isASC | filter : SearchRoleText">
+                                                    <td>{{$index+1}}</td>
+                                                    <td>{{rl.RoleCode}}</td>
+                                                    <td>{{rl.RoleNameEn}}</td>
+                                                    <td>{{rl.RoleNameTh}}</td>
+                                                    <td>
+                                                        <button ng-click="ViewRole(rl._id)" class="btn btn-primary">
+                                                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button ng-click="DeleteRole()" class="btn btn-danger">
+                                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </button>
+                                                    </td>
+
+                                                </tr>
+                                            </tbody>
+                                           <tfoot>
+                                                <td colspan="8">
+                                                Record Count : {{SearchRoles.length}}
+                                               </td>
+                                           </tfoot>
+                                        </table>
+                                        </div>
+                                        <!-- End Role Table Setting -->
+                                </div>
+                                <!-- End Role Setting -->
+
+                                <!-- Start Receipt Order Setting -->
+                                <div class="tab-pane" id="ReceiptTab" name="ReceiptTab">
+                                    <!-- Start Receipt Detail Setting -->
+                                    <div id="div-receipt-detail" class="row">
+                                        <div class="col-md-8 col-md-offset-2">
+                                            <form class="form-horizontal" role="form">
+                                                <fieldset>
+                                                    <!-- Form Name -->
+                                                    <legend></legend>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">RO No :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Role Code" class="form-control" ng-model="ViewReceiptData.RONo" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">RO Date :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Role Name EN" class="form-control" ng-model="ViewReceiptData.RODate">
+                                                        </div>
+                                                    </div>
+                                                    <!-- Text input-->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">RO Time :</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" placeholder="Role Name TH" class="form-control" ng-model="ViewReceiptData.ROTime">
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="form-group">
+                                                        <div class="col-sm-offset-2 col-sm-10">
+                                                            <div class="pull-right">
+                                                                <button type="submit" class="btn btn-warning disabled" ng-click="NewReceipt()">
+                                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New</button>
+                                                                <button type="submit" class="btn btn-primary disabled" ng-click="SaveReceipt()">
+                                                                <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save</button>
+                                                                <button type="submit" class="btn btn-danger disabled" ng-click="CancelReceipt()">
+                                                                <span class="glyphicon glyphicon-trash disabled" aria-hidden="true"></span> Delete</button>
+                                                                <button type="submit" class="btn btn-default" ng-click="CancelReceipt()">
+                                                                <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                        <!-- /.col-lg-12 -->
+                                    </div>
+                                    <!-- /.row -->
+                                    <!-- Start Receipt Table Setting -->
+                                    <div id="div-receipt-table">
+                                        <legend></legend>
+                                        <button ng-click="NewReceipt()" class="btn btn-default disabled">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true" enabled></span> New
+                                        </button>
+                                        <input type="text" ng-model="SearchReceiptText" />
+                                        <button ng-click="SearchReceipt()" class="btn btn-primary">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+                                        </button>
+                                        
+                                        <p><strong>Page:</strong> {{ReceiptParams.page()}}</p>
+                                        <p><strong>Count per page:</strong> {{ReceiptParams.count()}}</p>
+                                        
+                                        <table ng-table="ReceiptTableParams" class="table table-condense">
+                                            <tr ng-repeat="ro in $data">
+                                                <td data-title="'#'">{{$index + 1 }}</td>
+                                                <td data-title="'RO No'">{{ro.RONo}}</td>
+                                                <td data-title="'RO Date'">{{ro.RODate}}</td>
+                                                <td data-title="'RO Time'">{{ro.ROTime}}</td>
+                                                <td data-title="'Customer Name'">{{ro.CustomerNameTh}}</td>
+                                                <td data-title="''">
+                                                    <button ng-click="ViewReceipt(ro._id)" class="btn btn-primary" alt="View">
+                                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
+                                                    </button>
+                                                </td>
+                                                <td data-title="''">
+                                                    <button ng-click="DeleteReceipt()" class="btn btn-danger" alt="Delete">
+                                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <script type="text/ng-template" id="custom/pager">
+                                            <ul class="pager ng-cloak">
+                                              <li ng-repeat="page in pages"
+                                                    ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}"
+                                                    ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+                                                <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">&laquo; Previous</a>
+                                                <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Next &raquo;</a>
+                                              </li>
+                                                <li> 
+                                                <div class="btn-group">
+                                                    <button type="button" ng-class="{'active':params.count() == 10}" ng-click="params.count(10)" class="btn btn-default">10</button>
+                                                    <button type="button" ng-class="{'active':params.count() == 25}" ng-click="params.count(25)" class="btn btn-default">25</button>
+                                                    <button type="button" ng-class="{'active':params.count() == 50}" ng-click="params.count(50)" class="btn btn-default">50</button>
+                                                    <button type="button" ng-class="{'active':params.count() == 100}" ng-click="params.count(100)" class="btn btn-default">100</button>
+                                                </div>
+                                                </li>
+                                            </ul>
+                                        </script>
+
+                                        </div>
+                                </div>
+                                <!-- End Receipt Order Setting -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- div-change-view-->
+            </div>
+            <!-- div BODY-->
+
+            <div id="div-footer" class="footer" ng-controller="FooterController">
+                <hr class="footer-hr">
+
+                <div class="container" style="color:white;">
+                    <div class="row">
+                          <div class="col-md-4">
+                            <center>
+                              <img src="/images/tyre.png" width="64" height="64"  alt="the-brains">
+                              <br>
+                              <h4 class="footertext">{{'FOOTER.TYRE.HEAD' | translate}}</h4>
+                              <p class="footertext">{{'FOOTER.TYRE.REMARK' | translate}}<br>
+                            </center>
+                          </div>
+                          <div class="col-md-4">
+                            <center>
+                              <img src="/images/lubricant.png" width="64" height="64" alt="...">
+                              <br>
+                              <h4 class="footertext">{{'FOOTER.LUBRICANT.HEAD' | translate}}</h4>
+                              <p class="footertext">{{'FOOTER.LUBRICANT.REMARK' | translate}}<br>
+                            </center>
+                          </div>
+                          <div class="col-md-4">
+                            <center>
+                              <img src="/images/battery.png" width="64" height="64" alt="...">
+                              <br>
+                              <h4 class="footertext">{{'FOOTER.BATTERY.HEAD' | translate}}</h4>
+                              <p class="footertext">{{'FOOTER.BATTERY.REMARK' | translate}}<br>
+                            </center>
+                          </div>
+                          <div class="col-md-4">
+                            <center>
+                              <img src="/images/brake.png" width="64" height="64"  alt="the-brains">
+                              <br>
+                              <h4 class="footertext">Programmer</h4>
+                              <p class="footertext">You can thank all the crazy programming here to this guy.<br>
+                            </center>
+                          </div>
+                          <div class="col-md-4">
+                            <center>
+                              <img src="/images/shock.png" width="64" height="64" alt="...">
+                              <br>
+                              <h4 class="footertext">Artist</h4>
+                              <p class="footertext">All the images here are hand drawn by this man.<br>
+                            </center>
+                          </div>
+                          <div class="col-md-4">
+                            <center>
+                              <img src="/images/wrench.png" width="64" height="64" alt="...">
+                              <br>
+                              <h4 class="footertext">Designer</h4>
+                              <p class="footertext">This pretty site and the copy it holds are all thanks to this guy.<br>
+                            </center>
+                          </div>
+                        </div>
+                        <div class="row">
+                            <p><center><a href="#">Contact Stuff Here</a> <p class="footertext">Copyright 2014</p></center></p>
+                        </div>
+                    </div>
+                <div>
+                <a href="#" class="scrollup">Scroll</a>
+            </div>
+                        <!-- div FOOTER-->
+                  
+                    <!-- endbower -->
+                    <!-- endbuild -->
+                    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. 
+                    <script>
+                        (function (b, o, i, l, e, r) {
+                            b.GoogleAnalyticsObject = l;
+                            b[l] || (b[l] =
+                                function () {
+                                    (b[l].q = b[l].q || []).push(arguments)
+                                });
+                            b[l].l = +new Date;
+                            e = o.createElement(i);
+                            r = o.getElementsByTagName(i)[0];
+                            e.src = '//www.google-analytics.com/analytics.js';
+                            r.parentNode.insertBefore(e, r)
+                        }(window, document, 'script', 'ga'));
+                        ga('create', 'UA-XXXXX-X');
+                        ga('send', 'pageview');
+                    </script>-->
+
+                    <!-- build:js(.) scripts/plugins.js -->
+                    <!-- div CONTAINER-->
+                    <!-- build:js(.) scripts/vendor.js -->
+                    <!-- bower:js -->
+                    <script src="/bower_components/jquery/dist/jquery.js"></script>
+                    <script src="/bower_components/angular/angular.js"></script>
+                    <script src="/bower_components/flow.js/dist/flow.js"></script>
+                    <script src="/bower_components/ng-flow/dist/ng-flow.js"></script>
+                    <script src="/bower_components/platform/platform.js"></script>
+                    <script src="/bower_components/lodash/lodash.js"></script>                   
+                    <script src="/bower_components/ng-password-strength/dist/scripts/ng-password-strength.js"></script>
+                    <script src="/bower_components/select2/dist/js/select2.js"></script>
+                    <script src="/bower_components/ng-file-upload/ng-file-upload.js"></script>
+                    <script src="/bower_components/ng-file-upload-shim/ng-file-upload-shim.js"></script>
+                    <script src="/bower_components/angular-animate/angular-animate.js"></script>
+                    <script src="/bower_components/angular-translate/angular-translate.js"></script>
+                    <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+                    <script src="/bower_components/bootstrap/js/tab.js"></script>
+                    <script src="/bower_components/chartjs/Chart.js"></script>
+                    <script src="/bower_components/ng-table/dist/ng-table.js"></script>
+                    <script src="/bower_components/angular-native-picker/build/angular-datepicker.js"></script>
+                    <script src="/bower_components/ng-file-upload/ng-file-upload.js"></script>
+                    <script src="/bower_components/sweetalert/lib/sweet-alert.js"></script>
+                    <script src="/bower_components/angular-facebook/lib/angular-facebook.js"></script>
+                    <script src="/bower_components/requirejs-bower/require.js"></script>
+                    <script src="/bower_components/pnotify/pnotify.core.js"></script>
+                    <script src="/bower_components/jspdf/dist/jspdf.min.js"></script>
+                    <script src="/bower_components/jspdf/dist/jspdf.debug.js"></script>
+                    <script src="/scripts/main.js"></script>
+                    <script src="/scripts/bootstrap-magnify.js"></script>
+                    <script src="/scripts/step.js"></script>
+                    <script src="/controllers/app.js"></script>
+                    <script src="/constants/constant.js"></script>
+                    <script src="/services/menu-service.js"></script>
+                    <script src="/services/locale-service.js"></script>
+                    <script src="/services/receipt-order-service.js"></script>
+                    <script src="/services/user-service.js"></script>
+                    <script src="/services/currency-service.js"></script>
+                    <script src="/controllers/header-controller.js"></script>
+                    <script src="/controllers/body-controller.js"></script>
+                    <script src="/controllers/product-controller.js"></script>
+                    <script src="/controllers/footer-controller.js"></script>
+                    <script src="/controllers/body-controller.js"></script>
+                    <script src="/controllers/setting-controller.js"></script>
+                    <script src="/controllers/history-controller.js"></script>
+
+                    <!-- endbuild -->
+
+                    <!-- build:js({app,.tmp}) scripts/main.js -->
+                    <!-- endbuild -->
+</body>
+
+</html>
