@@ -2,13 +2,13 @@ var express = require('express');
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/', function (req, res, next) {
+router.get(mongodbConfig.url.customer_type.home, function (req, res, next) {
     res.send('respond with a resource');
 });
 
-router.get("/LoadCustomerType", function (req, res) {
+router.get(mongodbConfig.url.customer_type.loadAllCustomerType, function (req, res) {
     console.log('customertypes.js');
-    db.collection(DB.COLLECTION_CUSTOMER_TYPE)
+    db.collection(mongodbConfig.mongodb.customer_type.name)
         .find()
         .toArray(function (err, items) {
             console.log(items);
@@ -16,12 +16,11 @@ router.get("/LoadCustomerType", function (req, res) {
         });
 });
 
-router.get("/LoadCustomerTypeByObjId/:CustomerTypeId", function (req, res) {
+router.get(mongodbConfig.url.customer_type.loadCustomerTypeByObjId, function (req, res) {
     console.log("type id " + req.params.CustomerTypeId);
     var TypeId = req.params.CustomerTypeId;
-    var BSON = mongodb.BSONPure;
-    var o_id = new BSON.ObjectID(TypeId.toString());
-    db.collection(DB.COLLECTION_CUSTOMER_TYPE)
+    var o_id = bson.BSONPure.ObjectID(TypeId.toString());
+    db.collection(mongodbConfig.mongodb.customer_type.name)
         .findOne({
             '_id': o_id
         }, function (err, doc) {
@@ -37,15 +36,14 @@ router.get("/LoadCustomerTypeByObjId/:CustomerTypeId", function (req, res) {
         });
 });
 
-router.get("/LoadCustomerTypeById/:CustomerTypeId", function (req, res) {
+router.get(mongodbConfig.url.customer_type.loadCustomerTypeyById, function (req, res) {
     console.log("type id " + req.params.CustomerTypeId);
     var customerTypeId = req.params.CustomerTypeId;
 
     var query = {
-        //Id: customerId
         'Id': customerTypeId
     }
-    db.collection(DB.COLLECTION_CUSTOMER_TYPE)
+    db.collection(mongodbConfig.mongodb.customer_type.name)
         .find(query)
         .toArray(function (err, items) {
             console.log(items);
@@ -53,10 +51,10 @@ router.get("/LoadCustomerTypeById/:CustomerTypeId", function (req, res) {
         });
 });
 
-router.get("/LoadCustomerTypeByCode/:CustomerTypeCode", function (req, res) {
+router.get(mongodbConfig.url.customer_type.loadCustomerTypeByCustomerTypeCode, function (req, res) {
     console.log('customertypes.js');
     var CustomerTypeCode = req.params.CustomerTypeCode;
-    collection = db.collection(DB.COLLECTION_CUSTOMER_TYPE)
+    db.collection(config.mongodb.customer_type.name)
         .find({
             'CustomerTypeCode': CustomerTypeCode
         })
@@ -67,10 +65,10 @@ router.get("/LoadCustomerTypeByCode/:CustomerTypeCode", function (req, res) {
 });
 
 // Create Customer Type
-router.post('/CreateCustomerType', function (req, res) {
+router.post(mongodbConfig.url.customer_type.createCustomerType, function (req, res) {
     var CustomerType = req.body;
     console.log('create customer type ' + CustomerType);
-    db.collection(DB.COLLECTION_CUSTOMER_TYPE)
+    db.collection(mongodbConfig.mongodb.customer_type.name)
         .insert(CustomerType,
             function (error, result) {
                 if (error) throw error
@@ -79,12 +77,11 @@ router.post('/CreateCustomerType', function (req, res) {
 });
 
 // Update Customer Type
-router.post('/UpdateCustomerType', function (req, res) {
+router.post(mongodbConfig.url.customer_type.updateCustomerType, function (req, res) {
     console.log('Update customer type 1 ' + req.body);
     var CustomerType = req.body;
-    var BSON = mongodb.BSONPure;
-    var o_id = new BSON.ObjectID(CustomerType._id.toString());
-    db.collection(DB.COLLECTION_CUSTOMER_TYPE)
+    var o_id = bson.BSONPure.ObjectID(CustomerType._id.toString());
+    db.collection(mongodbConfig.mongodb.customer_type.name)
         .update({
                 _id: o_id
             }, {
@@ -103,12 +100,11 @@ router.post('/UpdateCustomerType', function (req, res) {
 });
 
 // Delete Customer Type
-router.get('/DeleteCustomerType/:CustomerTypeId', function (req, res) {
+router.get(mongodbConfig.url.customer_type.deleteCustomerTypeByCustomerTypeId, function (req, res) {
     var CustomerTypeId = req.params.CustomerTypeId;
     console.log('create customer type ' + CustomerTypeId);
-    var BSON = mongodb.BSONPure;
-    var o_id = new BSON.ObjectID(CustomerTypeId.toString());
-    db.collection(DB.COLLECTION_CUSTOMER_TYPE)
+    var o_id = bson.BSONPure.ObjectID(CustomerTypeId.toString());
+    db.collection(mongodbConfig.mongodb.customer_type.name)
         .remove({
             _id: o_id
         }, function (error, result) {

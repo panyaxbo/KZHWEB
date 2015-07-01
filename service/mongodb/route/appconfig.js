@@ -2,14 +2,14 @@ var express = require('express');
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/', function (req, res, next) {
+router.get(config.url.appconfig.home, function (req, res, next) {
     res.send('app config');
 });
 
-router.get('/GetNewCode/:Module', function (req, res) {
+router.get(config.url.appconfig.getNewCodeByModule, function (req, res) {
     var Module = req.params.Module;
     console.log('Module ' + Module);
-    db.collection('AppConfig')
+    db.collection(config.mongodb.appconfig.name)
         .findOne({
             'AppCode': Module
         }, function (err, doc) {
@@ -41,7 +41,7 @@ router.get('/GetNewCode/:Module', function (req, res) {
 
     //    function FindCurrent
     function UpdateMasterAppConfig(AppCode, nextRun, callback) {
-        db.collection('AppConfig')
+        db.collection(config.mongodb.appconfig.name)
             .update({
                     'AppCode': AppCode
                 }, {

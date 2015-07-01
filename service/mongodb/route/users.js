@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 /* GET users listing. */
-router.get('/LoadAppUser', function (req, res) {
-    db.collection(DB.COLLECTION_APPUSER)
+router.get(mongodbConfig.url.user.loadAllUser, function (req, res) {
+    db.collection(mongodbConfig.mongodb.user.name)
         .find({})
         .toArray(function (err, items) {
             console.log(items);
@@ -10,12 +10,12 @@ router.get('/LoadAppUser', function (req, res) {
         });
 });
 
-router.get('/LoadAppUserById/:UserId', function (req, res) {
+router.get(mongodbConfig.url.user.loadAppUserById, function (req, res) {
     console.log('user.js -> /users ');
-    var UserId = req.params.UserId;
-    db.collection(DB.COLLECTION_APPUSER)
+    var AppUserId = req.params.AppUserId;
+    db.collection(mongodbConfig.mongodb.user.name)
         .find({
-            'Id': UserId
+            'Id': AppUserId
         })
         .toArray(function (err, items) {
             console.log(items);
@@ -23,12 +23,11 @@ router.get('/LoadAppUserById/:UserId', function (req, res) {
         });
 });
 
-router.get('/LoadAppUserByObjId/:AppUserId', function (req, res) {
+router.get(mongodbConfig.url.user.loadAppUserByObjId, function (req, res) {
     console.log('appuser id ' + req.params.AppUserId);
     var AppUserId = req.params.AppUserId;
-    var BSON = mongodb.BSONPure;
-    var o_id = new BSON.ObjectID(AppUserId);
-    db.collection(DB.COLLECTION_APPUSER)
+    var o_id = bson.BSONPure.ObjectID(AppUserId);
+    db.collection(mongodbConfig.mongodb.user.name)
         .findOne({
             '_id': o_id
         }, function (err, doc) {
@@ -43,7 +42,7 @@ router.get('/LoadAppUserByObjId/:AppUserId', function (req, res) {
         });
 });
 
-router.get('/FindByUsernameAndPassword/:Email/:Password', function (req, res) {
+router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (req, res) {
     console.log('user.js -> /users ');
     var Username = req.params.Email;
     var Password = req.params.Password;
@@ -53,7 +52,7 @@ router.get('/FindByUsernameAndPassword/:Email/:Password', function (req, res) {
         Password: Password
     }
     var findOneAppUser = function (query, callback) {
-        db.collection('AppUser').findOne(query, function (err, doc) {
+        db.collection(mongodbConfig.mongodb.user.name).findOne(query, function (err, doc) {
             if (err) {
                 // don't use throw when in async code
                 // the convention is to call your callback with the error
@@ -70,7 +69,7 @@ router.get('/FindByUsernameAndPassword/:Email/:Password', function (req, res) {
         });
     }
     var findOneRole = function (queryRole, callback) {
-        db.collection('Role').findOne(queryRole, function (err, doc) {
+        db.collection(mongodbConfig.mongodb.role.name).findOne(queryRole, function (err, doc) {
             if (err) {
                 console.log(err);
                 res.json(500, err);
@@ -82,7 +81,7 @@ router.get('/FindByUsernameAndPassword/:Email/:Password', function (req, res) {
         });
     }
     var findOneStaff = function (queryStaff, callback) {
-        db.collection('Staff').findOne(queryStaff, function (err, doc) {
+        db.collection(mongodbConfig.mongodb.staff.name).findOne(queryStaff, function (err, doc) {
             if (err) {
                 console.log(err);
                 res.json(500, err);
@@ -137,10 +136,10 @@ router.get('/FindByUsernameAndPassword/:Email/:Password', function (req, res) {
     }); //End findOneAppUser 
 }); // End Find by Username and Password
 // Create AppUser
-router.post('/CreateAppUser', function (req, res) {
+router.post(mongodbConfig.url.user.createAppUser, function (req, res) {
     var AppUser = req.body;
     console.log('create user ' + AppUser);
-    db.collection(DB.COLLECTION_APPUSER)
+    db.collection(mongodbConfig.mongodb.user.name)
         .insert(AppUser,
             function (error, appuser) {
                 if (error) throw error
@@ -149,12 +148,12 @@ router.post('/CreateAppUser', function (req, res) {
 });
 
 // Update AppUser
-router.post('/UpdateAppUser', function (req, res) {
+router.post(mongodbConfig.url.user.updateAppUser, function (req, res) {
     console.log('update user ' + req.body);
     var AppUser = req.body;
     var BSON = mongodb.BSONPure;
     var o_id = new BSON.ObjectID(AppUser._id);
-    db.collection(DB.COLLECTION_APPUSER)
+    db.collection(mongodbConfig.mongodb.user.name)
         .update({
                 _id: o_id
             }, {
@@ -172,12 +171,12 @@ router.post('/UpdateAppUser', function (req, res) {
 });
 
 // Delete AppUser
-router.get('/DeleteAppUser/:AppUserId', function (req, res) {
+router.get(mongodbConfig.url.user.deleteAppUserByAppUserId, function (req, res) {
     var AppUserId = req.params.AppUserId;
     console.log('create app user ' + AppUserId);
     var BSON = mongodb.BSONPure;
     var o_id = new BSON.ObjectID(AppUserId);
-    db.collection(DB.COLLECTION_APPUSER)
+    db.collection(mongodbConfig.mongodb.user.name)
         .remove({
             _id: o_id
         }, function (error, result) {
@@ -187,9 +186,9 @@ router.get('/DeleteAppUser/:AppUserId', function (req, res) {
         });
 });
 
-router.get('/IsExistUsername/:Username', function(req, res) {
+router.get(mongodbConfig.url.user.isExistUsername, function(req, res) {
     var username = req.params.Username;
-    db.collection('AppUser').findOne(
+    db.collection(mongodbConfig.mongodb.user.name).findOne(
         {
             'Username' : username
         }
@@ -208,10 +207,10 @@ router.get('/IsExistUsername/:Username', function(req, res) {
     });
 });
 
-router.get('/IsExistEmail/:Email', function(req, res) {
+router.get(mongodbConfig.url.user.isExistEmail, function(req, res) {
     var email = req.params.Email;
 
-    db.collection('AppUser').findOne(
+    db.collection(mongodbConfig.mongodb.user.name).findOne(
         {
             'Email' : email
         }
@@ -231,19 +230,18 @@ router.get('/IsExistEmail/:Email', function(req, res) {
 });
 
 // Create User via Signup Form
-router.get('/CreateAppUser/:Username/:EncPassword/:Email', function (req, res) {
+router.get(mongodbConfig.url.user.createAppUserByUsernameAndPasswordAndEmail, function (req, res) {
 //    var AppUser = req.body;
     var username = req.params.Username;
     var password = req.params.EncPassword;
     var email = req.params.Email;
-console.log(username + password + email);
     var appuser = {
         'Username' : username,
         'Password' : password,
-        'Email' : email
+        'Email' : email,
+        'IsActivate': false
     };
-//    console.log('create user ' + AppUser);
-    db.collection(DB.COLLECTION_APPUSER)
+    db.collection(mongodbConfig.mongodb.user.name)
         .insert(appuser, function (error, result) {
             if (error) {
                 console.log('error ' + error);
@@ -256,6 +254,28 @@ console.log(username + password + email);
                 } 
             }
         });
+});
+
+// Update AppUser Activate from EMail
+router.get(mongodbConfig.url.user.updateAppUserViaEmail, function (req, res) {
+    var Username = req.params.Username;
+    var Password = req.params.Password;
+    db.collection(mongodbConfig.mongodb.user.name)
+        .update({
+                'Username': Username,
+                'Password': Password
+            }, {
+                $set: {
+                    'IsActivate': true
+                }
+            },
+            function (error, result) {
+                if (error) {
+                    res.sendStatus(500);
+                } else {
+                    res.sendStatus(200);
+                }
+            });
 });
 
 module.exports = router;

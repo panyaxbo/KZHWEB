@@ -2,26 +2,25 @@ var express = require('express');
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/', function (req, res, next) {
+router.get(mongodbConfig.url.product_type.home, function (req, res, next) {
     res.send('producttypes');
 });
 
 
-router.get("/LoadProductType", function (req, res) {
+router.get(mongodbConfig.url.product_type.loadAllProductType, function (req, res) {
     console.log('producttypes.js');
-    db.collection(DB.COLLECTION_PRODUCT_TYPE)
+    db.collection(mongodbConfig.mongodb.product_type.name)
         .find({})
         .toArray(function (err, items) {
             console.log(items);
             res.json(items);
         });
 });
-router.get("/LoadProductTypeByObjId/:ProductTypeId", function (req, res) {
+router.get(mongodbConfig.url.product_type.loadProductTypeByObjId, function (req, res) {
     console.log("type id " + req.params.ProductTypeId);
     var TypeId = req.params.ProductTypeId;
-    var BSON = mongodb.BSONPure;
-    var o_id = new BSON.ObjectID(TypeId.toString());
-    db.collection(DB.COLLECTION_PRODUCT_TYPE)
+    var o_id = bson.BSONPure.ObjectID(TypeId.toString());
+    db.collection(mongodbConfig.mongodb.product_type.name)
         .findOne({
             '_id': o_id
         }, function (err, doc) {
@@ -37,10 +36,10 @@ router.get("/LoadProductTypeByObjId/:ProductTypeId", function (req, res) {
         });
 });
 
-router.get("/LoadProductTypeById/:ProductTypeId", function (req, res) {
+router.get(mongodbConfig.url.product_type.loadProductTypeById, function (req, res) {
     console.log("type id " + req.params.ProductTypeId);
     var TypeId = req.params.ProductTypeId;
-    db.collection(DB.COLLECTION_PRODUCT_TYPE)
+    db.collection(mongodbConfig.mongodb.product_type.name)
         .find({
             'Id': parseInt(TypeId)
         })
@@ -51,10 +50,10 @@ router.get("/LoadProductTypeById/:ProductTypeId", function (req, res) {
         });
 });
 
-router.get("/LoadProductTypeByCode/:ProductTypeCode", function (req, res) {
+router.get(mongodbConfig.url.product_type.loadProductTypeByCode, function (req, res) {
     console.log('producttypes.js');
     var ProductTypeCode = req.params.ProductTypeCode;
-    db.collection(DB.COLLECTION_PRODUCT_TYPE)
+    db.collection(mongodbConfig.mongodb.product_type.name)
         .find({
             'ProductTypeCode': ProductTypeCode
         })
@@ -64,10 +63,10 @@ router.get("/LoadProductTypeByCode/:ProductTypeCode", function (req, res) {
         });
 });
 // Create Product Type
-router.post('/CreateProductType', function (req, res) {
+router.post(mongodbConfig.url.product_type.createProductType, function (req, res) {
     var ProductType = req.body;
     console.log('create product type ' + ProductType);
-    db.collection('ProductType')
+    db.collection(mongodbConfig.mongodb.product_type.name)
         .insert(ProductType,
             function (error, result) {
                 if (error) throw error
@@ -76,14 +75,14 @@ router.post('/CreateProductType', function (req, res) {
 });
 
 // Update Product Type
-router.post('/UpdateProductType', function (req, res) {
+router.post(mongodbConfig.url.product_type.updateProductType, function (req, res) {
     console.log('Update product type 1 ' + req.body);
     var ProductType = req.body;
     var id = ProductType._id;
     var BSON = mongodb.BSONPure;
     var o_id = new BSON.ObjectID(id.toString());
     console.log('type 1 ' + id);
-    db.collection('ProductType')
+    db.collection(mongodbConfig.mongodb.product_type.name)
         .update({
                 '_id': o_id
             }, {
@@ -101,12 +100,12 @@ router.post('/UpdateProductType', function (req, res) {
 });
 
 // Delete Product Type
-router.get('/DeleteProductType/:ProductTypeId', function (req, res) {
+router.get(mongodbConfig.url.product_type.deleteProductTypeByProductTypeId, function (req, res) {
     var ProductTypeId = req.params.ProductTypeId;
     console.log('create product category ' + ProductTypeId);
     var BSON = mongodb.BSONPure;
     var o_id = new BSON.ObjectID(ProductTypeId);
-    db.collection(DB.COLLECTION_PRODUCT_TYPE)
+    db.collection(mongodbConfig.mongodb.product_type.name)
         .remove({
             _id: o_id
         }, function (error, result) {

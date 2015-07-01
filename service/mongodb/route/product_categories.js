@@ -2,14 +2,14 @@ var express = require('express');
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/', function (req, res, next) {
+router.get(mongodbConfig.url.product_category.home, function (req, res, next) {
     res.send('ProductCategories');
 });
 
 
-router.get("/LoadProductCategory", function (req, res) {
+router.get(mongodbConfig.url.product_category.loadAllProductCategory, function (req, res) {
     console.log('ProductCategories.js');
-    db.collection(DB.COLLECTION_PRODUCT_CATEGORY)
+    db.collection(mongodbConfig.mongodb.product_category.name)
         .find({})
         .toArray(function (err, items) {
             console.log(items);
@@ -17,12 +17,11 @@ router.get("/LoadProductCategory", function (req, res) {
         });
 });
 
-router.get('/LoadProductCategoryByObjId/:ProductCategoryId', function (req, res) {
+router.get(mongodbConfig.url.product_category.loadProductCategoryByObjId, function (req, res) {
     console.log('ProductCategories id ' + req.params.ProductCategoryId);
     var ProductCategoryId = req.params.ProductCategoryId;
-    var BSON = mongodb.BSONPure;
-    var o_id = new BSON.ObjectID(ProductCategoryId);
-    db.collection(DB.COLLECTION_PRODUCT_CATEGORY)
+    var o_id = bson.BSONPure.ObjectID(ProductCategoryId);
+    db.collection(mongodbConfig.mongodb.product_category.name)
         .findOne({
             '_id': o_id
         }, function (err, ProductCategory) {
@@ -43,7 +42,7 @@ router.get('/LoadProductCategoryByObjId/:ProductCategoryId', function (req, res)
         });
 
         function FindProductTypeByProductTypeCode(ProductTypeCode, callback) {
-            db.collection('ProductType')
+            db.collection(mongodbConfig.mongodb.product_type.name)
             .findOne({
                 'ProductTypeCode': ProductTypeCode
             }, function (err, ProductType) {
@@ -57,10 +56,10 @@ router.get('/LoadProductCategoryByObjId/:ProductCategoryId', function (req, res)
         }
 });
 
-router.get('/LoadProductCategoryById/:ProductCategoryId', function (req, res) {
+router.get(mongodbConfig.url.product_category.loadProductCategoryById, function (req, res) {
     console.log('ProductCategories id ' + req.params.ProductCategoryId);
     var ProductCategoryId = req.params.ProductCategoryId;
-    db.collection(DB.COLLECTION_PRODUCT_CATEGORY)
+    db.collection(config.mongodb.product_category.name)
         .find({
             'Id': parseInt(ProductCategoryId)
         })
@@ -70,10 +69,10 @@ router.get('/LoadProductCategoryById/:ProductCategoryId', function (req, res) {
         });
 });
 
-router.get('/LoadProductCategoryByCode/:ProductCategoryCode', function (req, res) {
+router.get(mongodbConfig.url.product_category.loadProductCategoryByProductCategoryCode, function (req, res) {
     console.log('ProductCategory Code ' + req.params.ProductCategoryCode);
     var ProductCategoryCode = req.params.ProductCategoryCode;
-    db.collection(DB.COLLECTION_PRODUCT_CATEGORY)
+    db.collection(config.mongodb.product_category.name)
         .find({
             'ProductCategoryCode': ProductCategoryCode
         })
@@ -84,10 +83,10 @@ router.get('/LoadProductCategoryByCode/:ProductCategoryCode', function (req, res
 });
 
 // Create Product Category
-router.post('/CreateProductCategory', function (req, res) {
+router.post(mongodbConfig.url.product_category.createProductCategory, function (req, res) {
     var ProductCategory = req.body;
     console.log('create product category ' + ProductCategory);
-    db.collection(DB.COLLECTION_PRODUCT_CATEGORY)
+    db.collection(config.mongodb.product_category.name)
         .insert(ProductType,
             function (error, result) {
                 if (error) throw error
@@ -96,12 +95,12 @@ router.post('/CreateProductCategory', function (req, res) {
 });
 
 // Update Product Category
-router.post('/UpdateProductCategory', function (req, res) {
+router.post(mongodbConfig.url.product_category.updateProductCategory, function (req, res) {
     console.log('update product category ' + req.body);
     var ProductCategory = req.body;
     var BSON = mongodb.BSONPure;
     var o_id = new BSON.ObjectID(ProductCategory._id);
-    db.collection(DB.COLLECTION_PRODUCT_CATEGORY)
+    db.collection(config.mongodb.product_category.name)
         .update({
                 _id: o_id
             }, {
@@ -119,12 +118,12 @@ router.post('/UpdateProductCategory', function (req, res) {
 });
 
 // Delete Product Category
-router.get('/DeleteProductCategory/:ProductCategoryId', function (req, res) {
+router.get(mongodbConfig.url.product_category.deleteProductCategoryByProductCategoryId, function (req, res) {
     var ProductCategoryId = req.params.ProductCategoryId;
     console.log('create product category ' + ProductCategoryId);
     var BSON = mongodb.BSONPure;
     var o_id = new BSON.ObjectID(ProductCategoryId);
-    db.collection(DB.COLLECTION_PRODUCT_CATEGORY)
+    db.collection(config.mongodb.product_category.name)
         .remove({
             _id: o_id
         }, function (error, result) {

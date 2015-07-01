@@ -2,13 +2,13 @@ var express = require('express');
 var router = express.Router();
 
 /* Test HOME Staff*/
-router.get('/', function (req, res, next) {
+router.get(mongodbConfig.url.staff.home, function (req, res, next) {
     res.send('staffs HOME ');
 });
 
-router.get('/LoadStaff', function (req, res) {
+router.get(mongodbConfig.url.staff.loadAllStaff, function (req, res) {
     console.log('staff load all');
-    db.collection(DB.COLLECTION_STAFF)
+    db.collection(mongodbConfig.mongodb.staff.name)
         .find({})
         .toArray(function (err, items) {
             console.log(items);
@@ -16,12 +16,10 @@ router.get('/LoadStaff', function (req, res) {
         });
 });
 
-router.get('/LoadStaffById/:StaffId', function (req, res) {
+router.get(mongodbConfig.url.staff.loadStaffById, function (req, res) {
     var StaffId = req.params.StaffId;
     console.log('staff find by id ' + StaffId);
-
-    collection = db
-        .collection(DB.COLLECTION_STAFF)
+    db.collection(mongodbConfig.mongodb.staff.name)
         .find({
             'Id': StaffId
         })
@@ -31,12 +29,11 @@ router.get('/LoadStaffById/:StaffId', function (req, res) {
         });
 });
 
-router.get("/LoadStaffByObjId/:StaffId", function (req, res) {
+router.get(mongodbConfig.url.staff.loadStaffByObjId, function (req, res) {
     console.log("staff id " + req.params.StaffId);
     var Id = req.params.StaffId;
-    var BSON = mongodb.BSONPure;
-    var o_id = new BSON.ObjectID(Id.toString());
-    db.collection(DB.COLLECTION_STAFF)
+    var o_id = bson.BSONPure.ObjectID(Id.toString());
+    db.collection(mongodbConfig.mongodb.staff.name)
         .findOne({
             '_id': o_id
         }, function (err, staff) {
@@ -53,10 +50,10 @@ router.get("/LoadStaffByObjId/:StaffId", function (req, res) {
 });
 
 /* GET users listing. */
-router.get('/FindStaffByStaffCode/:StaffCode', function (req, res) {
+router.get(mongodbConfig.url.staff.loadStaffByStaffCode, function (req, res) {
     console.log('staff.js ->  FindStaffByStaffCode ');
     var StaffCode = req.params.StaffCode;
-    db.collection(DB.COLLECTION_STAFF)
+    db.collection(mongodbConfig.mongodb.staff.name)
         .find({
             'StaffCode': StaffCode
         })
@@ -67,10 +64,10 @@ router.get('/FindStaffByStaffCode/:StaffCode', function (req, res) {
 });
 
 // Create Staff
-router.post('/CreateStaff', function (req, res) {
+router.post(mongodbConfig.url.staff.createStaff, function (req, res) {
     var Staff = req.body;
     console.log('create staff ' + Staff);
-    db.collection(DB.COLLECTION_STAFF)
+    db.collection(mongodbConfig.mongodb.staff.name)
         .insert(Staff,
             function (error, staff) {
                 if (error) throw error
@@ -79,12 +76,12 @@ router.post('/CreateStaff', function (req, res) {
 });
 
 // Update Staff
-router.post('/UpdateStaff', function (req, res) {
+router.post(mongodbConfig.url.staff.updateStaff, function (req, res) {
     console.log('update staff ' + req.body);
     var Staff = req.body;
     var BSON = mongodb.BSONPure;
     var o_id = new BSON.ObjectID(Staff._id);
-    db.collection(DB.COLLECTION_STAFF)
+    db.collection(mongodbConfig.mongodb.staff.name)
         .update({
                 _id: o_id
             }, {
@@ -111,12 +108,11 @@ router.post('/UpdateStaff', function (req, res) {
 });
 
 // Delete Staff
-router.get('/DeleteStaff/:StaffId', function (req, res) {
+router.get(mongodbConfig.url.staff.deleteStaffByStaffId, function (req, res) {
     var StaffId = req.params.StaffId;
     console.log('create staff ' + StaffId);
-    var BSON = mongodb.BSONPure;
-    var o_id = new BSON.ObjectID(StaffId);
-    db.collection(DB.COLLECTION_STAFF)
+    var o_id = bson.BSONPure.ObjectID(StaffId);
+    db.collection(mongodbConfig.mongodb.staff.name)
         .remove({
             _id: o_id
         }, function (error, staff) {

@@ -2,12 +2,12 @@ var express = require('express');
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/', function (req, res, next) {
+router.get(mongodbConfig.url.province.home, function (req, res, next) {
     res.send(' province');
 });
 
-router.get('/LoadProvince', function (req, res) {
-    db.collection(DB.COLLECTION_PROVINCE)
+router.get(mongodbConfig.url.province.loadAllProvince, function (req, res) {
+    db.collection(mongodbConfig.mongodb.province.name)
         .find({
         	 "$query":{}, "$orderby":{ "Province": 1 }
         })

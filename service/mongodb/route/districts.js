@@ -1,15 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/', function (req, res, next) {
+router.get(mongodbConfig.url.district.home, function (req, res, next) {
     res.send(' district');
 });
 
-router.get('/LoadDistrictByProvinceId/:ProvinceId', function (req, res) {
+router.get(mongodbConfig.url.district.loadDistrictByProvinceId, function (req, res) {
     var ProvinceId = req.params.ProvinceId;
-    var BSON = mongodb.BSONPure;
-    var o_id = new BSON.ObjectID(ProvinceId.toString());
-    db.collection(DB.COLLECTION_DISTRICT)
+    var o_id = bson.BSONPure.ObjectID(ProvinceId.toString());
+    db.collection(mongodbConfig.mongodb.district.name)
         .find({
             "$query":{'ProvinceId' : o_id}, "$orderby":{ "District": 1 }
         })

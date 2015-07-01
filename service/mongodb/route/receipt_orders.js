@@ -1,13 +1,13 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/', function (req, res) {
+router.get(mongodbConfig.url.receipt.home, function (req, res) {
 
 });
 
-router.get('/LoadReceipt', function (req, res) {
+router.get(mongodbConfig.url.receipt.loadAllReceipt, function (req, res) {
     console.log('load rohead');
-    db.collection(DB.COLLECTION_ROHEAD)
+    db.collection(mongodbConfig.mongodb.rohead.name)
         .find()
         .toArray(function (err, roheads) {
             console.log(roheads);
@@ -16,13 +16,13 @@ router.get('/LoadReceipt', function (req, res) {
 });
 
 // Load ROHead by HeadId
-router.get('/LoadROHeadROLineByObjId/:ROHeadId', function (req, res) {
+router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, res) {
     console.log('Product id ' + req.params.ROHeadId);
     var ROHeadId = req.params.ROHeadId;
     var BSON = mongodb.BSONPure;
-    var o_id = new BSON.ObjectID(ROHeadId);
+    var o_id = bson.BSONPure.ObjectID(ROHeadId);
 
-    db.collection(DB.COLLECTION_ROHEAD)
+    db.collection(mongodbConfig.mongodb.rohead.name)
         .findOne({
             '_id': o_id
         }, function (err, ROHead) {
@@ -42,7 +42,7 @@ router.get('/LoadROHeadROLineByObjId/:ROHeadId', function (req, res) {
 
     function FindROLineByROHeadId(ROHeadId, callback) {
         console.log('FindROLineByROHeadId ' + ROHeadId);
-        db.collection(DB.COLLECTION_ROLINE)
+        db.collection(mongodbConfig.mongodb.roline.name)
             .find({
                 'RoHeadId': ROHeadId
             }).toArray(function (err, ROLineList) {
@@ -54,15 +54,13 @@ router.get('/LoadROHeadROLineByObjId/:ROHeadId', function (req, res) {
 });
 
 // Create ROHead
-router.post('/CreateROHead', function (req, res) {
+router.post(mongodbConfig.url.receipt.createReceipt, function (req, res) {
     var ROHead = req.body;
     console.log('create ro-head ' + ROHead);
 
     var MockROHead = {
-
-
     }
-    db.collection(DB.COLLECTION_ROHEAD)
+    db.collection(mongodbConfig.mongodb.rohead.name)
         .insert(ROHead,
             function (error, role) {
                 if (error) throw error
@@ -71,20 +69,17 @@ router.post('/CreateROHead', function (req, res) {
 });
 
 // Update ROHead
-router.post('/UpdateROHead', function (req, res) {
+router.post(mongodbConfig.url.receipt.updateReceipt, function (req, res) {
     console.log('update ro-head ' + req.body);
     var ROHead = req.body;
-    var BSON = mongodb.BSONPure;
-    var o_id = new BSON.ObjectID(ROHead._id);
-    db.collection(DB.COLLECTION_ROHEAD)
+    var o_id = bson.BSONPure.ObjectID(ROHead._id);
+    db.collection(mongodbConfig.mongodb.rohead.name)
         .update({
                 _id: o_id
             }, {
                 $set: 
                 {
                     'RONo' : ROHead.RONo,
-
-
                 }
             },
             function (error, roHead) {
@@ -94,12 +89,10 @@ router.post('/UpdateROHead', function (req, res) {
 });
 
 // Delete ROHead
-router.get('/DeleteROHead/:ROHeadId', function (req, res) {
+router.get(mongodbConfig.url.receipt.deleteReceiptByROHeadId, function (req, res) {
     var ROHeadId = req.params.ROHeadId;
-    console.log('create ro-head ' + RoleId);
-    var BSON = mongodb.BSONPure;
-    var o_id = new BSON.ObjectID(RoleId);
-    db.collection(DB.COLLECTION_ROHEAD)
+    var o_id = bson.BSONPure.ObjectID(RoleId);
+    db.collection(mongodbConfig.mongodb.rohead.name)
         .remove({
             _id: o_id
         }, function (error, role) {

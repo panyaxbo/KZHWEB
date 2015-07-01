@@ -18,6 +18,10 @@
     <link rel="stylesheet" href="/bower_components/angular-native-picker/build/themes/default.css" />
     <link rel="stylesheet" href="/bower_components/angular-native-picker/build/themes/default.date.css" />
     <link rel="stylesheet" href="/bower_components/angular-native-picker/build/themes/default.time.css" />
+    <link rel="stylesheet" href="/bower_components/angular-block-ui/dist/angular-block-ui.css" />
+    <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog.css" />
+    <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog-theme-default.css" />
+    <link rel="stylesheet" href="/bower_components/angular-datepicker/dist/index.css" />
     <link rel="stylesheet" href="/bower_components/ng-table/dist/ng-table.css">
     <link rel="stylesheet" href="/bower_components/sweetalert/lib/sweet-alert.css">
     <link rel="stylesheet" href="/bower_components/select2/dist/css/select2.css">
@@ -41,7 +45,7 @@
             <a href="#/">
                 <img src="images/KZH%20Logo.png" width="150px" height="50px">
             </a>
-            <button ng-click="PDF()"> PDF</button>
+            <button ng-click="PDF()"> PDF</button><button ng-click="ngDialog()"> ngDialog</button>
             <ul class="nav nav-pills pull-right">
                 <li>
                     <a href="#product-section" ng-click="SelectedHeadMenu('product')" class="head-menu">{{'HEAD.MENU.PRODUCT' | translate}}</a>
@@ -105,13 +109,13 @@
                                                             </td>
                                                             <td class="col-xs-1 col-sm-1 col-md-1" style="text-align: right">
                                                                 <input type="text" class="form-control input-sm" id="BuyQty" ng-model="ro.Quantity" 
-                                                                ng-keydown="UpdateCartBuyQty()">
+                                                                ng-keydown="UpdateCartBuyQty()" >
                                                             </td>
                                                             <td class="col-sm-1 col-md-1" style="text-align: center">
                                                                 <select id="SelectUomList" name="selectbasic" class="form-control input-sm" ng-model="ro.UomCode" ng-options="Uom.UomCode as Uom.UomNameTh for Uom in ro.Uoms" ng-change="UpdateCartUom(ro, ro.UomCode, $index)">
                                                                 </select>
                                                             </td>
-                                                            <td class="col-sm-2 col-md-2 text-right"><strong>{{CurrencySymbol}} {{(ro.Price * Multiplier) | currency:''}}</strong>
+                                                            <td class="col-sm-1 col-md-1 text-right"><strong>{{CurrencySymbol}} {{(ro.Price * Multiplier) | currency:''}}</strong>
                                                             </td>
                                                             <td class="col-sm-1 col-md-1 text-right"><strong>{{CurrencySymbol}} {{(ro.DiscountAmount * Multiplier) | currency:''}}</strong>
                                                             </td>
@@ -280,13 +284,13 @@
                                                         <label class="control-label" for="inputEmail">Email</label>
                                                         <div class="controls">
                                                             <input id="Email" ng-model="Email" placeholder="E.g. ashwinh@cybage.com" 
-                                                            type="text" class="form-control" ng-keyup="ValidateEmail()" />
+                                                            type="text" class="form-control" ng-keydown="ValidateEmail()" ng-blur="ValidateExistEmail()"/>
                                                         </div>
                                                         <div class="controls">
                                                         <!--    <img id="ValidateSignupEmail" src="" width="30" height="30">-->
                                                             <div id="EmailAlert" class="alert alert-warning fade in" style="display: none">
                                                                 <a href="#" class="close" data-dismiss="alert">&times;</a>
-                                                                <strong>{{EmailValidateMessage}} </strong> 
+                                                                <strong>{{EmailValidateMessage}}</strong> 
                                                             </div>
                                                         </div>
                                                     </div>
@@ -2316,16 +2320,15 @@
                         ga('send', 'pageview');
                     </script>-->
 
-                    <!-- build:js(.) scripts/plugins.js -->
-                    <!-- div CONTAINER-->
-                    <!-- build:js(.) scripts/vendor.js -->
-                    <!-- bower:js -->
                     <script src="/bower_components/jquery/dist/jquery.js"></script>
                     <script src="/bower_components/angular/angular.js"></script>
                     <script src="/bower_components/flow.js/dist/flow.js"></script>
                     <script src="/bower_components/ng-flow/dist/ng-flow.js"></script>
                     <script src="/bower_components/platform/platform.js"></script>
-                    <script src="/bower_components/lodash/lodash.js"></script>                   
+                    <script src="/bower_components/lodash/lodash.js"></script>
+                    <script src="/bower_components/angular-block-ui/dist/angular-block-ui.js"></script>
+                    <script src="/bower_components/ngDialog/js/ngDialog.js"></script>
+                    <script src="/bower_components/angular-datepicker/dist/index.js"></script>
                     <script src="/bower_components/ng-password-strength/dist/scripts/ng-password-strength.js"></script>
                     <script src="/bower_components/select2/dist/js/select2.js"></script>
                     <script src="/bower_components/ng-file-upload/ng-file-upload.js"></script>
@@ -2361,11 +2364,6 @@
                     <script src="/controllers/body-controller.js"></script>
                     <script src="/controllers/setting-controller.js"></script>
                     <script src="/controllers/history-controller.js"></script>
-
-                    <!-- endbuild -->
-
-                    <!-- build:js({app,.tmp}) scripts/main.js -->
-                    <!-- endbuild -->
 </body>
 
 </html>

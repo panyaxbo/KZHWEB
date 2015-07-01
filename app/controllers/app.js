@@ -1,4 +1,4 @@
-var app = angular.module('KZHWEB', ['ngAnimate', 'ngFileUpload','ngPasswordStrength', 'facebook', 'ngTable', 'flow','pascalprecht.translate']);
+var app = angular.module('KZHWEB', ['ngAnimate', 'ngFileUpload', 'blockUI','ngDialog', 'ngPasswordStrength', 'facebook', 'ngTable','flow','pascalprecht.translate']);
 
 //Config Route 
 /**app.config(["$routeProvider", function ($routeProvider) {

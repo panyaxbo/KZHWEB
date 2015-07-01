@@ -1,5 +1,5 @@
 app.controller("HeaderController", function ($scope, $location, $anchorScroll, 
-    $rootScope, $http, $translate,$timeout, Facebook, MenuService, LocaleService, ReceiptOrderService, CurrencyService,
+    $rootScope, $http, $translate,$timeout, blockUI, ngDialog, Facebook, MenuService, LocaleService, ReceiptOrderService, CurrencyService,
      BASE_URL, ENCRYPT) {
 
     // Define user empty data :/
@@ -146,13 +146,16 @@ app.controller("HeaderController", function ($scope, $location, $anchorScroll,
     $scope.ExistEmail = false;
     $scope.ValidEmail = false;
     $scope.EmailValidateMessage = "";
-
+    $scope.Email = "";
+    $scope.Username = "";
     $scope.ExistUsername = false;
     $scope.UsernameValidateMessage = "";
 
     $scope.LoginErrorMessage = "";
   //  console.log('head ' + $scope.SelectedMenu);
 
+    
+    
     $scope.$on('handleBodyMenuBroadcast', function (event, args) {
         $scope.SelectedMenu = args.SelectedMenu;
         console.log('head ctrl from body braodcast $scope.SelectedMenu ' + $scope.SelectedMenu);
@@ -204,7 +207,6 @@ app.controller("HeaderController", function ($scope, $location, $anchorScroll,
             MenuService.Menu.SelectedMenu = "product";
             $scope.SelectedMenu = "product";
         }
-
         $scope.$emit('handleHeadMenuEmit', {
             SelectedMenu: menu
         });
@@ -259,18 +261,15 @@ app.controller("HeaderController", function ($scope, $location, $anchorScroll,
         });
     }
     $scope.SelectedLocale = function (locale) {
-        //  console.log(locale);
         if (locale == "th") {
             $scope.Locale = "th";
             LocaleService.Locale.SelectedLocale = "th";
             $translate.use(locale);
         } else if (locale == "us") {
-            //      console.log("go EN");
             $scope.Locale = "us";
             LocaleService.Locale.SelectedLocale = "us";
             $translate.use(locale);
         } else if (locale == "cn") {
-            //       console.log("go CHINA");
             LocaleService.Locale.SelectedLocale = "cn";
             $scope.Locale = "cn";
             $translate.use(locale);
@@ -279,17 +278,52 @@ app.controller("HeaderController", function ($scope, $location, $anchorScroll,
             SelectedLocale: locale
         });
     }
+
+    var UserBackFromEmailActivateUrl = $location.url();
+    if (UserBackFromEmailActivateUrl.indexOf("confirm=") > -1 ) {
+        blockUI.start("Please wait ...");
+        var url = UserBackFromEmailActivateUrl.substr(UserBackFromEmailActivateUrl.indexOf("confirm=") + 8);
+        var decodeUrl = Base64.decode(url);
+        var res = decodeUrl.split('|');
+        var user = res[0];
+        var enc_password = res[1];
+        var updateActivateUrl = BASE_URL.PATH + "/users/ActivateUser/" + user + "/" + enc_password;
+        blockUI.message("40%");
+        $http.get(updateActivateUrl)
+        .success(function(data, status, headers, config) {
+          blockUI.message("100%");
+            blockUI.stop();
+            swal("Sign up Success", "Your account is now activated.", "success");
+        })
+        .error(function(data, status, headers, config) {
+           blockUI.stop();
+           swal("Error", "Cannot find your account.", "error");
+        })
+    }
     
     $scope.Signup = function () {
-
+      blockUI.start("Please wait while system sending email...");
       var encPassword = Base64.encode($scope.Password);
-
       console.log("encPassword " + encPassword);
       var createUserURL = BASE_URL.PATH + "/users/CreateAppUser/" +$scope.Username+ "/" + encPassword + "/"+ $scope.Email;
+
       $http.get(createUserURL)
         .success(function(data, status, headers, config) {
-            swal("Success", "Sign up success", "success");
-            $("#LoginModal").modal("toggle");
+          blockUI.message("25%");
+          var hostPort = $location.host() + ':' +$location.port();
+          var encryptUrlActivate = Base64.encode($scope.Username +"|" + encPassword +'|' + $scope.Email +"|" + "KZH");
+            var emailConfirmURL = BASE_URL.PATH + "/mails/SendEmailConfirmation/"+ $scope.Email + "/"+hostPort +"/"+ encryptUrlActivate;
+            blockUI.message("75%");
+            $http.get(emailConfirmURL)
+            .success(function (data, status, headers, config) {
+              blockUI.message("100%");
+                blockUI.stop();
+                swal("Sign up almost Success", "Please check your email to activate your account", "success");
+                $("#LoginModal").modal("toggle");
+            })
+            .error(function (data, status, headers, config) {
+
+            });
         })
         .error(function(data, status, headers, config) {
             swal("Error", "Cannot sign up this time", "error");
@@ -322,7 +356,7 @@ app.controller("HeaderController", function ($scope, $location, $anchorScroll,
     
     $scope.ValidateEmail = function () {
         var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-        if (!filter.test($scope.Email) && (!$scope.Email && $scope.Email.length > 0)) {
+        if (!filter.test($scope.Email) || (!$scope.Email && $scope.Email.length > 0)) {
             $scope.ValidateSignupEmail = false;
             $scope.ValidEmail = false;
             $scope.EmailValidateMessage = "Warning! Not an email format.";
@@ -332,15 +366,16 @@ app.controller("HeaderController", function ($scope, $location, $anchorScroll,
         } else {
             $scope.ValidateSignupEmail = true;
             $scope.ValidEmail = true;
+            $scope.EmailValidateMessage = "This email is valid format.";
             $('#EmailAlert').removeClass("alert-warning");
             $('#EmailAlert').addClass("alert-success");
             $('#EmailAlert').show();
-            $scope.ValidateExistEmail();
+        //    $scope.ValidateExistEmail();
         }
     }
 
     $scope.ValidateExistEmail = function () {
-      if (!scope.Email && $scope.Email.length > 0) {
+      if (!$scope.Email && $scope.Email.length > 0) {
         var url = BASE_URL.PATH + "/users/IsExistEmail/" + $scope.Email;
         $http.get(url)
           .success(function(data) {
@@ -613,12 +648,6 @@ app.controller("HeaderController", function ($scope, $location, $anchorScroll,
     $scope.ShipmentProcess = function () {
         console.log("shipment..");
         $scope.SelectedMenu = "shipment";
-
-    //    MenuService.Menu.SelectedMenu = "shipment";
-
-    //    $scope.$emit('handleMenuEmit', {
-    //        SelectedMenu: 'shipment'
-    //    });
         
         $("#CartModal").modal("toggle");
         
@@ -626,8 +655,6 @@ app.controller("HeaderController", function ($scope, $location, $anchorScroll,
     }
     $scope.ScrollToShipmentSection = function () {
       console.log('ScrollToShipmentSection');
-        
-
         $scope.SelectedMenu = "shipment";
 
         MenuService.Menu.SelectedMenu = "shipment";
@@ -644,4 +671,30 @@ app.controller("HeaderController", function ($scope, $location, $anchorScroll,
       }
     }
 
+    $scope.ValidateFinish = function() {
+      blockUI.start();
+      var sendEmailStaffUrl = BASE_URL.PATH + "/mails/SendEmailStaffNewOrder/" + $scope.User.Email+ "/" + ROHead.RONo;
+      var sendEmailCustomerUrl = BASE_URL.PATH + "/mails//SendEmailCustomerNewOrder/" + $scope.User.Email + "/" + ROHead.RONo;
+      blockUI.message("25%");
+      $http.get(sendEmailStaffUrl)
+      .success(function (data, status, headers, config) {
+          blockUI.message("56%");
+          $http.get(sendEmailCustomerUrl)
+          .success(function (data, status, headers, config) {
+            blockUI.message("98%");
+            blockUI.stop();
+            swal("Create Order", "Please check your email to activate your account", "success");
+          })
+          .error(function (data, status, headers, config) {
+
+          });
+      })
+      .error(function (data, status, headers, config) {
+
+      });      
+    }
+
+    $scope.ngDialog = function() {
+      ngDialog.open({ template: 'popupTmpl.html' });
+    }
 });
