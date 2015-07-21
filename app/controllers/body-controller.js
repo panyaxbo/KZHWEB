@@ -1,7 +1,7 @@
-app.controller("BodyController", function ($scope, $location, $anchorScroll, ngTableParams, Upload, $rootScope, 
+app.controller("BodyController", function ($scope, $location, $anchorScroll, ngTableParams, Upload, $rootScope, blockUI, 
     $http, MenuService, ReceiptOrderService, UserService, BASE_URL) {
     $scope.Product = [];
-
+//$scope.translatedText = $translate('ANOTHER_TEXT', { value: 10 });
     $scope.ROHead = {
         SumAmount: 0,
         SumVatAmount: 0,
@@ -16,6 +16,14 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
         ZipCode : ""
     };
 
+    $scope.User = {
+        Username: '',
+        Password: '',
+        Email: '',
+        FirstName:'',
+        LastName: '',
+        IsActivate : false
+    };
     $scope.ROLineList = [];
     $scope.SelectedMenu = "product";
     $scope.SelectedCurrency = "thb";
@@ -46,7 +54,22 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
 
     $scope.$on('handleHeadMenuBroadcast', function (event, args) {
         $scope.SelectedMenu = args.SelectedMenu;
-        console.log('body ctrl from head $scope.SelectedMenu ' + $scope.SelectedMenu);
+        if ($scope.SelectedMenu == 'history') {
+            $scope.StartDate = new Date().getDate() +"-" + (new Date().getMonth() + 1) +"-" + new Date().getFullYear() ;
+            $scope.EndDate = new Date().getDate() +"-" + (new Date().getMonth() + 1) +"-" + new Date().getFullYear();
+            $scope.SearchPaymentStatus = "N";
+            $scope.SearchShippingStatus = "N";
+        }
+        else if ($scope.SelectedMenu == 'setting') {
+            $('#ProductTypeTab').addClass("active");
+            $scope.SearchProductType();
+        }
+    //    console.log('body ctrl from head $scope.SelectedMenu ' + $scope.SelectedMenu);
+    });
+
+    $scope.$on('handleUserBroadcast', function (event, args) {
+        $scope.User = args.User;
+        $scope.ViewAppUserData = args.User;
     });
 
     $scope.$on('handleCurrencyBroadcast', function (event, args) {
@@ -77,17 +100,14 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
     });
 
     $scope.SelectedBodyMenu = function (menu) {
-        console.log("body ctrl " + menu);
+    //    console.log("body ctrl " + menu);
         if (menu == "google-map") {
-            console.log("google-map");
             MenuService.Menu.SelectedMenu = "google-map";
             $scope.SelectedMenu = "google-map";
         } else if (menu == "thai-post") {
-            console.log("thai-post");
             MenuService.Menu.SelectedMenu = "thai-post";
             $scope.SelectedMenu = "thai-post";
         } else {
-            console.log("go in product");
             MenuService.Menu.SelectedMenu = "product";
             $scope.SelectedMenu = "product";
         }
@@ -178,21 +198,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
                 $scope.ROHead.SumVatAmount += ROLine.VatAmount;
                 $scope.ROHead.SumDiscountAmount += ROLine.DiscountAmount;
                 $scope.ROHead.NetAmount = $scope.ROHead.SumAmount + $scope.ROHead.SumVatAmount - $scope.ROHead.SumDiscountAmount;
-                /**
-                            $scope.ROLine.ProductCode = SelectedProduct.ProductCode;
-                            $scope.ROLine.ProductNameTh = SelectedProduct.ProductNameTh;
-                            $scope.ROLine.Quantity = BuyQty;
-                            $scope.ROLine.Price = SelectedProduct.RetailPrice;
-                            $scope.ROLine.DiscountAmount = 0;
-                            $scope.ROLine.Amount = ($scope.ROLine.Price * BuyQty) - $scope.ROLine.DiscountAmount;
-                            $scope.ROLine.VatAmount = (7 / 100) * $scope.ROLine.Amount;
-                            console.log($scope.ROLine.Amount);
-                            $scope.ROHead.SumAmount += $scope.ROLine.Amount;
-                            $scope.ROHead.SumVatAmount += $scope.ROLine.VatAmount;
-                            $scope.ROHead.SumDiscountAmount += $scope.ROLine.DiscountAmount;
-                            $scope.ROHead.NetAmount = $scope.ROHead.SumAmount + $scope.ROHead.SumVatAmount - $scope.ROHead.SumDiscountAmount;
 
-                            **/
                 $scope.ROLineList.push(ROLine);
                 console.log($scope.ROHead.SumAmount);
                 ReceiptOrderService.ROHead.SumAmount = $scope.ROHead.SumAmount;
@@ -206,7 +212,6 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
                     ROHead: ReceiptOrderService.ROHead
                 });
 
-             //   alert("ใส่รายการ " + SelectedProduct.ProductNameTh + " จำนวน " + BuyQty + " ในตะกร้าสำเร็จ !!");
                 sweetAlert("สำเร็จ", "ใส่รายการ " + SelectedProduct.ProductNameTh + " จำนวน " + BuyQty + " ในตะกร้าสำเร็จ !!", "success");
             } else {
                 //alert("จำนวนต้องเป็นตัวเลข และ มากกว่า 0");
@@ -818,7 +823,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
             $scope.UpdateProduct();
         }
     }
-    
+ /*   
     $scope.$watch('files', function () {
         $scope.upload($scope.ViewProductData.files);
     });
@@ -840,6 +845,49 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
                 });
             }
         }
+    };*/
+/*
+    $scope.$watch('files', function () {
+        $scope.upload($scope.files);
+    });
+*/
+    $scope.upload = function (files) {
+        if (files && files.length) {
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                console.log(file);
+                Upload
+                .upload({
+                    url: BASE_URL.PATH + '/images/uploadUserImage/'+$scope.User.Id + '/'+ $scope.User.Username,
+                    file: file
+                })
+                .progress(function (evt) {
+                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                    console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+                })
+                .success(function (data, status, headers, config) {
+                    console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
+                    var downloadUrl = BASE_URL.PATH + '/images/downloadUserImage/'+$scope.User.Id + '/'+ $scope.User.Username;
+                    $http.get(downloadUrl)
+                    .success(function (data, status, headers, config) {
+                        console.log(data);
+                        console.log(status);
+                        console.log(headers);
+console.log(config);
+                        $scope.User.ProfileImage = data;
+                        $('#UserProfileImage').append(data);
+                    })
+                    .error(function (data, status, headers, config) {
+                        console.log(data);
+
+                    });
+                })
+                .error(function (data, status, headers, config) {
+                    console.log('error ' + data + ' status ' + status);
+                });
+            }
+        }
+        
     };
     // End Function for Product Module
 
@@ -1565,7 +1613,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
         $http.get(url)
             .success(function (provinces) {
                 $scope.SelectProvinceList = provinces;
-                console.log(provinces);
+            //    console.log(provinces);
                 $scope.ROHead.ProvinceId = "";
                 $scope.ROHead.DistrictId = "";
                 $scope.ROHead.SubDistrictId = "";
@@ -1689,21 +1737,131 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
 
     $scope.ValidateFinish = function() {
         console.log('ValidateFinish');
-        swal("สำเร็จ!", "คุณสามารถดูรายการในประวัติการสั่งซื้อของท่านได้", "success");
+        blockUI.start("Processing ...");
+        var newCodeUrl = BASE_URL.PATH + "/appconfig/GetNewCode/RO";
+        $http.get(newCodeUrl)
+        .success(function(data, status, headers, config) {
+            var newRONo = data;
+            if (!newRONo) {
+                
+            } else if (newRONo) {
+                  blockUI.message("25%");
+                  var sendEmailStaffUrl = BASE_URL.PATH + "/mails/SendEmailStaffNewOrder/"+ $scope.User.Email+ "/" + newRONo;
+                  var sendEmailCustomerUrl = BASE_URL.PATH + "/mails/SendEmailCustomerNewOrder/" + $scope.User.Email + "/" + newRONo;
+                  var createReceiptUrl = BASE_URL.PATH + '/receipts/CreateReceipt';
+                  $scope.ROHead.RODate = (new Date()).toISOString();
+                  $scope.ROHead.RONo = newRONo;
+                  $scope.ROHead.ROLineList = $scope.ROHead.ROLineList;
+                  $scope.ROHead.PaymentType = $scope.PaymentType;
+                  $scope.ROHead.PaymentBank = $scope.PaymentBank;
+                  $scope.ROHead.UserId = $scope.User.Id;
+                  $scope.ROHead.PaymentStatus = "N";
+                  $scope.ROHead.ShippingStatus = "N";
+                  $http.post(createReceiptUrl, $scope.ROHead)
+                  .success(function (data, status, headers, config) {
+                      blockUI.message("50%");
+                      // after create order then send email for staff and customer 
+                      $http.get(sendEmailStaffUrl)
+                      .success(function (data, status, headers, config) {
+                          blockUI.message("56%");
+                          $http.get(sendEmailCustomerUrl)
+                          .success(function (data, status, headers, config) {
+                            blockUI.message("98%");
+                            blockUI.stop();
+                            swal("Thank you for your order", "You can check and track your order in history.", "success");
+                          })
+                          .error(function (data, status, headers, config) {
 
-        var doc = new jsPDF();
-        doc.text(20, 20, 'This PDF has a title, subject, author, keywords and a creator.');
+                          });
+                      })
+                      .error(function (data, status, headers, config) {
 
-        // Optional - set properties on the document
-        doc.setProperties({
-            title: 'Title',
-            subject: 'This is the subject',
-            author: 'James Hall',
-            keywords: 'generated, javascript, web 2.0, ajax',
-            creator: 'MEEE'
+                      });    
+                  })
+                  .error(function(data, status, headers, config) {
+
+                  });
+                  //end of create receipt
+            }
+        }).error(function(data, status, headers, config) {
+
         });
-
-        // Output as Data URI
-        doc.save('Test.pdf');
     }
+
+    $scope.SearchHistoryReceipt = function() {
+        var historyReceiptUrl = BASE_URL.PATH + "/receipts/LoadROHeadByUserIdAndStatus/"+$scope.User.Id+"/"+$scope.SearchPaymentStatus
+        +"/"+$scope.SearchShippingStatus+"/"+$scope.StartDate+"/"+$scope.EndDate;
+        $http.get(historyReceiptUrl)
+        .success(function (data) {
+            if (data.length > 0 ) {
+                $scope.SearchHistoryReceipts = data;
+                $scope.HistoryReceiptTableParams = new ngTableParams({
+                    page: 1,            // show first page
+                    count: 10           // count per page
+                }, {
+                    total: data.length, // length of data
+                    getData: function($defer, params) {
+                        $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    }
+                });
+            } else {
+                swal("Your data not found", "Cannot find your purchase order data.", "warning");
+            }
+        })
+        .error(function (data) {
+            alert(data);
+        });
+     //   $("#div-product-category-table").show("slow");
+     //   $("#div-product-category-detail").hide("slow");
+    }
+
+    $scope.SearchCustomerOrder = function() {
+        var customerOrderUrl = BASE_URL.PATH + "/receipts/LoadROHeadByStaff/"+ $scope.SearchCustomerRONo+"/"+ $scope.SearchCustomerName+"/"+$scope.SearchPaymentStatus
+        +"/"+$scope.SearchShippingStatus+"/"+$scope.StartDate+"/"+$scope.EndDate;
+        $http.get(customerOrderUrl)
+        .success(function (data) {
+            if (data.length > 0 ) {
+                $scope.SearchCustomerOrder = data;
+                $scope.CustomerOrderTableParams = new ngTableParams({
+                    page: 1,            // show first page
+                    count: 10           // count per page
+                }, {
+                    total: data.length, // length of data
+                    getData: function($defer, params) {
+                        $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    }
+                });
+            } else {
+                swal("Your data not found", "Cannot find customer order data.", "warning");
+            }
+        })
+        .error(function (data) {
+            alert(data);
+        });
+     //   $("#div-product-category-table").show("slow");
+     //   $("#div-product-category-detail").hide("slow");
+    }
+    $scope.PDF = function() {
+        $http.post('https://api.twilio.com/2015-07-09/Accounts/AC18d3cf60c6c6840932587231874b6c0b/SMS/Messages')
+        .success(function (data) {
+            console.log('success');
+             })
+        .error(function (data) {
+console.log('error');
+        });
+    }
+/*
+    $('#customer-templates .typeahead').typeahead(null, {
+      name: 'best-pictures',
+      display: 'Firstname',
+      source: [],
+      templates: {
+        empty: [
+          '<div class="empty-message">',
+            'unable to find any Best Picture winners that match the current query',
+          '</div>'
+        ].join('\n'),
+        suggestion: Handlebars.compile('<div><strong>{{Firstname}}</strong> – {{year}}</div>')
+      }
+    });*/
 });

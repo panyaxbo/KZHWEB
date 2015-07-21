@@ -120,8 +120,9 @@
 			"deleteAppUserByAppUserId" : "/DeleteAppUser/:AppUserId",
 			"isExistUsername" : "/IsExistUsername/:Username",
 			"isExistEmail" : "/IsExistEmail/:Email",
+			"isActivateUser" : "/isActivateUser/:Username/:Password",
 			"createAppUserByUsernameAndPasswordAndEmail" : "/CreateAppUser/:Username/:EncPassword/:Email",
-			"updateAppUserViaEmail" : "/UpdateAppUser/:Username/:Password"
+			"activateAppUserViaEmail" : "/ActivateAppUser/:Username/:Password"
 		},
 		"customer" : {
 			"home" : "/",
@@ -161,6 +162,8 @@
 			"home" : "/",
 			"loadAllReceipt" : "/LoadReceipt",
 			"loadROHeadROLineByROHeadId" : "/LoadROHeadROLineByObjId/:ROHeadId",
+			"loadROHeadByUserIdAndStatus" : "/LoadROHeadByUserIdAndStatus/:UserId/:PaymentStatus/:ShippingStatus/:StartDate/:EndDate",
+			"loadROHeadByStaff" : "/LoadROHeadByStaff/:RONo/:CustomerName/:PaymentStatus/:ShippingStatus/:StartDate/:EndDate",
 			"createReceipt" : "/CreateReceipt",
 			"updateReceipt" : "/UpdateReceipt",
 			"deleteReceiptByROHeadId" : "/DeleteROHead/:ROHeadId"

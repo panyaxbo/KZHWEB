@@ -11,21 +11,20 @@
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/angularjs-datepicker/dist/angular-datepicker.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <link rel="stylesheet" href="/bower_components/fontawesome/css/font-awesome.css" />
     <link rel="stylesheet" href="/bower_components/bootstrap-social/bootstrap-social.css" />
-    <link rel="stylesheet" href="/bower_components/angular-native-picker/build/themes/default.css" />
-    <link rel="stylesheet" href="/bower_components/angular-native-picker/build/themes/default.date.css" />
-    <link rel="stylesheet" href="/bower_components/angular-native-picker/build/themes/default.time.css" />
     <link rel="stylesheet" href="/bower_components/angular-block-ui/dist/angular-block-ui.css" />
     <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog.css" />
     <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog-theme-default.css" />
-    <link rel="stylesheet" href="/bower_components/angular-datepicker/dist/index.css" />
+    <link rel="stylesheet" href="/bower_components/angularjs-datepicker/dist/angular-datepicker.min.css" />
     <link rel="stylesheet" href="/bower_components/ng-table/dist/ng-table.css">
     <link rel="stylesheet" href="/bower_components/sweetalert/lib/sweet-alert.css">
     <link rel="stylesheet" href="/bower_components/select2/dist/css/select2.css">
     <link rel="stylesheet" href="/styles/bootstrap-magnify.css">
+    <link rel="stylesheet" href="/styles/search.css">
     <link rel="stylesheet" href="/bower_components/pnotify/pnotify.core.css">
     <link rel="stylesheet" href="/styles/step.css">
     <link rel="import" href="/bower_components/number-format/src/number-format.html">
@@ -41,11 +40,10 @@
 
     <div class="container">
         <div class="header" id="div-header" ng-controller="HeaderController">
-
+            
             <a href="#/">
                 <img src="images/KZH%20Logo.png" width="150px" height="50px">
             </a>
-            <button ng-click="PDF()"> PDF</button><button ng-click="ngDialog()"> ngDialog</button>
             <ul class="nav nav-pills pull-right">
                 <li>
                     <a href="#product-section" ng-click="SelectedHeadMenu('product')" class="head-menu">{{'HEAD.MENU.PRODUCT' | translate}}</a>
@@ -62,7 +60,7 @@
                 <li>
                     <div>
                         <button id="CartButton" class="btn btn-success" data-toggle="modal" data-target="#CartModal" ng-click="ViewCart()">
-                            <span class="glyphicon glyphicon-shopping-cart"></span> ({{ROLineList.length}}) {{'HEAD.CART' | translate}}
+                            <span class="glyphicon glyphicon-shopping-cart"></span> ({{ROHead.ROLineList.length}}) {{'HEAD.CART' | translate}}
                         </button>
                         <div class="modal fade" id="CartModal">
                             <div class="modal-dialog modal-lg">
@@ -78,116 +76,118 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-sm-12 col-md-10 col-md-offset-1">
-                                                <div ng-show="ROHead.ROLineList.length <= 0">
+                                            <div class="col-sm-12 col-md-12 col-md-offset-0">
+                                                <div id="HideCartTable" ng-show="ROHead.ROLineList.length <= 0 || ROHead.ROLineList === undefined">
                                                     <h3 class="text-center">--------- {{'HEAD.MODAL_CART.EMPTY_CART' | translate}} ---------</h3>
                                                 </div>
-                                                <table id="CartTable" class="table table-hover table table-condensed" ng-show="ROHead.ROLineList.length > 0">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>{{'HEAD.MODAL_CART.SEQ' | translate}}</th>
-                                                            <th class="text-left">{{'HEAD.MODAL_CART.ITEM_NAME' | translate}}</th>
-                                                            <th class="text-right">{{'HEAD.MODAL_CART.QTY' | translate}}</th>
-                                                            <th class="text-left">{{'HEAD.MODAL_CART.UOM' | translate}}</th>
-                                                            <th class="text-right">{{'HEAD.MODAL_CART.PRICE' | translate}}</th>
-                                                            <th class="text-right">{{'HEAD.MODAL_CART.DISCOUNT' | translate}}</th>
-                                                            <th class="text-right">{{'HEAD.MODAL_CART.AMOUNT' | translate}}</th>
-                                                            <th> </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr ng-repeat="ro in ROHead.ROLineList" id="CartRow{{$index}}">
-                                                            <td class="col-sm-1 col-md-1" style="text-align: center">
-                                                                {{$index+1}}.
-                                                            </td>
-                                                            <td class="col-sm-6 col-md-6 text-left">
-                                                                <div class="media">
-                                                                    <div class="media-body">
-                                                                        {{ro.ProductNameTh}}
+                                                <div id="ShowCartTable" ng-show="ROHead.ROLineList.length > 0">
+                                                    <table id="CartTable" class="table table-hover table table-condensed" ng-show="ROHead.ROLineList.length > 0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>{{'HEAD.MODAL_CART.SEQ' | translate}}</th>
+                                                                <th class="text-left">{{'HEAD.MODAL_CART.ITEM_NAME' | translate}}</th>
+                                                                <th class="text-right">{{'HEAD.MODAL_CART.QTY' | translate}}</th>
+                                                                <th class="text-left">{{'HEAD.MODAL_CART.UOM' | translate}}</th>
+                                                                <th class="text-right">{{'HEAD.MODAL_CART.PRICE' | translate}}</th>
+                                                                <th class="text-right">{{'HEAD.MODAL_CART.DISCOUNT' | translate}}</th>
+                                                                <th class="text-right">{{'HEAD.MODAL_CART.AMOUNT' | translate}}</th>
+                                                                <th> </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="ro in ROHead.ROLineList" id="CartRow{{$index}}">
+                                                                <td class="col-sm-1 col-md-1" style="text-align: center">
+                                                                    {{$index+1}}.
+                                                                </td>
+                                                                <td class="col-sm-6 col-md-6 text-left">
+                                                                    <div class="media">
+                                                                        <div class="media-body">
+                                                                            {{ro.ProductNameTh}}
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </td>
-                                                            <td class="col-xs-1 col-sm-1 col-md-1" style="text-align: right">
-                                                                <input type="text" class="form-control input-sm" id="BuyQty" ng-model="ro.Quantity" 
-                                                                ng-keydown="UpdateCartBuyQty()" >
-                                                            </td>
-                                                            <td class="col-sm-1 col-md-1" style="text-align: center">
-                                                                <select id="SelectUomList" name="selectbasic" class="form-control input-sm" ng-model="ro.UomCode" ng-options="Uom.UomCode as Uom.UomNameTh for Uom in ro.Uoms" ng-change="UpdateCartUom(ro, ro.UomCode, $index)">
-                                                                </select>
-                                                            </td>
-                                                            <td class="col-sm-1 col-md-1 text-right"><strong>{{CurrencySymbol}} {{(ro.Price * Multiplier) | currency:''}}</strong>
-                                                            </td>
-                                                            <td class="col-sm-1 col-md-1 text-right"><strong>{{CurrencySymbol}} {{(ro.DiscountAmount * Multiplier) | currency:''}}</strong>
-                                                            </td>
-                                                            <td class="col-sm-4 col-md-4 text-right"><strong>{{CurrencySymbol}} {{(ro.Amount * Multiplier) | currency:''}}</strong>
-                                                            </td>
-                                                            <td class="col-sm-1 col-md-1">
-                                                                <button type="button" class="btn btn-danger btn-xs" ng-click="DeleteCartProduct(this, ro, $index)">
-                                                                    <span class="glyphicon glyphicon-trash"></span> 
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="3"> </td>
-                                                            <td colspan="2">  
-                                                                <h5>{{'HEAD.MODAL_CART.SUMAMT' | translate}}</h5> 
-                                                            </td>
-                                                            <td colspan="2" class="text-right">  
-                                                                <h5><strong>{{CurrencySymbol}} {{(ROHead.SumAmount * Multiplier)  | currency:''}}</strong></h5> 
-                                                            </td>
-                                                            <td>   </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="3"> </td>
-                                                            <td colspan="2">  
-                                                                <h5>{{'HEAD.MODAL_CART.SUMDISCAMT' | translate}}</h5>
-                                                            </td>
-                                                            <td colspan="2" class="text-right">  
-                                                                <h5><strong>{{CurrencySymbol}} {{(ROHead.SumDiscountAmount * Multiplier) | currency:''}}</strong></h5>
-                                                            </td>
-                                                            <td>   </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="3"> </td>
-                                                            <td colspan="2">  
-                                                                <h5>{{'HEAD.MODAL_CART.SUMVATAMT' | translate}}</h5>
-                                                            </td>
-                                                            <td colspan="2" class="text-right">  
-                                                                <h5><strong>{{CurrencySymbol}} {{(ROHead.SumVatAmount * Multiplier) | currency:''}}</strong></h5>
-                                                            </td>
-                                                            <td>   </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="3"> </td>
-                                                            <td colspan="2">  
-                                                                <h4>{{'HEAD.MODAL_CART.NETAMT' | translate}}</h4>
-                                                            </td>
-                                                            <td colspan="2" class="text-right">  
-                                                                <h4><strong>{{CurrencySymbol}} {{(ROHead.NetAmount * Multiplier) | currency:''}}</strong></h4>
-                                                            </td>
-                                                            <td>   </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="8">
-                                                                <div class="col-sm-offset-2 col-sm-10">
-                                                                    <div class="pull-right">
-                                                                        <button type="button" class="btn btn-default" ng-click="ContinueShopping()">
-                                                                        <span class="glyphicon glyphicon-shopping-cart"></span> {{'HEAD.MODAL_CART.SHOP_BUTTON' | translate}}
+                                                                </td>
+                                                                <td class="col-xs-1 col-sm-1 col-md-1" style="text-align: right">
+                                                                    <input type="text" class="form-control input-sm" id="BuyQty" ng-model="ro.Quantity" 
+                                                                    ng-keyup="UpdateCartBuyQty($index, ro.Quantity)" >
+                                                                </td>
+                                                                <td class="col-sm-1 col-md-1" style="text-align: center">
+                                                                    <select id="SelectUomList" name="selectbasic" class="form-control input-sm" ng-model="ro.UomCode" ng-options="Uom.UomCode as Uom.UomNameTh for Uom in ro.Uoms" ng-change="UpdateCartUom(ro, ro.UomCode, $index)">
+                                                                    </select>
+                                                                </td>
+                                                                <td class="col-sm-1 col-md-1 text-right"><strong>{{CurrencySymbol}} {{(ro.Price * Multiplier) | currency:''}}</strong>
+                                                                </td>
+                                                                <td class="col-sm-1 col-md-1 text-right"><strong>{{CurrencySymbol}} {{(ro.DiscountAmount * Multiplier) | currency:''}}</strong>
+                                                                </td>
+                                                                <td class="col-sm-4 col-md-4 text-right"><strong>{{CurrencySymbol}} {{(ro.Amount * Multiplier) | currency:''}}</strong>
+                                                                </td>
+                                                                <td class="col-sm-1 col-md-1">
+                                                                    <button type="button" class="btn btn-danger btn-xs" ng-click="DeleteCartProduct(this, ro, $index)">
+                                                                        <span class="glyphicon glyphicon-trash"></span> 
                                                                     </button>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3"> </td>
+                                                                <td colspan="2">  
+                                                                    <h5>{{'HEAD.MODAL_CART.SUMAMT' | translate}}</h5> 
+                                                                </td>
+                                                                <td colspan="2" class="text-right">  
+                                                                    <h5><strong>{{CurrencySymbol}} {{(ROHead.SumAmount * Multiplier)  | currency:''}}</strong></h5> 
+                                                                </td>
+                                                                <td>   </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3"> </td>
+                                                                <td colspan="2">  
+                                                                    <h5>{{'HEAD.MODAL_CART.SUMDISCAMT' | translate}}</h5>
+                                                                </td>
+                                                                <td colspan="2" class="text-right">  
+                                                                    <h5><strong>{{CurrencySymbol}} {{(ROHead.SumDiscountAmount * Multiplier) | currency:''}}</strong></h5>
+                                                                </td>
+                                                                <td>   </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3"> </td>
+                                                                <td colspan="2">  
+                                                                    <h5>{{'HEAD.MODAL_CART.SUMVATAMT' | translate}}</h5>
+                                                                </td>
+                                                                <td colspan="2" class="text-right">  
+                                                                    <h5><strong>{{CurrencySymbol}} {{(ROHead.SumVatAmount * Multiplier) | currency:''}}</strong></h5>
+                                                                </td>
+                                                                <td>   </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3"> </td>
+                                                                <td colspan="2">  
+                                                                    <h4>{{'HEAD.MODAL_CART.NETAMT' | translate}}</h4>
+                                                                </td>
+                                                                <td colspan="2" class="text-right">  
+                                                                    <h4><strong>{{CurrencySymbol}} {{(ROHead.NetAmount * Multiplier) | currency:''}}</strong></h4>
+                                                                </td>
+                                                                <td>   </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="8">
+                                                                    <div class="col-sm-offset-2 col-sm-10">
+                                                                        <div class="pull-right">
+                                                                            <button type="button" class="btn btn-default" ng-click="ContinueShopping()">
+                                                                            <span class="glyphicon glyphicon-shopping-cart"></span> {{'HEAD.MODAL_CART.SHOP_BUTTON' | translate}}
+                                                                        </button>
 
-                                                                        <button type="button" class="btn btn-danger" ng-click="ClearCart()">
-                                                                        <span class="glyphicon glyphicon-trash"></span> {{'HEAD.MODAL_CART.CLEAR_BUTTON' | translate}}
-                                                                    </button>
+                                                                            <button type="button" class="btn btn-danger" ng-click="ClearCart()">
+                                                                            <span class="glyphicon glyphicon-trash"></span> {{'HEAD.MODAL_CART.CLEAR_BUTTON' | translate}}
+                                                                        </button>
 
-                                                                        <button type="button" class="btn btn-success" ng-click="ShipmentProcess()">
-                                                                        {{'HEAD.MODAL_CART.CHECKOUT_BUTTON' | translate}} <span class="glyphicon glyphicon-play"></span>
-                                                                    </button>
+                                                                            <button type="button" class="btn btn-success" ng-click="ShipmentProcess()">
+                                                                            {{'HEAD.MODAL_CART.CHECKOUT_BUTTON' | translate}} <span class="glyphicon glyphicon-play"></span>
+                                                                        </button>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -267,7 +267,7 @@
                                                     <div class="form-group">
                                                         <label class="control-label" for="inputFirst">First Name</label>
                                                         <div class="controls">
-                                                            <input id="FirstName" ng-model="FirstName" placeholder="E.g. Ashwin" type="text" 
+                                                            <input id="Firstname" ng-model="Firstname" placeholder="E.g. Ashwin" type="text" 
                                                             class="form-control">
                                                         </div>
                                                     </div>
@@ -275,7 +275,7 @@
                                                     <div class="form-group">
                                                         <label class="control-label" for="inputLast">Last Name</label>
                                                         <div class="controls">
-                                                            <input id="LastName" ng-model="LastName" placeholder="E.g. Hegde" type="text" 
+                                                            <input id="Lastname" ng-model="Lastname" placeholder="E.g. Hegde" type="text" 
                                                             class="form-control">
                                                         </div>
                                                     </div>
@@ -284,7 +284,7 @@
                                                         <label class="control-label" for="inputEmail">Email</label>
                                                         <div class="controls">
                                                             <input id="Email" ng-model="Email" placeholder="E.g. ashwinh@cybage.com" 
-                                                            type="text" class="form-control" ng-keydown="ValidateEmail()" ng-blur="ValidateExistEmail()"/>
+                                                            type="text" class="form-control" ng-keydown="ValidateEmail()"/>
                                                         </div>
                                                         <div class="controls">
                                                         <!--    <img id="ValidateSignupEmail" src="" width="30" height="30">-->
@@ -298,7 +298,7 @@
                                                         <label class="control-label" for="inputUser">Username</label>
                                                         <div class="controls">
                                                             <input id="Username" ng-model="Username" placeholder="E.g. ashwinhegde" 
-                                                            type="text" class="form-control" ng-blur="ValidateExistUsername()">
+                                                            type="text" class="form-control" ng-keydown="ValidateExistUsername()">
                                                         </div>
                                                         <div class="controls">
                                                             <div id="UsernameAlert" class="alert alert-warning fade in" style="display: none">
@@ -386,12 +386,21 @@
                 </li>
                 <li class="dropdown" class="head-menu" style="margin-top:5px">
                     <div>
+                       <img src="/images/noProfileImg.png"  class="img-circle" width="40" height="40" ng-show="!IsLogin || User.ProfileImage === undefined" style="margin-top:-5px">
+                       <div id="UserProfileImage" ></div>
+                    <!--   <img src="User.ProfileImage" ng-binding="User.ProfileImage" class="img-circle" width="40" height="40" ng-show="IsLogin && User.ProfileImage.length > 0" style="margin-top:-5px">-->
+                    </div>
+                </li>
+                <li class="dropdown" class="head-menu" style="margin-top:5px">
+                    <div>
                         <div ng-show="IsAdmin && !IsGuest">
                             <!-- code to render a large video block-->
                             <a href="#" class="dropdown-toggle head-menu" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
-                             {{User.Staff.Firstname}}<b class="caret"></b></a>
+                             {{User.Firstname}}<b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#account-section" ng-click="SelectedHeadMenu('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}} </a>
+                                </li>
+                                <li><a href="#customer-order-section" ng-click="SelectedHeadMenu('customer-order')"><span class="glyphicon glyphicon-tasks"></span> {{'HEAD.MENU.CUSTOMER' | translate}} </a>
                                 </li>
                                 <li><a href="#history-section" ng-click="SelectedHeadMenu('history')"><span class="glyphicon glyphicon-time"></span> {{'HEAD.MENU.HISTORY' | translate}}</a>
                                 </li>
@@ -405,9 +414,11 @@
                         <div ng-show="!IsAdmin && !IsGuest">
                             <!-- code to render the regular video block -->
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
-                             {{User.Staff.Firstname}}<b class="caret"></b></a>
+                             {{User.Firstname}}<b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#account-section" ng-click="SelectedHeadMenu('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}}</a>
+                                </li>
+                                <li><a href="#customer-order-section" ng-click="SelectedHeadMenu('customer-order')"><span class="glyphicon glyphicon-tasks"></span> {{'HEAD.MENU.CUSTOMER' | translate}} </a>
                                 </li>
                                 <li> <a href="#history-section" ng-click="SelectedHeadMenu('history')"><span class="glyphicon glyphicon-time"></span> {{'HEAD.MENU.HISTORY' | translate}}</a>
                                 <li class="divider"></li>
@@ -419,12 +430,13 @@
                         <div ng-show="!IsAdmin && IsGuest">
                             <!-- code to render the regular video block -->
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
-                             {{User.Staff.Firstname}}<b class="caret"></b></a>
+                             {{User.Firstname}}<b class="caret"></b></a>
                         </div>
                     </div>
                 </li>
         </div>
         <div id="div-body" ng-controller="BodyController">
+    <!--    <button ng-click="PDF()"> PDF</button><button ng-click="ngDialog()"> ngDialog</button>-->
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
                 <ol class="carousel-indicators">
@@ -513,7 +525,7 @@
                     <tr>
                         <td style="center">
                             <a href="#google-map-section" ng-click="SelectedBodyMenu('google-map')">
-                            <img src="/images/google-map.png" width="100px " height="50px">
+                             <img src="/images/google-map.png" width="100px " height="50px">
                             </a>
                         </td>
                     </tr>
@@ -542,8 +554,8 @@
                     <div class="row ">
                         <div class="col-lg-3 col-sm-4 col-xs-6" ng-repeat="p in Product">
                             <div class="mag">
-                                <img src="/images/no-image.png" class="img-responsive" ng-show="p.Image.length == 0">
-                                <img data-toggle="magnify" src="/images/3k%20bat.gif" class="img-responsive" ng-show="!p.Image || p.Image.length > 0">
+                                <img src="/images/no-image.png" class="img-responsive" ng-show="p.Image.length <= 0 || p.Image === undefined">
+                                <img data-toggle="magnify" src="p.Image" class="img-responsive" ng-show="p.Image.length > 0">
                             </div>
                             <div class="caption">
                                 <h5 style="color:white;" ng-show="SelectedLocale=='th'">{{p.ProductNameTh}}</h5>
@@ -669,7 +681,20 @@
                     <h1>MAP</h1>
                     <div class="row-fluid">
                         <div class="span8">
-
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3854.8752229103643!2d103.78665719999998!3d14.944043499999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sth!4v1436260415558" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+                        </div>
+                        
+                        <div class="span4">
+                            <h2>Snail mail</h2>
+                            <address>
+                                <strong>Hythe Window Cleaning</strong><br>
+                                15 Springfield Way<br>
+                                Hythe<br>
+                                Kent<br>
+                                United Kingdon<br>
+                                CT21 5SH<br>
+                                <abbr title="Phone">P:</abbr> 01234 567 890
+                            </address>
                         </div>
                     </div>
 
@@ -697,6 +722,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <form role="form">
                             <div class="row" id="step-1" ng-show="step == 1">
                                 <div class="col-xs-12">
@@ -706,7 +732,7 @@
                                             <div>
                                               <form class="form-horizontal" role="form">
                                                   <!-- Form Name -->
-                                                  <legend>Address Details</legend>
+                                                  <legend>&nbsp;</legend>
 
                                                   <!-- Text input-->
                                                   <div class="form-group">
@@ -789,7 +815,7 @@
                                                     <select class="form-control" ng-model="PaymentType" required="required">
                                                         <option value="">-- Choose Payment Type --</option>
                                                         <option value="Transfer">Transfer</option>
-                                                        <option value="Credit">Credit</option>
+                                                        <option value="Credit" disabled="true" title="Credit Card is not support yet :(">Credit Card</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -807,7 +833,6 @@
                                                         <div class="row display-tr" >
                                                             <h3 class="panel-title display-td">Payment Details</h3>
                                                             <div class="display-td" >                            
-                                                                
                                                             </div>
                                                         </div>                    
                                                     </div>
@@ -910,7 +935,6 @@
                                                                         <tr>
                                                                             <td class="text-center">
                                                                                   <input type="radio" name="bank" ng-model="PaymentBank" value="kcc" required="required"/>
-                                                                              
                                                                             </td >
                                                                             <td class="text-center">
                                                                                 <img src="/images/kcc.png" width="40" height="40">
@@ -1060,7 +1084,7 @@
                                                     </div>
                                                 </div>            
                                                 <!-- TRANSFER FORM ENDS HERE -->
-                                                  </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1068,7 +1092,6 @@
                                         <button class="btn btn-primary btn-lg center-block" type="button" ng-click="ValidatePayment()">
                                                 <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Next
                                         </button>
-
                                     </div>
                                 </div>
                             </div>
@@ -1085,69 +1108,286 @@
                 </div>
                 <!-- <div> HISTORY -->
                 <div id="history-section" name="history-section" class="section" ng-show="SelectedMenu=='history'">
-                    <h1>History</h1> From
-                    <div class="input-append date datepicker" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-                        <input class="span2" size="16" type="text" value="12-02-2012"><span class="add-on"></span>
-                    </div> To
-                    <div class="input-append date datepicker" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-                        <input class="span2" size="16" type="text" value="12-02-2012"><span class="add-on"></span>
+                    <h1>History</h1> 
+                     <div id="div-history-receipt-detail" class="row">
+                        <div class="col-md-12 col-sm-offset-0">
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="textinput">From :</label>
+                                <div class="col-sm-4">
+                                    <datepicker button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>"
+                                       date-format="dd-MM-yyyy"  date-set="">
+                                      <input ng-model="StartDate" type="text" style="color:black" class="form-control" />
+                                    </datepicker>
+                                </div>
+                                <label class="col-sm-2 control-label" for="textinput">To :</label>
+                                <div class="col-sm-4">
+                                    <datepicker button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>" 
+                                           date-format="dd-MM-yyyy"  date-set="">
+                                          <input ng-model="EndDate" type="text" style="color:black" class="form-control"/>
+                                    </datepicker>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="textinput">Payment :</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control" ng-model="SearchPaymentStatus" required="required">
+                                        <option value="N">Owed</option>
+                                        <option value="Y">Paid</option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-2 control-label" for="textinput">Shipping :</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control" ng-model="SearchShippingStatus" required="required">
+                                        <option value="N">Not Shipping</option>
+                                        <option value="Y">Shipping</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                
+                                <label class="col-sm-2 control-label" for="textinput">&nbsp;</label>
+                                <div class="col-sm-4">
+                                    &nbsp;
+                                </div>
+                                <label class="col-sm-2 control-label" for="textinput">&nbsp;</label>
+                                <div class="col-sm-4">
+                                    &nbsp;
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-5 col-md-12">
+                                    <div class="center-block">
+                                        <button ng-click="SearchHistoryReceipt()" class="btn btn-primary">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col-lg-12 -->
                     </div>
-                    <div id="no-more-tables">
-                        <table class="col-md-12 table-bordered table-striped table-condensed">
-                            <thead>
-                                <tr>
-                                    <th>Code</th>
-                                    <th>Company</th>
-                                    <th class="numeric">Price</th>
-                                    <th class="numeric">Change</th>
-                                    <th class="numeric">Change %</th>
-                                    <th class="numeric">Open</th>
-                                    <th class="numeric">High</th>
-                                    <th class="numeric">Low</th>
-                                    <th class="numeric">Volume</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td data-title="Code">AAC</td>
-                                    <td data-title="Company">AUSTRALIAN AGRICULTURAL COMPANY LIMITED.</td>
-                                    <td data-title="Price" class="numeric">$1.38</td>
-                                    <td data-title="Change" class="numeric">-0.01</td>
-                                    <td data-title="Change %" class="numeric">-0.36%</td>
-                                    <td data-title="Open" class="numeric">$1.39</td>
-                                    <td data-title="High" class="numeric">$1.39</td>
-                                    <td data-title="Low" class="numeric">$1.38</td>
-                                    <td data-title="Volume" class="numeric">9,395</td>
-                                </tr>
+                    <div id="div-history-receipt-table">
+                        <p><strong>Page:</strong> {{HistoryReceiptTableParams.page()}}</p>
+                        <p><strong>Count per page:</strong> {{HistoryReceiptTableParams.count()}}</p>
+                        <table ng-table="HistoryReceiptTableParams" class="table">
+                            <tr ng-repeat="roHead in $data">
+                                <td data-title="'#'" class="text-cetner">{{$index+1}}</td>
+                                <td data-title="'RONo'" class="text-cetner" >{{roHead.RONo}}</td>
+                                <td data-title="'RODate'" class="text-cetner">{{roHead.RODate | date:'dd-MM-yyyy'}}</td>
+                                <td data-title="'NetAmount'" class="text-right">{{roHead.NetAmount | number}}</td>
+                                <td data-title="'Bank'" class="text-center">
+                                    <img src="images/bbl.png" ng-show="roHead.PaymentBank == 'bbl'" width="32" height="32">
+                                    <img src="images/kbank.png" ng-show="roHead.PaymentBank == 'kbank'" width="32" height="32">
+                                    <img src="images/ktb.png" ng-show="roHead.PaymentBank == 'ktb'" width="32" height="32">
+                                    <img src="images/kcc.png" ng-show="roHead.PaymentBank == 'kcc'" width="32" height="32">
+                                    <img src="images/scb.png" ng-show="roHead.PaymentBank == 'scb'" width="32" height="32">
+                                    <img src="images/tmb.png" ng-show="roHead.PaymentBank == 'tmb'" width="32" height="32">
+                                    <img src="images/uob.png" ng-show="roHead.PaymentBank == 'uob'" width="32" height="32">
+                                </td>
+                                <td data-title="'Payment Doc.'" class="text-center">
+                                    <button type="submit" class="btn btn-primary" ng-click="UploadPaymentDocument()">
+                                            <span class="glyphicon glyphicon glyphicon-list-alt" aria-hidden="true"></span></button>
 
-                            </tbody>
+                                </td>
+                                <td data-title="'Payment'" class="text-center">
+                                    <img src="images/dpay_stat.png" ng-show="roHead.PaymentStatus == 'N'" title="No Payment">
+                                    <img src="images/pay_stat.png" ng-show="roHead.PaymentStatus == 'Y'" title="Paid">
+                                </td>
+                                
+                                <td data-title="'Shipping'" class="text-center">
+                                    <img src="images/dship_stat.png" ng-show="roHead.ShippingStatus == 'N'" title="No Shipping">
+                                    <img src="images/ship_stat.png" ng-show="roHead.ShippingStatus == 'Y'" title="Shipped">
+                                </td>
+                            </tr>
                         </table>
+                        <script type="text/ng-template" id="custom/pager">
+                            <ul class="pager ng-cloak">
+                              <li ng-repeat="page in pages"
+                                    ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}"
+                                    ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+                                <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">&laquo; Previous</a>
+                                <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Next &raquo;</a>
+                              </li>
+                                <li> 
+                                <div class="btn-group">
+                                    <button type="button" ng-class="{'active':params.count() == 10}" ng-click="params.count(10)" class="btn btn-default">10</button>
+                                    <button type="button" ng-class="{'active':params.count() == 25}" ng-click="params.count(25)" class="btn btn-default">25</button>
+                                    <button type="button" ng-class="{'active':params.count() == 50}" ng-click="params.count(50)" class="btn btn-default">50</button>
+                                    <button type="button" ng-class="{'active':params.count() == 100}" ng-click="params.count(100)" class="btn btn-default">100</button>
+                                </div>
+                                </li>
+                            </ul>
+                        </script>
+                   <!--End Product Category Table Setting -->
                     </div>
-                    <script>
-                        function demo() {
-                            $('.datepicker').datepicker({
-                                todayBtn: "linked",
-                                language: "th",
-                                autoclose: true,
-                                todayHighlight: true
-                            });
-                        }
-                    </script>
+                </div>
+                </div>
+                <!-- <div> CUSTOMER ORDER -->
+                <div id="customer-order-section" name="customer-order-section" class="section" ng-show="SelectedMenu=='customer-order'">
+                    <h1>Customer Order</h1> 
+                     <div id="div-customer-order-detail" class="row">
+                        <div class="col-md-12 col-sm-offset-0">
+                            <!-- Text input--><div class="form-group">
+                                <label class="col-sm-2 control-label" for="textinput">RO No :</label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" type="text" placeholder="RO No">
+                                </div>
+                                <label class="col-sm-2 control-label" for="textinput">Customer :</label>
+                                <div class="col-sm-4">
+                                    <div id="customer-templates">
+                                      <input class="typeahead form-contrl" type="text" placeholder="Firstname - Lastname - Province">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="textinput">From :</label>
+                                <div class="col-sm-4">
+                                    <datepicker button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>"
+                                       date-format="dd-MM-yyyy"  date-set="">
+                                      <input ng-model="CustomerOrderStartDate" type="text" style="color:black" class="form-control" />
+                                    </datepicker>
+                                </div>
+                                <label class="col-sm-2 control-label" for="textinput">To :</label>
+                                <div class="col-sm-4">
+                                    <datepicker button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>" 
+                                           date-format="dd-MM-yyyy"  date-set="">
+                                          <input ng-model="CustomerOrderEndDate" type="text" style="color:black" class="form-control"/>
+                                    </datepicker>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="textinput">Payment :</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control" ng-model="SearchPaymentStatus" required="required">
+                                        <option value="N">Owed</option>
+                                        <option value="Y">Paid</option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-2 control-label" for="textinput">Shipping :</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control" ng-model="SearchShippingStatus" required="required">
+                                        <option value="N">Not Shipping</option>
+                                        <option value="Y">Shipping</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                
+                                <label class="col-sm-2 control-label" for="textinput">&nbsp;</label>
+                                <div class="col-sm-4">
+                                    &nbsp;
+                                </div>
+                                <label class="col-sm-2 control-label" for="textinput">&nbsp;</label>
+                                <div class="col-sm-4">
+                                    &nbsp;
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-5 col-md-12">
+                                    <div class="center-block">
+                                        <button ng-click="SearchHistoryReceipt()" class="btn btn-primary">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col-lg-12 -->
+                    </div>
+                    <div id="div-customer-order-table">
+                        <p><strong>Page:</strong> {{CustomerOrderTableParams.page()}}</p>
+                        <p><strong>Count per page:</strong> {{CustomerOrderTableParams.count()}}</p>
+                        <table ng-table="HistoryReceiptTableParams" class="table">
+                            <tr ng-repeat="roHead in $data">
+                                <td data-title="'#'" class="text-cetner">{{$index+1}}</td>
+                                <td data-title="'RONo'" class="text-cetner" >{{roHead.RONo}}</td>
+                                <td data-title="'RODate'" class="text-cetner">{{roHead.RODate | date:'dd-MM-yyyy'}}</td>
+                                <td data-title="'Customer'" class="text-right">{{roHead.Firstname}}</td>
+                                <td data-title="'NetAmount'" class="text-right">{{roHead.NetAmount | number}}</td>
+                                <td data-title="'Bank'" class="text-center">
+                                    <img src="images/bbl.png" ng-show="roHead.PaymentBank == 'bbl'" width="32" height="32">
+                                    <img src="images/kbank.png" ng-show="roHead.PaymentBank == 'kbank'" width="32" height="32">
+                                    <img src="images/ktb.png" ng-show="roHead.PaymentBank == 'ktb'" width="32" height="32">
+                                    <img src="images/kcc.png" ng-show="roHead.PaymentBank == 'kcc'" width="32" height="32">
+                                    <img src="images/scb.png" ng-show="roHead.PaymentBank == 'scb'" width="32" height="32">
+                                    <img src="images/tmb.png" ng-show="roHead.PaymentBank == 'tmb'" width="32" height="32">
+                                    <img src="images/uob.png" ng-show="roHead.PaymentBank == 'uob'" width="32" height="32">
+                                </td>
+                                <td data-title="'Payment Doc.'" class="text-center">
+                                    <button type="submit" class="btn btn-primary" ng-click="UploadPaymentDocument()">
+                                            <span class="glyphicon glyphicon glyphicon-list-alt" aria-hidden="true"></span></button>
+
+                                </td>
+                                <td data-title="'Payment'" class="text-center">
+                                    <img src="images/dpay_stat.png" ng-show="roHead.PaymentStatus == 'N'" title="No Payment">
+                                    <img src="images/pay_stat.png" ng-show="roHead.PaymentStatus == 'Y'" title="Paid">
+                                </td>
+                                
+                                <td data-title="'Shipping'" class="text-center">
+                                    <img src="images/dship_stat.png" ng-show="roHead.ShippingStatus == 'N'" title="No Shipping">
+                                    <img src="images/ship_stat.png" ng-show="roHead.ShippingStatus == 'Y'" title="Shipped">
+                                </td>
+                            </tr>
+                        </table>
+                        <script type="text/ng-template" id="custom/pager">
+                            <ul class="pager ng-cloak">
+                              <li ng-repeat="page in pages"
+                                    ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}"
+                                    ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+                                <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">&laquo; Previous</a>
+                                <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Next &raquo;</a>
+                              </li>
+                                <li> 
+                                <div class="btn-group">
+                                    <button type="button" ng-class="{'active':params.count() == 10}" ng-click="params.count(10)" class="btn btn-default">10</button>
+                                    <button type="button" ng-class="{'active':params.count() == 25}" ng-click="params.count(25)" class="btn btn-default">25</button>
+                                    <button type="button" ng-class="{'active':params.count() == 50}" ng-click="params.count(50)" class="btn btn-default">50</button>
+                                    <button type="button" ng-class="{'active':params.count() == 100}" ng-click="params.count(100)" class="btn btn-default">100</button>
+                                </div>
+                                </li>
+                            </ul>
+                        </script>
+                   <!--End Product Category Table Setting -->
+                    </div>
                 </div>
                 <!-- <div> Account Setting -->
                 <div id="account-section" name="account-section" class="section" ng-show="SelectedMenu=='account'">
                     <h1>Account</h1>
                     <div id="div-account-detail" class="row">
-                        <div class="col-md-8 col-md-offset-2">
+                        <div class="col-md-8 col-md-offset-1">
                             <form class="form-horizontal" role="form">
                                 <fieldset>
                                     <!-- Form Name -->
                                     <legend></legend>
                                     <!-- Text input-->
                                     <div class="form-group">
+                                        <label class="col-sm-4 control-label" for="textinput">Firstname :</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" placeholder="Firstname" class="form-control" ng-model="ViewAppUserData.Firstname">
+                                        </div>
+                                    </div>
+                                    <!-- Text input-->
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label" for="textinput">Lastname :</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" placeholder="Lastname" class="form-control" ng-model="ViewAppUserData.Lastname">
+                                        </div>
+                                    </div>
+                                    <!-- Text input-->
+                                    <div class="form-group">
                                         <label class="col-sm-4 control-label" for="textinput">Email :</label>
                                         <div class="col-sm-6">
                                             <input type="email" placeholder="Email" class="form-control" ng-model="ViewAppUserData.Email" />
+                                        </div>
+                                    </div>
+                                    <!-- Text input-->
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label" for="textinput">Username :</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" placeholder="Username" class="form-control" ng-model="ViewAppUserData.Username">
                                         </div>
                                     </div>
                                     <!-- Text input-->
@@ -1159,23 +1399,41 @@
                                     </div>
                                     <!-- Text input-->
                                     <div class="form-group">
-                                        <label class="col-md-4 control-label" for="filebutton">Profile Image</label>
-                                        <div class="col-md-6">
-                                            <input id="ProfileImage" name="filebutton" class="input-file" type="file" ng-Model="ViewAppUserData.ProfileImage">
+                                        <label class="col-md-4 control-label" for="filebutton">Profile Image :</label>
+                                        <div class="col-md-4">
+                                       <!--     <input id="ProfileImage" name="filebutton" class="input-file" type="file" ng-Model="ViewAppUserData.ProfileImage">-->
+                                            <div>
+                                                <div class="button" ngf-select ngf-change="upload($files)" style="color:black">
+                                                Upload on file change</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                        Drop File:
+                                        </div>
+                                        <div class="col-md-4">
+                                         <div ngf-drop ng-model="files" class="drop-box" 
+                                                    ngf-drag-over-class="dragover" ngf-allow-dir="true"
+                                                    ngf-accept="'image/*,application/pdf'">Drop Images or PDFs files here</div>
+                                                <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
                                         </div>
                                     </div>
                                     
-                                    
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label" for="textinput">Image thumbnail: </label>
+                                        <div class="col-sm-6" id="ThumbnailProfileImage">
+                                        <!--   <img ngf-src="file" ngf-default-src="'placeholder.jpg'" ngf-accept="'.pdf,.jpg'"> -->
+                                           
+                                        </div>
+                                    </div>
+                                     
                                     <div class="form-group">
                                         <div class="col-sm-offset-2 col-sm-10">
                                             <div class="pull-right">
                                                 <button type="submit" class="btn btn-default" ng-click="CancelUser()">
                                                     <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Cancel
                                                 </button>
-
                                                 <button type="submit" class="btn btn-primary" ng-click="SaveUser()">
                                                     <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save</button>
-
                                             </div>
                                         </div>
                                     </div>
@@ -2328,7 +2586,7 @@
                     <script src="/bower_components/lodash/lodash.js"></script>
                     <script src="/bower_components/angular-block-ui/dist/angular-block-ui.js"></script>
                     <script src="/bower_components/ngDialog/js/ngDialog.js"></script>
-                    <script src="/bower_components/angular-datepicker/dist/index.js"></script>
+                    <script src="/bower_components/angularjs-datepicker/dist/angular-datepicker.min.js"></script>
                     <script src="/bower_components/ng-password-strength/dist/scripts/ng-password-strength.js"></script>
                     <script src="/bower_components/select2/dist/js/select2.js"></script>
                     <script src="/bower_components/ng-file-upload/ng-file-upload.js"></script>
@@ -2339,14 +2597,29 @@
                     <script src="/bower_components/bootstrap/js/tab.js"></script>
                     <script src="/bower_components/chartjs/Chart.js"></script>
                     <script src="/bower_components/ng-table/dist/ng-table.js"></script>
-                    <script src="/bower_components/angular-native-picker/build/angular-datepicker.js"></script>
                     <script src="/bower_components/ng-file-upload/ng-file-upload.js"></script>
                     <script src="/bower_components/sweetalert/lib/sweet-alert.js"></script>
                     <script src="/bower_components/angular-facebook/lib/angular-facebook.js"></script>
                     <script src="/bower_components/requirejs-bower/require.js"></script>
                     <script src="/bower_components/pnotify/pnotify.core.js"></script>
+                    <script src="/bower_components/typehead.js/dist/bloodhound.js"></script>
+                    <script src="/bower_components/typehead.js/dist/typeahead.jquery.js"></script>
+                    <script src="/bower_components/typehead.js/dist/typeahead.bundle.js"></script>
                     <script src="/bower_components/jspdf/dist/jspdf.min.js"></script>
-                    <script src="/bower_components/jspdf/dist/jspdf.debug.js"></script>
+                  <!--  <script src="/bower_components/jspdf/dist/jspdf.debug.js"></script>-->
+                    <script src="/bower_components/jspdf/plugins/addhtml.js"></script>
+                    <script src="/bower_components/jspdf/plugins/addimage.js"></script>
+                    <script src="/bower_components/jspdf/plugins/from_html.js"></script>
+                    <script src="/bower_components/jspdf/plugins/png_support.js"></script>
+                    <script src="/bower_components/jspdf/plugins/split_text_to_size.js"></script>
+                    <script src="/bower_components/jspdf/plugins/standard_fonts_metrics.js"></script>
+                    <script src="/bower_components/jspdf/plugins/canvas.js"></script>
+                    <script src="/bower_components/jspdf/plugins/cell.js"></script>
+                    <script src="/bower_components/jspdf/libs/html2canvas/dist/html2canvas.js"></script>
+                    <script src="/bower_components/jspdf/libs/png_support/png.js"></script>
+                    <script src="/bower_components/jspdf/libs/png_support/zlib.js"></script>
+                    <script src="/bower_components/pdfmake/build/pdfmake.js"></script>
+                    <script src="/bower_components/pdfmake/build/vfs_fonts.js"></script>
                     <script src="/scripts/main.js"></script>
                     <script src="/scripts/bootstrap-magnify.js"></script>
                     <script src="/scripts/step.js"></script>

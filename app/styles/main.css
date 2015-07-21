@@ -13,6 +13,16 @@
     } 
 }
 
+.profile-img-card {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+
 .nav > li > a:hover, .nav > li > a:focus {
     text-decoration: none;
     background-color: #eee;
@@ -84,17 +94,17 @@ body {
     -webkit-appearance: button;
     /* Safari and Chrome */
     padding: 10px;
-    margin: 10px;
-    width: 70px;
+ /*   margin: 10px;
+    width: 70px;*/
 }
 .drop-box {
-    background: #F8F8F8;
-    border: 5px dashed #DDD;
-    width: 200px;
-    height: 65px;
+   /* background: #F8F8F8;*/
+    border: 3px dashed #DDD;
+    width: 500px;
+    height: 200px;
     text-align: center;
     padding-top: 25px;
-    margin: 10px;
+  /*  margin: 10px;*/
 }
 .dragover {
     border: 5px dashed blue;

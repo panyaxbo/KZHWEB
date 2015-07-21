@@ -56,15 +56,15 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
 // Create ROHead
 router.post(mongodbConfig.url.receipt.createReceipt, function (req, res) {
     var ROHead = req.body;
+    var ROLineList = ROHead.ROLineList;
     console.log('create ro-head ' + ROHead);
 
-    var MockROHead = {
-    }
     db.collection(mongodbConfig.mongodb.rohead.name)
         .insert(ROHead,
-            function (error, role) {
+            function (error, rohead) {
                 if (error) throw error
-                res.json(role);
+                    
+                res.json(rohead);
             });
 });
 
@@ -99,6 +99,73 @@ router.get(mongodbConfig.url.receipt.deleteReceiptByROHeadId, function (req, res
             if (error) throw error
 
             res.json(role);
+        });
+});
+
+// Load History ROHead by UserId
+router.get(mongodbConfig.url.receipt.loadROHeadByUserIdAndStatus, function (req, res) {
+    var userId = bson.BSONPure.ObjectID(req.params.UserId);
+    var paymentStatus = req.params.PaymentStatus;
+    var shippingStatus = req.params.ShippingStatus;
+    var startDate = req.params.StartDate;
+    var start = startDate.split('-');
+    var endDate = req.params.EndDate;
+    var end = endDate.split('-');
+    console.log(start + '-' + end);
+    console.log('userId ' + userId);
+    db.collection(mongodbConfig.mongodb.rohead.name)
+        .find({
+            RODate: {
+               $lte: new Date(end[2]+"-"+end[1]+"-"+end[0]+"T99:99:999Z")
+            },
+            RODate : {
+               $gte: new Date(start[2]+"-"+start[1]+"-"+start[0]+"T99:99:999Z")
+            },
+            PaymentStatus: paymentStatus,
+            ShippingStatus: shippingStatus,
+            UserId: userId
+        })
+        .toArray(function (err, roheads) {
+            if (err) {
+                console.log(err);
+            }
+            console.log(roheads);
+            res.json(roheads);
+        });
+});
+
+// Load Customer Order from Staff
+router.get(mongodbConfig.url.receipt.loadROHeadByStaff, function (req, res) {
+    var roNo =  req.params.RONo;
+//    var name =  req.params.CustomerName;
+    var userId = bson.BSONPure.ObjectID(req.params.UserId);
+    var paymentStatus = req.params.PaymentStatus;
+    var shippingStatus = req.params.ShippingStatus;
+    var startDate = req.params.StartDate;
+    var start = startDate.split('-');
+    var endDate = req.params.EndDate;
+    var end = endDate.split('-');
+//    console.log(start + '-' + end);
+    console.log('userId ' + userId);
+    db.collection(mongodbConfig.mongodb.rohead.name)
+        .find({
+            RODate: {
+               $lte: new Date(end[2]+"-"+end[1]+"-"+end[0]+"T99:99:999Z")
+            },
+            RODate : {
+               $gte: new Date(start[2]+"-"+start[1]+"-"+start[0]+"T99:99:999Z")
+            },
+            PaymentStatus: paymentStatus,
+            ShippingStatus: shippingStatus,
+            RONo : /roNo/,
+            UserId: userId
+        })
+        .toArray(function (err, roheads) {
+            if (err) {
+                console.log(err);
+            }
+            console.log(roheads);
+            res.json(roheads);
         });
 });
 

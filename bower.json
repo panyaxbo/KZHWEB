@@ -6,6 +6,8 @@
     "ng-file-upload": "~4.1.0",
     "ng-file-upload-shim": "~4.1.0",
     "ng-flow": "~2",
-    "number-format": "*"
+    "number-format": "*",
+    "angularjs-datepicker": "~0.2.5",
+    "angular-google-maps": "~2.1.5"
   }
 }

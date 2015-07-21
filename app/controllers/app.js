@@ -1,4 +1,22 @@
-var app = angular.module('KZHWEB', ['ngAnimate', 'ngFileUpload', 'blockUI','ngDialog', 'ngPasswordStrength', 'facebook', 'ngTable','flow','pascalprecht.translate']);
+var app = angular.module('KZHWEB', ['ngAnimate', 'ngFileUpload', '720kb.datepicker','blockUI','ngDialog', 'ngPasswordStrength', 'facebook', 'ngTable','flow','pascalprecht.translate']);
+
+app.directive('ngHasfocus', function() {
+    return function(scope, element, attrs) {
+        scope.$watch(attrs.ngHasfocus, function (nVal, oVal) {
+            if (nVal)
+                element[0].focus();
+        });
+        
+        element.bind('blur', function() {
+            scope.$apply(attrs.ngHasfocus + " = false");
+        });
+        
+        element.bind('keydown', function (e) {
+            if (e.which == 13)
+                scope.$apply(attrs.ngHasfocus + " = false");
+        });
+    }
+});
 
 //Config Route 
 /**app.config(["$routeProvider", function ($routeProvider) {
@@ -58,6 +76,7 @@ app.config(function ($translateProvider) {
                 PRODUCT: 'สินค้า',
                 WEBBOARD: 'เว็บบอร์ด',
                 PAYMENT: 'การชำะเงิน',
+                CUSTOMER: 'การสั่งซื้อของลูกค้า',
                 ABOUT: 'เกี่ยวกับเรา',
                 ACCOUNT: 'ตั้งค่าบัญชี',
                 HISTORY: 'ประวัติการซื้อ',
@@ -187,6 +206,7 @@ app.config(function ($translateProvider) {
                 WEBBOARD: 'Webboard',
                 PAYMENT: 'Payment',
                 ABOUT: 'About us',
+                CUSTOMER: 'Customer Order',
                 ACCOUNT: 'Account Setting',
                 HISTORY: 'Purchase History',
                 GENERAL: 'General Setting',
@@ -284,6 +304,7 @@ app.config(function ($translateProvider) {
                 WEBBOARD: '座談會',
                 PAYMENT: '付款',
                 ABOUT: '關於我們',
+                CUSTOMER: '客戶下單',
                 ACCOUNT: '賬戶設置',
                 HISTORY: '購買歷史',
                 GENERAL: '一般設置',

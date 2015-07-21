@@ -14,6 +14,7 @@ global.collection;
 
 var cors = require('cors');
 var index = require('./route/index');
+var appconfig = require('./route/appconfig');
 var products = require('./route/products');
 var product_categories = require('./route/product_categories');
 var product_types = require('./route/product_types');
@@ -27,6 +28,9 @@ var provinces = require('./route/provinces');
 var districts = require('./route/districts');
 var subdistricts = require('./route/subdistricts');
 var mails = require('./route/mails');
+var receipts = require('./route/receipt_orders');
+var images = require('./route/images');
+var sms = require('../sms/sms');
 
 //app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -35,6 +39,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cors());
 app.use('/', index);
+app.use('/appconfig', appconfig);
 app.use('/products', products);
 app.use('/product_categories', product_categories);
 app.use('/product_types', product_types);
@@ -48,6 +53,9 @@ app.use('/provinces', provinces);
 app.use('/districts', districts);
 app.use('/subdistricts', subdistricts);
 app.use('/mails', mails);
+app.use('/receipts', receipts);
+app.use('/images', images);
+app.use('/sms', sms);
 
 app.listen(mongodbConfig.nodejs_port, function () {
 	//console.log("Start server port " + mongodbConfig.nodejs_port + " is OK...");

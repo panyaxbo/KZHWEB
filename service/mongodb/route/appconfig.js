@@ -2,46 +2,89 @@ var express = require('express');
 var router = express.Router();
 
 /* GET users listing. */
-router.get(config.url.appconfig.home, function (req, res, next) {
+router.get(mongodbConfig.url.appconfig.home, function (req, res, next) {
     res.send('app config');
 });
 
-router.get(config.url.appconfig.getNewCodeByModule, function (req, res) {
+router.get(mongodbConfig.url.appconfig.getNewCodeByModule, function (req, res) {
     var Module = req.params.Module;
     console.log('Module ' + Module);
-    db.collection(config.mongodb.appconfig.name)
+    db.collection(mongodbConfig.mongodb.appconfig.name)
         .findOne({
             'AppCode': Module
-        }, function (err, doc) {
+        }, function (err, appConfig) {
             if (err) {
                 console.log(err);
                 //       callback(err);
             } else {
                 // call your callback with no error and the data
-                console.log(doc);
-                console.log('IsTransaction ' + doc.IsTransaction);
+                console.log(appConfig);
+                console.log('IsTransaction ' + appConfig.IsTransaction);
 
-                if (!doc.IsTransaction) {
-                    var MaxIncOne = parseInt(doc.AppRunData) + parseInt(1);
-                    var Format = doc.AppValue.split('|');
+                if (!appConfig.IsTransaction) {
+                    var MaxIncOne = parseInt(appConfig.AppRunData) + parseInt(1);
+                    var Format = appConfig.AppValue.split('|');
                     var NextRun = ZeroPad(MaxIncOne, Format[1].length);
                     var NewCode = Format[0] + NextRun;
 
-                    UpdateMasterAppConfig(Module, MaxIncOne, function (err, doc) {
+                    UpdateAppConfig(Module, MaxIncOne, function (err, result) {
                         if (err) throw err
                         console.log(NewCode);
                         res.json(NewCode);
                     });
-                } else if (doc.IsTransaction) {
-
+                } else if (appConfig.IsTransaction) {
+                    var DateNow = new Date();
+                    var CurrentMonth = ZeroPad(DateNow.getMonth() + 1, 2);
+                    var CurrentYear = ZeroPad(DateNow.getFullYear(), 4);
+                    var MaxCurrent = DateNow.getMonth() + DateNow.getFullYear();
+                    FindMaxDateFromModule(Module, function(err, roHead) {
+                        if (!roHead)  {
+                            console.log("err " + err);
+                        } else {
+                            console.log("roHead " + roHead.RODate);
+                            var MaxMonth = (new Date(roHead.RODate)).getMonth() + 1;
+                            var MaxYear = (new Date(roHead.RODate)).getFullYear();
+                            var MaxDB = MaxMonth + MaxYear;
+                            console.log(CurrentMonth + '-' + MaxMonth);
+                            console.log(parseInt(MaxDB) + '-' + parseInt(MaxCurrent));
+                            // gen code in same CurrentMonth
+                            if (parseInt(MaxDB) > parseInt(MaxCurrent)) {
+                                var MaxIncOne = parseInt(appConfig.AppRunData) + parseInt(1);
+                                var Format = appConfig.AppValue.split('|');
+                                var NextRun = ZeroPad(MaxIncOne, Format[3].length);
+                                var NewCode = Module + CurrentYear + CurrentMonth + NextRun;
+                            //    console.log(NewCode +"|" +CurrentYear +"|"+CurrentMonth +"|"+NextRun +"|");
+                                UpdateAppConfig(Module, MaxIncOne, function (err, result) {
+                                    if (err) throw err
+                                //    console.log(NewCode);
+                                    res.json(NewCode);
+                                });
+                            // gen code in new CurrentMonth
+                            } else {
+                                var MaxIncOne = parseInt(1);
+                                var Format = appConfig.AppValue.split('|');
+                                var NextRun = ZeroPad(MaxIncOne, Format[3].length);
+                                var NewCode = Module + CurrentYear + CurrentMonth + NextRun;
+                                UpdateAppConfig(Module, MaxIncOne, function (err, result) {
+                                    if (err) throw err
+                                 //   console.log(NewCode);
+                                    res.json(NewCode);
+                                });
+                            //    console.log(NewCode +"|" +CurrentYear +"|"+CurrentMonth +"|"+NextRun +"|");
+                                
+                            }
+                            
+                        }
+                    });
+               //     res.json(NewCode +'-'+ (new Date()).toISOString()+ '-' + ZeroPad((new Date()).getMonth() + 1, 2));
+               //     "RO25580600005-2015-07-03T04:06:41.446Z-06"
                 }
-
             }
         });
 
     //    function FindCurrent
-    function UpdateMasterAppConfig(AppCode, nextRun, callback) {
-        db.collection(config.mongodb.appconfig.name)
+    function UpdateAppConfig(AppCode, nextRun, callback) {
+        db.collection(mongodbConfig.mongodb.appconfig.name)
             .update({
                     'AppCode': AppCode
                 }, {
@@ -56,9 +99,21 @@ router.get(config.url.appconfig.getNewCodeByModule, function (req, res) {
                 });
     }
 
+    function FindMaxDateFromModule(Module, callback) {
+        db.collection(mongodbConfig.mongodb.rohead.name)
+            .findOne({ 
+                $query:{}, 
+                $sort :  { RODate: 1}  },
+                 { limit : 1 }, 
+                 function(err, result) { 
+                    if (err) throw err 
+                    callback(err, result);
+                 });
+    }
     function ZeroPad(num, places) {
         var zero = places - num.toString().length + 1;
         return Array(+(zero > 0 && zero)).join("0") + num;
     }
 });
+
 module.exports = router;

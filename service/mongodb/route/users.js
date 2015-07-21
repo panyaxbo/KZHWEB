@@ -100,35 +100,46 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
         }
         if (doc) {
             console.log('account exists');
-            console.dir(doc);
+        //    console.dir(doc);
             var qRole = {
                 'RoleCode': doc.RoleCode
             }
             var qStaff = {
                 'StaffCode': doc.StaffCode
             }
-            findOneRole(qRole, function (errRole, docRole) {
-                if (errRole) {
-                    console.log(errRole);
-                    return;
-                }
-                if (docRole) {
-                    console.dir(docRole);
-                    doc.Role = docRole;
-                    // Find Staff
-                    findOneStaff(qStaff, function (errStaff, docStaff) {
-                        if (errStaff) {
-                            console.log(errStaff);
-                            return;
-                        }
-                        if (docStaff) {
-                            console.dir(docStaff);
-                            doc.Staff = docStaff;
+            // User nothave rolecode and staffcode
+            if (doc.RoleCode !== undefined && doc.RoleCode.length > 0) {
+                findOneRole(qRole, function (errRole, docRole) {
+                    if (errRole) {
+                        console.log(errRole);
+                        return;
+                    }
+                    if (docRole) {
+                        console.dir(docRole);
+                        doc.Role = docRole;
+                        if (doc.StaffCode !== undefined && doc.StaffCode.length > 0) {
+                            // Find Staff
+                            findOneStaff(qStaff, function (errStaff, docStaff) {
+                                if (errStaff) {
+                                    console.log(errStaff);
+                                    return;
+                                }
+                                if (docStaff) {
+                                    console.dir(docStaff);
+                                    doc.Staff = docStaff;
+                                    res.json(doc);
+                                }
+                            });
+                        } else {
+                            console.log(doc);
                             res.json(doc);
+
                         }
-                    });
-                }
-            });
+                    }
+                });
+            } else {
+                res.json(doc);
+            }
         } else {
             res.json(500, err);
             return;
@@ -230,8 +241,8 @@ router.get(mongodbConfig.url.user.isExistEmail, function(req, res) {
 });
 
 // Create User via Signup Form
-router.get(mongodbConfig.url.user.createAppUserByUsernameAndPasswordAndEmail, function (req, res) {
-//    var AppUser = req.body;
+router.post(mongodbConfig.url.user.createAppUserByUsernameAndPasswordAndEmail, function (req, res) {
+    var User = req.body;
     var username = req.params.Username;
     var password = req.params.EncPassword;
     var email = req.params.Email;
@@ -239,7 +250,12 @@ router.get(mongodbConfig.url.user.createAppUserByUsernameAndPasswordAndEmail, fu
         'Username' : username,
         'Password' : password,
         'Email' : email,
-        'IsActivate': false
+        'Firstname' : User.Firstname,
+        'Lastname' : User.Lastname,
+        'IsActivate': false,
+        'RoleCode' : 'RL0005',
+        'UserType' : 'User',
+        'Terminal' : 'Web'
     };
     db.collection(mongodbConfig.mongodb.user.name)
         .insert(appuser, function (error, result) {
@@ -257,7 +273,7 @@ router.get(mongodbConfig.url.user.createAppUserByUsernameAndPasswordAndEmail, fu
 });
 
 // Update AppUser Activate from EMail
-router.get(mongodbConfig.url.user.updateAppUserViaEmail, function (req, res) {
+router.get(mongodbConfig.url.user.activateAppUserViaEmail, function (req, res) {
     var Username = req.params.Username;
     var Password = req.params.Password;
     db.collection(mongodbConfig.mongodb.user.name)
@@ -276,6 +292,30 @@ router.get(mongodbConfig.url.user.updateAppUserViaEmail, function (req, res) {
                     res.sendStatus(200);
                 }
             });
+});
+
+// Is user activate
+router.get(mongodbConfig.url.user.isActivateUser, function (req, res) {
+    var Username = req.params.Username;
+    var Password = req.params.Password;
+    db.collection(mongodbConfig.mongodb.user.name).findOne(
+        {
+            'Username' : Username,
+            'Password' : Password
+        }
+        , function (err, user) {
+        if (err) {
+            console.log(err);
+            res.json(500, err);
+            return;
+        } else {
+            if (user.IsActivate)  {
+                res.json(true);
+            } else {
+                res.json(false);
+            }
+        }
+    });
 });
 
 module.exports = router;
