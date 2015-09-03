@@ -16,6 +16,9 @@
 		"product_category" : {
 			"name" : "ProductCategory"
 		},
+		"promotion" : {
+			"name" : "Promotion"
+		},
 		"appconfig" : {
 			"name" : "AppConfig"
 		},
@@ -89,6 +92,7 @@
 			"updateProductType" : "/UpdateProductType",
 			"deleteProductTypeByProductTypeId" : "/DeleteProductType/:ProductTypeId"
 		},
+
 		"product_category" : {
 			"home" : "/",
 			"loadAllProductCategory" : "/LoadProductCategory",
@@ -98,6 +102,15 @@
 			"createProductCategory" : "/CreateProductCategory",
 			"updateProductCategory" : "/UpdateProductCategory",
 			"deleteProductCategoryByProductCategoryId" : "/DeleteProductCategory/:ProductCategoryId"
+		},
+		"promotion" : {
+			"home" : "/",
+			"loadAllPromotion" : "/LoadPromotion",
+			"loadPromotionByObjId" : "/LoadPromotionByObjId/:PromotionId",
+			"loadPromotionByCode" : "/LoadPromotionByCode/:PromotionCode",
+			"createPromotion" : "/CreatePromotion",
+			"updatePromotion" : "/UpdatePromotion",
+			"deletePromotionByPromotionId" : "/DeletePromotion/:PromotionId"
 		},
 		"staff" : {
 			"home" : "/",

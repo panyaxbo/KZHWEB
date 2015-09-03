@@ -107,9 +107,8 @@ router.post(mongodbConfig.url.customer.updateCustomer, function (req, res) {
 // Delete Customer Type
 router.get(mongodbConfig.url.customer.loadCustomerByCustomerCode, function (req, res) {
     var CustomerId = req.params.CustomerId;
-    console.log('create customer ' + CustomerId);
-    var BSON = mongodb.BSONPure;
-    var o_id = new BSON.ObjectID(CustomerId.toString());
+    
+    var o_id = bson.BSONPure.ObjectID(CustomerId.toString());
     db.collection(mongodbConfig.mongodb.customer.name)
         .remove({
             _id: o_id

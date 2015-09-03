@@ -68,6 +68,9 @@ router.get(mongodbConfig.url.customer_type.loadCustomerTypeByCustomerTypeCode, f
 router.post(mongodbConfig.url.customer_type.createCustomerType, function (req, res) {
     var CustomerType = req.body;
     console.log('create customer type ' + CustomerType);
+    var curDate = new Date ();
+    curDate.setHours ( curDate.getHours() + 7 );// GMT Bangkok +7
+    customer_type.CreateDate = curDate;
     db.collection(mongodbConfig.mongodb.customer_type.name)
         .insert(CustomerType,
             function (error, result) {
@@ -81,6 +84,8 @@ router.post(mongodbConfig.url.customer_type.updateCustomerType, function (req, r
     console.log('Update customer type 1 ' + req.body);
     var CustomerType = req.body;
     var o_id = bson.BSONPure.ObjectID(CustomerType._id.toString());
+    var updateDate = new Date ();
+    updateDate.setHours ( curDate.getHours() + 7 );
     db.collection(mongodbConfig.mongodb.customer_type.name)
         .update({
                 _id: o_id
@@ -89,7 +94,8 @@ router.post(mongodbConfig.url.customer_type.updateCustomerType, function (req, r
                     'CustomerTypeNameTh': CustomerType.CustomerTypeNameTh,
                     'CustomerTypeNameEn': CustomerType.CustomerTypeNameEn,
                     'CustomerTypeNameCn': CustomerType.CustomerTypeNameCn,
-                    'PriceType': CustomerType.PriceType
+                    'PriceType': CustomerType.PriceType,
+                    'UpdateDate' : updateDate
                 }
             },
             function (error, result) {

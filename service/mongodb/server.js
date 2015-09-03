@@ -3,7 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 
 global.mongodbConfig = require('../mongodb_config.json');
-global.mailConfig = require('../mail_config.json')
+global.mailConfig = require('../mail_config.json');
 global.appRoot = require('app-root-path');
 global.mongodb = require('mongodb');
 global.bson = require('bson');
@@ -31,6 +31,8 @@ var mails = require('./route/mails');
 var receipts = require('./route/receipt_orders');
 var images = require('./route/images');
 var sms = require('../sms/sms');
+var stripe = require('../stripe/stripe');
+var promotions = require('./route/promotions');
 
 //app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -56,10 +58,14 @@ app.use('/mails', mails);
 app.use('/receipts', receipts);
 app.use('/images', images);
 app.use('/sms', sms);
+app.use('/stripe', stripe);
+app.use('/promotions', promotions);
 
 app.listen(mongodbConfig.nodejs_port, function () {
-	//console.log("Start server port " + mongodbConfig.nodejs_port + " is OK...");
+	console.log("Start server port " + mongodbConfig.nodejs_port + " is OK...");
 });
+
+// For localhost use
 
 mongodb.MongoClient.connect(mongodbConfig.connection_url + mongodbConfig.collection_name, function (err, database) {
     if (err) throw err;
@@ -67,6 +73,13 @@ mongodb.MongoClient.connect(mongodbConfig.connection_url + mongodbConfig.collect
     db = database;
 });
 
+/*
+mongodb.MongoClient.connect("mongodb://kzhparts:kzhpartsadmin@ds033123.mongolab.com:33123/kzhparts", function (err, database) {
+    if (err) console.log(err, err.stack.split("\n"));
+    console.log(database);
+    db = database;
+});
+*/
 process.on('uncaughtException', function (err) {
     console.log(err);
 }); 

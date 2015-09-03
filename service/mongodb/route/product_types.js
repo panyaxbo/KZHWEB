@@ -66,6 +66,7 @@ router.get(mongodbConfig.url.product_type.loadProductTypeByCode, function (req, 
 router.post(mongodbConfig.url.product_type.createProductType, function (req, res) {
     var ProductType = req.body;
     console.log('create product type ' + ProductType);
+    ProductType.CreateDate = new Date();
     db.collection(mongodbConfig.mongodb.product_type.name)
         .insert(ProductType,
             function (error, result) {

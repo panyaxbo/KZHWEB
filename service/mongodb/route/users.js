@@ -59,7 +59,7 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
                 // as the first argument (notice that I added an argument 
                 // to the definition of your callback above)
                 console.log(err);
-                res.json(500, err);
+                res.json(500).json(err);
                 return;
             } else {
                 // call your callback with no error and the data
@@ -72,7 +72,7 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
         db.collection(mongodbConfig.mongodb.role.name).findOne(queryRole, function (err, doc) {
             if (err) {
                 console.log(err);
-                res.json(500, err);
+                res.json(500).json(err);
             return;
             } else {
                 console.log(doc);
@@ -84,7 +84,7 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
         db.collection(mongodbConfig.mongodb.staff.name).findOne(queryStaff, function (err, doc) {
             if (err) {
                 console.log(err);
-                res.json(500, err);
+                res.json(500).json(err);
                 return;
             } else {
                 console.log(doc);
@@ -95,7 +95,7 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
     findOneAppUser(query, function (err, doc) {
         if (err) {
             // something went wrong
-            res.json(500, err);
+            res.json(500).json(err);
             return;
         }
         if (doc) {
@@ -141,7 +141,7 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
                 res.json(doc);
             }
         } else {
-            res.json(500, err);
+            res.json(500).json(err);
             return;
         }
     }); //End findOneAppUser 
@@ -160,10 +160,8 @@ router.post(mongodbConfig.url.user.createAppUser, function (req, res) {
 
 // Update AppUser
 router.post(mongodbConfig.url.user.updateAppUser, function (req, res) {
-    console.log('update user ' + req.body);
     var AppUser = req.body;
-    var BSON = mongodb.BSONPure;
-    var o_id = new BSON.ObjectID(AppUser._id);
+    var o_id = bson.BSONPure.ObjectID(AppUser._id.toString());
     db.collection(mongodbConfig.mongodb.user.name)
         .update({
                 _id: o_id
@@ -184,9 +182,7 @@ router.post(mongodbConfig.url.user.updateAppUser, function (req, res) {
 // Delete AppUser
 router.get(mongodbConfig.url.user.deleteAppUserByAppUserId, function (req, res) {
     var AppUserId = req.params.AppUserId;
-    console.log('create app user ' + AppUserId);
-    var BSON = mongodb.BSONPure;
-    var o_id = new BSON.ObjectID(AppUserId);
+    var o_id = bson.BSONPure.ObjectID(AppUserId.toString());
     db.collection(mongodbConfig.mongodb.user.name)
         .remove({
             _id: o_id

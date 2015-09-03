@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 router.get(mongodbConfig.url.receipt.home, function (req, res) {
-
+    
 });
 
 router.get(mongodbConfig.url.receipt.loadAllReceipt, function (req, res) {
@@ -41,7 +41,7 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
         });
 
     function FindROLineByROHeadId(ROHeadId, callback) {
-        console.log('FindROLineByROHeadId ' + ROHeadId);
+     //   console.log('FindROLineByROHeadId ' + ROHeadId);
         db.collection(mongodbConfig.mongodb.roline.name)
             .find({
                 'RoHeadId': ROHeadId
@@ -53,19 +53,65 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
     }
 });
 
-// Create ROHead
+// Create ROHead & ROLine
 router.post(mongodbConfig.url.receipt.createReceipt, function (req, res) {
     var ROHead = req.body;
     var ROLineList = ROHead.ROLineList;
-    console.log('create ro-head ' + ROHead);
-
+//    console.log(ROHead);
+//    console.log(ROHead.ROLineList);
+    ROHead.UserId = bson.BSONPure.ObjectID(ROHead.UserId);
+    ROHead.ProvinceId = bson.BSONPure.ObjectID(ROHead.ProvinceId);
+    ROHead.DistrictId = bson.BSONPure.ObjectID(ROHead.DistrictId);
+    ROHead.SubDistrictId = bson.BSONPure.ObjectID(ROHead.SubDistrictId);
+    ROHead.ZipCode = bson.BSONPure.ObjectID(ROHead.ZipCode);
+ //   console.log('new Date() '+ new Date());
+    var curDate = new Date ();
+    curDate.setHours ( curDate.getHours() + 7 );// GMT Bangkok +7
+    ROHead.RODate = curDate; 
+//    console.log('ROHead.RODate '+ ROHead.RODate);
+    var CreateROLine = function (roline, callback) {
+        delete roline.Uoms;
+        db.collection(mongodbConfig.mongodb.roline.name)
+        .insert(roline,
+            function (error, created_roline) {
+                if (error) { 
+                    console.log(error, error.stack.split("\n"));
+                } else {
+                    callback(null, created_roline);
+                }
+            });
+    }
+    delete ROHead.ROLineList;
     db.collection(mongodbConfig.mongodb.rohead.name)
         .insert(ROHead,
             function (error, rohead) {
-                if (error) throw error
-                    
-                res.json(rohead);
+                if (error) {
+                    console.log(error, error.stack.split("\n"));
+                }
+                console.log('ccreate rohead success ');
+                console.log(rohead);
+                var rolineToCreate = ROLineList.length;
+                var CreateROLineList = [];
+                for (var i = 0; i < ROLineList.length; i++) {
+                    var roline = ROLineList[i];
+                    roline.ROHeadId = rohead._id;// bson.BSONPure.ObjectID(ROHead._id);
+                    CreateROLine(roline, function (err, created_roline) {
+                        if (err) {
+                            console.log(err, err.stack.split("\n"));
+                        } else {
+                            console.log(created_roline);
+                            CreateROLineList.push(created_roline);
+                            rolineToCreate -= 1;
+
+                            if (rolineToCreate === 0) {
+                               ROHead.ROLineList = CreateROLineList;
+                               res.json(ROHead);
+                            }
+                        }
+                    });
+                }
             });
+
 });
 
 // Update ROHead
@@ -113,13 +159,14 @@ router.get(mongodbConfig.url.receipt.loadROHeadByUserIdAndStatus, function (req,
     var end = endDate.split('-');
     console.log(start + '-' + end);
     console.log('userId ' + userId);
+    var currentDate = new Date().toISOString().split('T')[0].split('-');
     db.collection(mongodbConfig.mongodb.rohead.name)
         .find({
             RODate: {
-               $lte: new Date(end[2]+"-"+end[1]+"-"+end[0]+"T99:99:999Z")
+               $lte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
             },
             RODate : {
-               $gte: new Date(start[2]+"-"+start[1]+"-"+start[0]+"T99:99:999Z")
+               $gte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
             },
             PaymentStatus: paymentStatus,
             ShippingStatus: shippingStatus,
@@ -147,13 +194,14 @@ router.get(mongodbConfig.url.receipt.loadROHeadByStaff, function (req, res) {
     var end = endDate.split('-');
 //    console.log(start + '-' + end);
     console.log('userId ' + userId);
+    var currentDate = new Date().toISOString().split('T')[0].split('-');
     db.collection(mongodbConfig.mongodb.rohead.name)
         .find({
             RODate: {
-               $lte: new Date(end[2]+"-"+end[1]+"-"+end[0]+"T99:99:999Z")
+               $lte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
             },
             RODate : {
-               $gte: new Date(start[2]+"-"+start[1]+"-"+start[0]+"T99:99:999Z")
+               $gte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
             },
             PaymentStatus: paymentStatus,
             ShippingStatus: shippingStatus,

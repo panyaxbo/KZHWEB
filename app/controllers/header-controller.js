@@ -1,109 +1,282 @@
-app.controller("HeaderController", function ($scope, $location, $anchorScroll, Upload,
-    $rootScope, $http, $translate,$timeout, blockUI, ngDialog, Facebook, MenuService, LocaleService, ReceiptOrderService, CurrencyService,
-     BASE_URL, ENCRYPT) {
-
-    // Define user empty data :/
-      $scope.user = {};
-      
-      // Defining user logged status
-      $scope.logged = false;
-      
-      // And some fancy flags to display messages upon user status change
-      $scope.byebye = false;
-      $scope.salutation = false;
-      /**
-       * Watch for Facebook to be ready.
-       * There's also the event that could be used
-       */
-      $scope.$watch(
-        function() {
-          return Facebook.isReady();
-        },
-        function(newVal) {
-          if (newVal)
-            $scope.facebookReady = true;
-        }
-      );
-      
-      var userIsConnected = false;
-      
-      Facebook.getLoginStatus(function(response) {
-        if (response.status == 'connected') {
-          userIsConnected = true;
-        }
-      });
-      
-      /**
-       * IntentLogin
-       */
-      $scope.IntentLogin = function() {
-        if(!userIsConnected) {
-          $scope.login();
-        }
-      };
-      
-      /**
-       * Login
-       */
-       $scope.loginFacebook = function() {
-         Facebook.login(function(response) {
-          if (response.status == 'connected') {
-            $scope.logged = true;
-            $scope.me();
-          }
-        
-        });
-       };
-       
-       /**
-        * me 
-        */
-        $scope.me = function() {
-          Facebook.api('/me', function(response) {
-            /**
-             * Using $scope.$apply since this happens outside angular framework.
-             */
-            $scope.$apply(function() {
-              $scope.user = response;
+app.controller("HeaderController", function ($scope, $location,$window, $anchorScroll, Upload,$rootScope, $http, $translate,$timeout, 
+  blockUI, ngDialog, MenuService, LocaleService, ReceiptOrderService, CurrencyService,BASE_URL, 
+  ENCRYPT, vcRecaptchaService) {
+/*
+var forceSSL = function () {
+    if ($location.protocol() !== 'https') {
+        $window.location.href = $location.absUrl().replace('http', 'https');
+    }
+};
+forceSSL();*/
+    $scope.ShowSearch = function() {
+      $('#SearchCriteria').addClass("open");      
+    }
+    $scope.HideSearch = function() {
+      $('#SearchCriteria').removeClass("open");      
+    }
+    $scope.LoginWithSocial = function (provider) {
+        //Let's say the /me endpoint on the provider API returns a JSON object
+        //with the field "name" containing the name "John Doe"
+        blockUI.start("Logging in " +provider + ", please wait");
+        OAuth.popup(provider)
+        .done(function(result) {
+            result.me()
+            .done(function (response) {
+                //this will display "John Doe" in the console
+                //
+                console.log(response);
+                $scope.$apply(function() {
+                  $scope.PopulateValue(provider, response);
+                });
+            })
+            .fail(function (err) {
+                //handle error with err
+                console.log(err.message + err.stack);
             });
-            
-          });
-        };
-      
-      /**
-       * Logout
-       */
-      $scope.logout = function() {
-        Facebook.logout(function() {
-          $scope.$apply(function() {
-            $scope.user   = {};
-            $scope.logged = false;  
-          });
+        })
+        .fail(function (err) {
+            //handle error with err
+            console.log(err.message + err.stack);
         });
-      }
-      
-      /**
-       * Taking approach of Events :D
-       */
-      $scope.$on('Facebook:statusChange', function(ev, data) {
-//        console.log('Status: ', data);
-        if (data.status == 'connected') {
-          $scope.$apply(function() {
-            $scope.salutation = true;
-            $scope.byebye     = false;    
+        blockUI.stop();
+    }
+    
+    $scope.PopulateValue = function(provider, response) {
+    //    $scope.user = response;
+        if (provider === 'facebook') {
+          $scope.User.Firstname = response.first_name;
+          $scope.User.Lastname = response.last_name;
+          $scope.User.Gender = response.gender;
+          $scope.User.Email = response.email;
+          $scope.User.DisplayName = response.name;
+          $scope.User.Terminal = "facebook";
+          $scope.User.UserType = "user";
+          $scope.IsLogin = true;
+          $scope.IsAdmin = false;
+          $scope.IsGuest = false;
+          //Load Facebook graph profile image picture
+          var facebookImageUrl = response.avatar;
+          $http.get(facebookImageUrl)
+          .success(function(data, status, headers, config) {
+            $('#UserProfileImage').children("img").remove();
+            var imageFacebookTag = "<img src='" + config.url + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
+            $('#UserProfileImage').append(imageFacebookTag);
+
+            $("#LoginModal").modal("toggle");
+          })
+          .error(function(data, status, headers, config) {
+            console.log("Oops!! error for loading profile pic from facebook ");
           });
-        } else {
-          $scope.$apply(function() {
-            $scope.salutation = false;
-            $scope.byebye     = true;
-            
-            // Dismiss byebye message after two seconds
-            $timeout(function() {
-              $scope.byebye = false;
-            }, 2000)
+        } 
+        else if (provider === 'google_plus') {
+          $scope.User.Firstname = response.firstname;
+          $scope.User.Lastname = response.lastname;
+          $scope.User.Gender = response.gender;
+          $scope.User.Email = response.email;
+          $scope.User.DisplayName = response.name;
+          $scope.User.Terminal = "google+";
+          $scope.User.UserType = "user";
+          $scope.IsLogin = true;
+          $scope.IsAdmin = false;
+          $scope.IsGuest = false;
+          //Load Google+ graph profile image picture
+          var facebookImageUrl = response.avatar;
+          $http.get(facebookImageUrl)
+          .success(function(data, status, headers, config) {
+            $('#UserProfileImage').children("img").remove();
+            var imageFacebookTag = "<img src='" + config.url + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
+            $('#UserProfileImage').append(imageFacebookTag);
+
+            $("#LoginModal").modal("toggle");
+          })
+          .error(function(data, status, headers, config) {
+            console.log("Oops!! error for loading profile pic from facebook ");
           });
         }
-      });
+        else if (provider === 'twitter') {
+          
+          $scope.User.Firstname = response.alias;
+          $scope.User.Lastname = response.last_name;
+          $scope.User.Gender = response.gender;
+          $scope.User.Email = response.email;
+          $scope.User.DisplayName = response.name;
+          $scope.User.Terminal = "twitter";
+          $scope.User.UserType = "user";
+          $scope.IsLogin = true;
+          $scope.IsAdmin = false;
+          $scope.IsGuest = false;
+
+          var twitterImageUrl = response.avatar;
+          $http.get(twitterImageUrl)
+          .success(function(data, status, headers, config) {
+            $('#UserProfileImage').children("img").remove();
+            var imageFacebookTag = "<img src='" + config.url + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
+            $('#UserProfileImage').append(imageFacebookTag);
+
+            $("#LoginModal").modal("toggle");
+          })
+          .error(function(data, status, headers, config) {
+            console.log("Oops!! error for loading profile pic from linkedin.");
+          });
+        } 
+        else if (provider === 'linkedin') {
+          $scope.User.Firstname = response.firstname;
+          $scope.User.Lastname = response.lastname;
+          $scope.User.Gender = response.gender;
+          $scope.User.Email = response.email;
+          $scope.User.DisplayName = response.name;
+          $scope.User.Terminal = "linkedin";
+          $scope.User.UserType = "user";
+          $scope.IsLogin = true;
+          $scope.IsAdmin = false;
+          $scope.IsGuest = false;
+
+          var linkedinImageUrl = response.avatar;
+      //    $http.get(linkedinImageUrl)
+      //    .success(function(data, status, headers, config) {
+      //      config.log(data);
+      //      config.log(status);
+      //      config.log(headers);
+      //      config.log(config);
+            $('#UserProfileImage').children("img").remove();
+            var imageLinkedinTag = "<img src='" + linkedinImageUrl + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
+            $('#UserProfileImage').append(imageLinkedinTag);
+
+      //      $("#LoginModal").modal("toggle");
+      //    })
+      //    .error(function(data) {
+      //      console.log("Oops!! error for loading profile pic from linkedin ");
+      //    });
+        }
+        else if (provider === 'instagram') {
+          $scope.User.Firstname = response.alias;
+          $scope.User.Lastname = response.lastname;
+          $scope.User.Gender = response.gender;
+          $scope.User.Email = response.email;
+          $scope.User.DisplayName = response.name;
+          $scope.User.Terminal = "instagram";
+          $scope.User.UserType = "user";
+          $scope.IsLogin = true;
+          $scope.IsAdmin = false;
+          $scope.IsGuest = false;
+
+          var instagramImageUrl = response.avatar;
+          $http.get(instagramImageUrl)
+          .success(function(data, status, headers, config) {
+            $('#UserProfileImage').children("img").remove();
+            var imageInstagramTag = "<img src='" + config.url + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
+            $('#UserProfileImage').append(imageInstagramTag);
+
+            $("#LoginModal").modal("toggle");
+          })
+          .error(function(data) {
+            console.log("Oops!! error for loading profile pic from instagram ");
+          });
+        }
+        else if (provider === 'github') {
+          $scope.User.Firstname = response.alias;
+          $scope.User.Lastname = response.lastname;
+          $scope.User.Gender = response.gender;
+          $scope.User.Email = response.email;
+          $scope.User.DisplayName = response.name;
+          $scope.User.Terminal = "github";
+          $scope.User.UserType = "user";
+          $scope.IsLogin = true;
+          $scope.IsAdmin = false;
+          $scope.IsGuest = false;
+
+          var githubImageUrl = response.avatar;
+          $http.get(githubImageUrl)
+          .success(function(data, status, headers, config) {
+            $('#UserProfileImage').children("img").remove();
+            var imageGithubTag = "<img src='" + config.url + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
+            $('#UserProfileImage').append(imageGithubTag);
+
+            $("#LoginModal").modal("toggle");
+          })
+          .error(function(data) {
+            console.log("Oops!! error for loading profile pic from github ");
+          });
+        }
+
+        else if (provider === 'dropbox') {
+          $scope.User.Firstname = response.name;
+          $scope.User.Lastname = response.lastname;
+          $scope.User.Gender = response.gender;
+          $scope.User.Email = response.email;
+          $scope.User.DisplayName = response.name;
+          $scope.User.Terminal = "dropbox";
+          $scope.User.UserType = "user";
+          $scope.IsLogin = true;
+          $scope.IsAdmin = false;
+          $scope.IsGuest = false;
+
+        /*  var dropboxImageUrl = response.avatar;
+          $http.get(instagramImageUrl)
+          .success(function(data, status, headers, config) {
+            $('#UserProfileImage').children("img").remove();
+            var imageDropboxTag = "<img src='" + dropboxImageUrl + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
+            $('#UserProfileImage').append(imageDropboxTag);
+
+            $("#LoginModal").modal("toggle");
+          })
+          .error(function(data) {
+            console.log("Oops!! error for loading profile pic from dropbox ");
+          });*/
+        }
+
+        else if (provider === 'foursquare') {
+          $scope.User.Firstname = response.name;
+          $scope.User.Lastname = response.lastname;
+          $scope.User.Gender = response.gender;
+          $scope.User.Email = response.email;
+          $scope.User.DisplayName = response.name;
+          $scope.User.Terminal = "foursquare";
+          $scope.User.UserType = "user";
+          $scope.IsLogin = true;
+          $scope.IsAdmin = false;
+          $scope.IsGuest = false;
+
+          var foursquareImageUrl = response.avatar;
+      //    $http.get(foursquareImageUrl)
+      //    .success(function(data, status, headers, config) {
+            $('#UserProfileImage').children("img").remove();
+            var imageFoursquareTag = "<img src='" + foursquareImageUrl + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
+            $('#UserProfileImage').append(imageFoursquareTag);
+
+            $("#LoginModal").modal("toggle");
+      //    })
+      //    .error(function(data, status, headers, config) {
+      //      console.log("Oops!! error for loading profile pic from foursquare ");
+      //    });
+        }
+
+        else if (provider === 'soundcloud') {
+          $scope.User.Firstname = response.alias;
+          $scope.User.Lastname = response.lastname;
+          $scope.User.Gender = response.gender;
+          $scope.User.Email = response.email;
+          $scope.User.DisplayName = response.name;
+          $scope.User.Terminal = "soundcloud";
+          $scope.User.UserType = "user";
+          $scope.IsLogin = true;
+          $scope.IsAdmin = false;
+          $scope.IsGuest = false;
+
+          var soundcloudImageUrl = response.avatar;
+      //    $http.get(soundcloudImageUrl)
+      //    .success(function(data, status, headers, config) {
+            $('#UserProfileImage').children("img").remove();
+            var imageSoundcloudTag = "<img src='" + soundcloudImageUrl + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
+            $('#UserProfileImage').append(imageSoundcloudTag);
+
+            $("#LoginModal").modal("toggle");
+      //    })
+      //    .error(function(data, status, headers, config) {
+      //      console.log("Oops!! error for loading profile pic from soundcloud ");
+      //    });
+        }
+    }
 
     $scope.Locale = "th";
     $scope.Currency = "thb";
@@ -165,7 +338,7 @@ app.controller("HeaderController", function ($scope, $location, $anchorScroll, U
     });
 
     $scope.SelectedHeadMenu = function (menu) {
-    //    console.log("head ctrl " + menu);
+        console.log("head ctrl " + menu);
         $scope.SelectedMenu = menu;
         if (menu == "article") {
             MenuService.Menu.SelectedMenu = "article";
@@ -319,8 +492,14 @@ app.controller("HeaderController", function ($scope, $location, $anchorScroll, U
                 $("#LoginModal").modal("toggle");
             })
             .error(function (data, status, headers, config) {
-
+ 
             });
+            //Clear Fields after sign up successfully
+            $scope.Firstname = "";
+            $scope.Lastname = "";
+            $scope.Email = "";
+            $scope.Username = "";
+            $scope.Password = "";
         })
         .error(function(data, status, headers, config) {
             swal("Error", "Cannot sign up this time", "error");
@@ -431,8 +610,6 @@ app.controller("HeaderController", function ($scope, $location, $anchorScroll, U
                       $scope.User.Role.RoleCode = data.Role.RoleCode;
                       $scope.User.Role.RoleNameEn = data.Role.RoleNameEn;
                       $scope.User.Role.RoleNameTh = data.Role.RoleNameTh;
-                //      $scope.User.Staff.Firstname = data.Staff.Firstname;
-                //      $scope.User.Staff.Lastname = data.Staff.Lastname;
                       $scope.Firstname = data.Firstname;
                       $scope.Lastname = data.Lastname;
                       $scope.User.Email = data.Email;
@@ -445,6 +622,38 @@ app.controller("HeaderController", function ($scope, $location, $anchorScroll, U
                       }
                       $scope.IsLogin = true;
                       $("#LoginModal").modal("toggle");
+
+                      var downloadUrl = BASE_URL.PATH + '/images/downloadUserImageProfile/'+$scope.User.Id + '/'+ $scope.User.Username;
+                    $http.get(downloadUrl)
+                    .success(function (data, status, headers, config) {
+                        $scope.User.ProfileImage = data;
+                      //  find("img").remove(); 
+                    //    $('#UserProfileImage').find("img").remove().append(data);
+                        $('#UserProfileImage').children("img").remove();
+                        $('#UserProfileImage').append(data);
+                    })
+                    .error(function (data, status, headers, config) {
+                        console.log(data);
+
+                    });
+                    // Download Image for User Thumbnail
+                    var downloadThumbnailUrl = BASE_URL.PATH + '/images/downloadUserImageThumbnail/'+$scope.User.Id + '/'+ $scope.User.Username;
+                    $http.get(downloadThumbnailUrl)
+                    .success(function (data, status, headers, config) {
+                    //    $scope.User.ProfileImage = data;
+                    //    $(this).children("img").remove();
+                   //     $('#ThumbnailProfileImage').find("img").remove().append(data);
+                        $('#ThumbnailProfileImage').children("img").remove();
+                        $('#ThumbnailProfileImage').append(data);
+                    })
+                    .error(function (data, status, headers, config) {
+                        console.log(data);
+
+                    });
+
+                      //Clear value after login successfully
+                      $scope.username = "";
+                      $scope.password = "";
 
                       $scope.$emit('handleUserEmit', {
                           User: $scope.User
@@ -476,35 +685,51 @@ app.controller("HeaderController", function ($scope, $location, $anchorScroll, U
           confirmButtonColor: "#dd6b55",
           confirmButtonText: "Yes, log out!",
           cancelButtonText: "No, cancel please!",
-          closeOnConfirm: true,
-          closeOnCancel: true
+          closeOnConfirm: false,
+          closeOnCancel: false
         },
         function(isConfirm){
-          if (isConfirm) {
-            console.log('confilrm');
-            $scope.User = {};
-            $scope.IsLogin = false;
-          } else {
-            console.log('cancel');
-            swal("Cancelled", "Stay in system :)", "error");
-          }
+            $scope.$apply(function() {
+              if (isConfirm) {
+                swal("Success", "Log out success", "success");
+                $scope.User = {};
+                $scope.IsLogin = false;
+                $scope.IsAdmin = false;
+                $scope.IsGuest = true;
+             //   $('#UserProfileImage').children("img").remove();
+                $scope.AddNoProfileUserImage();
+              } else {
+                console.log('cancel');
+                swal("Cancelled", "Stay in system :)", "success");
+              }
+          });
         });
     }
 
+    $scope.AddNoProfileUserImage = function() {
+      $('#UserProfileImage').children("img").remove();
+      var imageNoProfile = "<img src=\"/images/noProfileImg.png\"  class=\"img-circle\" width=\"40\" height=\"40\">";
+      $('#UserProfileImage').append(imageNoProfile);
+    }
     $scope.ViewCart = function () {
         console.log("view cart " + $scope.ROHead);
     }
 
     $scope.UpdateCartBuyQty = function (index, qty) {
-    //  console.log("UpdateCartBuyQty ..");
-      var reg = new RegExp('/^\d+$/');
-      var isnum = reg.test(qty);
-      console.log(qty+" buy qty " + isnum);
+      
+      var regexp = /^\d+(\.\d{1,2})?$/;
+
+      var isnum = regexp.test(qty.toString());
+   //   console.log(qty+" buy qty " + isnum);
       if (isnum) 
       {
           $scope.UpdateCartSummary();
       } else {
-          swal("Warning", "Must input quantity as a number", "warning");
+          var warn = $translate('MESSAGE.CONTENT.UPDATE_CART_BUY_QTY');
+          swal("Warning", warn, "warning");
+         // swal("Warning", "Must input quantity as a number or more than 0", "warning");
+       //   $translate('TITLE.DASHBOARD');
+          $('#BuyQty')[index].focus();
       }
     }
 
@@ -537,7 +762,7 @@ app.controller("HeaderController", function ($scope, $location, $anchorScroll, U
 
     }
     $scope.DeleteCartProduct = function (Row, ROLine, index) {
-      console.log("DeleteCartProduct .." + index + " ROLine " + ROLine + " Row " + Row);
+   //   console.log("DeleteCartProduct .." + index + " ROLine " + ROLine + " Row " + Row);
         swal({
           title: "Are you sure?",
           text: "คุณต้องการลบรายการสินค้า " + ROLine.ProductNameTh + " !",
@@ -550,28 +775,36 @@ app.controller("HeaderController", function ($scope, $location, $anchorScroll, U
           closeOnCancel: true
         },
         function(isConfirm){
-          if (isConfirm) {
-         //   $scope.ROHead.ROLineList.splice(index, 1);
-        //    $("#CartRow" +index).parent('tr').remove();
-       //     $(Row).parent('tr').remove();
-//$scope.UpdateCartSummary();
-            console.log('ROHead.ROLineList ' + $scope.ROHead.ROLineList.length);
-            console.log('ROLineList ' + $scope.ROLineList.length);
+        /*  if (isConfirm) {
             $('#CartRow'+index).remove();
             $scope.ROHead.ROLineList.splice(index, 1);
             $scope.ROLineList.splice(index, 1);
-            console.log('ROHead.ROLineList ' + $scope.ROHead.ROLineList.length);
-            console.log('ROLineList ' + $scope.ROLineList.length);
-            if ($scope.ROHead.ROLineList.length <= 0) {
+            if ($scope.ROHead.ROLineList.length <= 0 || $scope.ROHead.ROLineList === undefined) {
               $('#HideCartTable').show('slow');
               $('#ShowCartTable').hide('slow');
             } else if ($scope.ROHead.ROLineList.length > 0) {
               $('#HideCartTable').hide('slow');
               $('#ShowCartTable').show('slow');
             }
+            $scope.UpdateCartSummary();
           } else {
-            //    swal("Cancelled", "Your imaginary file is safe :)", "error");
-          }
+          }*/
+          $scope.$apply(function() {
+             if (isConfirm) {
+              $('#CartRow'+index).remove();
+              $scope.ROHead.ROLineList.splice(index, 1);
+              $scope.ROLineList.splice(index, 1);
+              if ($scope.ROHead.ROLineList.length <= 0 || $scope.ROHead.ROLineList === undefined) {
+                $('#HideCartTable').show('slow');
+                $('#ShowCartTable').hide('slow');
+              } else if ($scope.ROHead.ROLineList.length > 0) {
+                $('#HideCartTable').hide('slow');
+                $('#ShowCartTable').show('slow');
+              }
+              $scope.UpdateCartSummary();
+            } else {
+            }
+          });
         });
     }
 
@@ -741,28 +974,39 @@ app.controller("HeaderController", function ($scope, $location, $anchorScroll, U
           closeOnCancel: true
         },
         function(isConfirm){
-          if (isConfirm) {
-            var list = $scope.ROHead.ROLineList;
-            var len = list.length;
-            $scope.ROHead.ROLineList.length = 0;
-          //    $("#CartModal").reload();
-          //  $scope.ROHead.ROLineList.length = 0;
-          } else {
-                swal("Cancelled", "Your product data is safe :)", "error");
-          }
+          $scope.$apply(function() {
+            if (isConfirm) {
+              var list = $scope.ROHead.ROLineList;
+              var len = list.length;
+              $scope.ROHead.ROLineList.length = 0;
+            //    $("#CartModal").reload();
+            //  $scope.ROHead.ROLineList.length = 0;
+            } else {
+                  swal("Cancelled", "Your product data is safe :)", "success");
+            }
+          });
         });
     }
 
     $scope.ShipmentProcess = function () {
         console.log("shipment..");
-        $scope.SelectedMenu = "shipment";
-        
         $("#CartModal").modal("toggle");
+
+     //   $scope.$apply(function() {
+     
+          $scope.SelectedMenu = "shipment";
+          
+          MenuService.Menu.SelectedMenu = "shipment";
+          $('html, body').animate({ scrollTop: $('#shipment-section').offset().top }, 'slow');
+          $scope.$emit('handleHeadMenuEmit', {
+              SelectedMenu: 'shipment'
+          });
         
-        $scope.ScrollToShipmentSection();
+         //  $scope.ScrollToShipmentSection();
+    //    });
     }
     $scope.ScrollToShipmentSection = function () {
-      console.log('ScrollToShipmentSection');
+        console.log('ScrollToShipmentSection');
         $scope.SelectedMenu = "shipment";
 
         MenuService.Menu.SelectedMenu = "shipment";
@@ -782,5 +1026,42 @@ app.controller("HeaderController", function ($scope, $location, $anchorScroll, U
     $scope.ngDialog = function() {
       ngDialog.open({ template: 'popupTmpl.html' });
     }
+
+    $scope.response = null;
+    $scope.widgetId = null;
+    $scope.model = {
+        key: '6LeVN-ESAAAAAGFk4yeban3O4yjwoa7S-b2mVRWt'
+    };
+    $scope.setResponse = function (response) {
+        console.info('Response available');
+        $scope.response = response;
+    };
+    $scope.setWidgetId = function (widgetId) {
+        console.info('Created widget ID: %s', widgetId);
+        $scope.widgetId = widgetId;
+    };
+    $scope.cbExpiration = function() {
+        console.info('Captcha expired. Resetting response object');
+        $scope.response = null;
+     };
+    $scope.submit = function () {
+        var valid;
+        /**
+         * SERVER SIDE VALIDATION
+         *
+         * You need to implement your server side validation here.
+         * Send the reCaptcha response to the server and use some of the server side APIs to validate it
+         * See https://developers.google.com/recaptcha/docs/verify
+         */
+        console.log('sending the captcha response to the server', $scope.response);
+        if (valid) {
+            console.log('Success');
+        } else {
+            console.log('Failed validation');
+            // In case of a failed validation you need to reload the captcha
+            // because each response can be checked just once
+            vcRecaptchaService.reload($scope.widgetId);
+        }
+    };
 
 });

@@ -2,6 +2,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
     $http, MenuService, ReceiptOrderService, UserService, BASE_URL) {
     $scope.Product = [];
 //$scope.translatedText = $translate('ANOTHER_TEXT', { value: 10 });
+//$translate.instant('TITLE.DASHBOARD');
     $scope.ROHead = {
         SumAmount: 0,
         SumVatAmount: 0,
@@ -34,8 +35,10 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
 
     // Initialize General Setting Module
     $scope.ViewProductTypeData = {};
+    $scope.SearchProductTypeData = {};
     $scope.ViewProductCategoryData = {};
     $scope.ViewProductData = {};
+    $scope.ViewPromotionData = {};
     $scope.ViewCustomerData = {};
     $scope.ViewCustomerTypeData = {};
     $scope.ViewStaffData = {};
@@ -53,8 +56,16 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
     $scope.PaymentType= "";
 
     $scope.$on('handleHeadMenuBroadcast', function (event, args) {
+        console.log('broadcast from head to body '+args.SelectedMenu);
+   
         $scope.SelectedMenu = args.SelectedMenu;
         if ($scope.SelectedMenu == 'history') {
+            $scope.StartDate = new Date().getDate() +"-" + (new Date().getMonth() + 1) +"-" + new Date().getFullYear() ;
+            $scope.EndDate = new Date().getDate() +"-" + (new Date().getMonth() + 1) +"-" + new Date().getFullYear();
+            $scope.SearchPaymentStatus = "N";
+            $scope.SearchShippingStatus = "N";
+        }
+        else if ($scope.SelectedMenu == 'customer-order') {
             $scope.StartDate = new Date().getDate() +"-" + (new Date().getMonth() + 1) +"-" + new Date().getFullYear() ;
             $scope.EndDate = new Date().getDate() +"-" + (new Date().getMonth() + 1) +"-" + new Date().getFullYear();
             $scope.SearchPaymentStatus = "N";
@@ -63,8 +74,13 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
         else if ($scope.SelectedMenu == 'setting') {
             $('#ProductTypeTab').addClass("active");
             $scope.SearchProductType();
-        }
-    //    console.log('body ctrl from head $scope.SelectedMenu ' + $scope.SelectedMenu);
+        } 
+        else if ($scope.SelectedMenu  == 'shipment') {
+            $('html, body').animate({ scrollTop: $('#shipment-section').offset().top }, 'slow');
+        } 
+        
+        console.log('body $scope.SelectedMenu ' + $scope.SelectedMenu);
+     
     });
 
     $scope.$on('handleUserBroadcast', function (event, args) {
@@ -107,10 +123,11 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
         } else if (menu == "thai-post") {
             MenuService.Menu.SelectedMenu = "thai-post";
             $scope.SelectedMenu = "thai-post";
-        } else {
-            MenuService.Menu.SelectedMenu = "product";
-            $scope.SelectedMenu = "product";
-        }
+        } 
+    //    else {
+    //        MenuService.Menu.SelectedMenu = "product";
+    //        $scope.SelectedMenu = "product";
+    //    }
         $scope.$emit('handleBodyMenuEmit', {
             SelectedMenu: menu
         });
@@ -147,6 +164,8 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
         $http.get(url)
             .success(function (data) {
                 $scope.Product = data;
+
+
             })
             .error(function () {
                 //    alert("Cannot get Product data from Server..");
@@ -181,6 +200,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
                 ROLine.Uoms = SelectedProduct.Uom;
                 ROLine.UomCode = SelectedProduct.UomCode;
 
+                
                 ROLine.DrRetailPrice = SelectedProduct.RetailPrice;
                 ROLine.DrCostPrice = SelectedProduct.CostPrice;
                 ROLine.DrWholesalePrice = SelectedProduct.WholesalePrice;
@@ -199,6 +219,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
                 $scope.ROHead.SumDiscountAmount += ROLine.DiscountAmount;
                 $scope.ROHead.NetAmount = $scope.ROHead.SumAmount + $scope.ROHead.SumVatAmount - $scope.ROHead.SumDiscountAmount;
 
+                
                 $scope.ROLineList.push(ROLine);
                 console.log($scope.ROHead.SumAmount);
                 ReceiptOrderService.ROHead.SumAmount = $scope.ROHead.SumAmount;
@@ -212,26 +233,58 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
                     ROHead: ReceiptOrderService.ROHead
                 });
 
-                sweetAlert("สำเร็จ", "ใส่รายการ " + SelectedProduct.ProductNameTh + " จำนวน " + BuyQty + " ในตะกร้าสำเร็จ !!", "success");
+          /*      sweetAlert({"สำเร็จ", "ใส่รายการ " + SelectedProduct.ProductNameTh + " จำนวน " + BuyQty + " ในตะกร้าสำเร็จ !!", "success"
+                }, function({
+                    $scope.$apply(function(){
+                        var someimage = document.getElementById('ThumbnailProductImage_'+SelectedProduct.ProductCode);
+                        var myimg = someimage.getElementsByTagName('img')[2]; //[0] stripe-new [1] stripe-sale
+                        console.log(someimage);    
+                        console.log(myimg);
+                        $('#CartProduct_'+SelectedProduct.ProductCode).append(myimg);
+
+                    });
+                });*/
+                swal({
+                  title: "สำเร็จ",
+                  text: "ใส่รายการ " + SelectedProduct.ProductNameTh + " จำนวน " + BuyQty + " ในตะกร้าสำเร็จ !!",
+                  type: "success",
+                  showCancelButton: false,
+                  confirmButtonColor: "#5583dd",
+                  confirmButtonText: "OK",
+                  closeOnConfirm: true
+                },
+                function(isConfirm){
+                  if (isConfirm) {
+                    $scope.$apply(function(){
+                        var someimage = document.getElementById('ThumbnailProductImage_'+SelectedProduct.ProductCode);
+                        var myimg = someimage.getElementsByTagName('img')[2]; //[0] stripe-new [1] stripe-sale
+                        var image_tag = myimg.cloneNode(true); // Must clone because image thumbnail will disappear
+
+                        image_tag.setAttribute("width", "50px");
+                        image_tag.setAttribute("height", "50px");
+                        $('#CartProduct_'+SelectedProduct.ProductCode).append(image_tag);
+
+                    });
+                  } else {
+                        swal("Cancelled", "Your imaginary file is safe :)", "error");
+                  }
+                });
             } else {
                 //alert("จำนวนต้องเป็นตัวเลข และ มากกว่า 0");
                 sweetAlert("เกิดข้อผิดพลาด", "จำนวนต้องเป็นตัวเลข และ มากกว่า 0", "warning");
                 //      ROHead.ROLineList[Index].BuyQty = 0;
             }
         }
-        /*
-            $scope.LoadProductByProductTypeCode = function (ProductTypeCode) {
-                    console.log("Move in to FilterProductByProductType " + ProductTypeCode);
-                    var url = "http://localhost:3000/products/LoadProductByProductTypeCode/" + ProductTypeCode;
-                    $http.get(url)
-                        .success(function (data) {
-                            $scope.Product = data;
-                        })
-                        .error(function () {
-                            //    alert("Cannot get Product data from Server..");
-                        });
-                }
-                */
+        $scope.AddImageToCart = function() {
+            var someimage = document.getElementById('ThumbnailProductImage_'+SelectedProduct.ProductCode);
+            var myimg = someimage.getElementsByTagName('img')[2]; //[0] stripe-new [1] stripe-sale
+        //    var mysrc = myimg.src;
+            console.log(someimage);    
+            console.log(myimg);
+        //    $('#CartProduct_'+SelectedProduct.ProductCode).children("img").remove();
+            $('#CartProduct_'+SelectedProduct.ProductCode).append(myimg);
+        }
+    
         // Load Product by ProductCategoryCode
     $scope.LoadProductByProductCategoryCode = function (ProductCategoryCode) {
         $('html, body').animate({ scrollTop: $('#product-section').offset().top }, 'slow');
@@ -242,8 +295,10 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
                 console.log(data);
                 $scope.Product = data;
 
-            //    $location.hash('product-section');
-            //    $anchorScroll();
+                $scope.SelectedMenu = "product";
+                $scope.$emit('handleBodyMenuEmit', {
+                    SelectedMenu: "product"
+                });
             })
             .error(function (err) {
                 //    alert("Cannot get Product data from Server..");
@@ -460,6 +515,16 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
             ProductCategoryNameCn: '',
             ProductTypeCode: ''
         }
+        var url = "http://localhost:3000/product_types/LoadProductType";
+        $http.get(url)
+        .success(function (data) {
+            $scope.SelectProductTypeList = data;
+            
+        })
+        .error(function (data) {
+            alert(data);
+        });
+
         $("#div-product-category-table").hide("slow");
         $("#div-product-category-detail").show("slow");
     }
@@ -636,7 +701,6 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
         $("#div-product-table").show("slow");
         $("#div-product-detail").hide("slow");
     }
-
     $scope.NewProduct = function () {
         $("#div-product-table").hide("slow");
         $("#div-product-detail").show("slow");
@@ -694,6 +758,19 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
 
                 });
                 console.log(data);
+
+                // Download Image for User Thumbnail
+                var downloadThumbnailUrl = BASE_URL.PATH + '/images/downloadProductImageThumbnail/' + data._id + '/' + data.ProductCode;
+                $http.get(downloadThumbnailUrl)
+                .success(function (data, status, headers, config) {
+                //    $scope.User.ProfileImage = data;
+                    $('#ThumbnailProductImage').children("img").remove();
+                    $('#ThumbnailProductImage').append(data);
+                })
+                .error(function (data, status, headers, config) {
+                    console.log(data);
+
+                });
             })
             .error(function (data) {
                 console.log(data);
@@ -729,7 +806,6 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
           }
         });
     }
-
     $scope.CancelProduct = function () {
         $scope.SearchProduct();
 
@@ -782,10 +858,10 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
         });
     }
     $scope.UpdateProduct = function () {
-        //#55dd6b : green
+        swal({
+            //#55dd6b : green
 //#dd6b55: red
 //#5583dd : blue
-        swal({
           title: "Are you sure?",
           text: "คุณต้องการแก้ไขรายการ สินค้า " + $scope.ViewProductData.ProductNameTh + " ใช่หรือไม่ ?",
           type: "warning",
@@ -823,34 +899,215 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
             $scope.UpdateProduct();
         }
     }
- /*   
-    $scope.$watch('files', function () {
-        $scope.upload($scope.ViewProductData.files);
-    });
 
-    $scope.upload = function (files) {
-        if (files && files.length) {
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                console.log('file ' + file);
-                Upload.upload({
-                    url: 'upload/url',
-                    fields: {'username': $scope.username},
-                    file: file
-                }).progress(function (evt) {
-                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                    console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
-                }).success(function (data, status, headers, config) {
-                    console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
-                });
-            }
+    $scope.CheckPromotionIsExpire = function(expireDate) {
+    //    console.log(expireDate);
+     //   console.log(new Date().toISOString());
+        if (Date.parse(expireDate) > new Date()) {
+            console.log("Date.parse(expireDate) > new Date() " + Date.parse(expireDate) > new Date());
+            return true;
+        } else if (Date.parse(expireDate) <= new Date()) {
+            console.log("Date.parse(expireDate) <= new Date()" + Date.parse(expireDate) <= new Date());
+            return false;
         }
-    };*/
-/*
-    $scope.$watch('files', function () {
-        $scope.upload($scope.files);
-    });
-*/
+    }
+    // Start Function for Promotion Module
+    $scope.SearchPromotion = function () {
+        var url = "http://localhost:3000/promotions/LoadAllPromotion";
+        $http.get(url)
+        .success(function (data) {
+                $scope.SearchPromotions = data;
+
+                $scope.PromotionTableParams = new ngTableParams({
+                    page: 1,            // show first page
+                    count: 10           // count per page
+                }, {
+                    total: data.length, // length of data
+                    getData: function($defer, params) {
+                        $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    }
+                });
+            })
+            .error(function (data) {
+                alert(data);
+            });
+        $("#div-promotion-table").show("slow");
+        $("#div-promotion-detail").hide("slow");
+
+    }
+    $scope.NewPromotion = function () {
+        $("#div-promotion-table").hide("slow");
+        $("#div-promotion-detail").show("slow");
+        $scope.SearchPromotionProduct();
+    }
+    
+    $scope.SearchPromotionProduct = function() {
+        var url = BASE_URL.PATH + "/products/LoadProduct";
+    //    $scope.ViewPromotionData.UpdateDate = (new Date()).toISOString().slice(0,10).replace(/-/g,"");
+        $http.get(url)
+            .success(function (items, status, headers, config) {
+            //    swal("Updated !!!", "แก้ไขรายการสินค้า " + data.PromotionCode + " สำเร็จ !!!", "success");
+            //    console.log(items);
+                $('#SelectProductPromotionList').select2({ 
+                    
+                         data:{ results: items, text: 'ProductNameTh' },
+                         formatSelection: formatProductPromotion,
+                            formatResult: formatProductPromotion 
+                    
+                });
+            })
+            .error(function (items, status, headers, config) {
+                console.log('error ' + status);
+            });
+    }
+    function formatProductPromotion(item) { 
+         console.log(item);
+        return item.ProductNameTh; 
+    };
+    $scope.ViewPromotion = function (id) {
+        var url = "http://localhost:3000/promotions/LoadPromotionByObjId/" + id;
+        $http.get(url)
+            .success(function (data) {
+                $scope.ViewPromotionData = data;
+                $scope.ViewPromotionData._id = data._id;
+                $scope.ViewPromotionData.ProductCode = data.ProductCode;
+                $scope.ViewPromotionData.StartDate = data.StartDate;
+                $scope.ViewPromotionData.EndDate = data.EndDate;
+                $scope.ViewPromotionData.DiscountPercent = data.DiscountPercent;
+                $scope.ViewPromotionData.IsActive = data.IsActive;
+            })
+            .error(function (data) {
+                console.log(data);
+            });
+        $("#div-promotion-table").hide("slow");
+        $("#div-promotion-detail").show("slow");
+    }
+    $scope.DeletePromotion = function () {
+        swal({
+          title: "Are you sure?",
+          text: "คุณต้องการลบรายการ โปรโมชั่น " + $scope.ViewPromotionData.ProductNameTh + " ใช่ หรือ ไม่?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#dd6b55",
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "No, cancel please!",
+          closeOnConfirm: false,
+          closeOnCancel: false
+        },
+        function(isConfirm){
+          if (isConfirm) {
+            var url = "http://localhost:3000/promotions/DeletePromotion/";
+               $http.post(url, $scope.ViewPromotionData)
+                .success(function (data) {
+                    swal("Deleted !!!","ลบรายการโปรโมชั่น " +$scope.ViewPromotionData.PromotionNameTh + "สำเร็จ !!!", "success");
+                    $scope.SearchProduct();
+                })
+                .error(function (data) {
+
+                });
+          } else {
+                swal("Cancelled", "Your promotion data is safe :)", "error");
+          }
+        });
+    }
+    $scope.CancelPromotion = function () {
+        $scope.SearchPromotion();
+
+        $("#div-promotion-table").show("slow");
+        $("#div-promotion-detail").hide("slow");
+    }
+    $scope.CreatePromotion = function () {
+        swal({
+          title: "Are you sure?",
+          text: "คุณต้องการสร้างรายการ โปรโมชั่น " + $scope.ViewPromotionData.PromotionNameTh + " ใช่ หรือ ไม่?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#5583dd",
+          confirmButtonText: "Yes, create it!",
+          cancelButtonText: "No, cancel please!",
+          closeOnConfirm: false,
+          closeOnCancel: false
+        },
+        function(isConfirm){
+          if (isConfirm) {
+            var NewProductCategoryCode = "";
+            var GenCodeURL = "http://localhost:3000/appconfig/GetNewCode/PM";
+            $http.get(GenCodeURL)
+                .success(function(data) {
+                    NewPromotionCode = data;
+                    console.log('get new code ' + NewPromotionCode);
+                    $scope.ViewPromotionData.PromotionCode = NewPromotionCode;
+                    $scope.ViewPromotionData.CreateDate = (new Date()).toISOString().slice(0,10).replace(/-/g,"");
+                    var url = "http://localhost:3000/promotions/CreatePromotion/";
+
+                    $http.post(url, $scope.ViewPromotionData)
+                        .success(function (data) {
+                            swal("Created !", "สร้างรายการ โปรโมชั่น " + $scope.ViewPromotionData.PromotionCode + " สำเร็จ !!!", "success");
+                            $scope.SearchPromotion();
+                        })
+                        .error(function (data) {
+
+                        });
+                })
+                .error(function(data) {
+                    return;
+                });
+            
+          } else {
+                swal("Cancelled", "Your data is safe :)", "error");
+          }
+        });
+    }
+
+    // gives another movie array on change
+    $scope.updateMovies = function(typed){
+        console.log('yourchoice ' + yourchoice);
+        console.log('typed ' + typed);
+        // MovieRetriever could be some service returning a promise
+        
+        $scope.newmovies = MovieRetriever.getmovies(typed);
+        $scope.newmovies.then(function(data){
+          $scope.movies = data;
+        });
+    }
+   
+    $scope.UpdatePromotion = function () {
+        swal({
+          title: "Are you sure?",
+          text: "คุณต้องการแก้ไขรายการ โปรโมชั่น " + $scope.ViewPromotionData.PromotionNameTh + " ใช่หรือไม่ ?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#55dd6b",
+          confirmButtonText: "Yes, update promotion!",
+          cancelButtonText: "No, cancel please!",
+          closeOnConfirm: false,
+          closeOnCancel: false
+        },
+        function(isConfirm){
+          if (isConfirm) {
+            var url = "http://localhost:3000/promotions/UpdateProduct/";
+            $scope.ViewPromotionData.UpdateDate = (new Date()).toISOString().slice(0,10).replace(/-/g,"");
+            $http.post(url, $scope.ViewPromotionData)
+                .success(function (data) {
+                    swal("Updated !!!", "แก้ไขรายการสินค้า " + data.PromotionCode + " สำเร็จ !!!", "success");
+                    $scope.SearchPromotion();
+                })
+                .error(function (data) {
+
+                });
+          } else {
+                swal("Cancelled", "Your data is safe :)", "error");
+          }
+        });
+    }
+    $scope.SavePromotion = function () {
+        if ($scope.ViewPromotionData._id == '' || $scope.ViewPromotionData._id == undefined) {
+            $scope.CreatePromotion();
+        } else if ($scope.ViewPromotionData._id != '') {
+            $scope.UpdatePromotion();
+        }
+    }
+
     $scope.upload = function (files) {
         if (files && files.length) {
             for (var i = 0; i < files.length; i++) {
@@ -866,21 +1123,71 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
                     console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
                 })
                 .success(function (data, status, headers, config) {
+                    // Download Image for User Profile
                     console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
-                    var downloadUrl = BASE_URL.PATH + '/images/downloadUserImage/'+$scope.User.Id + '/'+ $scope.User.Username;
+                    var downloadUrl = BASE_URL.PATH + '/images/downloadUserImageProfile/'+$scope.User.Id + '/'+ $scope.User.Username;
                     $http.get(downloadUrl)
                     .success(function (data, status, headers, config) {
-                        console.log(data);
-                        console.log(status);
-                        console.log(headers);
-console.log(config);
                         $scope.User.ProfileImage = data;
+                        var img = $('#UserProfileImage').closest('div').find('img').first();
+                        img.remove();
                         $('#UserProfileImage').append(data);
+                    })
+                    .error(function (data, status, headers, config) {
+                        console.log(data);
+                    });
+                    // Download Image for User Thumbnail
+                    var downloadThumbnailUrl = BASE_URL.PATH + '/images/downloadUserImageThumbnail/'+$scope.User.Id + '/'+ $scope.User.Username;
+                    $http.get(downloadThumbnailUrl)
+                    .success(function (data, status, headers, config) {
+                    //    $scope.User.ProfileImage = data;
+                        var img = $('#ThumbnailProfileImage').closest('div').find('img').first();
+                        img.remove();
+                        $('#ThumbnailProfileImage').append(data);
+                    })
+                    .error(function (data, status, headers, config) {
+                        console.log(data);
+                    });
+                })
+                .error(function (data, status, headers, config) {
+                    console.log('error ' + data + ' status ' + status);
+                });
+            }
+        }
+        
+    };
+
+    // Upload Product Image
+    $scope.uploadProductImage = function (files, ProductId, ProductCode) {
+        console.log(" Product Id " + ProductId + ProductCode);
+        if (files && files.length) {
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                console.log(file);
+                Upload
+                .upload({
+                    url: BASE_URL.PATH + '/images/uploadProductImage/'+ProductId+ '/'+ ProductCode,
+                    file: file
+                })
+                .progress(function (evt) {
+                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                    console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+                })
+                .success(function (data, status, headers, config) {
+                    // Download Image for Product
+                    console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
+                    var downloadUrl = BASE_URL.PATH + '/images/downloadProductImageThumbnail/' + ProductId + '/' + ProductCode;
+                    $http.get(downloadUrl)
+                    .success(function (data, status, headers, config) {
+                    //    $scope.User.ProfileImage = data;
+                        $('#ThumbnailProductImage').children("img").remove();
+                        $('#ThumbnailProductImage').append(data);
                     })
                     .error(function (data, status, headers, config) {
                         console.log(data);
 
                     });
+                    
                 })
                 .error(function (data, status, headers, config) {
                     console.log('error ' + data + ' status ' + status);
@@ -1651,7 +1958,7 @@ console.log(config);
         $http.get(url)
             .success(function (zipcode) {
         //        console.log(zipcode);
-        //        console.log(zipcode.ZipCode);
+                console.log(zipcode.ZipCode);
                 $scope.SelectZipCodeList = zipcode;
                 $scope.ROHead.ZipCode = zipcode.ZipCode;
             })
@@ -1733,6 +2040,8 @@ console.log(config);
         $("#nav-step3").addClass("btn-primary");
         $("#nav-step1").addClass("btn-default");
         $("#nav-step2").addClass("btn-default");
+
+        $scope.ValidateFinish();
     }
 
     $scope.ValidateFinish = function() {
@@ -1749,9 +2058,9 @@ console.log(config);
                   var sendEmailStaffUrl = BASE_URL.PATH + "/mails/SendEmailStaffNewOrder/"+ $scope.User.Email+ "/" + newRONo;
                   var sendEmailCustomerUrl = BASE_URL.PATH + "/mails/SendEmailCustomerNewOrder/" + $scope.User.Email + "/" + newRONo;
                   var createReceiptUrl = BASE_URL.PATH + '/receipts/CreateReceipt';
-                  $scope.ROHead.RODate = (new Date()).toISOString();
+                  $scope.ROHead.RODate = new Date(); //(new Date()).toISOString();
                   $scope.ROHead.RONo = newRONo;
-                  $scope.ROHead.ROLineList = $scope.ROHead.ROLineList;
+                  $scope.ROHead.ROLineList = $scope.ROLineList;
                   $scope.ROHead.PaymentType = $scope.PaymentType;
                   $scope.ROHead.PaymentBank = $scope.PaymentBank;
                   $scope.ROHead.UserId = $scope.User.Id;
@@ -1759,11 +2068,11 @@ console.log(config);
                   $scope.ROHead.ShippingStatus = "N";
                   $http.post(createReceiptUrl, $scope.ROHead)
                   .success(function (data, status, headers, config) {
-                      blockUI.message("50%");
+                      blockUI.message("53%");
                       // after create order then send email for staff and customer 
                       $http.get(sendEmailStaffUrl)
                       .success(function (data, status, headers, config) {
-                          blockUI.message("56%");
+                          blockUI.message("74%");
                           $http.get(sendEmailCustomerUrl)
                           .success(function (data, status, headers, config) {
                             blockUI.message("98%");
@@ -1771,15 +2080,15 @@ console.log(config);
                             swal("Thank you for your order", "You can check and track your order in history.", "success");
                           })
                           .error(function (data, status, headers, config) {
-
+                                console.log('error sending email customer');
                           });
                       })
                       .error(function (data, status, headers, config) {
-
+                            console.log('error sending email staff');
                       });    
                   })
                   .error(function(data, status, headers, config) {
-
+                        console.log('create ro head ');
                   });
                   //end of create receipt
             }
@@ -1847,21 +2156,58 @@ console.log(config);
             console.log('success');
              })
         .error(function (data) {
-console.log('error');
+        console.log('error');
         });
     }
-/*
-    $('#customer-templates .typeahead').typeahead(null, {
-      name: 'best-pictures',
-      display: 'Firstname',
-      source: [],
-      templates: {
-        empty: [
-          '<div class="empty-message">',
-            'unable to find any Best Picture winners that match the current query',
-          '</div>'
-        ].join('\n'),
-        suggestion: Handlebars.compile('<div><strong>{{Firstname}}</strong> – {{year}}</div>')
+
+    $scope.LoadProductImageByProductCode = function (ProductImageRefId, ProductId, ProductCode) {
+    //  console.log("imagePath " + ProductImageRefId);
+      if (ProductImageRefId || ProductImageRefId !== undefined) {  
+          var downloadThumbnailUrl = BASE_URL.PATH + '/images/downloadProductImageShop/'+ProductId + '/'+ ProductCode;
+          $http.get(downloadThumbnailUrl)
+          .success(function (data, status, headers, config) {
+              $('#ThumbnailProductImage_'+ProductCode).children("img").remove();
+              $('#ThumbnailProductImage_'+ProductCode).append(data);
+          })
+          .error(function (data, status, headers, config) {
+              console.log(data);
+
+          });
       }
-    });*/
+    }
+
+    $scope.SearchCustomerAutoComplete = function() {
+      //  $(function(){
+          var loadUserUrl = BASE_URL.PATH + '/users/LoadAppUser';
+          $http.get(loadUserUrl)
+          .success(function (data, status, headers, config) {
+            console.log(data);
+              // applied typeahead to the text input box
+           /*   $('#my-input').typeahead({
+                name: 'countries',
+
+                // data source
+                prefetch: data,
+
+                // max item numbers list in the dropdown
+                limit: 10
+              });*/
+
+              $('#my-input').typeahead(null, {
+                  hint: true,
+                  highlight: true,
+                  minLength: 1
+                },
+                {
+                  name: 'Firstname',
+                  source: data
+                });
+          })
+          .error(function(data, status, headers, config) {
+            console.log('error when load customer');
+          });
+          
+
+      //  });
+    }
 });

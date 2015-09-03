@@ -13,6 +13,30 @@
     } 
 }
 
+@media (min-width: 768px) {
+  .modal-dialog {
+    width: 745px;
+    margin: 30px auto;
+  }
+  .modal-content {
+    -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+  }
+  .modal-sm {
+    width: 300px;
+  }
+}
+
+.elevator {
+
+    height: 20px;
+    width: 146px;
+    overflow: hidden;
+
+}
+.spacer {
+    margin-bottom: 21px;
+}
 .profile-img-card {
     width: 96px;
     height: 96px;
@@ -28,6 +52,139 @@
     background-color: #eee;
 }
 
+.product-gallery-name
+{
+    display: inline-block;
+    margin-top: 20px;
+    height: 60px;
+}
+.product-gallery-image
+{
+    margin-top: 20px;
+}
+.product-gallery-footer
+{
+    padding-bottom: 20px; 
+}
+.label_product_new {
+    position: relative;
+    float: left;
+    z-index: 800;
+    margin-bottom: auto;
+    margin-top: 20px;
+    margin-left: 20px;
+    top: 0px;
+    transform: rotateZ(315deg);
+}
+.product_new {
+    position: relative;
+    float: left;
+    z-index: 749;
+    margin-bottom: auto;
+    margin-top: -6px;
+    margin-left: -6px;
+    top: 0px;
+}
+
+.product_sale {
+    z-index: 10;  
+    position: absolute;  
+    right: 0;  
+    top: 0;
+    margin-right: 10px;
+    margin-top: 20px;
+}
+
+.percent_sale {
+    z-index: 20;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-right: 32px;
+    margin-top: 35px;
+}
+
+.label_sale {
+    z-index: 21;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-right: 32px;
+    margin-top: 22px;
+}
+.label_discount_price {
+    position:absolute; 
+    margin-top:-23px;
+    right:0;
+    padding-right:15px; 
+    font-size:18px; 
+    color:#8CF370;
+}
+
+.left_side_menu {
+    position: relative;
+    float: left;
+    z-index: 749;
+    margin-bottom: auto;
+    margin-top: -5px;
+    margin-left: 20px;
+    top: 0px;
+}
+
+.right_side_menu {
+    z-index: 100;  
+    position: absolute;  
+    right: 0;  
+    top: 0;
+    margin-right: 20px;
+    margin-top: 20px;
+}
+s, strike {
+    text-decoration: none;    /*we're replacing the default line-through*/
+    position: relative;
+    display: inline-block; /* don't wrap to multiple lines */
+}
+s:after, strike:after {
+    content:"";    /* required property */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-top: 3px solid red;
+    height: 45%;    /* adjust as necessary, depending on line thickness */
+    /* or use calc() if you don't need to support IE8: */
+    height: calc(50% - 1px); /* 1px = half the line thickness */
+    width: 100%;
+    transform: rotateZ(-4deg);
+}
+
+fieldset.search-table {
+    border: 1px groove #ddd !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow:  0px 0px 0px 0px #000;
+            box-shadow:  0px 0px 0px 0px #000;
+}
+legend.search-table {
+/*    font-size: 1.2em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    */
+    width:inherit; /* Or auto */
+    padding:0 10px; /* To give a bit of padding on the left and right */
+    border-bottom:none;
+}
+.search-table-fieldset {
+    font-size: 1.2em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+
+}
+
+.thumbnailProductImage 
+{
+    background-image: url("/images/product_background.png");
+    background-size: 200px 200px;
+}
 .browsehappy {
     margin: 0.2em 0;
     background: #ccc;
@@ -86,6 +243,77 @@ body {
     background-color: #000;
     opacity: 0.7;
 }
+
+/* start search <div>*/
+.kzhweb-search {
+    display: block;
+    visibility: visible;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    background-color: #ebebeb;
+    -webkit-transform: rotateX(-90deg);
+    -moz-transform: rotateX(-90deg);
+    -ms-transform: rotateX(-90deg);
+    -o-transform: rotateX(-90deg);
+    transform: rotateX(-90deg);
+    -webkit-transform-origin: 0 0 0;
+    -moz-transform-origin: 0 0 0;
+    transform-origin: 0 0 0;
+    -o-transform-origin: 0 0 0;
+    -ms-transform-origin: 0 0 0;
+}
+.navbar-bootsnipp .navbar-nav>li:not(.disabled) .active>a,
+.navbar-bootsnipp .navbar-nav>li:not(.disabled) .open>a,
+
+.kzhweb-search.open {
+    visibility: visible;
+    -webkit-transform: rotateX(0);
+    -moz-transform: rotateX(0);
+    -ms-transform: rotateX(0);
+    -o-transform: rotateX(0);
+    transform: rotateX(0);
+}
+
+.kzhweb-search > .container {
+    padding: 0;
+}
+.navbar-bootsnipp .kzhweb-search {
+    display: none;
+}
+
+.kzhweb-search .form-control {
+    height: auto;
+    border-width: 0;
+    border-radius: 0;
+    font-size: 24px;
+    background-color: #ebebeb;
+}
+
+.kzhweb-search .form-control:focus {
+    border-color: transparent;
+    outline: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.kzhweb-search .input-group-btn > .btn {
+    padding: 10px 16px;
+    border-radius: 0;
+}
+
+.kzhweb-search .input-group-btn > .btn-default {
+    background-color: #f5f5f5;
+}
+
+.animate {
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -ms-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+}
+/* end search <div>*/
 
 /* Start Config upload file*/
 .button {
@@ -152,6 +380,11 @@ body {
 .jumbotron .btn {
     font-size: 21px;
     padding: 14px 24px;
+}
+
+/* Override model sizing in bootstrap-css*/
+.modal-lg {
+    width: 1250px;
 }
 
 #nav {
@@ -296,4 +529,8 @@ body {
     opacity: 0;
     top: -50px;
     height: 0px;
+}
+
+.container {
+    margin-top: -20px;
 }

@@ -30,6 +30,7 @@
     "grunt-svgmin": "^0.4.0",
     "grunt-usemin": "^2.3.0",
     "grunt-wiredep": "^1.7.0",
+    "jsdom": "^1.0.0-pre.6",
     "jshint-stylish": "^0.4.0",
     "load-grunt-tasks": "^0.4.0",
     "mkdirp": "^0.5.1",
@@ -37,7 +38,9 @@
     "multer": "^0.1.8",
     "mv": "^2.1.1",
     "nodemailer": "^0.7.1",
+    "stripe": "^3.7.0",
     "time-grunt": "^0.4.0",
+    "try-thread-sleep": "^1.0.0",
     "twilio": "^2.2.1",
     "xoauth2": "^1.0.0"
   },
@@ -46,6 +49,7 @@
   },
   "dependencies": {
     "email-templates": "^2.0.0-beta.1",
-    "jade": "^1.11.0"
+    "jade": "^1.11.0",
+    "jquery": "^2.1.4"
   }
 }

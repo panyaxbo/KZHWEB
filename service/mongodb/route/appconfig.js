@@ -3,7 +3,17 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get(mongodbConfig.url.appconfig.home, function (req, res, next) {
-    res.send('app config');
+ //   res.send('app config');
+ //   db.collection.find().sort({_id:-1}).limit(1).pretty()
+ //   db.collection.findOne({$query:{},$orderby:{_id:-1}})
+     
+ /*    db.collection(mongodbConfig.mongodb.rohead.name)
+            .findOne({$query:{},$orderby:{_id:-1}}
+                ,function(err, result) { 
+                    if (err) throw err 
+                    res.json(result);
+                 });
+      */
 });
 
 router.get(mongodbConfig.url.appconfig.getNewCodeByModule, function (req, res) {
@@ -38,12 +48,18 @@ router.get(mongodbConfig.url.appconfig.getNewCodeByModule, function (req, res) {
                     var CurrentYear = ZeroPad(DateNow.getFullYear(), 4);
                     var MaxCurrent = DateNow.getMonth() + DateNow.getFullYear();
                     FindMaxDateFromModule(Module, function(err, roHead) {
-                        if (!roHead)  {
+                        if (err)  {
                             console.log("err " + err);
                         } else {
-                            console.log("roHead " + roHead.RODate);
-                            var MaxMonth = (new Date(roHead.RODate)).getMonth() + 1;
-                            var MaxYear = (new Date(roHead.RODate)).getFullYear();
+                        //    console.log("roHead " + roHead.RODate);
+                            var RODate = "";
+                            if (!roHead || roHead === undefined) {
+                                RODate = (new Date()).toISOString();
+                            } else {
+                                RODate = roHead.RODate;
+                            }
+                            var MaxMonth = (new Date(RODate)).getMonth() + 1;
+                            var MaxYear = (new Date(RODate)).getFullYear();
                             var MaxDB = MaxMonth + MaxYear;
                             console.log(CurrentMonth + '-' + MaxMonth);
                             console.log(parseInt(MaxDB) + '-' + parseInt(MaxCurrent));
@@ -100,14 +116,14 @@ router.get(mongodbConfig.url.appconfig.getNewCodeByModule, function (req, res) {
     }
 
     function FindMaxDateFromModule(Module, callback) {
-        db.collection(mongodbConfig.mongodb.rohead.name)
-            .findOne({ 
-                $query:{}, 
-                $sort :  { RODate: 1}  },
-                 { limit : 1 }, 
-                 function(err, result) { 
+        
+            db.collection(mongodbConfig.mongodb.rohead.name)
+            .findOne({
+                $query:{},
+                $orderby:{_id:-1}}
+                ,function(err, result) { 
                     if (err) throw err 
-                    callback(err, result);
+                    callback(null, result);
                  });
     }
     function ZeroPad(num, places) {
