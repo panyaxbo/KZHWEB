@@ -33,6 +33,7 @@ var images = require('./route/images');
 var sms = require('../sms/sms');
 var stripe = require('../stripe/stripe');
 var promotions = require('./route/promotions');
+var suppliers = require('./route/suppliers');
 
 //app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -60,6 +61,7 @@ app.use('/images', images);
 app.use('/sms', sms);
 app.use('/stripe', stripe);
 app.use('/promotions', promotions);
+app.use('/suppliers', suppliers);
 
 app.listen(mongodbConfig.nodejs_port, function () {
 	console.log("Start server port " + mongodbConfig.nodejs_port + " is OK...");

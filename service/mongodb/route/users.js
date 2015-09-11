@@ -150,6 +150,7 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
 router.post(mongodbConfig.url.user.createAppUser, function (req, res) {
     var AppUser = req.body;
     console.log('create user ' + AppUser);
+    AppUser.CreateDate = new Date();
     db.collection(mongodbConfig.mongodb.user.name)
         .insert(AppUser,
             function (error, appuser) {
@@ -170,7 +171,8 @@ router.post(mongodbConfig.url.user.updateAppUser, function (req, res) {
                     'Username': AppUser.Username,
                     'Password': AppUser.Password,
                     'StaffCode': AppUser.StaffCode,
-                    'RoleCode': AppUser.RoleCode
+                    'RoleCode': AppUser.RoleCode,
+                    'UpdateDate' : (new Date())
                 }
             },
             function (error, result) {

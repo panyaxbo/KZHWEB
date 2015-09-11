@@ -86,6 +86,9 @@ router.get(mongodbConfig.url.product_category.loadProductCategoryByProductCatego
 router.post(mongodbConfig.url.product_category.createProductCategory, function (req, res) {
     var ProductCategory = req.body;
     console.log('create product category ' + ProductCategory);
+    var createDate = new Date ();
+    createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
+    ProductCategory.CreateDate = createDate;
     db.collection(config.mongodb.product_category.name)
         .insert(ProductType,
             function (error, result) {

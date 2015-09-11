@@ -67,6 +67,9 @@ router.get(mongodbConfig.url.customer.loadCustomerByCustomerCode, function (req,
 router.post(mongodbConfig.url.customer.createCustomer, function (req, res) {
     var Customer = req.body;
     console.log('create customer ' + Customer);
+    var createDate = new Date ();
+    createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
+    customer_type.CreateDate = createDate;
     db.collection(mongodbConfig.mongodb.customer.name)
         .insert(CustomerType,
             function (error, result) {
@@ -80,6 +83,8 @@ router.post(mongodbConfig.url.customer.updateCustomer, function (req, res) {
     console.log('Update customer 1 ' + req.body);
     var Customer = req.body;
     var o_id = bson.BSONPure.ObjectID(Customer._id.toString());
+    var updateDate = new Date ();
+    updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
     db.collection(config.mongodb.customer.name)
         .update({
                 _id: o_id
@@ -95,6 +100,7 @@ router.post(mongodbConfig.url.customer.updateCustomer, function (req, res) {
                     'Email': Customer.Email,
                     'Description': Customer.Description,
                     'CustomerKnownName': Customer.CustomerKnownName,
+                    'UpdateDate' : updateDate
                 }
             },
             function (error, result) {

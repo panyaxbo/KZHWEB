@@ -85,7 +85,7 @@ router.post(mongodbConfig.url.customer_type.updateCustomerType, function (req, r
     var CustomerType = req.body;
     var o_id = bson.BSONPure.ObjectID(CustomerType._id.toString());
     var updateDate = new Date ();
-    updateDate.setHours ( curDate.getHours() + 7 );
+    updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
     db.collection(mongodbConfig.mongodb.customer_type.name)
         .update({
                 _id: o_id

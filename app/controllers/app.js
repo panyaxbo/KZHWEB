@@ -277,9 +277,9 @@ app.config(function ($translateProvider) {
                         IMAGE : "รูปภาพ",
                         IMAGE_THUMBNAIL : "แสดงรูปภาพ",
 
-                        SEARCH_PRODUCT_CATEGORY_CRITERIA_LABEL : "เงื่อนไขการค้นหาประเภทสินค้า",
-                        PRODUCT_CODE_LABEL : "รหัสชนิดสินค้า :",
-                        PRODUCT_NAME_LABEL : "ชื่อชนิดสินค้า :",
+                        SEARCH_PRODUCT_CRITERIA_LABEL : "เงื่อนไขการค้นหาสินค้า",
+                        PRODUCT_CODE_LABEL : "รหัสสินค้า :",
+                        PRODUCT_NAME_LABEL : "ชื่อสินค้า :",
                         PRODUCT_CATEGORY_LABEL : "ประเภทสินค้า :"
                     },
                     PROMOTION : {
@@ -297,15 +297,13 @@ app.config(function ($translateProvider) {
 
                         PROMOTION_CODE_LABEL : "รหัสโปรโมชั่น :",
                         PROMOTION_DATE_LABEL : "วันที่สร้างโปรโมชั่น :",
-                        PROMOTION_NAME_TH_LABEL : "ชื่อโปรโมชั่น (ไทย) :",
-                        PROMOTION_NAME_EN_LABEL : "ชื่อโปรโมชั่น (อังกฤษ) :",
-                        PROMOTION_NAME_CN_LABEL : "ชื่อโปรโมชั่น (จีน) :",
+                        PROMOTION_NAME_LABEL : "ชื่อโปรโมชั่น :",
                         IS_ACTIVE_LABEL : "ใช้งาน ? :",
                         START_DATE_LABEL : "วันที่เริ่ม :",
                         END_DATE_LABEL : "วันที่สิ้นสุด :"
                     },
                     CUSTOMER_TYPE : {
-                        TAB : "รหัสชนิดลูกค้า",
+                        TAB : "ชนิดลูกค้า",
                         CUSTOMER_TYPE_CODE : "รหัสชนิดลูกค้า",
                         CUSTOMER_TYPE_NAME_TH : "ชื่อชนิดลูกค้า (ไทย)",
                         CUSTOMER_TYPE_NAME_EN : "ชื่อชนิดลูกค้า (อังกฤษ)",
@@ -316,15 +314,16 @@ app.config(function ($translateProvider) {
                     },
                     CUSTOMER : {
                         TAB : "ลูกค้า",
-                        CUSTOMER_CODE : "ชื่อชนิดลูกค้า (ไทย)",
+                        CUSTOMER_CODE : "รหัสลูกค้า",
                         FIRST_NAME : "ชื่อชนิดลูกค้า (อังกฤษ)",
                         LAST_NAME : "ชื่อชนิดลูกค้า (อังกฤษ)",
                         KNOWN_NAME : "ชื่อชนิดลูกค้า (อังกฤษ)",
-                        TEL_NO : "ชื่อชนิดลูกค้า (อังกฤษ)",
-                        FAX_NO : "ชื่อชนิดลูกค้า (อังกฤษ)",
-                        MOBILE_NO : "ชื่อชนิดลูกค้า (อังกฤษ)",
-                        EMAIL : "ชื่อชนิดลูกค้า (อังกฤษ)",
-                        DESCRIPTION : "ชื่อชนิดลูกค้า (อังกฤษ)", 
+                        TEL_NO : "โทรศัพท์",
+                        FAX_NO : "โทรสาร",
+                        MOBILE_NO : "มือถือ",
+                        EMAIL : "อีเมล",
+                        DESCRIPTION : "คำอธิบาย", 
+                        CUSTOMER_TYPE : "ชนิดลูกค้า",
 
                         SEARCH_CUSTOMER_CRITERIA_LABEL : "เงื่อนไขการค้นหาลูกค้า",
                         CUSTOMER_CODE_LABEL : "รหัสลูกค้า :",
@@ -338,19 +337,62 @@ app.config(function ($translateProvider) {
                         LAST_NAME : "นามสกุล",
                         NICK_NAME : "ชื่อเล่น",
                         AGE : "อายุ",
-                        SEX : "เพศ"
+                        SEX : "เพศ",
+
+                        SEARCH_STAFF_CRITERIA_LABEL : "เงื่อนไขการค้นหาพนักงาน",
+                        STAFF_CODE_LABEL : "รหัสลูกค้า :",
+                        NAME_LABEL : "ชื่อลูกค้า :"
                     },
                     ROLE : {
                         TAB : "ตำแหน่ง",
                         ROLE_CODE : "รหัสตำแหน่ง",
                         ROLE_NAME_TH : "ชื่อตำแหน่ง (ไทย)",
-                        ROLE_NAME_EN : "ชื่อตำแหน่ง (อังกฤษ)"
+                        ROLE_NAME_EN : "ชื่อตำแหน่ง (อังกฤษ)",
+
+                        SEARCH_ROLE_CRITERIA_LABEL : "เงื่อนไขการค้นหาบทบาท",
+                        ROLE_CODE_LABEL : "รหัสบทบาท :",
+                        ROLE_NAME_LABEL : "ชื่อบทบาท :"
                     },
                     RECEIPT_ORDER : {
                         TAB : "ใบเสร็จ",
                         RO_NO : "รหัสใบเสร็จ",
                         RO_DATE : "วันที่ใบเสร็จ",
                         RO_TIME : "เวลาใบเสร็จ"
+                    },
+                    SUPPLIER : {
+                        TAB : "ผู้ขาย",
+                        SUPPLIER_CODE : "รหัสผู้ขาย",
+                        SUPPLIER_NAME_TH : "ชื่อผู้ขาย (ไทย)",
+                        SUPPLIER_NAME_EN : "ชื่อผู้ขาย (อังกฤษ)",
+                        SUPPLIER_DESCRIPTION : "คำอธิบาย",
+                        SUPPLIER_EMAIL : "อีเมล",
+                        SUPPLIER_TEL_NO : "โทรศัพท์",
+                        SUPPLIER_FAX_NO : "โทรสาร",
+                        SUPPLIER_MOBILE_NO : "มือถือ",
+
+                        SEARCH_SUPPLIER_CRITERIA_LABEL : "เงื่อนไขการค้นหาผู้ขาย",
+                        SUPPLIER_CODE_LABEL : "รหัสลูกค้า :",
+                        SUPPLIER_NAME_LABEL : "ชื่อลูกค้า :",
+                        SUPPLIER_DESCRIPTION_LABEL : "คำอธิบาย :",
+                        SUPPLIER_EMAIL_LABEL : "อีเมล :",
+                        SUPPLIER_TEL_NO_LABEL : "โทรศัพท์ :",
+                        SUPPLIER_FAX_NO_LABEL : "โทรสาร :",
+                        SUPPLIER_MOBILE_NO_LABEL : "มือถือ :"
+                    },
+                    APP_USER : {
+                        TAB : "ผู้ใช้ระบบ",
+                        USERNAME : "รหัสผู้ใช้",
+                        PASSWORD : "รหัสผ่าน้",
+                        FIRSTNAME : "ชื่อ",
+                        LASTNAME : "นามสกุล",
+                        EMAIL : "อีเมล",
+                        USER_TYPE : "ชนิดผู้ใช้",
+                        ROLE : "บทบาท",
+                        TERMINAL : "ช่องทาง",
+
+                        SEARCH_APP_USER_CRITERIA_LABEL : "เงื่อนไขการค้นหาผู้ขาย",
+                        TERMINAL_LABEL : "ช่องทาง :",
+                        SUPPLIER_NAME_LABEL : "ชื่อลูกค้า :"
                     }
                 },
                 ACCOUNT : {

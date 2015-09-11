@@ -46,6 +46,9 @@
 		"roline" : {
 			"name" : "ROLine"
 		},
+		"supplier" : {
+			"name" : "Supplier"
+		},
 		"province" : {
 			"name" : "Province",
 			"Id" : "_id",
@@ -200,6 +203,15 @@
 			"createUom" : "/CreateUom",
 			"updateUom" : "/UpdateUom",
 			"deleteUomByUomId" : "/DeleteUom/:UomId"
+		},
+		"supplier" : {
+			"home" : "/",
+			"loadAllSupplier" : "/LoadSupplier",
+			"loadUomByUomCode" : "/LoadUomByUomCode/:UomCode",
+			"loadNotContainUom" : "/LoadNotContainUom",
+			"createSupplier" : "/CreateSupplier",
+			"updateSupplier" : "/UpdateSupplier",
+			"deleteSupplierBySupplierId" : "/DeleteSupplier/:SupplierId"
 		}
 	}
 }

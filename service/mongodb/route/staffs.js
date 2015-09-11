@@ -79,8 +79,9 @@ router.post(mongodbConfig.url.staff.createStaff, function (req, res) {
 router.post(mongodbConfig.url.staff.updateStaff, function (req, res) {
     console.log('update staff ' + req.body);
     var Staff = req.body;
-    var BSON = mongodb.BSONPure;
-    var o_id = new BSON.ObjectID(Staff._id);
+
+    var id = Staff._id;
+    var o_id = bson.BSONPure.ObjectID(id.toString());
     db.collection(mongodbConfig.mongodb.staff.name)
         .update({
                 _id: o_id
@@ -111,7 +112,7 @@ router.post(mongodbConfig.url.staff.updateStaff, function (req, res) {
 router.get(mongodbConfig.url.staff.deleteStaffByStaffId, function (req, res) {
     var StaffId = req.params.StaffId;
     console.log('create staff ' + StaffId);
-    var o_id = bson.BSONPure.ObjectID(StaffId);
+    var o_id = bson.BSONPure.ObjectID(StaffId.toString());
     db.collection(mongodbConfig.mongodb.staff.name)
         .remove({
             _id: o_id

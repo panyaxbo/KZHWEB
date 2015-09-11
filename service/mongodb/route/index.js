@@ -13,5 +13,6 @@ router.get('/', function(req, res, next) {
 router.get('/SendEmail',function(req,res){
     //Your NodeMailer logic comes here
    
+   
 });
 module.exports = router;

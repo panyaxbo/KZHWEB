@@ -36,14 +36,34 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
     // Initialize General Setting Module
     $scope.ViewProductTypeData = {};
     $scope.SearchProductTypeData = {};
+    
     $scope.ViewProductCategoryData = {};
+    $scope.SearchProductCategory = {};
+    
     $scope.ViewProductData = {};
+    $scope.SearchProductData = {};
+
     $scope.ViewPromotionData = {};
+    $scope.SearchPromotionData = {};
+
     $scope.ViewCustomerData = {};
+    $scope.SearchCustomerData = {};
+
     $scope.ViewCustomerTypeData = {};
+    $scope.SearchCustomerTypeData = {};
+
+    $scope.ViewSupplierData = {};
+    $scope.SearchSupplierData = {};
+
     $scope.ViewStaffData = {};
+    $scope.SearchStaffData = {};
+
     $scope.ViewAppUserData = {};
+    $scope.SearchAppUserData = {};
+
     $scope.ViewRoleData = {};
+    $scope.SearchRoleData = {};
+
     $scope.ViewReceiptData = {};
 
     $scope.step = 1;
@@ -633,9 +653,6 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
         });
     }
     $scope.UpdateProductCategory = function () {
-//#55dd6b : green
-//#dd6b55: red
-//#5583dd : blue
         swal({
           title: "Are you sure?",
           text: "คุณต้องการแก้ไขรายการ ประเภทสินค้า " + $scope.ViewProductCategoryData.ProductCategoryNameTh + " ใช่หรือไม่ ?",
@@ -1568,6 +1585,345 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, ngT
         }
     }
     // End Function for Customer Module
+
+    // Start Function for Supplier Module
+    $scope.SearchSupplier = function () {
+        var url = "http://localhost:3000/suppliers/LoadSupplier";
+        $http.get(url)
+        .success(function (data) {
+                $scope.SearchSuppliers = data;
+                $scope.SupplierTableParams = new ngTableParams({
+                    page: 1,            // show first page
+                    count: 10           // count per page
+                }, {
+                    total: data.length, // length of data
+                    getData: function($defer, params) {
+                        $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    }
+                });
+            })
+            .error(function (data) {
+                alert(data);
+            });
+        $("#div-supplier-table").show("slow");
+        $("#div-supplier-detail").hide("slow");
+    }
+    $scope.NewSupplier = function () {
+        $scope.ViewSupplierData = {
+            SupplierCode: '',
+            SupplierNameEn: '',
+            SupplierNameTh: ''
+        }
+
+        $("#div-supplier-table").hide("slow");
+        $("#div-supplier-detail").show("slow");
+    }
+    $scope.ViewSupplier = function (id) {
+        var url = "http://localhost:3000/suppliers/LoadSupplierByObjId/" + id;
+        console.log(id);
+        $http.get(url)
+            .success(function (data) {
+                $scope.ViewSupplierData = data;
+                $scope.ViewSupplierData._id = data._id;
+                $scope.ViewSupplierData.SupplierCode = data.SupplierCode;
+                $scope.ViewSupplierData.SupplierNameTh = data.SupplierNameTh;
+                $scope.ViewSupplierData.SupplierNameEn = data.SupplierNameEn;
+               
+                //Set Value to Select <option>
+                console.log('data.SupplierCode ' + data.SupplierCode);
+     
+            })
+            .error(function (data) {
+                console.log(data);
+            });
+        $("#div-supplier-table").hide("slow");
+        $("#div-supplier-detail").show("slow");
+    }
+    $scope.DeleteSupplier = function () {
+        //#55dd6b : green
+        //#dd6b55: red
+        //#5583dd : blue
+        swal({
+          title: "Are you sure?",
+          text: "คุณต้องการลบรายการ ผู้ขาย " + $scope.ViewSupplierData.SupplierNameTh + " ใช่ หรือ ไม่?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#dd6b55",
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "No, cancel please!",
+          closeOnConfirm: false,
+          closeOnCancel: false
+        },
+        function(isConfirm){
+          if (isConfirm) {
+            var url = "http://localhost:3000/suppliers/DeleteSupplier/";
+               $http.post(url, $scope.ViewSupplierData)
+                .success(function (data) {
+                    swal("Deleted !!!", "ลบรายการผู้ขาย " + data.SupplierCode + " สำเร็จ !!!", "success");
+                    $scope.SearchSupplier();
+                })
+                .error(function (data) {
+
+                });
+          } else {
+                swal("Cancelled", "Your data is safe :)", "error");
+          }
+        });
+    }
+    $scope.CreateSupplier = function () {
+        swal({
+          title: "Are you sure?",
+          text: "คุณต้องการสร้างรายการ ผู้ขาย " + $scope.ViewSupplierData.SupplierNameTh + " ใช่ หรือ ไม่?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#5583dd",
+          confirmButtonText: "Yes, create it!",
+          cancelButtonText: "No, cancel please!",
+          closeOnConfirm: false,
+          closeOnCancel: false
+        },
+        function(isConfirm){
+          if (isConfirm) {
+            var NewSupplierCode = "";
+            var GenCodeURL = "http://localhost:3000/appconfig/GetNewCode/SP";
+            $http.get(GenCodeURL)
+                .success(function(data) {
+                    NewSupplierCode = data;
+                    console.log('get new code ' + NewSupplierCode);
+                    $scope.ViewSupplierData.SupplierCode = NewSupplierCode;
+
+                    var url = "http://localhost:3000/suppliers/CreateSupplier/";
+                    $http.post(url, $scope.ViewSupplierData)
+                        .success(function (data) {
+                            swal("Created !", "สร้างรายการผู้ขาย " + $scope.ViewSupplierData.SupplierCode + " สำเร็จ !!!", "success");
+                            $scope.SearchSupplier();
+                        })
+                        .error(function (data) {
+
+                        });
+                })
+                .error(function(data) {
+                    return;
+                });
+            
+          } else {
+                swal("Cancelled", "Your data is safe :)", "error");
+          }
+        });
+    }
+    $scope.UpdateSupplier = function () {
+        swal({
+          title: "Are you sure?",
+          text: "คุณต้องการแก้ไขรายการ ผู้ขาย " + $scope.ViewSupplierData.SupplierNameTh + " ใช่หรือไม่ ?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#55dd6b",
+          confirmButtonText: "Yes, update Supplier!",
+          cancelButtonText: "No, cancel please!",
+          closeOnConfirm: false,
+          closeOnCancel: false
+        },
+        function(isConfirm){
+          if (isConfirm) {
+            var url = "http://localhost:3000/suppliers/UpdateSupplier/";
+               $http.post(url, $scope.ViewSupplierData)
+                .success(function (data) {
+                    swal("Updated !!!", "แก้ไขรายการผู้ขาย " + data.SupplierCode + " สำเร็จ !!!", "success");
+                    $scope.SearchSupplier();
+                })
+                .error(function (data) {
+
+                });
+          } else {
+                swal("Cancelled", "Your data is safe :)", "error");
+          }
+        });
+    }
+    $scope.SaveSupplier = function () {
+        if ($scope.ViewSupplierData._id == '' || $scope.ViewSupplierData._id == undefined) {
+            $scope.CreateSupplier();
+        } else if ($scope.ViewSupplierData._id != '') {
+            $scope.UpdateSupplier();
+        }
+    }
+    $scope.CancelSupplier = function () {
+        $scope.SearchSupplier();
+
+        $("#div-supplier-table").show("slow");
+        $("#div-supplier-detail").hide("slow");
+    }
+    // End Function for Supplier Module
+    
+    // Start Function for AppUser Module
+    $scope.SearchAppUser = function () {
+        var url = "http://localhost:3000/users/LoadAppUser";
+        $http.get(url)
+        .success(function (data) {
+                $scope.SearchAppUsers = data;
+                $scope.AppUserTableParams = new ngTableParams({
+                    page: 1,            // show first page
+                    count: 10           // count per page
+                }, {
+                    total: data.length, // length of data
+                    getData: function($defer, params) {
+                        $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    }
+                });
+            })
+            .error(function (data) {
+                alert(data);
+            });
+        $("#div-user-table").show("slow");
+        $("#div-user-detail").hide("slow");
+    }
+    $scope.NewAppUser = function () {
+        $scope.ViewAppUserData = {
+            Email: '',
+            Username: '',
+            Password: '',
+            Firstname : '',
+            Lastname : ''
+        }
+
+        $("#div-user-table").hide("slow");
+        $("#div-user-detail").show("slow");
+    }
+    $scope.ViewAppUser = function (id) {
+        var url = "http://localhost:3000/users/LoadAppUserByObjId/" + id;
+        console.log(id);
+        $http.get(url)
+            .success(function (data) {
+                $scope.ViewAppUserData = data;
+                $scope.ViewAppUserData._id = data._id;
+                $scope.ViewAppUserData.Username = data.Username;
+                $scope.ViewAppUserData.Password = data.Password;
+                $scope.ViewAppUserData.Firstname = data.Firstname;
+                $scope.ViewAppUserData.Lastname = data.Lastname;
+                //Set Value to Select <option>
+                console.log('data.Username ' + data.Username);
+     
+            })
+            .error(function (data) {
+                console.log(data);
+            });
+        $("#div-user-table").hide("slow");
+        $("#div-user-detail").show("slow");
+    }
+    $scope.DeleteAppUser = function () {
+        //#55dd6b : green
+        //#dd6b55: red
+        //#5583dd : blue
+        swal({
+          title: "Are you sure?",
+          text: "คุณต้องการลบรายการ ผู้ใช้ระบบ " + $scope.ViewAppUserData.Username + " ใช่ หรือ ไม่?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#dd6b55",
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "No, cancel please!",
+          closeOnConfirm: false,
+          closeOnCancel: false
+        },
+        function(isConfirm){
+          if (isConfirm) {
+            var url = "http://localhost:3000/users/DeleteAppUser/";
+               $http.post(url, $scope.ViewSupplierData)
+                .success(function (data) {
+                    swal("Deleted !!!", "ลบรายการผู้ใช้ระบบ " + data.Username + " สำเร็จ !!!", "success");
+                    $scope.SearchSupplier();
+                })
+                .error(function (data) {
+
+                });
+          } else {
+                swal("Cancelled", "Your data is safe :)", "error");
+          }
+        });
+    }
+    $scope.CreateAppUser = function () {
+        swal({
+          title: "Are you sure?",
+          text: "คุณต้องการสร้างรายการ ผู้ใช้ระบบ " + $scope.ViewAppUserData.Username + " ใช่ หรือ ไม่?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#5583dd",
+          confirmButtonText: "Yes, create it!",
+          cancelButtonText: "No, cancel please!",
+          closeOnConfirm: false,
+          closeOnCancel: false
+        },
+        function(isConfirm){
+          if (isConfirm) {
+            var NewSupplierCode = "";
+            var GenCodeURL = "http://localhost:3000/appconfig/GetNewCode/SP";
+            $http.get(GenCodeURL)
+                .success(function(data) {
+                    NewSupplierCode = data;
+                    console.log('get new code ' + NewSupplierCode);
+                    $scope.ViewSupplierData.SupplierCode = NewSupplierCode;
+
+                    var url = "http://localhost:3000/users/CreateAppUser/";
+                    $http.post(url, $scope.ViewAppUserData)
+                        .success(function (data) {
+                            swal("Created !", "สร้างรายการผู้ใช้ระบบ " + $scope.ViewAppUserData.Username + " สำเร็จ !!!", "success");
+                            $scope.SearchAppUser();
+                        })
+                        .error(function (data) {
+
+                        });
+                })
+                .error(function(data) {
+                    return;
+                });
+            
+          } else {
+                swal("Cancelled", "Your data is safe :)", "error");
+          }
+        });
+    }
+    $scope.UpdateAppUser = function () {
+        swal({
+          title: "Are you sure?",
+          text: "คุณต้องการแก้ไขรายการ ผู้ขาย " + $scope.ViewAppUserData.Username + " ใช่หรือไม่ ?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#55dd6b",
+          confirmButtonText: "Yes, update AppUser !!",
+          cancelButtonText: "No, cancel please!",
+          closeOnConfirm: false,
+          closeOnCancel: false
+        },
+        function(isConfirm){
+          if (isConfirm) {
+            var url = "http://localhost:3000/users/UpdateAppUser/";
+               $http.post(url, $scope.ViewAppUserData)
+                .success(function (data) {
+                    swal("Updated !!!", "แก้ไขรายการผู้ใช้ระบบ " + data.Username + " สำเร็จ !!!", "success");
+                    $scope.SearchAppUser();
+                })
+                .error(function (data) {
+
+                });
+          } else {
+                swal("Cancelled", "Your data is safe :)", "error");
+          }
+        });
+    }
+    $scope.SaveAppUser = function () {
+        if ($scope.ViewAppUserData._id == '' || $scope.ViewAppUserData._id == undefined) {
+            $scope.CreateAppUser();
+        } else if ($scope.ViewAppUserData._id != '') {
+            $scope.UpdateAppUser();
+        }
+    }
+    $scope.CancelAppUser = function () {
+        $scope.SearchAppUser();
+
+        $("#div-user-table").show("slow");
+        $("#div-user-detail").hide("slow");
+    }
+    // End Function for AppUser Module
+
 
     // Start Function for Staff Module
     $scope.SearchStaff = function () {

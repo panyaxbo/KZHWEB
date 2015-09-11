@@ -17,7 +17,7 @@ router.get(mongodbConfig.url.receipt.loadAllReceipt, function (req, res) {
 
 // Load ROHead by HeadId
 router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, res) {
-    console.log('Product id ' + req.params.ROHeadId);
+    console.log('Receipt id ' + req.params.ROHeadId);
     var ROHeadId = req.params.ROHeadId;
     var BSON = mongodb.BSONPure;
     var o_id = bson.BSONPure.ObjectID(ROHeadId);
