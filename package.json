@@ -1,5 +1,6 @@
 {
   "name": "kzhweb",
+  "main": "server.js",
   "devDependencies": {
     "apache-server-configs": "^2.7.1",
     "app-root-path": "^1.0.0",
