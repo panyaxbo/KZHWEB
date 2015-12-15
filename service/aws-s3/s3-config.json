@@ -1,0 +1,9 @@
+{
+	"AWS_ACCESS_KEY_ID" : "AKIAI24BRGQPJKMMNVBA",
+	"AWS_SECRET_ACCESS_KEY" : "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",
+	"HOME_BUCKET" : "kzhweb",
+	"PRODUCT_BUCKET" : "/product/",
+	"RECEIPT_BUCKET" : "/ro/",
+	"USER_BUCKET" : "/user/",
+	"REGION" : ""
+}

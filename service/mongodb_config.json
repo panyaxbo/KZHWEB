@@ -1,0 +1,219 @@
+{
+	"connection_url" : "mongodb://localhost:27017/",
+	"collection_name" : "NodeDB",
+	"nodejs_port" : "3000",
+
+	"mongodb" : {
+		"appconfig" : {
+			"name" : "AppConfig"
+		},
+		"product" : {
+			"name" : "Product"
+		},
+		"product_type" : {
+			"name" : "ProductType"
+		},
+		"product_category" : {
+			"name" : "ProductCategory"
+		},
+		"promotion" : {
+			"name" : "Promotion"
+		},
+		"appconfig" : {
+			"name" : "AppConfig"
+		},
+		"customer" : {
+			"name" : "Customer"
+		},
+		"customer_type" : {
+			"name" : "CustomerType"
+		},
+		"staff" : {
+			"name" : "Staff"
+		},
+		"user" : {
+			"name" : "AppUser"
+		},
+		"role" : {
+			"name" : "Role"
+		},
+		"uom" : {
+			"name" : "Uom"
+		},
+		"rohead" : {
+			"name" : "ROHead"
+		},
+		"roline" : {
+			"name" : "ROLine"
+		},
+		"supplier" : {
+			"name" : "Supplier"
+		},
+		"province" : {
+			"name" : "Province",
+			"Id" : "_id",
+			"Province" : "Province",
+			"Part" : "Part"
+		},
+		"district" : {
+			"name" : "District",
+			"Id" : "_id",
+			"ProvinceId" : "ProvinceId",
+			"District" : "District"
+		},
+		"subdistrict" : {
+			"name" : "SubDistrict",
+			"Id" : "_id",
+			"DistrictId" : "DistrictId",
+			"SubDistrict" : "SubDistrict",
+			"ZipCode" : "ZipCode"
+		}
+	},
+	"url" : {
+		"appconfig" : {
+			"home" : "/",
+			"getNewCodeByModule" : "/GetNewCode/:Module"
+		},
+		"product" : {
+			"home" : "/",
+			"loadAllProduct" : "/LoadProduct",
+			"loadProductByObjId" : "/LoadProductByObjId/:ProductId",
+			"loadProductById" : "/LoadProductById/:ProductId",
+			"loadProductByProductCode" : "/LoadProductByProductCode/:ProductCode",
+			"loadProductPromotionByProductCode" : "/LoadProductPromotionByProductCode/:ProductCode",
+			"loadProductByProductCategoryCode" : "/LoadProductByProductCategoryCode/:ProductCategoryCode",
+			"createProduct" : "/CreateProduct",
+			"updateProduct" : "/UpdateProduct",
+			"deleteProductByProductId" : "/DeleteProduct/:ProductId"
+		},
+		"product_type" : {
+			"home" : "/",
+			"loadAllProductType" : "/LoadProductType",
+			"loadProductTypeByObjId" : "/LoadProductTypeByObjId/:ProductTypeId",
+			"loadProductTypeById" : "/LoadProductTypeById/:ProductTypeId",
+			"loadProductTypeByCode" : "/LoadProductTypeByCode/:ProductTypeCode",
+			"createProductType" : "/CreateProductType",
+			"updateProductType" : "/UpdateProductType",
+			"deleteProductTypeByProductTypeId" : "/DeleteProductType/:ProductTypeId"
+		},
+
+		"product_category" : {
+			"home" : "/",
+			"loadAllProductCategory" : "/LoadProductCategory",
+			"loadProductCategoryByObjId" : "/LoadProductCategoryByObjId/:ProductCategoryId",
+			"loadProductCategoryById" : "/LoadProductCategoryById/:ProductCategoryId",
+			"loadProductCategoryByProductCategoryCode" : "/LoadProductCategoryByCode/:ProductCategoryCode",
+			"createProductCategory" : "/CreateProductCategory",
+			"updateProductCategory" : "/UpdateProductCategory",
+			"deleteProductCategoryByProductCategoryId" : "/DeleteProductCategory/:ProductCategoryId"
+		},
+		"promotion" : {
+			"home" : "/",
+			"loadAllPromotion" : "/LoadPromotion",
+			"loadPromotionByObjId" : "/LoadPromotionByObjId/:PromotionId",
+			"loadPromotionByCode" : "/LoadPromotionByCode/:PromotionCode",
+			"createPromotion" : "/CreatePromotion",
+			"updatePromotion" : "/UpdatePromotion",
+			"deletePromotionByPromotionId" : "/DeletePromotion/:PromotionId"
+		},
+		"staff" : {
+			"home" : "/",
+			"loadAllStaff" : "/LoadStaff",
+			"loadStaffByObjId" : "/LoadStaffByObjId/:StaffId",
+			"loadStaffById" : "/LoadStaffById/:StaffId",
+			"loadStaffByStaffCode" : "/FindStaffByStaffCode/:StaffCode",
+			"createStaff" : "/CreateStaff",
+			"updateStaff" : "/UpdateStaff",
+			"deleteStaffByStaffId" : "/DeleteStaff/:StaffId"
+		},
+		"user" : {
+			"home" : "/",
+			"loadAllUser" : "/LoadAppUser",
+			"loadAppUserByObjId" : "/LoadAppUserByObjId/:AppUserId",
+			"loadAppUserById" : "/LoadAppUserById/:AppUserId",
+			"loadAppUserByUsernameAndPassword" : "/FindByUsernameAndPassword/:Email/:Password",
+			"createAppUser" : "/CreateAppUser",
+			"updateAppUser" : "/UpdateAppUser",
+			"deleteAppUserByAppUserId" : "/DeleteAppUser/:AppUserId",
+			"isExistUsername" : "/IsExistUsername/:Username",
+			"isExistEmail" : "/IsExistEmail/:Email",
+			"isActivateUser" : "/isActivateUser/:Username/:Password",
+			"createAppUserByUsernameAndPasswordAndEmail" : "/CreateAppUser/:Username/:EncPassword/:Email",
+			"activateAppUserViaEmail" : "/ActivateAppUser/:Username/:Password"
+		},
+		"customer" : {
+			"home" : "/",
+			"loadAllCustomer" : "/LoadCustomer",
+			"loadCustomerByObjId" : "/LoadCustomerByObjId/:CustomerId",
+			"loadCustomerById" : "/LoaCustomerById/:CustomerId",
+			"loadCustomerByCustomerCode" : "/LoadCustomerByCode/:CustomerCode",
+			"createCustomer" : "/CreateCustomer",
+			"updateCustomer" : "/UpdateCustomer",
+			"deleteCustomerByCustomerId" : "/DeleteCustomer/:CustomerId",
+			"isExistCustomer" : "/IsExistCustomer/:FirstName/:LastName/"
+		},
+		"customer_type" : {
+			"home" : "/",
+			"loadAllCustomerType" : "/LoadCustomerType",
+			"loadCustomerTypeByObjId" : "/LoadCustomerTypeByObjId/:CustomerTypeId",
+			"loadCustomerTypeyById" : "/LoadCustomerTypeById/:CustomerTypeId",
+			"loadCustomerTypeByCustomerTypeCode" : "/LoadCustomerTypeByCode/:CustomerTypeCode",
+			"createCustomerType" : "/CreateCustomerType",
+			"updateCustomerType" : "/UpdateCustomerType",
+			"deleteCustomerTypeByCustomerTypeId" : "/DeleteCustomerType/:CustomerTypeId"
+		},
+		"province" : {
+			"home" : "/",
+			"loadAllProvince" : "/LoadProvince"
+		},
+		"district" : {
+			"home" : "/",
+			"loadDistrictByProvinceId" : "/LoadDistrictByProvinceId/:ProvinceId"
+		},
+		"subdistrict" : {
+			"home" : "/",
+			"loadSubDistrictByDistrictId" : "/LoadSubDistrictByDistrictId/:DistrictId",
+			"loadSubDistrictBySubDistrictId" : "/LoadSubDistrictBySubDistrictId/:SubDistrictId"
+		},
+		"receipt" : {
+			"home" : "/",
+			"loadAllReceipt" : "/LoadReceipt",
+			"loadROHeadROLineByROHeadId" : "/LoadROHeadROLineByObjId/:ROHeadId",
+			"loadROHeadByUserIdAndStatus" : "/LoadROHeadByUserIdAndStatus/:UserId/:PaymentStatus/:ShippingStatus/:StartDate/:StartMonth/:StartYear/:EndDate/:EndMonth/:EndYear",
+			"loadROHeadByStaff" : "/LoadROHeadByStaff/:RONo/:CustomerName/:PaymentStatus/:ShippingStatus/:StartDate/:StartMonth/:StartYear/:EndDate/:EndMonth/:EndYear",
+			"createReceipt" : "/CreateReceipt",
+			"updateReceipt" : "/UpdateReceipt",
+			"deleteReceiptByROHeadId" : "/DeleteROHead/:ROHeadId"
+		},
+		"role" : {
+			"home" : "/",
+			"loadAllRole" : "/LoadRole",
+			"loadRoleByObjId" : "/LoadRoleByObjId/:RoleId",
+			"loadRoleByRoleCode" : "/FindRoleByRoleCode/:RoleCode",
+			"loadRoleById" : "/LoadRoleById/:RoleId",
+			"createRole" : "/CreateRole",
+			"updateRole" : "/UpdateRole",
+			"deleteRoleByRoleId" : "/DeleteRole/:RoleId"
+		},
+		"uom" : {
+			"home" : "/",
+			"loadAllUom" : "/LoadUom",
+			"loadUomByObjId" : "/LoadUomByObjId/:UomId",
+			"loadUomByUomCode" : "/LoadUomByUomCode/:UomCode",
+			"loadNotContainUom" : "/LoadNotContainUom",
+			"loadContainUom" : "/LoadContainUom",
+			"createUom" : "/CreateUom",
+			"updateUom" : "/UpdateUom",
+			"deleteUomByUomId" : "/DeleteUom/:UomId"
+		},
+		"supplier" : {
+			"home" : "/",
+			"loadAllSupplier" : "/LoadSupplier",
+			"loadUomByUomCode" : "/LoadUomByUomCode/:UomCode",
+			"loadNotContainUom" : "/LoadNotContainUom",
+			"createSupplier" : "/CreateSupplier",
+			"updateSupplier" : "/UpdateSupplier",
+			"deleteSupplierBySupplierId" : "/DeleteSupplier/:SupplierId"
+		}
+	}
+}
