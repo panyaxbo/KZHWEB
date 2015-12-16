@@ -73,5 +73,10 @@
     "passport-facebook": "^2.0.0",
     "passport-google-plus": "^0.5.1",
     "s3fs": "^2.3.0"
-  }
+  },
+  "scripts": {
+    "start": "node node_modules/grunt-cli/bin/grunt",
+    "test": "node node_modules/grunt-cli/bin/grunt test",
+    "postinstall": "./node_modules/bower/bin/bower install"
+},
 }
