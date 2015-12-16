@@ -39,7 +39,12 @@
     "typeahead.js": "~0.11.1",
     "typehead.js": "~0.11.1",
     "angular-cookie": "~4.0.9",
-    "angular-cookies": "~1.4.8"
+    "angular-cookies": "~1.4.8",
+    "aws-sdk": "aws-sdk-js#~2.2.0",
+    "card": "~1.1.0",
+    "ng-s3upload": "~0.1.2",
+    "ng-table": "~0.8.3",
+    "select2-bootstrap-css": "~1.4.6"
   },
   "devDependencies": {
     "aws-sdk": "aws-sdk-js#~2.2.0",
