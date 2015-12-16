@@ -1,6 +1,6 @@
 {
   "name": "kzhweb",
-  "main": "server.js",
+  "main": "web.js",
   "devDependencies": {
     
   },
