@@ -66,6 +66,7 @@
     "imagemin-pngquant": "^4.2.0",
     "jade": "^1.11.0",
     "jquery": "^2.1.4",
+    "morgan": "^1.6.1",
     "multer": "^1.0.6",
     "passport": "^0.3.2",
     "passport-facebook": "^2.0.0",
