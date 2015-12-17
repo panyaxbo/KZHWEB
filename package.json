@@ -3,7 +3,7 @@
   "main": "web.js",
   "cacheDirectories": ["node_modules", "bower_components", "public/build" ],
   "scripts": {
-    "postinstall": "bower cache clean && bower install && grunt build"
+    "postinstall": "bower cache clean && bower install"
   },
   "devDependencies": {
     
