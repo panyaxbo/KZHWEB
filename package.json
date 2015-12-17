@@ -56,7 +56,6 @@
     "try-thread-sleep": "^1.0.0",
     "twilio": "^2.2.1",
     "xoauth2": "^1.0.0",
-    "base64": "^2.1.0",
     "bcrypt": "^0.8.5",
     "connect-multiparty": "^2.0.0",
     "email-templates": "^2.0.0-beta.1",
