@@ -350,6 +350,40 @@ module.exports = function (grunt) {
       }
     },
 
+    // By default, your `index.html`'s <!-- Usemin block --> will take care
+    // of minification. These next options are pre-configured if you do not
+    // wish to use the Usemin blocks.
+     cssmin: {
+       dist: {
+         files: {
+           '<%= yeoman.dist %>/styles/main.css': [
+             '.tmp/styles/{,*/}*.css',
+             '<%= yeoman.app %>/styles/{,*/}*.css'
+           ]
+         }
+       }
+     },
+     uglify: {
+       dist: {
+         files: {
+           '<%= yeoman.dist %>/scripts/scripts.js': [
+             '<%= yeoman.dist %>/scripts/scripts.js'
+           ]
+         }
+       }
+     },
+     concat: {
+        options: {
+          // define a string to put between each file in the concatenated output
+          separator: ';'
+        },
+        dist: {
+          // the files to concatenate
+          src: ['<%= yeoman.dist %>/scripts/scripts.js'],
+          // the location of the resulting JS file
+          dest: '<%= yeoman.dist %>/scripts/scripts.js'
+        }
+      },
     // Copies remaining files to places other tasks can use
     copy: {
       dist: {
