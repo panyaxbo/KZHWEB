@@ -1,7 +1,5 @@
-
 <!doctype html>
 <html class="no-js" ng-app="KZHWEB">
-
 <head >
     <meta charset="utf-8" http-equiv="imagetoolbar" content="no">
     <title translate="TITLE.NAME"></title>
@@ -10,35 +8,29 @@
     <link rel="shortcut icon" href="/images/favicon.ico">
     <link rel="stylesheet" href="/bower_components/BrandButtons/dist/brand-buttons.min.css" />
     <link rel="stylesheet" href="/bower_components/allmighty-autocomplete/style/autocomplete.css" />
-    <link rel="stylesheet" href="/bower_components/angular-block-ui/dist/angular-block-ui.css" />
+    <link rel="stylesheet" href="/bower_components/angular-block-ui/dist/angular-block-ui.min.css" />
     <link rel="stylesheet" href="/bower_components/angularjs-datepicker/dist/angular-datepicker.min.css" />
-    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="/bower_components/fontawesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" href="/bower_components/bootstrap-social/bootstrap-social.css" />
     <link rel="stylesheet" href="/bower_components/ng-table/dist/ng-table.min.css" />
-    <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog.css" />
-    <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog-theme-default.css" />
+    <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog.min.css" />
+    <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog-theme-default.min.css" />
     <link rel="stylesheet" href="/bower_components/pnotify/pnotify.core.css" />
     <link rel="stylesheet" href="/bower_components/pnotify/pnotify.buttons.css" />
     <link rel="stylesheet" href="/bower_components/pnotify/pnotify.history.css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" />
     <link rel="stylesheet" href="/bower_components/sweetalert/dist/sweetalert.css" />
     <link rel="stylesheet" href="/bower_components/bootstrap-social/bootstrap-social.css" />
-    <link rel="stylesheet" href="/bower_components/angular-block-ui/dist/angular-block-ui.css" />
-    <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog.css" />
-    <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog-theme-default.css" />
+    <link rel="stylesheet" href="/bower_components/angular-block-ui/dist/angular-block-ui.min.css" />
     <link rel="stylesheet" href="/bower_components/angularjs-datepicker/dist/angular-datepicker.min.css" />
-    <link rel="stylesheet" href="/bower_components/ng-table/dist/ng-table.css">
+    <link rel="stylesheet" href="/bower_components/ng-table/dist/ng-table.min.css">
     <link rel="stylesheet" href="/styles/bootstrap-magnify.css">
     <link rel="stylesheet" href="/styles/search.css">
-    <link rel="stylesheet" href="/bower_components/pnotify/pnotify.core.css">
     <link rel="stylesheet" href="/styles/step.css">
     <link rel="import" href="/bower_components/number-format/src/number-format.html">
-    <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet/less" type="text/css" href="styles/main.less" />
-    <!-- endbuild -->
-    
 </head>
 
 <body onselectstart="return false;" ondragstart="return false;">
@@ -47,9 +39,8 @@
 
         <div class="header" id="div-header" ng-controller="HeaderController" style="top: 0px;padding-bottom:10px;margin-bottom: 10px; margin-top:15px">
             <a href="#/">
-                <img src="images/KZH%20Logo.png" width="150px" height="50px">
+                <img src="images/KZH%20Logo.png" width="150px" height="50px" >
             </a>
-            <!-- div seach -->
             <div id="SearchCriteria" class="kzhweb-search animate" style="top:85px;z-index:9999;width:80%">             
                 <div class="input-group">
                   <input type="text" class="form-control" ng-model="SearchAllText" ng-enter="Search()" ng-keydown="expression" placeholder="{{'HEAD.MENU.SEARCH.PLACEHOLDER' | translate}}">
@@ -67,22 +58,14 @@
                 <li>
                     <a href="#product-section" ng-click="SelectedHeadMenu('product')" class="head-menu">{{'HEAD.MENU.PRODUCT' | translate}}</a>
                 </li>
-             <!--   <li>
-                    <a href="#webboard-section" ng-click="SelectedHeadMenu('webboard')" class="head-menu">{{'HEAD.MENU.WEBBOARD' | translate}}</a>
-                </li>
-                
                 <li>
-                    <a href="#payment-section" ng-click="SelectedHeadMenu('payment')" class="head-menu">{{'HEAD.MENU.PAYMENT' | translate}}</a>
-                </li>
-                <li>
-                    <a href="#payment-section" ng-click="SelectedHeadMenu('payment')" class="head-menu">{{'HEAD.MENU.DELIVERY' | translate}}</a>
+                    <a href="#payment-section" ng-click="SelectedHeadMenu('payment')" class="head-menu">{{'HEAD.MENU.PAYMENT_N_DELIVERY' | translate}}</a>
                 </li>
                 <li>
                     <a href="#about-section" ng-click="SelectedHeadMenu('about')" class="head-menu">{{'HEAD.MENU.ABOUT' | translate}}</a>
                 </li>
--->
                 <li>
-                    <a href="#payment-section" ng-click="SelectedHeadMenu('payment')" class="head-menu">{{'HEAD.MENU.PAYMENT_N_DELIVERY' | translate}}</a>
+                    <a href="#contact-section" ng-click="SelectedHeadMenu('contact')" class="head-menu">{{'HEAD.MENU.CONTACT' | translate}}</a>
                 </li>
                 <li>
                     <div>
@@ -506,35 +489,11 @@
                         </li>
                       </ul>
                 </li>
-            <!--    <li class="dropdown" class="head-menu" style="margin-top:5px">
-                    <div>
-                        <a href="#" class="dropdown-toggle head-menu" data-toggle="dropdown">
-                        <span id="SelectedDropdownCurrency">฿ THB</span><b class="caret"></b></a>
-                        <ul id="DropdownCurrency" class="dropdown-menu">
-                            <li><a href="#" ng-click="SelectedHeadCurrency('thb')" id="THB" class="head-menu">
-                                ฿ THB</a>
-                            </li>
-                            <li><a href="#" ng-click="SelectedHeadCurrency('usd')" id="USD" class="head-menu">
-                                $ USD</a>
-                            </li>
-                            <li><a href="#" ng-click="SelectedHeadCurrency('eur')" id="EUR" class="head-menu">
-                                € EUR</a>
-                            </li>
-                            <li><a href="#" ng-click="SelectedHeadCurrency('gbp')" id="GBP" class="head-menu">
-                                £ GBP</a>
-                            </li>
-                            <li><a href="#" ng-click="SelectedHeadCurrency('cny')" id="CNY" class="head-menu">
-                                ¥ CNY</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>-->
                 <li class="dropdown" class="head-menu" style="margin-top:5px">
                     <div>
                        <div id="UserProfileImage">
                            <img src="/images/noProfileImg.png"  class="img-circle" width="40" height="40" ng-show="!IsLogin || User.ProfileImage === undefined" style="margin-top:-5px">
                        </div>
-                    <!--   <img src="User.ProfileImage" ng-binding="User.ProfileImage" class="img-circle" width="40" height="40" ng-show="IsLogin && User.ProfileImage.length > 0" style="margin-top:-5px">-->
                     </div>
                 </li>
                 <li class="dropdown" class="head-menu" style="margin-top:5px">
@@ -558,7 +517,6 @@
                             </ul>
                         </div>
                         <div ng-show="!IsAdmin && !IsGuest">
-                            <!-- code to render the regular video block -->
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
                              {{User.Firstname}}<b class="caret"></b></a>
                             <ul class="dropdown-menu">
@@ -572,7 +530,6 @@
                             </ul>
                         </div>
                         <div ng-show="!IsAdmin && IsGuest">
-                            <!-- code to render the regular video block -->
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
                              {{User.Firstname}}<b class="caret"></b></a>
                         </div>
@@ -594,58 +551,60 @@
                     <div class="item active" align="center">
                         <img src="/images/kzh01.jpg" alt="...">
                         <div class="carousel-caption">
-                            <h3>AAAAAA</h3>
-                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                            <h3>{{'BODY.CAROUSEL.ONE.TITLE' | translate}}</h3>
+                            <p>{{'BODY.CAROUSEL.ONE.TEXT' | translate}}</p>
                         </div>
                     </div>
                     <div class="item" align="center">
                         <img src="/images/kzh02.jpg" alt="...">
                         <div class="carousel-caption ">
-                            <h3>AAAAAA</h3>
-                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                            <h3>{{'BODY.CAROUSEL.TWO.TITLE' | translate}}</h3>
+                            <p>{{'BODY.CAROUSEL.TWO.TEXT' | translate}}</p>
                         </div>
                     </div>
                     <div class="item" align="center">
                         <img src="/images/kzh03.jpg" alt="...">
                         <div class="carousel-caption ">
-
+                            <h3>{{'BODY.CAROUSEL.THREE.TITLE' | translate}}</h3>
+                            <p>{{'BODY.CAROUSEL.THREE.TEXT' | translate}}</p>
                         </div>
                     </div>
                     <div class="item" align="center">
                         <img src="/images/kzh04.jpg" alt="...">
                         <div class="carousel-caption ">
-
+                            <h3>{{'BODY.CAROUSEL.FOUR.TITLE' | translate}}</h3>
+                            <p>{{'BODY.CAROUSEL.FOUR.TEXT' | translate}}</p>
                         </div>
                     </div>
                     <div class="item" align="center">
                         <img src="/images/kzh05.jpg" alt="...">
                         <div class="carousel-caption ">
-
+                            <h3>{{'BODY.CAROUSEL.FIVE.TITLE' | translate}}</h3>
+                            <p>{{'BODY.CAROUSEL.FIVE.TEXT' | translate}}</p>
                         </div>
                     </div>
                     <div class="item" align="center">
                         <img src="/images/kzh06.jpg" alt="...">
                         <div class="carousel-caption ">
-
+                            <h3>{{'BODY.CAROUSEL.SIX.TITLE' | translate}}</h3>
+                            <p>{{'BODY.CAROUSEL.SIX.TEXT' | translate}}</p>
                         </div>
                     </div>
                     <div class="item" align="center">
                         <img src="/images/kzh07.jpg" alt="...">
                         <div class="carousel-caption ">
-
+                            <h3>{{'BODY.CAROUSEL.SEVEN.TITLE' | translate}}</h3>
+                            <p>{{'BODY.CAROUSEL.SEVEN.TEXT' | translate}}</p>
                         </div>
                     </div>
                 </div>
-                <!-- Controls -->
-                <a class="left carousel-control " href="#carousel-example-generic" role="button" data-slide="prev">
+                <a class="left carousel-control" data-target="#carousel-example-generic" role="button" data-slide="prev" style="cursor:pointer">
                     <span class="glyphicon glyphicon-chevron-left"></span>
                 </a>
-                <a class="right carousel-control " href="#carousel-example-generic" role="button" data-slide="next">
+                <a class="right carousel-control" data-target="#carousel-example-generic" role="button" data-slide="next" style="cursor:pointer">
                     <span class="glyphicon glyphicon-chevron-right"></span>
                 </a>
             </div>
-            <!-- End Carousel -->
-            
             <hr>
             <div id="nav">
                 <!-- Display Product type-->
@@ -658,7 +617,6 @@
                         </td>
                     </tr>
                 </table>
-                <!-- Google Map & Thai-Post Image-->
                 <table>
                     <tr>
                         <td></td>
@@ -666,7 +624,7 @@
                     <tr>
                         <td style="center">
                             <a href="#google-map-section" ng-click="SelectedBodyMenu('google-map')">
-                             <img src="/images/google-map.png" width="100px " height="50px">
+                             <img src="/images/google-map.png" width="100px" height="60px" class="img-responsive">
                             </a>
                         </td>
                     </tr>
@@ -677,7 +635,8 @@
                     </tr>
                     <tr>
                         <td style="center">
-                            <a href="#thai-post-section" ng-click="SelectedBodyMenu('thai-post')"><img src="/images/thaipost.png" width="100px" height="50px">
+                            <a href="#thai-post-section" ng-click="SelectedBodyMenu('thai-post')">
+                                <img src="/images/thaipost.png" width="100px" height="60px" class="img-responsive">
                             </a>
                         </td>
                     </tr>
@@ -688,10 +647,7 @@
                     </tr>
                 </table>
             </div>
-            <!-- div-nav-->
-            
             <div id="div-change-view">
-                <!-- <div> product to cart-->
                 <div id="product-section" name="product-section" ng-init="LoadProduct()" class="section animated fadeIn" 
                 ng-show="SelectedMenu === 'product'" style="padding-top:0px">
                     <div class="row">
@@ -805,67 +761,15 @@
                 <!-- <div> payment method -->
                 <div id="payment-section"  name="payment-section" class="section" ng-show="SelectedMenu === 'payment'">
                     <h3>{{'BODY.SECTION.PAYMENT.HEAD' | translate}}</h3>
-                    <table>
-                        <tr>
-                            <td>
-                                1.
-                            </td>
-                            <td>
-                                <img src="/images/bbl.png " width="40px " height="40px" />
-                            </td>
-                            <td translate="BODY.SECTION.PAYMENT.BBL_ACC ">
-                                หมายเลข 440-99934-3454
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                2.
-                            </td>
-                            <td>
-                                <img src="/images/kbank.png " width="40px " height="40px" />
-                            </td>
-                            <td translate="BODY.SECTION.PAYMENT.KBANK_ACC">
-                                หมายเลข 440-99934-3454
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                3.
-                            </td>
-                            <td>
-                                <img src="images/scb.png " width="40px " height="40px " />
-                            </td>
-                            <td translate="BODY.SECTION.PAYMENT.SCB_ACC">
-                                หมายเลข 440-99934-3454
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                4.
-                            </td>
-                            <td>
-                                <img src="images/ktb.png " width="40px " height="40px " />
-                            </td>
-                            <td translate="BODY.SECTION.PAYMENT.KTB_ACC">
-                                หมายเลข 440-99934-3454
-                            </td>
-                        </tr>
-                            <td>
-                        <tr>
-                                5.
-                            </td>
-                            <td>
-                                <img src="images/kcc.png " width="40px" height="40px" />
-                            </td>
-                            <td translate="BODY.SECTION.PAYMENT.KCC_ACC">
-                                หมายเลข 440-99934-3454
-                            </td>
-                        </tr>
-                    </table>
+                    <img src="/images/How-To-Purchase.png" class="img-responsive" width="1050" height="1250">
                 </div>
                 <!-- <div> about us -->
                 <div id="about-section" name="about-section" class="section" ng-show="SelectedMenu === 'about'">
                     <h3>{{'BODY.SECTION.ABOUT.HEAD' | translate}}</h3>
+                </div>
+                <!-- <div> contant us -->
+                <div id="contact-section" name="contact-section" class="section" ng-show="SelectedMenu === 'contact'">
+                    <h3>{{'BODY.SECTION.CONTACT.HEAD' | translate}}</h3>
                 </div>
                 <!-- <div> google map -->
                 <div id="google-map-section" name="google-map-section" class="section" ng-show="SelectedMenu === 'google-map'">
@@ -887,7 +791,6 @@
                             </address>
                         </div>
                     </div>
-
                 </div>
                 <!-- <div> thai-post -->
                 <div id="thai-post-section" name="thai-post-section" class="section" ng-show="SelectedMenu === 'thai-post'">
@@ -925,9 +828,17 @@
                                                   <legend>&nbsp;</legend>
                                                   <!-- Text input-->
                                                   <div class="form-group">
-                                                        <label class="col-md-4 control-label">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_NAME' | translate}}</label>
+                                                        <label class="col-md-4 control-label">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_NAME' | translate}} :</label>
                                                         <div class="col-md-8">
                                                             <input maxlength="200" type="text" ng-model="ROHead.BillingName" required="required" 
+                                                            class="form-control" placeholder="Enter Company Name" />
+                                                        </div>
+                                                  </div>
+                                                  <div class="form-group"></div>
+                                                  <div class="form-group">
+                                                        <label class="col-md-4 control-label">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_EMAIL' | translate}} :</label>
+                                                        <div class="col-md-8">
+                                                            <input maxlength="200" type="text" ng-model="ROHead.BillingEmail" required="required" 
                                                             class="form-control" placeholder="Enter Company Name" />
                                                         </div>
                                                   </div>
@@ -1115,7 +1026,7 @@
                                                                                 <input type="radio" name="bank" ng-model="PaymentBank" value="bbl" required="required"/>
                                                                             </td>
                                                                             <td class="text-center">
-                                                                                <img src="/images/bbl.png" width="40" height="40">
+                                                                                <img src="/images/bbl.png" width="40" height="40" class='img-responsive'>
                                                                             </td>
                                                                             <td>
                                                                                 <label style="color:black">111-2345-123</label>
@@ -1135,7 +1046,7 @@
                                                                                 <input type="radio" name="bank" ng-model="PaymentBank" value="kbank" required="required"/>
                                                                             </td>
                                                                             <td class="text-center">
-                                                                                <img src="/images/kbank.png" width="40" height="40">
+                                                                                <img src="/images/kbank.png" width="40" height="40" class='img-responsive'>
                                                                             </td>
                                                                             <td>
                                                                                <label style="color:black">111-2345-123</label>
@@ -1152,11 +1063,11 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td class="text-center">
-                                                                                  <input type="radio" name="bank" ng-model="PaymentBank" value="scb" required="required"/>
+                                                                                  <input type="radio" name="bank" ng-model="PaymentBank" value="scb" required="required" />
                                                                               
                                                                             </td>
                                                                             <td class="text-center">
-                                                                                <img src="/images/scb.png" width="40" height="40">
+                                                                                <img src="/images/scb.png" width="40" height="40" class='img-responsive'>
                                                                             </td>
                                                                             <td>
                                                                                 <label style="color:black">111-2345-123 </label>
@@ -1175,8 +1086,8 @@
                                                                             <td class="text-center">
                                                                                   <input type="radio" name="bank" ng-model="PaymentBank" value="ktb" required="required"/>
                                                                             </td >
-                                                                            <td class="text-center">
-                                                                                <img src="/images/ktb.png" width="40" height="40">
+                                                                            <td class="text-center"> 
+                                                                                <img src="/images/ktb.png" width="40" height="40" class='img-responsive'>
                                                                             </td>
                                                                             <td>
                                                                                 <label style="color:black">111-2345-123 </label>
@@ -1196,7 +1107,7 @@
                                                                                   <input type="radio" name="bank" ng-model="PaymentBank" value="kcc" required="required"/>
                                                                             </td >
                                                                             <td class="text-center">
-                                                                                <img src="/images/kcc.png" width="40" height="40">
+                                                                                <img src="/images/kcc.png" width="40" height="40" class='img-responsive'>
                                                                             </td>
                                                                             <td>
                                                                                 <label style="color:black">111-2345-123 </label>
@@ -1218,7 +1129,7 @@
                                                                              
                                                                             </td class="text-center">
                                                                             <td>
-                                                                                <img src="/images/tmb.png" width="60" height="35">
+                                                                                <img src="/images/tmb.png" width="60" height="35" class='img-responsive'>
                                                                             </td>
                                                                             <td>
                                                                                 <label style="color:black">111-2345-123</label>
@@ -1238,7 +1149,7 @@
                                                                                   <input type="radio" name="bank" ng-model="PaymentBank" value="uob" required="required" />
                                                                             </td>
                                                                             <td class="text-center">
-                                                                                <img src="/images/uob.png" width="60" height="30">
+                                                                                <img src="/images/uob.png" width="60" height="30" class='img-responsive'>
                                                                             </td>
                                                                             <td>
                                                                                 <label style="color:black">111-2345-123</label>
@@ -1377,62 +1288,62 @@
                                     <legend></legend>
                                     <!-- Text input-->
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.ACCOUNT.FIRST_NAME' | translate}}</label>
+                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.FIRST_NAME' | translate}}</label>
                                         <div class="col-sm-6">
                                             <input type="text" placeholder="{{'BODY.SECTION.ACCOUNT.FIRST_NAME' | translate}}" class="form-control" ng-model="ViewAppUserData.Firstname">
                                         </div>
                                     </div>
                                     <!-- Text input-->
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.ACCOUNT.LAST_NAME' | translate}}</label>
+                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.LAST_NAME' | translate}}</label>
                                         <div class="col-sm-6">
                                             <input type="text" placeholder="{{'BODY.SECTION.ACCOUNT.LASTNAME' | translate}}" class="form-control" ng-model="ViewAppUserData.Lastname">
                                         </div>
                                     </div>
                                     <!-- Text input-->
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.ACCOUNT.EMAIL' | translate}}</label>
+                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.EMAIL' | translate}}</label>
                                         <div class="col-sm-6">
                                             <input type="email" placeholder="{{'BODY.SECTION.ACCOUNT.EMAIL' | translate}}" class="form-control" ng-model="ViewAppUserData.Email" />
                                         </div>
                                     </div>
                                     <!-- Text input-->
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.ACCOUNT.USERNAME' | translate}}</label>
+                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.USERNAME' | translate}}</label>
                                         <div class="col-sm-6">
                                             <input type="text" placeholder="Username" class="form-control" ng-model="ViewAppUserData.Username">
                                         </div>
                                     </div>
                                     <!-- Text input-->
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.ACCOUNT.PASSWORD' | translate}}</label>
+                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.PASSWORD' | translate}}</label>
                                         <div class="col-sm-6">
                                             <input type="password" placeholder="Firstname" class="form-control" ng-model="ViewAppUserData.Password">
                                         </div>
                                     </div>
                                     <!-- Text input-->
                                     <div class="form-group">
-                                        <label class="col-md-4 control-label" for="filebutton">{{'BODY.SECTION.ACCOUNT.PROFILE_IMAGE' | translate}}</label>
+                                        <label class="col-md-4 control-label" for="filebutton" style="text-align: left">{{'BODY.SECTION.ACCOUNT.PROFILE_IMAGE' | translate}}</label>
                                         <div class="col-md-4">
-                                       <!--     <input id="ProfileImage" name="filebutton" class="input-file" type="file" ng-Model="ViewAppUserData.ProfileImage">-->
+                                  
                                             <div>
                                                 <div class="button" ngf-select ngf-change="upload($files)" style="color:black">
                                                 Upload on file change</div>
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
-                                        {{'BODY.SECTION.ACCOUNT.DROP_FILE' | translate}}
-                                        </div>
-                                        <div class="col-md-4">
-                                         <div ngf-drop ng-model="files" class="drop-box" 
+                                        
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.DROP_FILE' | translate}} </label>
+                                        <div class="col-sm-6">
+                                            <div ngf-drop ng-model="files" class="drop-box" 
                                                     ngf-drag-over-class="dragover" ngf-allow-dir="true"
                                                     ngf-accept="'image/*,application/pdf'">{{'BODY.SECTION.ACCOUNT.DROP_IMAGE_PDF' | translate}}</div>
                                                 <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
                                         </div>
                                     </div>
-                                    
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.ACCOUNT.IMAGE_THUMBNAIL' | translate}} </label>
+                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.IMAGE_THUMBNAIL' | translate}} </label>
                                         <div class="col-sm-6" id="ThumbnailProfileImage">
                                         <!--   <img ngf-src="file" ngf-default-src="'placeholder.jpg'" ngf-accept="'.pdf,.jpg'"> -->
                                            
@@ -2340,10 +2251,7 @@
                                                 </fieldset>
                                             </form>
                                         </div>
-
-                                        <!-- /.col-lg-12 -->
                                     </div>
-                                    <!-- /.row -->
                                     <!-- Start Customer Type Table Setting -->
                                     <div id="div-customer-type-table">
                                         <legend></legend>
@@ -2673,10 +2581,7 @@
                                                 </fieldset>
                                             </form>
                                         </div>
-                                        <!-- /.col-lg-12 -->
                                     </div>
-                                    <!-- /.row -->
-                                 
                                     <!-- Start Supplier Table Setting -->
                                     <div id="div-supplier-table">
                                         <legend></legend>
@@ -2838,7 +2743,6 @@
                                                             <div class="pull-right">
                                                                 <button type="submit" class="btn btn-warning" ng-click="NewProductCategory()">
                                                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.NEW' | translate}}</button>
-                                                                
                                                                 <button type="submit" class="btn btn-primary" ng-click="SaveProductCategory()"> 
                                                                 <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.SAVE' | translate}}</button>
 
@@ -3078,7 +2982,6 @@
                                         <!-- End Staff Table Setting -->
                                 </div>
                                 <!-- End Staff Setting -->
-                                
                                 <!-- Start Role Setting -->
                                 <div class="tab-pane" id="RoleTab" name="RoleTab">
                                     <!-- Start Role Detail Setting -->
@@ -3700,9 +3603,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- /.modal-dialog -->
                             </div>
-                            <!-- /.modal -->
                         </div>
                     </div>
                         <table ng-table="CustomerOrderTableParams" class="table">
@@ -3718,22 +3619,22 @@
                                 <td data-title="'Customer'" class="text-left">{{roHead.Firstname}} {{roHead.Lastname}}</td>
                                 <td data-title="'NetAmount'" class="text-right">{{roHead.NetAmount | number :2}}</td>
                                 <td data-title="'Bank'" class="text-center">
-                                    <img src="images/bbl.png" ng-show="roHead.PaymentBank == 'bbl'" width="32" height="32">
-                                    <img src="images/kbank.png" ng-show="roHead.PaymentBank == 'kbank'" width="32" height="32">
-                                    <img src="images/ktb.png" ng-show="roHead.PaymentBank == 'ktb'" width="32" height="32">
-                                    <img src="images/kcc.png" ng-show="roHead.PaymentBank == 'kcc'" width="32" height="32">
-                                    <img src="images/scb.png" ng-show="roHead.PaymentBank == 'scb'" width="32" height="32">
-                                    <img src="images/tmb.png" ng-show="roHead.PaymentBank == 'tmb'" width="32" height="32">
-                                    <img src="images/uob.png" ng-show="roHead.PaymentBank == 'uob'" width="32" height="32">
+                                    <img src="images/bbl.png" ng-show="roHead.PaymentBank == 'bbl'" width="32" height="32" class='img-responsive'>
+                                    <img src="images/kbank.png" ng-show="roHead.PaymentBank == 'kbank'" width="32" height="32" class='img-responsive'>
+                                    <img src="images/ktb.png" ng-show="roHead.PaymentBank == 'ktb'" width="32" height="32" class='img-responsive'>
+                                    <img src="images/kcc.png" ng-show="roHead.PaymentBank == 'kcc'" width="32" height="32" class='img-responsive'>
+                                    <img src="images/scb.png" ng-show="roHead.PaymentBank == 'scb'" width="32" height="32" class='img-responsive'>
+                                    <img src="images/tmb.png" ng-show="roHead.PaymentBank == 'tmb'" width="32" height="32" class='img-responsive'>
+                                    <img src="images/uob.png" ng-show="roHead.PaymentBank == 'uob'" width="32" height="32" class='img-responsive'>
                                 </td>
                                 <td data-title="'Payment'" class="text-center">
-                                    <img src="images/dpay_stat.png" ng-show="roHead.PaymentStatus == 'N'" title="No Payment">
-                                    <img src="images/pay_stat.png" ng-show="roHead.PaymentStatus == 'Y'" title="Paid">
+                                    <img src="images/dpay_stat.png" ng-show="roHead.PaymentStatus == 'N'" title="No Payment" class='img-responsive'>
+                                    <img src="images/pay_stat.png" ng-show="roHead.PaymentStatus == 'Y'" title="Paid" class='img-responsive'>
                                 </td>
                                 
                                 <td data-title="'Shipping'" class="text-center">
-                                    <img src="images/dship_stat.png" ng-show="roHead.ShippingStatus == 'N'" title="No Shipping">
-                                    <img src="images/ship_stat.png" ng-show="roHead.ShippingStatus == 'Y'" title="Shipped">
+                                    <img src="images/dship_stat.png" ng-show="roHead.ShippingStatus == 'N'" title="No Shipping" class='img-responsive'>
+                                    <img src="images/ship_stat.png" ng-show="roHead.ShippingStatus == 'Y'" title="Shipped" class='img-responsive'>
                                 </td>
                             </tr>
                         </table>
@@ -3769,7 +3670,7 @@
                 <div class="row">
                       <div class="col-md-4">
                         <center>
-                          <img src="/images/tyre.png" width="64" height="64"  alt="the-brains">
+                          <img src="/images/tyre.png" width="64" height="64"  alt="the-brains" class='img-responsive'>
                           <br>
                           <h4 class="footertext">{{'FOOTER.TYRE.HEAD' | translate}}</h4>
                           <p class="footertext">{{'FOOTER.TYRE.REMARK' | translate}}<br>
@@ -3777,7 +3678,7 @@
                       </div>
                       <div class="col-md-4">
                         <center>
-                          <img src="/images/lubricant.png" width="64" height="64" alt="...">
+                          <img src="/images/lubricant.png" width="64" height="64" alt="..." class='img-responsive'>
                           <br>
                           <h4 class="footertext">{{'FOOTER.LUBRICANT.HEAD' | translate}}</h4>
                           <p class="footertext">{{'FOOTER.LUBRICANT.REMARK' | translate}}<br>
@@ -3785,7 +3686,7 @@
                       </div>
                       <div class="col-md-4">
                         <center>
-                          <img src="/images/battery.png" width="64" height="64" alt="...">
+                          <img src="/images/battery.png" width="64" height="64" alt="..." class='img-responsive'>
                           <br>
                           <h4 class="footertext">{{'FOOTER.BATTERY.HEAD' | translate}}</h4>
                           <p class="footertext">{{'FOOTER.BATTERY.REMARK' | translate}}<br>
@@ -3793,7 +3694,7 @@
                       </div>
                       <div class="col-md-4">
                         <center>
-                          <img src="/images/brake.png" width="64" height="64"  alt="the-brains">
+                          <img src="/images/brake.png" width="64" height="64"  alt="the-brains" class='img-responsive'>
                           <br>
                           <h4 class="footertext">{{'FOOTER.BRAKE.HEAD' | translate}}</h4>
                           <p class="footertext">{{'FOOTER.BRAKE.REMARK' | translate}}<br>
@@ -3801,7 +3702,7 @@
                       </div>
                       <div class="col-md-4">
                         <center>
-                          <img src="/images/shock.png" width="64" height="64" alt="...">
+                          <img src="/images/shock.png" width="64" height="64" alt="..." class='img-responsive'>
                           <br>
                           <h4 class="footertext">{{'FOOTER.SHOCK.HEAD' | translate}}</h4>
                           <p class="footertext">{{'FOOTER.SHOCK.REMARK' | translate}}<br>
@@ -3809,7 +3710,7 @@
                       </div>
                       <div class="col-md-4">
                         <center>
-                          <img src="/images/wrench.png" width="64" height="64" alt="...">
+                          <img src="/images/wrench.png" width="64" height="64" alt="..." class='img-responsive'>
                           <br>
                           <h4 class="footertext">{{'FOOTER.WRENCH.HEAD' | translate}}</h4>
                           <p class="footertext">{{'FOOTER.WRENCH.HEAD' | translate}}<br>
@@ -3825,10 +3726,8 @@
         </div>
         <!-- div FOOTER-->
       
-        <!-- endbower -->
-        <!-- endbuild -->
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
+    <!--    <script>
             (function (b, o, i, l, e, r) {
                 b.GoogleAnalyticsObject = l;
                 b[l] || (b[l] =
@@ -3843,36 +3742,35 @@
             }(window, document, 'script', '__gaTracker'));
             __gaTracker('create', 'UA-XXXXX-Y', 'auto');
             __gaTracker('send', 'pageview');
-        </script>
-
+        </script>-->
         <script src="/bower_components/jquery/dist/jquery.min.js"></script>
         <script src="/bower_components/angular/angular.min.js"></script>
+        <script src="/bower_components/angular-cookies/angular-cookies.min.js"></script>
         <script src="/bower_components/flow.js/dist/flow.js"></script>
-        <script src="/bower_components/ng-flow/dist/ng-flow.js"></script>
+        <script src="/bower_components/ng-flow/dist/ng-flow.min.js"></script>
         <script src="/bower_components/platform/platform.js"></script>
         <script src="/bower_components/less/dist/less.js"></script>
         <script src="/bower_components/lodash/lodash.js"></script>
         <script src="/bower_components/angular-block-ui/dist/angular-block-ui.min.js"></script>
         <script src="/bower_components/ngDialog/js/ngDialog.min.js"></script>
         <script src="/bower_components/angularjs-datepicker/dist/angular-datepicker.min.js"></script>
-        <script src="/bower_components/ng-password-strength/dist/scripts/ng-password-strength.js"></script>
+        <script src="/bower_components/ng-password-strength/dist/scripts/ng-password-strength.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
-        <script src="/bower_components/ng-file-upload/ng-file-upload.js"></script>
-        <script src="/bower_components/ng-file-upload-shim/ng-file-upload-shim.js"></script>
-        <script src="/bower_components/angular-animate/angular-animate.js"></script>
-        <script src="/bower_components/angular-translate/angular-translate.js"></script>
-        <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="/bower_components/ng-file-upload/ng-file-upload.min.js"></script>
+        <script src="/bower_components/ng-file-upload-shim/ng-file-upload-shim.min.js"></script>
+        <script src="/bower_components/angular-animate/angular-animate.min.js"></script>
+        <script src="/bower_components/angular-translate/angular-translate.min.js"></script>
+        <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="/bower_components/bootstrap/js/tab.js"></script>
         <script src="/bower_components/chartjs/Chart.js"></script>
         <script src="/bower_components/ng-table/dist/ng-table.min.js"></script>
-        <script src="/bower_components/ng-file-upload/ng-file-upload.js"></script>
         <script src="/bower_components/sweetalert/dist/sweetalert.min.js"></script>
         <script src="/bower_components/pnotify/pnotify.core.js"></script>
         <script src="https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit" async defer></script>
         <script src="/bower_components/angular-recaptcha/release/angular-recaptcha.min.js" ></script>
         <script src="/bower_components/oauth-js/dist/oauth.min.js"></script>
         <script src="/bower_components/ngAutocomplete/src/ngAutocomplete.js"></script>
-        <script src="/bower_components/bootstrap3-typeahead/bootstrap3-typeahead.js" ></script>
+        <script src="/bower_components/bootstrap3-typeahead/bootstrap3-typeahead.min.js" ></script>
         <script src="/bower_components/allmighty-autocomplete/script/autocomplete.js" ></script>
         <script src="/scripts/main.js"></script>
         <script src="/scripts/bootstrap-magnify.js"></script>

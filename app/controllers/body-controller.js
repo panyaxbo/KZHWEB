@@ -283,15 +283,16 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     $scope.$apply(function(){
                         var someimage = document.getElementById('ThumbnailProductImage_'+SelectedProduct.ProductCode);
                         var myimg = someimage.getElementsByTagName('img')[2]; //[0] stripe-new [1] stripe-sale
-                        var image_tag = myimg.cloneNode(true); // Must clone because image thumbnail will disappear
-
-                        image_tag.setAttribute("width", "50px");
-                        image_tag.setAttribute("height", "50px");
-                        $('#CartProduct_'+SelectedProduct.ProductCode).append(image_tag);
-
+                        // If product not has image
+                        if (myimg !== undefined) {
+                            var image_tag = myimg.cloneNode(true); // Must clone because image thumbnail will disappear
+                            image_tag.setAttribute("width", "50px");
+                            image_tag.setAttribute("height", "50px");
+                            $('#CartProduct_'+SelectedProduct.ProductCode).append(image_tag);
+                        }
                     });
                   } else {
-                        swal("Cancelled", "Your imaginary file is safe :)", "error");
+                    //    swal("Cancelled", "Your imaginary file is safe :)", "error");
                   }
                 });
             } else {
@@ -382,7 +383,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-product-type-detail").show("slow");
     }
     $scope.ViewProductType = function (id) {
-        var url = "http://localhost:3000/product_types/LoadProductTypeByObjId/" + id;
+        var url = BASE_URL.PATH + "/product_types/LoadProductTypeByObjId/" + id;
         $http.get(url)
             .success(function (data) {
                 console.log('success ' + data._id + data.ProductTypeCode);
@@ -440,7 +441,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/product_types/DeleteProductType/" + ProductTypeData._id;
+            var url = BASE_URL.PATH + "/product_types/DeleteProductType/" + ProductTypeData._id;
                 $http.get(url)
                 .success(function (data) {
                     swal("Deleted!", "ลบรายการชนิดสินค้า " + ProductTypeData.ProductTypeNameTh + " สำเร็จ !!!", "success");
@@ -505,7 +506,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     $scope.ViewProductTypeData.ProductTypeCode = NewProductTypeCode;
                     $scope.ViewProductTypeData.CreateBy = $scope.User.Username;
                     $scope.ViewProductTypeData.UpdateBy = $scope.User.Username;
-                    var url = "http://localhost:3000/product_types/CreateProductType/";
+                    var url = BASE_URL.PATH + "/product_types/CreateProductType/";
                     $http.post(url, $scope.ViewProductTypeData)
                         .success(function (data) {
                             swal("Created !", "สร้างรายการชนิดสินค้า " + $scope.ViewProductTypeData.ProductTypeCode + " สำเร็จ !!!", "success");
@@ -667,9 +668,9 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 } else {
                     $scope.ViewProductCategoryData.UpdateDate = data.UpdateDate;
                 }
-                console.log('data.ProductTypeCode ' + data.ProductTypeCode);
+            //    console.log('data.ProductTypeCode ' + data.ProductTypeCode);
                 
-                var productTypeURL = "http://localhost:3000/product_types/LoadProductType";
+                var productTypeURL = BASE_URL.PATH + "/product_types/LoadProductType";
                 $http.get(productTypeURL)
                     .success(function (productTypes) {
                         $scope.SelectProductTypeList = productTypes;
@@ -760,7 +761,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     $scope.ViewProductCategoryData.ProductCategoryCode = NewProductCategoryCode;
                     $scope.ViewProductCategoryData.CreateBy = $scope.User.Username;
                     $scope.ViewProductCategoryData.UpdateBy = $scope.User.Username;
-                    var url = "http://localhost:3000/product_categories/CreateProductCategory/";
+                    var url = BASE_URL.PATH + "/product_categories/CreateProductCategory/";
                     $http.post(url, $scope.ViewProductCategoryData)
                         .success(function (data) {
                             swal("Created !", "สร้างรายการประเภทสินค้า " + $scope.ViewProductCategoryData.ProductCategoryCode + " สำเร็จ !!!", "success");
@@ -793,7 +794,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/product_categories/UpdateProductCategory/";
+            var url = BASE_URL.PATH + "/product_categories/UpdateProductCategory/";
             $scope.ViewProductCategoryData.UpdateBy = $scope.User.Username;
                $http.post(url, $scope.ViewProductCategoryData)
                 .success(function (data) {
@@ -898,7 +899,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
         });
 
-        var uom_url = "http://localhost:3000/uoms/LoadNotContainUom";
+        var uom_url = BASE_URL.PATH + "/uoms/LoadNotContainUom";
         $http.get(uom_url)
         .success(function (data) {
             $scope.SelectUomList = data;
@@ -908,7 +909,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
         });
 
-        var contain_uom_url = "http://localhost:3000/uoms/LoadContainUom";
+        var contain_uom_url = BASE_URL.PATH + "/uoms/LoadContainUom";
         $http.get(contain_uom_url)
         .success(function (data) {
             $scope.SelectContainUomList = data;
@@ -921,7 +922,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-product-detail").show("slow");
     }
     $scope.ViewProduct = function (id) {
-        var url = "http://localhost:3000/products/LoadProductByObjId/" + id;
+        var url = BASE_URL.PATH + "/products/LoadProductByObjId/" + id;
         $http.get(url)
             .success(function (data) {
                 $scope.ViewProductData = data;
@@ -966,7 +967,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     $scope.ViewProductData.UpdateDate = data.UpdateDate;
                 }
                 //Load Product Category
-                var category_url = "http://localhost:3000/product_categories/LoadProductCategory";
+                var category_url = BASE_URL.PATH + "/product_categories/LoadProductCategory";
                 $http.get(category_url)
                 .success(function(data) {
                     $scope.SelectProductCategoryList = data;
@@ -975,7 +976,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
                 });
                 //Load Uom
-                var uom_url = "http://localhost:3000/uoms/LoadNotContainUom";
+                var uom_url = BASE_URL.PATH + "/uoms/LoadNotContainUom";
                 $http.get(uom_url)
                 .success(function(data) {
                     $scope.SelectUomList = data;
@@ -984,7 +985,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
                 });
                 //Load Contain Uom
-                var containuom_url = "http://localhost:3000/uoms/LoadContainUom";
+                var containuom_url = BASE_URL.PATH + "/uoms/LoadContainUom";
                 $http.get(containuom_url)
                 .success(function(data) {
                     $scope.SelectContainUomList = data;
@@ -1034,7 +1035,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/products/DeleteProduct/" + ProductData._id;
+            var url = BASE_URL.PATH + "/products/DeleteProduct/" + ProductData._id;
                $http.post(url, ProductData)
                 .success(function (data) {
                     swal("Deleted !!!","ลบรายการสินค้า " +ProductData.ProductNameTh + "สำเร็จ !!!", "success");
@@ -1083,7 +1084,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var NewProductCategoryCode = "";
-            var GenCodeURL = "http://localhost:3000/appconfig/GetNewCode/PD";
+            var GenCodeURL = BASE_URL.PATH + "/appconfig/GetNewCode/PD";
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewProductCode = data;
@@ -1094,7 +1095,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     $scope.ViewProductData.ContainUomCode = $scope.SelectContainUomList.UomCode;
                     $scope.ViewProductData.CreateBy = $scope.User.Username;
                     $scope.ViewProductData.UpdateBy = $scope.User.Username;
-                    var url = "http://localhost:3000/products/CreateProduct/";
+                    var url = BASE_URL.PATH + "/products/CreateProduct/";
 
                     $http.post(url, $scope.ViewProductData)
                         .success(function (data) {
@@ -1131,7 +1132,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/products/UpdateProduct/";
+            var url = BASE_URL.PATH + "/products/UpdateProduct/";
             $scope.ViewProductData.ProductCategoryCode = $scope.SelectedProductCategory;
             $scope.ViewProductData.UomCode = $scope.SelectedUom;
             $scope.ViewProductData.ContainUomCode = $scope.SelectedContainUom;
@@ -1267,7 +1268,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         if (!IsNumeric($('#AddDiscountPercent').val())) {
             swal("เกิดข้อผิดพลาด !!!","ต้องใส่จำนวนส่วนลด หรือ ส่วนลดต้องเป็นตัวเลข และมากกว่า 0", "warning");
         } else {
-            var url = "http://localhost:3000/products/LoadProductByProductCode/" + $('#SelectProductPromotionList').val();
+            var url = BASE_URL.PATH + "/products/LoadProductByProductCode/" + $('#SelectProductPromotionList').val();
             $http.get(url)
             .success(function (data) {
                 var len = 0;
@@ -1309,7 +1310,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
 
     $scope.ViewPromotion = function (id) {
-        var url = "http://localhost:3000/promotions/LoadPromotionByObjId/" + id;
+        var url = BASE_URL.PATH + "/promotions/LoadPromotionByObjId/" + id;
         $http.get(url)
             .success(function (data) {
                 $scope.ViewPromotionData = data;
@@ -1359,7 +1360,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/promotions/DeletePromotion/";
+            var url = BASE_URL.PATH + "/promotions/DeletePromotion/";
                $http.post(url, PromotionData)
                 .success(function (data) {
                     swal("Deleted !!!","ลบรายการโปรโมชั่น " +PromotionData.PromotionNameTh + "สำเร็จ !!!", "success");
@@ -1394,7 +1395,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var NewProductCategoryCode = "";
-            var GenCodeURL = "http://localhost:3000/appconfig/GetNewCode/PM";
+            var GenCodeURL = BASE_URL.PATH + "/appconfig/GetNewCode/PM";
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewPromotionCode = data;
@@ -1402,7 +1403,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     $scope.ViewPromotionData.PromotionCode = NewPromotionCode;
                     $scope.ViewPromotionData.CreateBy = $scope.User.Username;
                     $scope.ViewPromotionData.UpdateBy = $scope.User.Username;
-                    var url = "http://localhost:3000/promotions/CreatePromotion/";
+                    var url = BASE_URL.PATH + "/promotions/CreatePromotion/";
 
                     $http.post(url, $scope.ViewPromotionData)
                         .success(function (data) {
@@ -1437,7 +1438,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/promotions/UpdatePromotion/";
+            var url = BASE_URL.PATH + "/promotions/UpdatePromotion/";
             $scope.ViewPromotionData.UpdateBy = $scope.User.Username;
             $http.post(url, $scope.ViewPromotionData)
                 .success(function (data) {
@@ -1627,7 +1628,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-customer-type-detail").fadeIn();
     }
     $scope.ViewCustomerType = function (id) {
-        var url = "http://localhost:3000/customer_types/LoadCustomerTypeByObjId/" + id;
+        var url = BASE_URL.PATH + "/customer_types/LoadCustomerTypeByObjId/" + id;
         console.log(id);
         $http.get(url)
             .success(function (data) {
@@ -1683,7 +1684,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/customer_types/DeleteCustomerType/" + CustomerTypeData._id;
+            var url = BASE_URL.PATH + "/customer_types/DeleteCustomerType/" + CustomerTypeData._id;
                $http.get(url)
                 .success(function (data) {
                     swal("Deleted !!!","ลบรายการชนิดลูกค้า " + CustomerTypeData.CustomerTypeNameTh + "สำเร็จ !!!", "success");
@@ -1734,7 +1735,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var NewProductCategoryCode = "";
-            var GenCodeURL = "http://localhost:3000/appconfig/GetNewCode/CT";
+            var GenCodeURL = BASE_URL.PATH + "/appconfig/GetNewCode/CT";
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewCustomerTypeCode = data;
@@ -1742,7 +1743,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     $scope.ViewCustomerTypeData.CustomerTypeCode = NewCustomerTypeCode;
                     $scope.ViewCustomerTypeData.CreateBy = $scope.User.Username;
                     $scope.ViewCustomerTypeData.UpdateBy = $scope.User.Username;
-                    var url = "http://localhost:3000/customer_types/CreateCustomerType/";
+                    var url = BASE_URL.PATH + "/customer_types/CreateCustomerType/";
 
                     $http.post(url, $scope.ViewCustomerTypeData)
                         .success(function (data) {
