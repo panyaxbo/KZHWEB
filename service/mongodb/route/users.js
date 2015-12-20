@@ -48,8 +48,9 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
     var Username = req.params.Email;
     var Password = req.params.Password;
     console.log(Username + " " + Password);
- 
-    db.collection(mongodbConfig.mongodb.user.name).findOne({$or: [ { Username: Username }, { Email : Username } ]}, function (err, doc) {
+    
+    global.db.collection(mongodbConfig.mongodb.user.name).findOne({$or: [ { Username: Username }, { Email : Username } ]}
+        , function (err, doc) {
         if (doc) {
             console.log(doc);
             var compare = bcrypt.compare(Password, doc.Password, function(err, result) {
@@ -116,8 +117,10 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
                     res.sendStatus(500);
                 }  
             });
-        } else {
-             console.log(err);
+        } else if (!doc) {
+            console.log('!doc');
+        }else {
+            console.log(err);
         }
     });
 

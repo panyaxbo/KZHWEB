@@ -9,7 +9,9 @@
   "scripts": {
     "postinstall": "bower cache clean && bower install"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "grunt-build-control": "^0.6.2"
+  },
   "engines": {
     "node": "5.3.0",
     "npm": "3.3.12"

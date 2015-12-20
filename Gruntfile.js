@@ -9,6 +9,9 @@
 
 module.exports = function (grunt) {
 
+  // Project configuration.
+  var pkg = require('./package.json');
+
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
 
@@ -442,6 +445,34 @@ module.exports = function (grunt) {
         singleRun: true
       }
     }
+
+    buildcontrol: {
+      options: {
+        dir: 'dist',
+        commit: true,
+        push: true,
+        message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
+      },
+      pages: {
+        options: {
+          remote: 'git@github.com:panyaxbo/KZHWEB.git',
+          branch: 'gh-pages'
+        }
+      },
+      heroku: {
+        options: {
+          remote: 'git@heroku.com:example-heroku-webapp-1988.git',
+          branch: 'master',
+          tag: pkg.version
+        }
+      },
+      local: {
+        options: {
+          remote: '../',
+          branch: 'build'
+        }
+      }
+    }
   });
 
 
@@ -475,6 +506,7 @@ module.exports = function (grunt) {
     'connect:test',
     'karma'
   ]);
+
 
   grunt.registerTask('build', [
     'clean:dist',

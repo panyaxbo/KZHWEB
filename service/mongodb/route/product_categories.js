@@ -8,7 +8,7 @@ router.get(mongodbConfig.url.product_category.home, function (req, res, next) {
 
 
 router.get(mongodbConfig.url.product_category.loadAllProductCategory, function (req, res) {
-    db.collection(mongodbConfig.mongodb.product_category.name)
+    global.db.collection(mongodbConfig.mongodb.product_category.name)
         .find({})
         .toArray(function (err, items) {
         //    console.log(items);

@@ -10,8 +10,7 @@ global.mongodb = require('mongodb');
 global.bson = require('bson');
 global.http = require('http');
 global.url = require('url');
-global.db;
-global.collection;
+global.db = {};
 
 var passport = require('passport');
 var oauthConfig = require('../oauth/oauth-config.js');
@@ -92,12 +91,22 @@ mongodb.MongoClient.connect(mongodbConfig.connection_url + mongodbConfig.collect
 });
 */
 // For remote MongoLab
-
+/*
 mongodb.MongoClient.connect("mongodb://kzhparts:kzhpartsadmin@ds033123.mongolab.com:33123/kzhparts", function (err, database) {
     if (err) console.log(err, err.stack.split("\n"));
     console.log(database);
     db = database;
 });
+*/
+
+var uri = process.env.MONGOLAB_URI || 'mongodb://heroku_vh9ltkx4:4tp9q8kbph0bp5r6ps50rscl5e@ds041841.mongolab.com:41841/heroku_vh9ltkx4';
+mongodb.MongoClient.connect(uri, { server: { auto_reconnect: true } }, function (err, database) {
+    /* adventure! */
+     if (err) console.log(err, err.stack.split("\n"));
+    console.log(database);
+    db = database;
+});
+
 
 process.on('uncaughtException', function (err) {
     console.log(err);
