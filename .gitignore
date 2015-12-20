@@ -1,4 +1,5 @@
 node_modules
+<<<<<<< HEAD
 npm-debug.log
 .tmp
 .sass-cache
@@ -6,3 +7,10 @@ bower_components
 /app/css/application.css
 upload
 .DS_Store
+=======
+dist
+.tmp
+.sass-cache
+bower_components
+/app/css/application.css
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b

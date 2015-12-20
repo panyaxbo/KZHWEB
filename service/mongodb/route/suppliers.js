@@ -21,10 +21,13 @@ router.get(mongodbConfig.url.supplier.loadAllSupplier, function (req, res) {
 router.post(mongodbConfig.url.supplier.createSupplier, function (req, res) {
     var Supplier = req.body;
     console.log('create supplier ' + Supplier);
+<<<<<<< HEAD
     var createDate = new Date ();
     createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
     Supplier.CreateDate = createDate;
     Supplier.UpdateDate = createDate;
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     db.collection(mongodbConfig.mongodb.supplier.name)
         .insert(Product,
             function (error, result) {
@@ -38,8 +41,11 @@ router.post(mongodbConfig.url.supplier.updateSupplier, function (req, res) {
     console.log('Update supplier ' + req.body);
     var Supplier = req.body;
     var o_id = bson.BSONPure.ObjectID(Supplier._id.toString());
+<<<<<<< HEAD
     var updateDate = new Date ();
     updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     db.collection(mongodbConfig.mongodb.supplier.name)
         .update({
                 _id: o_id
@@ -53,8 +59,15 @@ router.post(mongodbConfig.url.supplier.updateSupplier, function (req, res) {
                     'TelNo': Supplier.TelNo,
                     'FaxNo': Supplier.FaxNo,
                     'MobileNo': Supplier.MobileNo,
+<<<<<<< HEAD
                     'UpdateBy': Supplier.UpdateBy,
                     'UpdateDate': updateDate
+=======
+                    'UpdateDate': ISODate(Supplier.UpdateDate),
+                    'UpdateBy': Supplier.UpdateBy,
+                    'CreateBy': Supplier.CreateBy,
+                    'CreateDate': ISODate(Supplier.CreateDate)
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 }
             },
             function (error, result) {

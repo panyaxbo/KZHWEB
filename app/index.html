@@ -1,11 +1,18 @@
 <!doctype html>
 <html class="no-js" ng-app="KZHWEB">
+<<<<<<< HEAD
 <head >
     <meta charset="utf-8" http-equiv="imagetoolbar" content="no">
+=======
+
+<head>
+    <meta charset="utf-8">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     <title translate="TITLE.NAME"></title>
     <meta name="description" content="" translate="TITLE.DESCRIPTION">
     <meta name="viewport" content="width=device-width">
     <link rel="shortcut icon" href="/images/favicon.ico">
+<<<<<<< HEAD
     <link rel="stylesheet" href="/bower_components/BrandButtons/dist/brand-buttons.min.css" />
     <link rel="stylesheet" href="/bower_components/allmighty-autocomplete/style/autocomplete.css" />
     <link rel="stylesheet" href="/bower_components/angular-block-ui/dist/angular-block-ui.min.css" />
@@ -48,6 +55,87 @@
                     <button class="btn btn-danger" type="reset" ng-click="HideSearch()"><span class="glyphicon glyphicon-remove"></span></button>
                   </span>
                 </div>
+=======
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/BrandButtons/dist/brand-buttons.min.css" />
+    <link rel="stylesheet" href="bower_components/allmighty-autocomplete/style/autocomplete.css" />
+    <link rel="stylesheet" href="bower_components/angular-block-ui/dist/angular-block-ui.css" />
+    <link rel="stylesheet" href="bower_components/angularjs-datepicker/dist/angular-datepicker.min.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-social/bootstrap-social.css" />
+    <link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.min.css" />
+    <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog.css" />
+    <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog-theme-default.css" />
+    <link rel="stylesheet" href="bower_components/pnotify/pnotify.core.css" />
+    <link rel="stylesheet" href="bower_components/pnotify/pnotify.buttons.css" />
+    <link rel="stylesheet" href="bower_components/pnotify/pnotify.history.css" />
+    <link rel="stylesheet" href="bower_components/select2/select2.css" />
+    <link rel="stylesheet" href="bower_components/sweetalert/dist/sweetalert.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <link rel="stylesheet" href="/bower_components/bootstrap-social/bootstrap-social.css" />
+    <link rel="stylesheet" href="/bower_components/angular-block-ui/dist/angular-block-ui.css" />
+    <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog.css" />
+    <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog-theme-default.css" />
+    <link rel="stylesheet" href="/bower_components/angularjs-datepicker/dist/angular-datepicker.min.css" />
+    <link rel="stylesheet" href="/bower_components/ng-table/dist/ng-table.css">
+    <link rel="stylesheet" href="/styles/bootstrap-magnify.css">
+    <link rel="stylesheet" href="/styles/search.css">
+    <link rel="stylesheet" href="/bower_components/pnotify/pnotify.core.css">
+    <link rel="stylesheet" href="/styles/step.css">
+    <link rel="import" href="/bower_components/number-format/src/number-format.html">
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet/less" type="text/css" href="styles/main.less" />
+    <!-- endbuild -->
+    
+</head>
+
+<body>
+    <!--[if lt IE 10]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    
+    <div ng-controller="SideController">
+        <a href="" class="head-menu left_side_menu" ng-click="showLeft($event)" >
+            <span class="glyphicon glyphicon-list"></span>
+        </a>
+        <a href="" class="head-menu right_side_menu" ng-click="showRight($event)">
+            <span class="glyphicon glyphicon-list"></span>
+        </a>
+        <menu visible="leftVisible" alignment="left">
+            <menu-item hash="first-page">First Page</menu-item>
+            <menu-item hash="second-page">Second Page</menu-item>
+            <menu-item hash="third-page">Third Page</menu-item>
+        </menu>
+        
+        <menu visible="rightVisible" alignment="right">
+            <menu-item hash="first-page">First Page</menu-item>
+            <menu-item hash="second-page">Second Page</menu-item>
+            <menu-item hash="third-page">Third Page</menu-item>
+        </menu>
+    </div>
+    <div class="container">
+
+        <div class="header" id="div-header" ng-controller="HeaderController" style="top: 0px;padding-bottom:10px;margin-bottom: 10px;">
+       
+            <a href="#/">
+                <img src="images/KZH%20Logo.png" width="150px" height="50px">
+            </a>
+            <!-- div seach -->
+            <div id="SearchCriteria" class="kzhweb-search animate" style="top:85px;z-index:9999;width:80%">             
+                  <form action="search()" method="GET" role="search">
+                    <div class="input-group">
+                      <input type="text" class="form-control" name="searchAll()" placeholder="{{'HEAD.MENU.SEARCH.PLACEHOLDER' | translate}}">
+                      <span class="input-group-btn">
+                        <button class="btn btn-danger" type="reset" ng-click="HideSearch()"><span class="glyphicon glyphicon-remove"></span></button>
+                      </span>
+                    </div>
+                  </form>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
               </div>
             <ul class="nav nav-pills pull-right">
                 <li>
@@ -59,13 +147,30 @@
                     <a href="#product-section" ng-click="SelectedHeadMenu('product')" class="head-menu">{{'HEAD.MENU.PRODUCT' | translate}}</a>
                 </li>
                 <li>
+<<<<<<< HEAD
                     <a href="#payment-section" ng-click="SelectedHeadMenu('payment')" class="head-menu">{{'HEAD.MENU.PAYMENT_N_DELIVERY' | translate}}</a>
+=======
+                    <a href="#webboard-section" ng-click="SelectedHeadMenu('webboard')" class="head-menu">{{'HEAD.MENU.WEBBOARD' | translate}}</a>
+                </li>
+                <!--
+                <li>
+                    <a href="#payment-section" ng-click="SelectedHeadMenu('payment')" class="head-menu">{{'HEAD.MENU.PAYMENT' | translate}}</a>
+                </li>
+                <li>
+                    <a href="#payment-section" ng-click="SelectedHeadMenu('payment')" class="head-menu">{{'HEAD.MENU.DELIVERY' | translate}}</a>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 </li>
                 <li>
                     <a href="#about-section" ng-click="SelectedHeadMenu('about')" class="head-menu">{{'HEAD.MENU.ABOUT' | translate}}</a>
                 </li>
+<<<<<<< HEAD
                 <li>
                     <a href="#contact-section" ng-click="SelectedHeadMenu('contact')" class="head-menu">{{'HEAD.MENU.CONTACT' | translate}}</a>
+=======
+-->
+                <li>
+                    <a href="#payment-section" ng-click="SelectedHeadMenu('payment')" class="head-menu">{{'HEAD.MENU.PAYMENT_N_DELIVERY' | translate}}</a>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 </li>
                 <li>
                     <div>
@@ -102,7 +207,11 @@
                                                                 <th class="text-right">{{'HEAD.MODAL_CART.PRICE' | translate}}</th>
                                                                 <th class="text-right">{{'HEAD.MODAL_CART.DISCOUNT' | translate}}</th>
                                                                 <th class="text-right">{{'HEAD.MODAL_CART.AMOUNT' | translate}}</th>
+<<<<<<< HEAD
                                                                 <th> </th>
+=======
+                                                                <th> </th>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -144,6 +253,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="3"> </td>
+<<<<<<< HEAD
                                                                 <td colspan="2">  
                                                                     <h5>{{'HEAD.MODAL_CART.SUMAMT' | translate}}</h5> 
                                                                 </td>
@@ -181,6 +291,45 @@
                                                                     <h4><strong>{{CurrencySymbol}} {{(ROHead.NetAmount * Multiplier) | currency:''}}</strong></h4>
                                                                 </td>
                                                                 <td>   </td>
+=======
+                                                                <td colspan="2">  
+                                                                    <h5>{{'HEAD.MODAL_CART.SUMAMT' | translate}}</h5> 
+                                                                </td>
+                                                                <td colspan="3" class="text-right">  
+                                                                    <h5><strong>{{CurrencySymbol}} {{(ROHead.SumAmount * Multiplier)  | currency:''}}</strong></h5> 
+                                                                </td>
+                                                                <td>   </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3"> </td>
+                                                                <td colspan="2">  
+                                                                    <h5>{{'HEAD.MODAL_CART.SUMDISCAMT' | translate}}</h5>
+                                                                </td>
+                                                                <td colspan="3" class="text-right">  
+                                                                    <h5><strong>{{CurrencySymbol}} {{(ROHead.SumDiscountAmount * Multiplier) | currency:''}}</strong></h5>
+                                                                </td>
+                                                                <td>   </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3"> </td>
+                                                                <td colspan="2">  
+                                                                    <h5>{{'HEAD.MODAL_CART.SUMVATAMT' | translate}}</h5>
+                                                                </td>
+                                                                <td colspan="3" class="text-right">  
+                                                                    <h5><strong>{{CurrencySymbol}} {{(ROHead.SumVatAmount * Multiplier) | currency:''}}</strong></h5>
+                                                                </td>
+                                                                <td>   </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3"> </td>
+                                                                <td colspan="2">  
+                                                                    <h4>{{'HEAD.MODAL_CART.NETAMT' | translate}}</h4>
+                                                                </td>
+                                                                <td colspan="3" class="text-right">  
+                                                                    <h4><strong>{{CurrencySymbol}} {{(ROHead.NetAmount * Multiplier) | currency:''}}</strong></h4>
+                                                                </td>
+                                                                <td>   </td>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="9">
@@ -224,6 +373,7 @@
                     <button id="LogoutButton" class="btn btn-danger" ng-click="Logout()" ng-show="IsLogin" ng-hide="!IsLogin">
                         <span class="glyphicon glyphicon-log-out"></span> {{'HEAD.SIGNOUT' | translate}}
                     </button>
+<<<<<<< HEAD
                     <div class="modal fade" id="ForgetPasswordModal">
                         <div class="modal-dialog ">
                             <div class="modal-content">
@@ -302,6 +452,8 @@
                             <!-- /.modal -->
                         </div>
                     </div>
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                     <div class="modal fade" id="LoginModal">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -331,6 +483,7 @@
                                                             <strong>{{LoginErrorMessage}}</strong> 
                                                         </div>
                                                     </div>
+<<<<<<< HEAD
                                                     <div>
                                                         <label>
                                                             <a ng-click="ForgetPassword()">{{'HEAD.MODAL_SIGNIN.FORGET_PASSWORD' | translate}}</a>
@@ -341,6 +494,13 @@
                                                             <input type="checkbox" ng-model="RememberMe" id="remember"> {{'HEAD.MODAL_SIGNIN.REMEMBER_ME' | translate}}
                                                         </label>
                                                         <p class="help-block">{{'HEAD.MODAL_SIGNIN.REMEMBER_ME_REASON' | translate}}</p>
+=======
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" name="remember" id="remember"> Remember login
+                                                        </label>
+                                                        <p class="help-block">(if this is a private computer)</p>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                     </div>
                                                     <button type="submit" class="btn btn-success btn-block" ng-click="Login()">
                                                         <span class="glyphicon glyphicon-log-in" ></span> {{'HEAD.MODAL_SIGNIN.BUTTON_SIGNIN' | translate}}</button>
@@ -413,7 +573,11 @@
                                                         <label class="control-label" for="inputUser">{{'HEAD.MODAL_SIGNIN.USERNAME' | translate}}</label>
                                                         <div class="controls">
                                                             <input id="Username" ng-model="Username" placeholder="E.g. ashwinhegde" 
+<<<<<<< HEAD
                                                             type="text" class="form-control" ng-blur="ValidateExistUsername()">
+=======
+                                                            type="text" class="form-control" ng-keydown="ValidateExistUsername()">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                         </div>
                                                         <div class="controls">
                                                             <div id="UsernameAlert" class="alert alert-warning fade in" style="display: none">
@@ -440,7 +604,11 @@
                                                     </div>
 
                                                     <div class="form-group">
+<<<<<<< HEAD
                                                     <label class="control-label">{{'HEAD.MODAL_SIGNIN.RECAPTCHA' | translate}}</label>
+=======
+                                                    <label class="control-label">Recaptcha</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                         <!-- Call a method in the scope of your controller to handle data submit -->
                                                         <form ng-submit="submit()">
                                                             <div
@@ -451,6 +619,10 @@
                                                                 on-success="setResponse(response)"
                                                                 on-expire="cbExpiration()"
                                                             ></div>
+<<<<<<< HEAD
+=======
+                                                            <button class="btn" type="submit">Submit</button>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                         </form>
                                                     </div>
                                                     <div class="form-group">
@@ -479,6 +651,7 @@
                 </li>
 
                 <li class="dropdown" class="head-menu" style="margin-top:-10px">
+<<<<<<< HEAD
                      <a href="#" class="dropdown-toggle head-menu" data-toggle="dropdown"><span id="SelectedDropdownLanguage"><img src="/images/th.png">&nbsp;ไทย</span><b class="caret"></b></a>
                       <ul id="DropdownLanguage" class="dropdown-menu">
                         <li><a href="#" ng-click="SelectedLocale('th')"><img src="/images/th.png">&nbsp;ไทย</a>
@@ -486,14 +659,54 @@
                         <li><a href="#" ng-click="SelectedLocale('us')"><img src="/images/us.png">&nbsp;English</a>
                         </li>
                         <li><a href="#" ng-click="SelectedLocale('cn')"><img src="/images/cn.png">&nbsp;中國</a>
+=======
+                     <a href="#" class="dropdown-toggle head-menu" data-toggle="dropdown"><span id="SelectedDropdownLanguage"><img src="/images/th.png"></span><b class="caret"></b></a>
+                      <ul id="DropdownLanguage" class="dropdown-menu">
+                        <li><a href="#" ng-click="SelectedLocale('th')"><img src="/images/th.png"></a>
+                        </li>
+                        <li><a href="#" ng-click="SelectedLocale('us')"><img src="/images/us.png"></a>
+                        </li>
+                        <li><a href="#" ng-click="SelectedLocale('cn')"><img src="/images/cn.png"></a>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                         </li>
                       </ul>
+                </li>
+                <li class="dropdown" class="head-menu" style="margin-top:5px">
+                    <div>
+<<<<<<< HEAD
+                       <div id="UserProfileImage">
+                           <img src="/images/noProfileImg.png"  class="img-circle" width="40" height="40" ng-show="!IsLogin || User.ProfileImage === undefined" style="margin-top:-5px">
+                       </div>
+=======
+                        <!-- code to render a large video block-->
+                        <a href="#" class="dropdown-toggle head-menu" data-toggle="dropdown">
+                        <span id="SelectedDropdownCurrency">฿ THB</span><b class="caret"></b></a>
+                        <ul id="DropdownCurrency" class="dropdown-menu">
+                            <li><a href="#" ng-click="SelectedHeadCurrency('thb')" id="THB" class="head-menu">
+                                ฿ THB</a>
+                            </li>
+                            <li><a href="#" ng-click="SelectedHeadCurrency('usd')" id="USD" class="head-menu">
+                                $ USD</a>
+                            </li>
+                            <li><a href="#" ng-click="SelectedHeadCurrency('eur')" id="EUR" class="head-menu">
+                                € EUR</a>
+                            </li>
+                            <li><a href="#" ng-click="SelectedHeadCurrency('gbp')" id="GBP" class="head-menu">
+                                £ GBP</a>
+                            </li>
+                            <li><a href="#" ng-click="SelectedHeadCurrency('cny')" id="CNY" class="head-menu">
+                                ¥ CNY</a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 <li class="dropdown" class="head-menu" style="margin-top:5px">
                     <div>
                        <div id="UserProfileImage">
                            <img src="/images/noProfileImg.png"  class="img-circle" width="40" height="40" ng-show="!IsLogin || User.ProfileImage === undefined" style="margin-top:-5px">
                        </div>
+                    <!--   <img src="User.ProfileImage" ng-binding="User.ProfileImage" class="img-circle" width="40" height="40" ng-show="IsLogin && User.ProfileImage.length > 0" style="margin-top:-5px">-->
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                     </div>
                 </li>
                 <li class="dropdown" class="head-menu" style="margin-top:5px">
@@ -517,6 +730,10 @@
                             </ul>
                         </div>
                         <div ng-show="!IsAdmin && !IsGuest">
+<<<<<<< HEAD
+=======
+                            <!-- code to render the regular video block -->
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
                              {{User.Firstname}}<b class="caret"></b></a>
                             <ul class="dropdown-menu">
@@ -530,6 +747,10 @@
                             </ul>
                         </div>
                         <div ng-show="!IsAdmin && IsGuest">
+<<<<<<< HEAD
+=======
+                            <!-- code to render the regular video block -->
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
                              {{User.Firstname}}<b class="caret"></b></a>
                         </div>
@@ -551,48 +772,75 @@
                     <div class="item active" align="center">
                         <img src="/images/kzh01.jpg" alt="...">
                         <div class="carousel-caption">
+<<<<<<< HEAD
                             <h3>{{'BODY.CAROUSEL.ONE.TITLE' | translate}}</h3>
                             <p>{{'BODY.CAROUSEL.ONE.TEXT' | translate}}</p>
+=======
+                            <h3>AAAAAA</h3>
+                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                         </div>
                     </div>
                     <div class="item" align="center">
                         <img src="/images/kzh02.jpg" alt="...">
                         <div class="carousel-caption ">
+<<<<<<< HEAD
                             <h3>{{'BODY.CAROUSEL.TWO.TITLE' | translate}}</h3>
                             <p>{{'BODY.CAROUSEL.TWO.TEXT' | translate}}</p>
+=======
+                            <h3>AAAAAA</h3>
+                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                         </div>
                     </div>
                     <div class="item" align="center">
                         <img src="/images/kzh03.jpg" alt="...">
                         <div class="carousel-caption ">
+<<<<<<< HEAD
                             <h3>{{'BODY.CAROUSEL.THREE.TITLE' | translate}}</h3>
                             <p>{{'BODY.CAROUSEL.THREE.TEXT' | translate}}</p>
+=======
+
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                         </div>
                     </div>
                     <div class="item" align="center">
                         <img src="/images/kzh04.jpg" alt="...">
                         <div class="carousel-caption ">
+<<<<<<< HEAD
                             <h3>{{'BODY.CAROUSEL.FOUR.TITLE' | translate}}</h3>
                             <p>{{'BODY.CAROUSEL.FOUR.TEXT' | translate}}</p>
+=======
+
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                         </div>
                     </div>
                     <div class="item" align="center">
                         <img src="/images/kzh05.jpg" alt="...">
                         <div class="carousel-caption ">
+<<<<<<< HEAD
                             <h3>{{'BODY.CAROUSEL.FIVE.TITLE' | translate}}</h3>
                             <p>{{'BODY.CAROUSEL.FIVE.TEXT' | translate}}</p>
+=======
+
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                         </div>
                     </div>
                     <div class="item" align="center">
                         <img src="/images/kzh06.jpg" alt="...">
                         <div class="carousel-caption ">
+<<<<<<< HEAD
                             <h3>{{'BODY.CAROUSEL.SIX.TITLE' | translate}}</h3>
                             <p>{{'BODY.CAROUSEL.SIX.TEXT' | translate}}</p>
+=======
+
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                         </div>
                     </div>
                     <div class="item" align="center">
                         <img src="/images/kzh07.jpg" alt="...">
                         <div class="carousel-caption ">
+<<<<<<< HEAD
                             <h3>{{'BODY.CAROUSEL.SEVEN.TITLE' | translate}}</h3>
                             <p>{{'BODY.CAROUSEL.SEVEN.TEXT' | translate}}</p>
                         </div>
@@ -605,6 +853,22 @@
                     <span class="glyphicon glyphicon-chevron-right"></span>
                 </a>
             </div>
+=======
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Controls -->
+                <a class="left carousel-control " href="#carousel-example-generic" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+                <a class="right carousel-control " href="#carousel-example-generic" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+            </div>
+            <!-- End Carousel -->
+            
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             <hr>
             <div id="nav">
                 <!-- Display Product type-->
@@ -617,6 +881,10 @@
                         </td>
                     </tr>
                 </table>
+<<<<<<< HEAD
+=======
+                <!-- Google Map & Thai-Post Image-->
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 <table>
                     <tr>
                         <td></td>
@@ -624,7 +892,11 @@
                     <tr>
                         <td style="center">
                             <a href="#google-map-section" ng-click="SelectedBodyMenu('google-map')">
+<<<<<<< HEAD
                              <img src="/images/google-map.png" width="100px" height="60px" class="img-responsive">
+=======
+                             <img src="/images/google-map.png" width="100px " height="50px">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                             </a>
                         </td>
                     </tr>
@@ -635,8 +907,12 @@
                     </tr>
                     <tr>
                         <td style="center">
+<<<<<<< HEAD
                             <a href="#thai-post-section" ng-click="SelectedBodyMenu('thai-post')">
                                 <img src="/images/thaipost.png" width="100px" height="60px" class="img-responsive">
+=======
+                            <a href="#thai-post-section" ng-click="SelectedBodyMenu('thai-post')"><img src="/images/thaipost.png" width="100px" height="50px">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                             </a>
                         </td>
                     </tr>
@@ -647,7 +923,14 @@
                     </tr>
                 </table>
             </div>
+<<<<<<< HEAD
             <div id="div-change-view">
+=======
+            <!-- div-nav-->
+            
+            <div id="div-change-view">
+                <!-- <div> product to cart-->
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 <div id="product-section" name="product-section" ng-init="LoadProduct()" class="section animated fadeIn" 
                 ng-show="SelectedMenu === 'product'" style="padding-top:0px">
                     <div class="row">
@@ -761,16 +1044,79 @@
                 <!-- <div> payment method -->
                 <div id="payment-section"  name="payment-section" class="section" ng-show="SelectedMenu === 'payment'">
                     <h3>{{'BODY.SECTION.PAYMENT.HEAD' | translate}}</h3>
+<<<<<<< HEAD
                     <img src="/images/How-To-Purchase.png" class="img-responsive" width="1050" height="1250">
+=======
+                    <table>
+                        <tr>
+                            <td>
+                                1.
+                            </td>
+                            <td>
+                                <img src="/images/bbl.png " width="40px " height="40px" />
+                            </td>
+                            <td translate="BODY.SECTION.PAYMENT.BBL_ACC ">
+                                หมายเลข 440-99934-3454
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                2.
+                            </td>
+                            <td>
+                                <img src="/images/kbank.png " width="40px " height="40px" />
+                            </td>
+                            <td translate="BODY.SECTION.PAYMENT.KBANK_ACC">
+                                หมายเลข 440-99934-3454
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                3.
+                            </td>
+                            <td>
+                                <img src="images/scb.png " width="40px " height="40px " />
+                            </td>
+                            <td translate="BODY.SECTION.PAYMENT.SCB_ACC">
+                                หมายเลข 440-99934-3454
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                4.
+                            </td>
+                            <td>
+                                <img src="images/ktb.png " width="40px " height="40px " />
+                            </td>
+                            <td translate="BODY.SECTION.PAYMENT.KTB_ACC">
+                                หมายเลข 440-99934-3454
+                            </td>
+                        </tr>
+                            <td>
+                        <tr>
+                                5.
+                            </td>
+                            <td>
+                                <img src="images/kcc.png " width="40px" height="40px" />
+                            </td>
+                            <td translate="BODY.SECTION.PAYMENT.KCC_ACC">
+                                หมายเลข 440-99934-3454
+                            </td>
+                        </tr>
+                    </table>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 </div>
                 <!-- <div> about us -->
                 <div id="about-section" name="about-section" class="section" ng-show="SelectedMenu === 'about'">
                     <h3>{{'BODY.SECTION.ABOUT.HEAD' | translate}}</h3>
                 </div>
+<<<<<<< HEAD
                 <!-- <div> contant us -->
                 <div id="contact-section" name="contact-section" class="section" ng-show="SelectedMenu === 'contact'">
                     <h3>{{'BODY.SECTION.CONTACT.HEAD' | translate}}</h3>
                 </div>
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 <!-- <div> google map -->
                 <div id="google-map-section" name="google-map-section" class="section" ng-show="SelectedMenu === 'google-map'">
                     <h3>{{'BODY.SECTION.MAP.HEAD' | translate}}</h3>
@@ -791,6 +1137,10 @@
                             </address>
                         </div>
                     </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 </div>
                 <!-- <div> thai-post -->
                 <div id="thai-post-section" name="thai-post-section" class="section" ng-show="SelectedMenu === 'thai-post'">
@@ -828,7 +1178,11 @@
                                                   <legend>&nbsp;</legend>
                                                   <!-- Text input-->
                                                   <div class="form-group">
+<<<<<<< HEAD
                                                         <label class="col-md-4 control-label">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_NAME' | translate}} :</label>
+=======
+                                                        <label class="col-md-4 control-label">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_NAME' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                         <div class="col-md-8">
                                                             <input maxlength="200" type="text" ng-model="ROHead.BillingName" required="required" 
                                                             class="form-control" placeholder="Enter Company Name" />
@@ -836,6 +1190,7 @@
                                                   </div>
                                                   <div class="form-group"></div>
                                                   <div class="form-group">
+<<<<<<< HEAD
                                                         <label class="col-md-4 control-label">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_EMAIL' | translate}} :</label>
                                                         <div class="col-md-8">
                                                             <input maxlength="200" type="text" ng-model="ROHead.BillingEmail" required="required" 
@@ -844,6 +1199,8 @@
                                                   </div>
                                                   <div class="form-group"></div>
                                                   <div class="form-group">
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                     <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_ADDRESS' | translate}}</label>
                                                     <div class="col-sm-8">
                                                       <input type="text" ng-model="ROHead.BillingAddress" required="required" placeholder="Address" class="form-control">
@@ -1026,7 +1383,11 @@
                                                                                 <input type="radio" name="bank" ng-model="PaymentBank" value="bbl" required="required"/>
                                                                             </td>
                                                                             <td class="text-center">
+<<<<<<< HEAD
                                                                                 <img src="/images/bbl.png" width="40" height="40" class='img-responsive'>
+=======
+                                                                                <img src="/images/bbl.png" width="40" height="40">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                                             </td>
                                                                             <td>
                                                                                 <label style="color:black">111-2345-123</label>
@@ -1046,7 +1407,11 @@
                                                                                 <input type="radio" name="bank" ng-model="PaymentBank" value="kbank" required="required"/>
                                                                             </td>
                                                                             <td class="text-center">
+<<<<<<< HEAD
                                                                                 <img src="/images/kbank.png" width="40" height="40" class='img-responsive'>
+=======
+                                                                                <img src="/images/kbank.png" width="40" height="40">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                                             </td>
                                                                             <td>
                                                                                <label style="color:black">111-2345-123</label>
@@ -1063,11 +1428,19 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td class="text-center">
+<<<<<<< HEAD
                                                                                   <input type="radio" name="bank" ng-model="PaymentBank" value="scb" required="required" />
                                                                               
                                                                             </td>
                                                                             <td class="text-center">
                                                                                 <img src="/images/scb.png" width="40" height="40" class='img-responsive'>
+=======
+                                                                                  <input type="radio" name="bank" ng-model="PaymentBank" value="scb" required="required"/>
+                                                                              
+                                                                            </td>
+                                                                            <td class="text-center">
+                                                                                <img src="/images/scb.png" width="40" height="40">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                                             </td>
                                                                             <td>
                                                                                 <label style="color:black">111-2345-123 </label>
@@ -1086,8 +1459,13 @@
                                                                             <td class="text-center">
                                                                                   <input type="radio" name="bank" ng-model="PaymentBank" value="ktb" required="required"/>
                                                                             </td >
+<<<<<<< HEAD
                                                                             <td class="text-center"> 
                                                                                 <img src="/images/ktb.png" width="40" height="40" class='img-responsive'>
+=======
+                                                                            <td class="text-center">
+                                                                                <img src="/images/ktb.png" width="40" height="40">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                                             </td>
                                                                             <td>
                                                                                 <label style="color:black">111-2345-123 </label>
@@ -1107,7 +1485,11 @@
                                                                                   <input type="radio" name="bank" ng-model="PaymentBank" value="kcc" required="required"/>
                                                                             </td >
                                                                             <td class="text-center">
+<<<<<<< HEAD
                                                                                 <img src="/images/kcc.png" width="40" height="40" class='img-responsive'>
+=======
+                                                                                <img src="/images/kcc.png" width="40" height="40">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                                             </td>
                                                                             <td>
                                                                                 <label style="color:black">111-2345-123 </label>
@@ -1129,7 +1511,11 @@
                                                                              
                                                                             </td class="text-center">
                                                                             <td>
+<<<<<<< HEAD
                                                                                 <img src="/images/tmb.png" width="60" height="35" class='img-responsive'>
+=======
+                                                                                <img src="/images/tmb.png" width="60" height="35">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                                             </td>
                                                                             <td>
                                                                                 <label style="color:black">111-2345-123</label>
@@ -1149,7 +1535,11 @@
                                                                                   <input type="radio" name="bank" ng-model="PaymentBank" value="uob" required="required" />
                                                                             </td>
                                                                             <td class="text-center">
+<<<<<<< HEAD
                                                                                 <img src="/images/uob.png" width="60" height="30" class='img-responsive'>
+=======
+                                                                                <img src="/images/uob.png" width="60" height="30">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                                             </td>
                                                                             <td>
                                                                                 <label style="color:black">111-2345-123</label>
@@ -1182,7 +1572,11 @@
                                                     <div class="panel-heading display-table" >
                                                         <div class="row display-tr" >
                                                             <h3 class="panel-title display-td">Credit Card Details</h3>
+<<<<<<< HEAD
                                                             <img class="img-responsive pull-right" src="/images/accept_visa_type.png">
+=======
+                                                            <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                         </div>
                                                     </div>
                                                     <div class="panel-body">
@@ -1276,7 +1670,260 @@
                             </div>
                         </form>
                 </div>
+<<<<<<< HEAD
                 
+=======
+                <!-- <div> HISTORY -->
+                <div id="history-section" name="history-section" class="section" ng-show="SelectedMenu=='history'">
+                    <h1>{{'BODY.SECTION.HISTORY.HEAD' | translate}}</h1> 
+                     <div id="div-history-receipt-detail" class="row">
+                        <div class="col-md-12 col-sm-offset-0">
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="textinput">From :</label>
+                                <div class="col-sm-4">
+                                    <datepicker button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>"
+                                       date-format="dd-MM-yyyy"  date-set="">
+                                      <input ng-model="StartDate" type="text" style="color:black" class="form-control" />
+                                    </datepicker>
+                                </div>
+                                <label class="col-sm-2 control-label" for="textinput">To :</label>
+                                <div class="col-sm-4">
+                                    <datepicker button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>" 
+                                           date-format="dd-MM-yyyy"  date-set="">
+                                          <input ng-model="EndDate" type="text" style="color:black" class="form-control"/>
+                                    </datepicker>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="textinput">Payment :</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control" ng-model="SearchPaymentStatus" required="required">
+                                        <option value="N">Owed</option>
+                                        <option value="Y">Paid</option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-2 control-label" for="textinput">Shipping :</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control" ng-model="SearchShippingStatus" required="required">
+                                        <option value="N">Not Shipping</option>
+                                        <option value="Y">Shipping</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                
+                                <label class="col-sm-2 control-label" for="textinput">&nbsp;</label>
+                                <div class="col-sm-4">
+                                    &nbsp;
+                                </div>
+                                <label class="col-sm-2 control-label" for="textinput">&nbsp;</label>
+                                <div class="col-sm-4">
+                                    &nbsp;
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-5 col-md-12">
+                                    <div class="center-block">
+                                        <button ng-click="SearchHistoryReceipt()" class="btn btn-primary">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col-lg-12 -->
+                    </div>
+                    <div id="div-history-receipt-table">
+                        <p><strong>Page:</strong> {{HistoryReceiptTableParams.page()}}</p>
+                        <p><strong>Count per page:</strong> {{HistoryReceiptTableParams.count()}}</p>
+                        <table ng-table="HistoryReceiptTableParams" class="table">
+                            <tr ng-repeat="roHead in SearchHistoryReceipts">
+                                <td data-title="'#'" class="text-cetner">{{$index+1}}</td>
+                                <td data-title="'RONo'" class="text-cetner" >{{roHead.RONo}}</td>
+                                <td data-title="'RODate'" class="text-cetner">{{roHead.RODate | date:'dd-MM-yyyy'}}</td>
+                                <td data-title="'NetAmount'" class="text-right">{{roHead.NetAmount | number}}</td>
+                                <td data-title="'Bank'" class="text-center">
+                                    <img src="images/bbl.png" ng-show="roHead.PaymentBank == 'bbl'" width="32" height="32">
+                                    <img src="images/kbank.png" ng-show="roHead.PaymentBank == 'kbank'" width="32" height="32">
+                                    <img src="images/ktb.png" ng-show="roHead.PaymentBank == 'ktb'" width="32" height="32">
+                                    <img src="images/kcc.png" ng-show="roHead.PaymentBank == 'kcc'" width="32" height="32">
+                                    <img src="images/scb.png" ng-show="roHead.PaymentBank == 'scb'" width="32" height="32">
+                                    <img src="images/tmb.png" ng-show="roHead.PaymentBank == 'tmb'" width="32" height="32">
+                                    <img src="images/uob.png" ng-show="roHead.PaymentBank == 'uob'" width="32" height="32">
+                                </td>
+                                <td data-title="'Payment Doc.'" class="text-center">
+                                    <button type="submit" class="btn btn-primary" ng-click="UploadPaymentDocument()">
+                                            <span class="glyphicon glyphicon glyphicon-list-alt" aria-hidden="true"></span></button>
+
+                                </td>
+                                <td data-title="'Payment'" class="text-center">
+                                    <img src="images/dpay_stat.png" ng-show="roHead.PaymentStatus == 'N'" title="No Payment">
+                                    <img src="images/pay_stat.png" ng-show="roHead.PaymentStatus == 'Y'" title="Paid">
+                                </td>
+                                
+                                <td data-title="'Shipping'" class="text-center">
+                                    <img src="images/dship_stat.png" ng-show="roHead.ShippingStatus == 'N'" title="No Shipping">
+                                    <img src="images/ship_stat.png" ng-show="roHead.ShippingStatus == 'Y'" title="Shipped">
+                                </td>
+                            </tr>
+                        </table>
+                        <script type="text/ng-template" id="custom/pager">
+                            <ul class="pager ng-cloak">
+                              <li ng-repeat="page in pages"
+                                    ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}"
+                                    ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+                                <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">&laquo; Previous</a>
+                                <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Next &raquo;</a>
+                              </li>
+                                <li> 
+                                <div class="btn-group">
+                                    <button type="button" ng-class="{'active':params.count() == 10}" ng-click="params.count(10)" class="btn btn-default">10</button>
+                                    <button type="button" ng-class="{'active':params.count() == 25}" ng-click="params.count(25)" class="btn btn-default">25</button>
+                                    <button type="button" ng-class="{'active':params.count() == 50}" ng-click="params.count(50)" class="btn btn-default">50</button>
+                                    <button type="button" ng-class="{'active':params.count() == 100}" ng-click="params.count(100)" class="btn btn-default">100</button>
+                                </div>
+                                </li>
+                            </ul>
+                        </script>
+                   <!--End Product Category Table Setting -->
+                    </div>
+                </div>
+                </div>
+                <!-- <div> CUSTOMER ORDER -->
+                <div id="customer-order-section" name="customer-order-section" class="section" ng-show="SelectedMenu=='customer-order'">
+                    <h1>{{'BODY.SECTION.CUSTOMER_ORDER.HEAD' | translate}}</h1> 
+                     <div id="div-customer-order-detail" class="row">
+                        <div class="col-md-12 col-sm-offset-0">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.CUSTOMER_ORDER.RO_NO' | translate}}</label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" type="text" placeholder="{{'BODY.SECTION.CUSTOMER_ORDER.RO_NO_PLACEHOLDER' | translate}}">
+                                </div>
+                                <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.CUSTOMER_ORDER.CUSTOMER' | translate}}</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id="CustomerAutoComplete" ng-model="autocomplete" class="form-control" ng-autocomplete options="options" details="details"/>
+                                    
+                                   
+                                      <input id="my-input" class="typeahead form-control" type="text" placeholder="input a country name" ng-click="SearchCustomerAutoComplete()">
+                                   
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.CUSTOMER_ORDER.FROM' | translate}}</label>
+                                <div class="col-sm-4">
+                                    <datepicker button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>"
+                                       date-format="dd-MM-yyyy"  date-set="">
+                                      <input ng-model="CustomerOrderStartDate" type="text" style="color:black" class="form-control" />
+                                    </datepicker>
+                                </div>
+                                <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.CUSTOMER_ORDER.TO' | translate}}</label>
+                                <div class="col-sm-4">
+                                    <datepicker button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>" 
+                                           date-format="dd-MM-yyyy"  date-set="">
+                                          <input ng-model="CustomerOrderEndDate" type="text" style="color:black" class="form-control"/>
+                                    </datepicker>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.CUSTOMER_ORDER.PAYMENT' | translate}}</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control" ng-model="SearchPaymentStatus" required="required">
+                                        <option value="N">Owed</option>
+                                        <option value="Y">Paid</option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.CUSTOMER_ORDER.SHIPPING' | translate}}</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control" ng-model="SearchShippingStatus" required="required">
+                                        <option value="N">Not Shipping</option>
+                                        <option value="Y">Shipping</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                
+                                <label class="col-sm-2 control-label" for="textinput">&nbsp;</label>
+                                <div class="col-sm-4">
+                                    &nbsp;
+                                </div>
+                                <label class="col-sm-2 control-label" for="textinput">&nbsp;</label>
+                                <div class="col-sm-4">
+                                    &nbsp;
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-5 col-md-12">
+                                    <div class="center-block">
+                                        <button ng-click="SearchCustomerOrder()" class="btn btn-primary">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> {{'BODY.SECTION.CUSTOMER_ORDER.BUTTON.SEARCH' | translate}}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col-lg-12 -->
+                    </div>
+                    <div id="div-customer-order-table">
+                        <p><strong>Page:</strong> {{CustomerOrderTableParams.page()}}</p>
+                        <p><strong>Count per page:</strong> {{CustomerOrderTableParams.count()}}</p>
+                        <table ng-table="HistoryReceiptTableParams" class="table">
+                            <tr ng-repeat="roHead in $data">
+                                <td data-title="'#'" class="text-cetner">{{$index+1}}</td>
+                                <td data-title="'RONo'" class="text-cetner" >{{roHead.RONo}}</td>
+                                <td data-title="'RODate'" class="text-cetner">{{roHead.RODate | date:'dd-MM-yyyy'}}</td>
+                                <td data-title="'Customer'" class="text-right">{{roHead.Firstname}}</td>
+                                <td data-title="'NetAmount'" class="text-right">{{roHead.NetAmount | number}}</td>
+                                <td data-title="'Bank'" class="text-center">
+                                    <img src="images/bbl.png" ng-show="roHead.PaymentBank == 'bbl'" width="32" height="32">
+                                    <img src="images/kbank.png" ng-show="roHead.PaymentBank == 'kbank'" width="32" height="32">
+                                    <img src="images/ktb.png" ng-show="roHead.PaymentBank == 'ktb'" width="32" height="32">
+                                    <img src="images/kcc.png" ng-show="roHead.PaymentBank == 'kcc'" width="32" height="32">
+                                    <img src="images/scb.png" ng-show="roHead.PaymentBank == 'scb'" width="32" height="32">
+                                    <img src="images/tmb.png" ng-show="roHead.PaymentBank == 'tmb'" width="32" height="32">
+                                    <img src="images/uob.png" ng-show="roHead.PaymentBank == 'uob'" width="32" height="32">
+                                </td>
+                                <td data-title="'Payment Doc.'" class="text-center">
+                                    <button type="submit" class="btn btn-primary" ng-click="UploadPaymentDocument()">
+                                            <span class="glyphicon glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                                    </button>
+                                        
+                                </td>
+                                <td data-title="'Payment'" class="text-center">
+                                    <img src="images/dpay_stat.png" ng-show="roHead.PaymentStatus == 'N'" title="No Payment">
+                                    <img src="images/pay_stat.png" ng-show="roHead.PaymentStatus == 'Y'" title="Paid">
+                                </td>
+                                
+                                <td data-title="'Shipping'" class="text-center">
+                                    <img src="images/dship_stat.png" ng-show="roHead.ShippingStatus == 'N'" title="No Shipping">
+                                    <img src="images/ship_stat.png" ng-show="roHead.ShippingStatus == 'Y'" title="Shipped">
+                                </td>
+                            </tr>
+                        </table>
+                        <script type="text/ng-template" id="custom/pager">
+                            <ul class="pager ng-cloak">
+                              <li ng-repeat="page in pages"
+                                    ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}"
+                                    ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+                                <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">&laquo; Previous</a>
+                                <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Next &raquo;</a>
+                              </li>
+                                <li> 
+                                <div class="btn-group">
+                                    <button type="button" ng-class="{'active':params.count() == 10}" ng-click="params.count(10)" class="btn btn-default">10</button>
+                                    <button type="button" ng-class="{'active':params.count() == 25}" ng-click="params.count(25)" class="btn btn-default">25</button>
+                                    <button type="button" ng-class="{'active':params.count() == 50}" ng-click="params.count(50)" class="btn btn-default">50</button>
+                                    <button type="button" ng-class="{'active':params.count() == 100}" ng-click="params.count(100)" class="btn btn-default">100</button>
+                                </div>
+                                </li>
+                            </ul>
+                        </script>
+                   <!--End Product Category Table Setting -->
+                    </div>
+                </div>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 <!-- <div> Account Setting -->
                 <div id="account-section" name="account-section" class="section" ng-show="SelectedMenu=='account'">
                     <h1>{{'BODY.SECTION.ACCOUNT.HEAD' | translate}}</h1>
@@ -1288,62 +1935,102 @@
                                     <legend></legend>
                                     <!-- Text input-->
                                     <div class="form-group">
+<<<<<<< HEAD
                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.FIRST_NAME' | translate}}</label>
+=======
+                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.ACCOUNT.FIRST_NAME' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                         <div class="col-sm-6">
                                             <input type="text" placeholder="{{'BODY.SECTION.ACCOUNT.FIRST_NAME' | translate}}" class="form-control" ng-model="ViewAppUserData.Firstname">
                                         </div>
                                     </div>
                                     <!-- Text input-->
                                     <div class="form-group">
+<<<<<<< HEAD
                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.LAST_NAME' | translate}}</label>
+=======
+                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.ACCOUNT.LAST_NAME' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                         <div class="col-sm-6">
                                             <input type="text" placeholder="{{'BODY.SECTION.ACCOUNT.LASTNAME' | translate}}" class="form-control" ng-model="ViewAppUserData.Lastname">
                                         </div>
                                     </div>
                                     <!-- Text input-->
                                     <div class="form-group">
+<<<<<<< HEAD
                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.EMAIL' | translate}}</label>
+=======
+                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.ACCOUNT.EMAIL' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                         <div class="col-sm-6">
                                             <input type="email" placeholder="{{'BODY.SECTION.ACCOUNT.EMAIL' | translate}}" class="form-control" ng-model="ViewAppUserData.Email" />
                                         </div>
                                     </div>
                                     <!-- Text input-->
                                     <div class="form-group">
+<<<<<<< HEAD
                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.USERNAME' | translate}}</label>
+=======
+                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.ACCOUNT.USERNAME' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                         <div class="col-sm-6">
                                             <input type="text" placeholder="Username" class="form-control" ng-model="ViewAppUserData.Username">
                                         </div>
                                     </div>
                                     <!-- Text input-->
                                     <div class="form-group">
+<<<<<<< HEAD
                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.PASSWORD' | translate}}</label>
+=======
+                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.ACCOUNT.PASSWORD' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                         <div class="col-sm-6">
                                             <input type="password" placeholder="Firstname" class="form-control" ng-model="ViewAppUserData.Password">
                                         </div>
                                     </div>
                                     <!-- Text input-->
                                     <div class="form-group">
+<<<<<<< HEAD
                                         <label class="col-md-4 control-label" for="filebutton" style="text-align: left">{{'BODY.SECTION.ACCOUNT.PROFILE_IMAGE' | translate}}</label>
                                         <div class="col-md-4">
                                   
+=======
+                                        <label class="col-md-4 control-label" for="filebutton">{{'BODY.SECTION.ACCOUNT.PROFILE_IMAGE' | translate}}</label>
+                                        <div class="col-md-4">
+                                       <!--     <input id="ProfileImage" name="filebutton" class="input-file" type="file" ng-Model="ViewAppUserData.ProfileImage">-->
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                             <div>
                                                 <div class="button" ngf-select ngf-change="upload($files)" style="color:black">
                                                 Upload on file change</div>
                                             </div>
                                         </div>
+<<<<<<< HEAD
                                         
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.DROP_FILE' | translate}} </label>
                                         <div class="col-sm-6">
                                             <div ngf-drop ng-model="files" class="drop-box" 
+=======
+                                        <div class="col-md-2">
+                                        {{'BODY.SECTION.ACCOUNT.DROP_FILE' | translate}}
+                                        </div>
+                                        <div class="col-md-4">
+                                         <div ngf-drop ng-model="files" class="drop-box" 
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                     ngf-drag-over-class="dragover" ngf-allow-dir="true"
                                                     ngf-accept="'image/*,application/pdf'">{{'BODY.SECTION.ACCOUNT.DROP_IMAGE_PDF' | translate}}</div>
                                                 <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
                                         </div>
                                     </div>
+<<<<<<< HEAD
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.IMAGE_THUMBNAIL' | translate}} </label>
+=======
+                                    
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.ACCOUNT.IMAGE_THUMBNAIL' | translate}} </label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                         <div class="col-sm-6" id="ThumbnailProfileImage">
                                         <!--   <img ngf-src="file" ngf-default-src="'placeholder.jpg'" ngf-accept="'.pdf,.jpg'"> -->
                                            
@@ -1420,28 +2107,44 @@
                                                     <legend></legend>
                                                     <!-- Text input-->
                                                     <div class="form-group">
+<<<<<<< HEAD
                                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_CODE' | translate}}</label>
+=======
+                                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_CODE' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                         <div class="col-sm-6">
                                                             <input type="text" background-color="#FFCBCBCB" readonly placeholder="{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_CODE' | translate}}" class="form-control" ng-model="ViewProductTypeData.ProductTypeCode"></input>
                                                         </div>
                                                     </div>
                                                     <!-- Text input-->
                                                     <div class="form-group">
+<<<<<<< HEAD
                                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_TH' | translate}}</label>
+=======
+                                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_TH' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                         <div class="col-sm-6">
                                                             <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_TH' | translate}}" class="form-control" ng-model="ViewProductTypeData.ProductTypeNameTh"></input>
                                                         </div>
                                                     </div>
                                                     <!-- Text input-->
                                                     <div class="form-group">
+<<<<<<< HEAD
                                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_EN' | translate}}</label>
+=======
+                                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_EN' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                         <div class="col-sm-6">
                                                             <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_EN' | translate}}" class="form-control" ng-model="ViewProductTypeData.ProductTypeNameEn"></input>
                                                         </div>
                                                     </div>
                                                     <!-- Text input-->
                                                     <div class="form-group">
+<<<<<<< HEAD
                                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_CN' | translate}}</label>
+=======
+                                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_CN' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                         <div class="col-sm-6">
                                                             <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_CN' | translate}}" class="form-control" ng-model="ViewProductTypeData.ProductTypeNameCn"></input>
                                                         </div>
@@ -1477,18 +2180,32 @@
                                             <div class="row">
                                                 <div class="col-md-14 col-md-offset-0">
                                                     <form class="form-horizontal" role="form">
+<<<<<<< HEAD
                                                         <legend class="search-table control-label" style="color:white" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.SEARCH_PRODUCT_TYPE_CRITERIA_LABEL' | translate}}</legend>
                                                         <div class="form-group">
                                                             <label class="col-sm-2 control-label text-left" for="textinput">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_CODE_LABEL' | translate}}</label>
+=======
+                                                        <legend class="search-table" style="color:white">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.SEARCH_PRODUCT_TYPE_CRITERIA_LABEL' | translate}}</legend>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.SETTING.PROMOTION.PROMOTION_CODE_LABEL' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                             <div class="col-sm-3">
                                                                 <input type="text" placeholder="Product Type Code" class="form-control" ng-model="SearchProductTypeData.ProductTypeCode"> 
                                                             </div>
 
+<<<<<<< HEAD
                                                             <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_LABEL' | translate}}</label>
+=======
+                                                            <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_LABEL' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                             <div class="col-sm-3">
                                                                 <input type="text" placeholder="Product Type Name" class="form-control" ng-model="SearchProductTypeData.ProductTypeName"> 
                                                             </div>
                                                         </div>
+<<<<<<< HEAD
+=======
+                                                       
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                         <div class="form-group">
                                                             <div class="col-sm-14 text-center">
                                                                 <button ng-click="SearchProductType()" class="btn btn-primary">
@@ -1502,6 +2219,7 @@
                                         </fieldset>
                                         <button type="submit" class="btn btn-warning" ng-click="NewProductType()">
                                           <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.NEW' | translate}}</button>
+<<<<<<< HEAD
                                         <p><strong>Page:</strong> {{ProductTypeTableParams.page()}}</p>
                                         <p><strong>Count per page:</strong> {{ProductTypeTableParams.count()}}</p>
                                         
@@ -1541,6 +2259,47 @@
                                                 </li>
                                             </ul>
                                         </script>
+=======
+
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>
+                                                        <a href="" ng-click="orderFieldName='ProductCode'; isASC=!isASC"></a>{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_CODE' | translate}}</th>
+                                                    <th><a href="" ng-click="orderFieldName='ProductNameTh'; isASC=!isASC">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_TH' | translate}}</th>
+                                                    <th><a href="" ng-click="orderFieldName='ProductNameEn'; isASC=!isASC">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_EN' | translate}}</th>
+                                                    <th><a href="" ng-click="orderFieldName='ProductNameCn'; isASC=!isASC" >{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_CN' | translate}}</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="pt in SearchProductTypes | orderBy : orderFieldName : isASC | filter : SearchProductTypeText">
+                                                    <td>{{$index+1}}</td>
+                                                    <td>{{pt.ProductTypeCode}}</td>
+                                                    <td>{{pt.ProductTypeNameTh}}</td>
+                                                    <td>{{pt.ProductTypeNameEn}}</td>
+                                                    <td>{{pt.ProductTypeNameCn}}</td>
+                                                    <td>
+                                                        <button ng-click="ViewProductType(pt._id)" class="btn btn-primary">
+                                                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button ng-click="DeleteProductType()" class="btn btn-danger">
+                                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </button>
+                                                    </td>
+
+                                                </tr>
+                                            </tbody>
+                                           <tfoot>
+                                                <td colspan="8">
+                                                Record Count : {{SearchProductTypes.length}}
+                                               </td>
+                                           </tfoot>
+                                        </table>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                     </div>
                                 <!-- End Product Type Table Setting -->
                                 </div>
@@ -1557,34 +2316,54 @@
                                                     <legend></legend>
                                                     <!-- Text input-->
                                                     <div class="form-group">
+<<<<<<< HEAD
                                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_CODE' | translate}}</label>
+=======
+                                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_CODE' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                         <div class="col-sm-6">
                                                             <input type="text" placeholder="Product Category Code" class="form-control" ng-model="ViewProductCategoryData.ProductCategoryCode" readonly> 
                                                         </div>
                                                     </div>
                                                     <!-- Text input-->
                                                     <div class="form-group">
+<<<<<<< HEAD
                                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_NAME_TH' | translate}}</label>
+=======
+                                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_NAME_TH' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                         <div class="col-sm-6">
                                                             <input type="text" placeholder="Product Category Name TH" class="form-control" ng-model="ViewProductCategoryData.ProductCategoryNameTh">
                                                         </div>
                                                     </div>
                                                     <!-- Text input-->
                                                     <div class="form-group">
+<<<<<<< HEAD
                                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_NAME_EN' | translate}}</label>
+=======
+                                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_NAME_EN' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                         <div class="col-sm-6">
                                                             <input type="text" placeholder="Product Category Name EN" class="form-control" ng-model="ViewProductCategoryData.ProductCategoryNameEn">
                                                         </div>
                                                     </div>
                                                     <!-- Text input-->
                                                     <div class="form-group">
+<<<<<<< HEAD
                                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_NAME_CN' | translate}}</label>
+=======
+                                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_NAME_CN' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                         <div class="col-sm-6">
                                                             <input type="text" placeholder="Product Category Name CN" class="form-control" ng-model="ViewProductCategoryData.ProductCategoryNameCn">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
+<<<<<<< HEAD
                                                       <label class="col-md-4 control-label" for="selectbasic" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_TYPE' | translate}}</label>
+=======
+                                                      <label class="col-md-4 control-label" for="selectbasic">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_TYPE' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                         <div class="col-md-4">
                                                             <select id="SelectProductType" class="form-control"  
                                                                 ng-options="ProductType.ProductTypeCode as ProductType.ProductTypeNameTh for ProductType in SelectProductTypeList" ng-model="SelectedProductType" >
@@ -1628,6 +2407,7 @@
                                                     <form class="form-horizontal" role="form">
                                                         <legend class="search-table" style="color:white">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.SEARCH_PRODUCT_CATEGORY_CRITERIA_LABEL' | translate}}</legend>
                                                         <div class="form-group">
+<<<<<<< HEAD
                                                             <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_CODE_LABEL' | translate}}</label>
                                                             <div class="col-sm-3">
                                                                 <input type="text" placeholder="Product Type Code" class="form-control" ng-model="SearchProductCategoryData.ProductCategoryCode"> 
@@ -1640,6 +2420,20 @@
                                                         </div>
                                                        <div class="form-group">
                                                             <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_TYPE_LABEL' | translate}}</label>
+=======
+                                                            <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_CODE_LABEL' | translate}}</label>
+                                                            <div class="col-sm-3">
+                                                                <input type="text" placeholder="Product Type Code" class="form-control" ng-model="SearchProductTypeData.ProductTypeCode"> 
+                                                            </div>
+
+                                                            <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_NAME_LABEL' | translate}}</label>
+                                                            <div class="col-sm-3">
+                                                                <input type="text" placeholder="Product Type Name" class="form-control" ng-model="SearchProductTypeData.ProductTypeName"> 
+                                                            </div>
+                                                        </div>
+                                                       <div class="form-group">
+                                                            <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_TYPE_LABEL' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                             <div class="col-sm-3">
                                                                 <select id="SelectProductType" class="form-control"  ng-options="ProductType.ProductTypeCode as ProductType.ProductTypeNameTh for ProductType in SearchProductTypeList" ng-model="SearchProductType" >
                                                                 </select>
@@ -1648,7 +2442,11 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="col-sm-14 text-center">
+<<<<<<< HEAD
                                                                 <button ng-click="SearchProductCategory()" class="btn btn-primary">
+=======
+                                                                <button ng-click="SearchProductType()" class="btn btn-primary">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.SEARCH' | translate}}
                                                                 </button>
                                                             </div>
@@ -1812,11 +2610,16 @@
                                                     <div class="col-sm-6 checkbox">
                                                         <label>
                                                           <input type="checkbox"> {{'BODY.SECTION.SETTING.PRODUCT.IS_HOT' | translate}}
+<<<<<<< HEAD
 
                                                         </label>
                                                         
                                                     </div>
 
+=======
+                                                        </label>
+                                                    </div>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                 </div>
                                                 <!--Product Image Upload -->
                                                 <div class="form-group">
@@ -1881,6 +2684,7 @@
                                                     <form class="form-horizontal" role="form">
                                                         <legend class="search-table" style="color:white">{{'BODY.SECTION.SETTING.PRODUCT.SEARCH_PRODUCT_CRITERIA_LABEL' | translate}}</legend>
                                                         <div class="form-group">
+<<<<<<< HEAD
                                                             <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_CODE_LABEL' | translate}}</label>
                                                             <div class="col-sm-3">
                                                                 <input type="text" placeholder="Product Code" class="form-control" ng-model="SearchProductData.ProductCode"> 
@@ -1894,6 +2698,22 @@
                                                        <div class="form-group">
                                                             <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_CATEGORY_LABEL' | translate}}</label>
                                                             <div class="col-sm-3">
+=======
+                                                            <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_CODE_LABEL' | translate}}</label>
+                                                            <div class="col-sm-3">
+                                                                <input type="text" placeholder="Product Category Code" class="form-control" ng-model="SearchProductData.ProductTypeCode"> 
+                                                            </div>
+
+                                                            <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_LABEL' | translate}}</label>
+                                                            <div class="col-sm-3">
+                                                                <input type="text" placeholder="Product Category Name" class="form-control" ng-model="SearchProductData.ProductTypeName"> 
+                                                            </div>
+                                                        </div>
+                                                       <div class="form-group">
+                                                            <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_CATEGORY_LABEL' | translate}}</label>
+                                                            <div class="col-sm-3">
+                                                                <input type="text" placeholder="Product Category" class="form-control" ng-model="SearchProductData.ProductCategoryCode"> 
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                                 <select id="SelectProductCategory" class="form-control"  ng-options="ProductCategory.ProductCategoryCode as ProductCategory.ProductCategoryNameTh for ProductCategory in SearchProductCategoryList"
                                                                 ng-model="SearchProductCategory" >
                                                                 </select>
@@ -1902,7 +2722,11 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="col-sm-14 text-center">
+<<<<<<< HEAD
                                                                 <button ng-click="SearchProduct()" class="btn btn-primary">
+=======
+                                                                <button ng-click="SearchProductType()" class="btn btn-primary">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.SEARCH' | translate}}
                                                                 </button>
                                                             </div>
@@ -1970,56 +2794,94 @@
                                                     <legend></legend>
 
                                                     <!-- Text input-->
+<<<<<<< HEAD
                                                     <div class="form-group"> 
                                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PROMOTION.PROMOTION_CODE' | translate}}</label>
+=======
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.PROMOTION.PROMOTION_CODE' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                         <div class="col-sm-6">
                                                             <input type="text" background-color="#FFCBCBCB" readonly placeholder="{{'BODY.SECTION.SETTING.PROMOTION.PROMOTION_CODE' | translate}}" class="form-control" ng-model="ViewPromotionData.PromotionCode"></input>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
+<<<<<<< HEAD
                                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PROMOTION.PROMOTION_DATE_LABEL' | translate}}</label>
                                                         <div class="col-sm-6">
                                                             <datepicker button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>"
                                                                    date-format="dd/MM/yyyy" date-set="">
+=======
+                                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.PROMOTION.PROMOTION_DATE_LABEL' | translate}}</label>
+                                                        <div class="col-sm-6">
+                                                            <datepicker button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>"
+                                                                   date-format="dd-MM-yyyy" date-set="">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                                   <input ng-model="ViewPromotionData.PMDate" type="text" style="color:black" class="form-control" />
                                                                 </datepicker> 
                                                         </div>
                                                     </div>
                                                     <!-- Text input-->
                                                     <div class="form-group">
+<<<<<<< HEAD
                                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PROMOTION.PROMOTION_NAME_TH' | translate}}</label>
+=======
+                                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.PROMOTION.PROMOTION_NAME_TH' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                         <div class="col-sm-6">
                                                             <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_TH' | translate}}" class="form-control" ng-model="ViewPromotionData.PromotionNameTh"></input>
                                                         </div>
                                                     </div>
                                                     <!-- Text input-->
                                                     <div class="form-group">
+<<<<<<< HEAD
                                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PROMOTION.PROMOTION_NAME_EN_LABEL' | translate}}</label>
+=======
+                                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.PROMOTION.PROMOTION_NAME_EN_LABEL' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                         <div class="col-sm-6">
                                                             <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_EN' | translate}}" class="form-control" ng-model="ViewPromotionData.PromotionNameEn"></input>
                                                         </div>
                                                     </div>
                                                     <!-- Text input-->
                                                     <div class="form-group">
+<<<<<<< HEAD
                                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PROMOTION.PROMOTION_NAME_CN' | translate}}</label>
+=======
+                                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.PROMOTION.PROMOTION_NAME_CN' | translate}}</label>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                         <div class="col-sm-6">
                                                             <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_CN' | translate}}" class="form-control" ng-model="ViewPromotionData.PromotionNameCn"></input>
                                                         </div>
                                                         
                                                     </div>
                                                      <div class="form-group">
+<<<<<<< HEAD
                                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PROMOTION.START_DATE_LABEL' | translate}}</label>
                                                         <div class="col-sm-6">
                                                             <datepicker button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>"
                                                                    date-format="dd/MM/yyyy"  date-set="">
+=======
+                                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.PROMOTION.START_DATE_LABEL' | translate}}</label>
+                                                        <div class="col-sm-6">
+                                                            <datepicker button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>"
+                                                                   date-format="dd-MM-yyyy"  date-set="">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                                   <input ng-model="ViewPromotionData.StartDate" type="text" style="color:black" class="form-control" />
                                                                 </datepicker> 
                                                         </div>
                                                     </div>
                                                      <div class="form-group">
+<<<<<<< HEAD
                                                         <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PROMOTION.END_DATE_LABEL' | translate}}</label>
                                                         <div class="col-sm-6">
                                                             <datepicker button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>" date-format="dd/MM/yyyy"  date-set="">
+=======
+                                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.PROMOTION.END_DATE_LABEL' | translate}}</label>
+                                                        <div class="col-sm-6">
+                                                            <datepicker button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>"
+                                                                   date-format="dd-MM-yyyy"  date-set="">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                                   <input ng-model="ViewPromotionData.EndDate" type="text" style="color:black" class="form-control" />
                                                                 </datepicker> 
                                                         </div>
@@ -2043,21 +2905,42 @@
                                             </form>
                                         </div>
                                         <div class="col-md-10 col-md-offset-1">
+<<<<<<< HEAD
                                         <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PROMOTION.SEARCH_PRODUCT' | translate}}</label>
                                             <div class="col-sm-9">
                                                 
                                                 <select id="SelectProductPromotionList" style="width:250px"> </select>
                                                 <button type="submit" class="btn btn-success" ng-click="AddProductPromotion()">
                                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.PROMOTION.ADD_PRODUCT_BUTTON' | translate}}</button>
+=======
+                                        <label class="col-sm-1 control-label" for="textinput">ค้นหาสินค้า :</label>
+                                  <!--      <select id="SelectProductPromotion" name="selectbasic" class="form-control input-sm" ng-model="ro.UomCode" ng-options="Uom.UomCode as Uom.UomNameTh for Uom in ro.Uoms" ng-change="UpdateCartUom(ro, ro.UomCode, $index)">
+                                                                    </select> ng-model="Product.ProductCode" ng-options="Product.ProductCode as Product.ProductNameTh for Product in SelectProductPromotionList"-->
+                                            <div class="col-sm-9">
+                                                <input type="hidden" class="form-control" style="width:75%" 
+                                                id="SelectProductPromotionList">
+                                                 
+                                                </input>
+                                      
+                                                <button type="submit" class="btn btn-default" ng-click="AddProductPromotion()">
+                                                    <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> เพิ่มสินค้าในโปรโมชั่น</button>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                           
                                             </div>
                                             <table ng-table="PromotionTableParams" class="table table-condense">
                                                 <tr ng-repeat="pm in $data">
                                                     <td data-title="'#'">{{$index + 1}}</td>
+<<<<<<< HEAD
                                                     <td data-title="'Product Code'">{{pm.ProductCode}}</td>
                                                     <td data-title="'Product Name En'">{{pm.ProductNameEn}}</td>
                                                     <td data-title="'Product Name Th'">{{pm.ProductNameTh}}</td>
                                                     <td data-title="'Product Name Cn'">{{pm.ProductNameCn}}</td>
+=======
+                                                    <td data-title="'Product Code'">{{pd.ProductCode}}</td>
+                                                    <td data-title="'Product Name En'">{{pd.ProductNameEn}}</td>
+                                                    <td data-title="'Product Name Th'">{{pd.ProductNameTh}}</td>
+                                                    <td data-title="'Product Name Cn'">{{pd.ProductNameCn}}</td>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                     
                                                     <td data-title="''">
                                                         <button ng-click="DeletePromotion(pm._id)" class="btn btn-danger" alt="Delete">
@@ -2073,11 +2956,15 @@
                                         <legend></legend>
                                         <button type="submit" class="btn btn-warning" ng-click="NewPromotion()">
                                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.NEW' | translate}}</button>
+<<<<<<< HEAD
                                         <div class="spacer" ></div>
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                         <fieldset class="search-table">
                                             <div class="row">
                                                 <div class="col-md-14 col-md-offset-0">
                                                     <form class="form-horizontal" role="form">
+<<<<<<< HEAD
                                                         <legend class="search-table" style="color:white" >{{'BODY.SECTION.SETTING.PROMOTION.SEARCH_PROMOTION_CRITERIA_LABEL' | translate}}</legend>
                                                         <div class="form-group">
                                                             <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PROMOTION.PROMOTION_CODE_LABEL' | translate}}</label>
@@ -2104,11 +2991,40 @@
                                                                 <datepicker button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>"
                                                                    date-format="dd-MM-yyyy"  date-set="">
                                                                   <input ng-model="SearchPromotionData.SearchEndDate" ng-model="StartDate" type="text" style="color:black" class="form-control" />
+=======
+                                                        <legend class="search-table" style="color:white">{{'BODY.SECTION.SETTING.PROMOTION.SEARCH_PROMOTION_CRITERIA_LABEL' | translate}}</legend>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.SETTING.PROMOTION.PROMOTION_CODE_LABEL' | translate}}</label>
+                                                            <div class="col-sm-3">
+                                                                <input type="text" placeholder="Customer Type Code" class="form-control" ng-model="ViewPromotionData.PromotionCode"> 
+                                                            </div>
+
+                                                            <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.SETTING.PROMOTION.PROMOTION_NAME_LABEL' | translate}}</label>
+                                                            <div class="col-sm-3">
+                                                                <input type="text" placeholder="Customer Type Code" class="form-control" ng-model="ViewPromotionData.PromotionName"> 
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label" for="textinput">วันที่เริ่ม :</label>
+                                                            <div class="col-sm-3">
+                                                                <datepicker button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>"
+                                                                   date-format="dd-MM-yyyy"  date-set="">
+                                                                  <input ng-model="StartDate" type="text" style="color:black" class="form-control" />
+                                                                </datepicker> 
+                                                            </div>
+
+                                                            <label class="col-sm-2 control-label" for="textinput">วันที่สิ้นสุด :</label>
+                                                            <div class="col-sm-3">
+                                                                <datepicker button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>"
+                                                                   date-format="dd-MM-yyyy"  date-set="">
+                                                                  <input ng-model="StartDate" type="text" style="color:black" class="form-control" />
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                                 </datepicker>
                                                             </div>
                                                         </div>
                                                         
                                                         <div class="form-group">
+<<<<<<< HEAD
                                                             <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PROMOTION.IS_ACTIVE_LABEL' | translate}} </label>
                                                             <div class="col-sm-3 checkbox">
                                                                 <label>
@@ -2119,6 +3035,18 @@
                                                         <div class="form-group">
                                                             
                                                             <div class="col-sm-14 text-center">
+=======
+                                                            <label class="col-sm-2 control-label" for="textinput">ใช้งาน </label>
+                                                            <div class="col-sm-3 checkbox">
+                                                            <label>
+                                                                <input type="checkbox" name="remember" ng-model="checked"> 
+                                                            </label>
+                                                        </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            
+                                                            <div class="col-sm-3">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                                 <button ng-click="SearchPromotion()" class="btn btn-primary">
                                                                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.SEARCH' | translate}}
                                                                 </button>
@@ -2251,7 +3179,14 @@
                                                 </fieldset>
                                             </form>
                                         </div>
+<<<<<<< HEAD
                                     </div>
+=======
+
+                                        <!-- /.col-lg-12 -->
+                                    </div>
+                                    <!-- /.row -->
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                     <!-- Start Customer Type Table Setting -->
                                     <div id="div-customer-type-table">
                                         <legend></legend>
@@ -2581,7 +3516,14 @@
                                                 </fieldset>
                                             </form>
                                         </div>
+<<<<<<< HEAD
                                     </div>
+=======
+                                        <!-- /.col-lg-12 -->
+                                    </div>
+                                    <!-- /.row -->
+                                 
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                     <!-- Start Supplier Table Setting -->
                                     <div id="div-supplier-table">
                                         <legend></legend>
@@ -2693,7 +3635,11 @@
                                 </div>
                                 <!--End Supplier Setting -->
 
+<<<<<<< HEAD
                                  <!--Start Product Category Setting -->
+=======
+                                                        <!--Start Product Category Setting -->
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                 <div class="tab-pane" id="ProductCategoryTab" name="ProductCategoryTab">
                                     <!--Start Product Category Detail Setting -->
                                     <div id="div-product-category-detail" class="row">
@@ -2743,6 +3689,10 @@
                                                             <div class="pull-right">
                                                                 <button type="submit" class="btn btn-warning" ng-click="NewProductCategory()">
                                                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.NEW' | translate}}</button>
+<<<<<<< HEAD
+=======
+                                                                
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                                                 <button type="submit" class="btn btn-primary" ng-click="SaveProductCategory()"> 
                                                                 <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.SAVE' | translate}}</button>
 
@@ -2982,6 +3932,10 @@
                                         <!-- End Staff Table Setting -->
                                 </div>
                                 <!-- End Staff Setting -->
+<<<<<<< HEAD
+=======
+                                
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                                 <!-- Start Role Setting -->
                                 <div class="tab-pane" id="RoleTab" name="RoleTab">
                                     <!-- Start Role Detail Setting -->
@@ -3221,6 +4175,7 @@
                         </div>
                     </div>
                 </div>
+<<<<<<< HEAD
                 <!-- <div> HISTORY -->
                 <div id="history-section" name="history-section" class="section" ng-show="SelectedMenu=='history'">
                     <h1>{{'BODY.SECTION.HISTORY.HEAD' | translate}}</h1> 
@@ -3659,6 +4614,8 @@
                    <!--End Product Category Table Setting -->
                     </div>
                 </div>
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 <!-- div-change-view-->
             </div>
             <!-- div BODY-->
@@ -3670,7 +4627,11 @@
                 <div class="row">
                       <div class="col-md-4">
                         <center>
+<<<<<<< HEAD
                           <img src="/images/tyre.png" width="64" height="64"  alt="the-brains" class='img-responsive'>
+=======
+                          <img src="/images/tyre.png" width="64" height="64"  alt="the-brains">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                           <br>
                           <h4 class="footertext">{{'FOOTER.TYRE.HEAD' | translate}}</h4>
                           <p class="footertext">{{'FOOTER.TYRE.REMARK' | translate}}<br>
@@ -3678,7 +4639,11 @@
                       </div>
                       <div class="col-md-4">
                         <center>
+<<<<<<< HEAD
                           <img src="/images/lubricant.png" width="64" height="64" alt="..." class='img-responsive'>
+=======
+                          <img src="/images/lubricant.png" width="64" height="64" alt="...">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                           <br>
                           <h4 class="footertext">{{'FOOTER.LUBRICANT.HEAD' | translate}}</h4>
                           <p class="footertext">{{'FOOTER.LUBRICANT.REMARK' | translate}}<br>
@@ -3686,7 +4651,11 @@
                       </div>
                       <div class="col-md-4">
                         <center>
+<<<<<<< HEAD
                           <img src="/images/battery.png" width="64" height="64" alt="..." class='img-responsive'>
+=======
+                          <img src="/images/battery.png" width="64" height="64" alt="...">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                           <br>
                           <h4 class="footertext">{{'FOOTER.BATTERY.HEAD' | translate}}</h4>
                           <p class="footertext">{{'FOOTER.BATTERY.REMARK' | translate}}<br>
@@ -3694,7 +4663,11 @@
                       </div>
                       <div class="col-md-4">
                         <center>
+<<<<<<< HEAD
                           <img src="/images/brake.png" width="64" height="64"  alt="the-brains" class='img-responsive'>
+=======
+                          <img src="/images/brake.png" width="64" height="64"  alt="the-brains">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                           <br>
                           <h4 class="footertext">{{'FOOTER.BRAKE.HEAD' | translate}}</h4>
                           <p class="footertext">{{'FOOTER.BRAKE.REMARK' | translate}}<br>
@@ -3702,7 +4675,11 @@
                       </div>
                       <div class="col-md-4">
                         <center>
+<<<<<<< HEAD
                           <img src="/images/shock.png" width="64" height="64" alt="..." class='img-responsive'>
+=======
+                          <img src="/images/shock.png" width="64" height="64" alt="...">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                           <br>
                           <h4 class="footertext">{{'FOOTER.SHOCK.HEAD' | translate}}</h4>
                           <p class="footertext">{{'FOOTER.SHOCK.REMARK' | translate}}<br>
@@ -3710,7 +4687,11 @@
                       </div>
                       <div class="col-md-4">
                         <center>
+<<<<<<< HEAD
                           <img src="/images/wrench.png" width="64" height="64" alt="..." class='img-responsive'>
+=======
+                          <img src="/images/wrench.png" width="64" height="64" alt="...">
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                           <br>
                           <h4 class="footertext">{{'FOOTER.WRENCH.HEAD' | translate}}</h4>
                           <p class="footertext">{{'FOOTER.WRENCH.HEAD' | translate}}<br>
@@ -3726,8 +4707,15 @@
         </div>
         <!-- div FOOTER-->
       
+<<<<<<< HEAD
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <!--    <script>
+=======
+        <!-- endbower -->
+        <!-- endbuild -->
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             (function (b, o, i, l, e, r) {
                 b.GoogleAnalyticsObject = l;
                 b[l] || (b[l] =
@@ -3742,6 +4730,7 @@
             }(window, document, 'script', '__gaTracker'));
             __gaTracker('create', 'UA-XXXXX-Y', 'auto');
             __gaTracker('send', 'pageview');
+<<<<<<< HEAD
         </script>-->
         <script src="/bower_components/jquery/dist/jquery.min.js"></script>
         <script src="/bower_components/angular/angular.min.js"></script>
@@ -3772,11 +4761,64 @@
         <script src="/bower_components/ngAutocomplete/src/ngAutocomplete.js"></script>
         <script src="/bower_components/bootstrap3-typeahead/bootstrap3-typeahead.min.js" ></script>
         <script src="/bower_components/allmighty-autocomplete/script/autocomplete.js" ></script>
+=======
+        </script>
+
+        <script src="/bower_components/jquery/dist/jquery.js"></script>
+        <script src="/bower_components/angular/angular.js"></script>
+        <script src="/bower_components/flow.js/dist/flow.js"></script>
+        <script src="/bower_components/ng-flow/dist/ng-flow.js"></script>
+        <script src="/bower_components/platform/platform.js"></script>
+        <script src="/bower_components/less/dist/less.js"></script>
+        <script src="/bower_components/lodash/lodash.js"></script>
+        <script src="/bower_components/angular-block-ui/dist/angular-block-ui.js"></script>
+        <script src="/bower_components/ngDialog/js/ngDialog.js"></script>
+        <script src="/bower_components/angularjs-datepicker/dist/angular-datepicker.min.js"></script>
+        <script src="/bower_components/ng-password-strength/dist/scripts/ng-password-strength.js"></script>
+        <script src="/bower_components/select2/select2.js"></script>
+        <script src="/bower_components/ng-file-upload/ng-file-upload.js"></script>
+        <script src="/bower_components/ng-file-upload-shim/ng-file-upload-shim.js"></script>
+        <script src="/bower_components/angular-animate/angular-animate.js"></script>
+        <script src="/bower_components/angular-translate/angular-translate.js"></script>
+        <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="/bower_components/bootstrap/js/tab.js"></script>
+        <script src="/bower_components/chartjs/Chart.js"></script>
+        <script src="/bower_components/ng-table/dist/ng-table.js"></script>
+        <script src="/bower_components/ng-file-upload/ng-file-upload.js"></script>
+        <script src="/bower_components/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="/bower_components/requirejs-bower/require.js"></script>
+        <script src="/bower_components/pnotify/pnotify.core.js"></script>
+        <script src="https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit" async defer></script>
+        <script src="/bower_components/angular-recaptcha/release/angular-recaptcha.js" ></script>
+        <script src="/bower_components/oauth-js/dist/oauth.min.js"></script>
+        <script src="/bower_components/ngAutocomplete/src/ngAutocomplete.js"></script>
+        <script src="/bower_components/bootstrap3-typeahead/bootstrap3-typeahead.js" ></script>
+        <script src="/bower_components/allmighty-autocomplete/script/autocomplete.js" ></script>
+     <!--   <script src="/bower_components/jspdf/dist/jspdf.min.js"></script>
+        <script src="/bower_components/jspdf/dist/jspdf.debug.js"></script>
+        <script src="/bower_components/jspdf/plugins/addhtml.js"></script>
+        <script src="/bower_components/jspdf/plugins/addimage.js"></script>
+        <script src="/bower_components/jspdf/plugins/from_html.js"></script>
+        <script src="/bower_components/jspdf/plugins/png_support.js"></script>
+        <script src="/bower_components/jspdf/plugins/split_text_to_size.js"></script>
+        <script src="/bower_components/jspdf/plugins/standard_fonts_metrics.js"></script>
+        <script src="/bower_components/jspdf/plugins/canvas.js"></script>
+        <script src="/bower_components/jspdf/plugins/cell.js"></script>
+        <script src="/bower_components/jspdf/libs/html2canvas/dist/html2canvas.js"></script>
+        <script src="/bower_components/jspdf/libs/png_support/png.js"></script>
+        <script src="/bower_components/jspdf/libs/png_support/zlib.js"></script>
+        <script src="/bower_components/pdfmake/build/pdfmake.js"></script>
+        <script src="/bower_components/pdfmake/build/vfs_fonts.js"></script>
+        <script src="/bower_components/layzr.js/dist/layzr.js" ></script>-->
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         <script src="/scripts/main.js"></script>
         <script src="/scripts/bootstrap-magnify.js"></script>
         <script src="/scripts/step.js"></script>
         <script src="/controllers/app.js"></script>
+<<<<<<< HEAD
         <script src="/directives/enter-directive.js"></script>
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         <script src="/constants/constant.js"></script>
         <script src="/directives/menu-directive.js"></script>
         <script src="/directives/menu-item-directive.js"></script>
@@ -3788,7 +4830,15 @@
         <script src="/controllers/side-controller.js"></script>
         <script src="/controllers/header-controller.js"></script>
         <script src="/controllers/body-controller.js"></script>
+<<<<<<< HEAD
         <script src="/controllers/footer-controller.js"></script>
+=======
+        <script src="/controllers/product-controller.js"></script>
+        <script src="/controllers/footer-controller.js"></script>
+        <script src="/controllers/body-controller.js"></script>
+        <script src="/controllers/setting-controller.js"></script>
+        <script src="/controllers/history-controller.js"></script>
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 </body>
 
 </html>

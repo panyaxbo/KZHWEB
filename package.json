@@ -1,5 +1,6 @@
 {
   "name": "kzhweb",
+<<<<<<< HEAD
   "main": "web.js",
   "cacheDirectories": [
     "node_modules",
@@ -29,6 +30,16 @@
     "cron": "^1.0.9",
     "email-templates": "^2.0.0-beta.1",
     "express": "^4.13.3",
+=======
+  "devDependencies": {
+    "apache-server-configs": "^2.7.1",
+    "app-root-path": "^1.0.0",
+    "body-parser": "^1.13.1",
+    "bson": "^0.4.6",
+    "connect-multiparty": "^1.2.5",
+    "cors": "^2.7.1",
+    "cron": "^1.0.9",
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     "filereader": "^0.10.3",
     "gridfs-stream": "^1.1.1",
     "grunt": "^0.4.5",
@@ -40,19 +51,29 @@
     "grunt-contrib-copy": "^0.5.0",
     "grunt-contrib-cssmin": "^0.10.0",
     "grunt-contrib-htmlmin": "^0.3.0",
+<<<<<<< HEAD
     "grunt-contrib-imagemin": "^1.0.0",
+=======
+    "grunt-contrib-imagemin": "^0.8.0",
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-uglify": "^0.5.1",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-express-server": "^0.5.1",
+<<<<<<< HEAD
     "grunt-filerev": "^2.3.1",
     "grunt-mocha": "^0.4.10",
     "grunt-newer": "^0.7.0",
     "grunt-ng-annotate": "^1.0.1",
+=======
+    "grunt-mocha": "^0.4.10",
+    "grunt-newer": "^0.7.0",
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     "grunt-rev": "^0.1.0",
     "grunt-svgmin": "^0.4.0",
     "grunt-usemin": "^2.3.0",
     "grunt-wiredep": "^1.7.0",
+<<<<<<< HEAD
     "gzippo": "^0.2.0",
     "imagemin-gifsicle": "^4.2.0",
     "imagemin-jpegtran": "^4.3.0",
@@ -60,11 +81,14 @@
     "imagemin-pngquant": "^4.2.0",
     "jade": "^1.11.0",
     "jquery": "^2.1.4",
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     "jsdom": "^1.0.0-pre.6",
     "jshint-stylish": "^0.4.0",
     "load-grunt-tasks": "^0.4.0",
     "mkdirp": "^0.5.1",
     "mongodb": "^2.0.35",
+<<<<<<< HEAD
     "morgan": "^1.6.1",
     "multer": "^1.0.6",
     "mv": "^2.1.1",
@@ -74,10 +98,26 @@
     "passport-google-plus": "^0.5.1",
     "s3": "^4.4.0",
     "s3fs": "^2.3.0",
+=======
+    "multer": "^0.1.8",
+    "mv": "^2.1.1",
+    "nodemailer": "^0.7.1",
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     "stripe": "^3.7.0",
     "time-grunt": "^0.4.0",
     "try-thread-sleep": "^1.0.0",
     "twilio": "^2.2.1",
     "xoauth2": "^1.0.0"
+<<<<<<< HEAD
+=======
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "email-templates": "^2.0.0-beta.1",
+    "jade": "^1.11.0",
+    "jquery": "^2.1.4"
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
   }
 }

@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 'use strict'
 
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 $(document).ready(function () {
 
     var navListItems = $('div.setup-panel div a'),

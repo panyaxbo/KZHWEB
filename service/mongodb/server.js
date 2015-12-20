@@ -4,18 +4,26 @@ var bodyParser = require('body-parser');
 
 global.mongodbConfig = require('../mongodb_config.json');
 global.mailConfig = require('../mail_config.json');
+<<<<<<< HEAD
 
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 global.appRoot = require('app-root-path');
 global.mongodb = require('mongodb');
 global.bson = require('bson');
 global.http = require('http');
 global.url = require('url');
+<<<<<<< HEAD
 global.db = {};
 
 var passport = require('passport');
 var oauthConfig = require('../oauth/oauth-config.js');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var GooglePlusStrategy = require('passport-google-plus').Strategy;
+=======
+global.db;
+global.collection;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 
 var cors = require('cors');
 var index = require('./route/index');
@@ -40,10 +48,13 @@ var stripe = require('../stripe/stripe');
 var promotions = require('./route/promotions');
 var suppliers = require('./route/suppliers');
 
+<<<<<<< HEAD
 var aws = require('../aws-s3/aws');
 var bcrypts = require('../bcrypt/bcrypts');
 var oauths = require('../oauth/oauths');
 
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 //app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -72,6 +83,7 @@ app.use('/stripe', stripe);
 app.use('/promotions', promotions);
 app.use('/suppliers', suppliers);
 
+<<<<<<< HEAD
 app.use('/aws', aws);
 app.use('/bcrypts', bcrypts);
 app.use('/oauths', oauths);
@@ -84,13 +96,25 @@ app.listen(port, function () {
 
 // For localhost use
 /*
+=======
+app.listen(mongodbConfig.nodejs_port, function () {
+	console.log("Start server port " + mongodbConfig.nodejs_port + " is OK...");
+});
+
+// For localhost use
+
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 mongodb.MongoClient.connect(mongodbConfig.connection_url + mongodbConfig.collection_name, function (err, database) {
     if (err) throw err;
 
     db = database;
 });
+<<<<<<< HEAD
 */
 // For remote MongoLab
+=======
+
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 /*
 mongodb.MongoClient.connect("mongodb://kzhparts:kzhpartsadmin@ds033123.mongolab.com:33123/kzhparts", function (err, database) {
     if (err) console.log(err, err.stack.split("\n"));
@@ -98,6 +122,7 @@ mongodb.MongoClient.connect("mongodb://kzhparts:kzhpartsadmin@ds033123.mongolab.
     db = database;
 });
 */
+<<<<<<< HEAD
 
 var uri = process.env.MONGOLAB_URI || 'mongodb://heroku_vh9ltkx4:4tp9q8kbph0bp5r6ps50rscl5e@ds041841.mongolab.com:41841/heroku_vh9ltkx4';
 mongodb.MongoClient.connect(uri, { server: { auto_reconnect: true } }, function (err, database) {
@@ -108,6 +133,8 @@ mongodb.MongoClient.connect(uri, { server: { auto_reconnect: true } }, function 
 });
 
 
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 process.on('uncaughtException', function (err) {
     console.log(err);
 }); 

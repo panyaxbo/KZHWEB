@@ -79,8 +79,12 @@
 			"loadAllProduct" : "/LoadProduct",
 			"loadProductByObjId" : "/LoadProductByObjId/:ProductId",
 			"loadProductById" : "/LoadProductById/:ProductId",
+<<<<<<< HEAD
 			"loadProductByProductCode" : "/LoadProductByProductCode/:ProductCode",
 			"loadProductPromotionByProductCode" : "/LoadProductPromotionByProductCode/:ProductCode",
+=======
+			"loadProductByProductCode" : "/LoadProductByCode/:ProductCode",
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 			"loadProductByProductCategoryCode" : "/LoadProductByProductCategoryCode/:ProductCategoryCode",
 			"createProduct" : "/CreateProduct",
 			"updateProduct" : "/UpdateProduct",
@@ -149,7 +153,11 @@
 			"loadCustomerByCustomerCode" : "/LoadCustomerByCode/:CustomerCode",
 			"createCustomer" : "/CreateCustomer",
 			"updateCustomer" : "/UpdateCustomer",
+<<<<<<< HEAD
 			"deleteCustomerByCustomerId" : "/DeleteCustomer/:CustomerId",
+=======
+			"deleteCustomer" : "/DeleteCustomer/:CustomerId",
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 			"isExistCustomer" : "/IsExistCustomer/:FirstName/:LastName/"
 		},
 		"customer_type" : {
@@ -179,8 +187,13 @@
 			"home" : "/",
 			"loadAllReceipt" : "/LoadReceipt",
 			"loadROHeadROLineByROHeadId" : "/LoadROHeadROLineByObjId/:ROHeadId",
+<<<<<<< HEAD
 			"loadROHeadByUserIdAndStatus" : "/LoadROHeadByUserIdAndStatus/:UserId/:PaymentStatus/:ShippingStatus/:StartDate/:StartMonth/:StartYear/:EndDate/:EndMonth/:EndYear",
 			"loadROHeadByStaff" : "/LoadROHeadByStaff/:RONo/:CustomerName/:PaymentStatus/:ShippingStatus/:StartDate/:StartMonth/:StartYear/:EndDate/:EndMonth/:EndYear",
+=======
+			"loadROHeadByUserIdAndStatus" : "/LoadROHeadByUserIdAndStatus/:UserId/:PaymentStatus/:ShippingStatus/:StartDate/:EndDate",
+			"loadROHeadByStaff" : "/LoadROHeadByStaff/:RONo/:CustomerName/:PaymentStatus/:ShippingStatus/:StartDate/:EndDate",
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 			"createReceipt" : "/CreateReceipt",
 			"updateReceipt" : "/UpdateReceipt",
 			"deleteReceiptByROHeadId" : "/DeleteROHead/:ROHeadId"
@@ -198,7 +211,10 @@
 		"uom" : {
 			"home" : "/",
 			"loadAllUom" : "/LoadUom",
+<<<<<<< HEAD
 			"loadUomByObjId" : "/LoadUomByObjId/:UomId",
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 			"loadUomByUomCode" : "/LoadUomByUomCode/:UomCode",
 			"loadNotContainUom" : "/LoadNotContainUom",
 			"loadContainUom" : "/LoadContainUom",

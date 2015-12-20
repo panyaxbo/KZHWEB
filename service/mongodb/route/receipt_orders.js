@@ -28,6 +28,7 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
         }, function (err, ROHead) {
             if (err) {
                 console.log(err);
+<<<<<<< HEAD
             } else {
                 var LoadROLineListPromise = new Promise(function(resolve, reject) {
                     var obj_id = bson.BSONPure.ObjectID(ROHead._id);
@@ -346,12 +347,38 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
                 */
             }
         });
+=======
+                //       callback(err);
+            } else {
+                // call your callback with no error and the data
+                console.log(ROHead);
+                FindROLineByROHeadId(o_id, function (err, ROLineList) {
+                    if (err) throw err;
+                    ROHead.ROLineList = ROLineList;
+                    res.json(ROHead);
+                })
+            }
+        });
+
+    function FindROLineByROHeadId(ROHeadId, callback) {
+     //   console.log('FindROLineByROHeadId ' + ROHeadId);
+        db.collection(mongodbConfig.mongodb.roline.name)
+            .find({
+                'RoHeadId': ROHeadId
+            }).toArray(function (err, ROLineList) {
+                if (err) throw err;
+                console.log(ROLineList);
+                callback(null, ROLineList);
+            });
+    }
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 });
 
 // Create ROHead & ROLine
 router.post(mongodbConfig.url.receipt.createReceipt, function (req, res) {
     var ROHead = req.body;
     var ROLineList = ROHead.ROLineList;
+<<<<<<< HEAD
 
     ROHead.UserId = bson.BSONPure.ObjectID(ROHead.UserId);
 
@@ -363,6 +390,16 @@ router.post(mongodbConfig.url.receipt.createReceipt, function (req, res) {
     ROHead.ReceiptDistrictId = bson.BSONPure.ObjectID(ROHead.ReceiptDistrictId);
     ROHead.ReceiptSubDistrictId = bson.BSONPure.ObjectID(ROHead.ReceiptSubDistrictId);
 
+=======
+//    console.log(ROHead);
+//    console.log(ROHead.ROLineList);
+    ROHead.UserId = bson.BSONPure.ObjectID(ROHead.UserId);
+    ROHead.ProvinceId = bson.BSONPure.ObjectID(ROHead.ProvinceId);
+    ROHead.DistrictId = bson.BSONPure.ObjectID(ROHead.DistrictId);
+    ROHead.SubDistrictId = bson.BSONPure.ObjectID(ROHead.SubDistrictId);
+    ROHead.ZipCode = bson.BSONPure.ObjectID(ROHead.ZipCode);
+ //   console.log('new Date() '+ new Date());
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     var curDate = new Date ();
     curDate.setHours ( curDate.getHours() + 7 );// GMT Bangkok +7
     ROHead.RODate = curDate; 
@@ -441,6 +478,10 @@ router.get(mongodbConfig.url.receipt.deleteReceiptByROHeadId, function (req, res
             _id: o_id
         }, function (error, role) {
             if (error) throw error
+<<<<<<< HEAD
+=======
+
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             res.json(role);
         });
 });
@@ -450,6 +491,7 @@ router.get(mongodbConfig.url.receipt.loadROHeadByUserIdAndStatus, function (req,
     var userId = bson.BSONPure.ObjectID(req.params.UserId);
     var paymentStatus = req.params.PaymentStatus;
     var shippingStatus = req.params.ShippingStatus;
+<<<<<<< HEAD
   /*  var startDate = req.params.StartDate;
     var start = startDate.split('-');
     var endDate = req.params.EndDate;
@@ -471,13 +513,34 @@ router.get(mongodbConfig.url.receipt.loadROHeadByUserIdAndStatus, function (req,
                    $lte : new Date(EndYear+"-"+EndMonth+"-"+EndDate+"T00:00:00.000Z")
                 }
             ,
+=======
+    var startDate = req.params.StartDate;
+    var start = startDate.split('-');
+    var endDate = req.params.EndDate;
+    var end = endDate.split('-');
+    console.log(start + '-' + end);
+    console.log('userId ' + userId);
+    var currentDate = new Date().toISOString().split('T')[0].split('-');
+    db.collection(mongodbConfig.mongodb.rohead.name)
+        .find({
+            RODate: {
+               $lte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
+            },
+            RODate : {
+               $gte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
+            },
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             PaymentStatus: paymentStatus,
             ShippingStatus: shippingStatus,
             UserId: userId
         })
         .toArray(function (err, roheads) {
             if (err) {
+<<<<<<< HEAD
                 console.log(err, err.stack.split("\n"));
+=======
+                console.log(err);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             }
             console.log(roheads);
             res.json(roheads);
@@ -487,6 +550,7 @@ router.get(mongodbConfig.url.receipt.loadROHeadByUserIdAndStatus, function (req,
 // Load Customer Order from Staff
 router.get(mongodbConfig.url.receipt.loadROHeadByStaff, function (req, res) {
     var roNo =  req.params.RONo;
+<<<<<<< HEAD
     var name =  req.params.CustomerName;
     var userId = '';
     if (name === '$') {
@@ -560,4 +624,39 @@ router.get('/ApprovePayment/:RONo', function(req, res) {
                 res.sendStatus(200);
     });
 });
+=======
+//    var name =  req.params.CustomerName;
+    var userId = bson.BSONPure.ObjectID(req.params.UserId);
+    var paymentStatus = req.params.PaymentStatus;
+    var shippingStatus = req.params.ShippingStatus;
+    var startDate = req.params.StartDate;
+    var start = startDate.split('-');
+    var endDate = req.params.EndDate;
+    var end = endDate.split('-');
+//    console.log(start + '-' + end);
+    console.log('userId ' + userId);
+    var currentDate = new Date().toISOString().split('T')[0].split('-');
+    db.collection(mongodbConfig.mongodb.rohead.name)
+        .find({
+            RODate: {
+               $lte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
+            },
+            RODate : {
+               $gte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
+            },
+            PaymentStatus: paymentStatus,
+            ShippingStatus: shippingStatus,
+            RONo : /roNo/,
+            UserId: userId
+        })
+        .toArray(function (err, roheads) {
+            if (err) {
+                console.log(err);
+            }
+            console.log(roheads);
+            res.json(roheads);
+        });
+});
+
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 module.exports = router;

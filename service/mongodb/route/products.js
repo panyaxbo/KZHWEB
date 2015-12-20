@@ -7,7 +7,12 @@ router.get(mongodbConfig.url.product.home, function (req, res, next) {
 });
 
 /* GET users listing. */
+<<<<<<< HEAD
 router.get('/LoadProductForPromotion', function (req, res) {
+=======
+router.get('LoadProductForPromotion', function (req, res) {
+    console.log('LoadProductForPromotion');
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     db.collection(mongodbConfig.mongodb.product.name)
         .find({})
         .limit(100)
@@ -16,6 +21,7 @@ router.get('/LoadProductForPromotion', function (req, res) {
             res.json(items);
         });
 });
+<<<<<<< HEAD
 
 function GenerateTextQuery (searchArray) {
     var query = '';
@@ -71,15 +77,29 @@ router.get('/LoadProductByCondition/:ProductCode/:ProductName/:ProductCategoryCo
         });
 });
 router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
+=======
+router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
+//    console.log('product.js');
+
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     db.collection(mongodbConfig.mongodb.product.name)
         .find({})
         .limit(40)
         .toArray(function (err, items) {
             if (err) throw err;
+<<<<<<< HEAD
             var productsToFind = items.length;
             var products = [];
             for (var i = 0; i < items.length; i++) {
             //    console.log("items[" +i+"]");
+=======
+        //    console.log(items);
+            var productsToFind = items.length;
+            var products = [];
+            console.log("Found Products..." + productsToFind);
+            for (var i = 0; i < items.length; i++) {
+                console.log("items[" +i+"]");
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 var product = items[i];
                 processing(product, function (err, product) {
                     if (err) console.log(err, err.stack.split("\n"));
@@ -147,7 +167,11 @@ router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
                     });
 
                     promisePromotion.then(function( promotion ) {
+<<<<<<< HEAD
                     //   console.log( productsToFind );
+=======
+                       console.log( productsToFind );
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                         product.Promotion = promotion;
                         products.push(product);
                         productsToFind -= 1;
@@ -157,7 +181,11 @@ router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
                         }
                     },
                     function( err ) {
+<<<<<<< HEAD
                     //  console.log( err );
+=======
+                      console.log( err );
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                       products.push(product);
                       productsToFind -= 1;
 
@@ -251,6 +279,7 @@ router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
     }
 });
 
+<<<<<<< HEAD
 function GenerateTextStringQuery (searchArray) {
     var query = '';
     for (var ix = 0; ix < searchArray.length; ix++) {
@@ -414,6 +443,8 @@ router.get('/SearchProductWithCondition/:SearchConditionString', function (req, 
         });
     }      
 });
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 router.get(mongodbConfig.url.product.loadProductByObjId, function (req, res) {
     console.log('Product id ' + req.params.ProductId);
     var ProductId = req.params.ProductId;
@@ -478,7 +509,13 @@ router.get(mongodbConfig.url.product.loadProductByObjId, function (req, res) {
     };
 });
 
+<<<<<<< HEAD
 router.get(mongodbConfig.url.product.loadProductById, function (req, res) {
+=======
+
+router.get(mongodbConfig.url.product.loadProductById, function (req, res) {
+    console.log('product.js id ' + req.params.ProductId);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     var ProductId = req.params.ProductId;
     db.collection(mongodbConfig.mongodb.product.name)
         .find({
@@ -488,6 +525,7 @@ router.get(mongodbConfig.url.product.loadProductById, function (req, res) {
             console.log(items);
             res.json(items);
         });
+<<<<<<< HEAD
 });
 
 router.get(mongodbConfig.url.product.loadProductPromotionByProductCode, function (req, res) {
@@ -500,18 +538,32 @@ router.get(mongodbConfig.url.product.loadProductPromotionByProductCode, function
                 res.json(product);
 
             });
+=======
+    //   });
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 });
 
 router.get(mongodbConfig.url.product.loadProductByProductCode, function (req, res) {
     console.log('product.js id ' + req.params.ProductCode);
     var ProductCode = req.params.ProductCode;
     db.collection(mongodbConfig.mongodb.product.name)
+<<<<<<< HEAD
         .findOne({
                 'ProductCode' : ProductCode
             }, function (err, product) {
              //   console.log(product);
                 res.json(product);
             });
+=======
+        .find({
+            'ProductCode': ProductCode
+        })
+        .toArray(function (err, items) {
+            console.log(items);
+            res.json(items);
+        });
+    //   });
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 });
 
 router.get(mongodbConfig.url.product.loadProductByProductCategoryCode, function (req, res) {
@@ -602,10 +654,13 @@ router.get(mongodbConfig.url.product.loadProductByProductCategoryCode, function 
 router.post(mongodbConfig.url.product.createProduct, function (req, res) {
     var Product = req.body;
     console.log('create product ' + Product);
+<<<<<<< HEAD
     var createDate = new Date ();
     createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
     Product.CreateDate = createDate;
     Product.UpdateDate = createDate;
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     db.collection(mongodbConfig.mongodb.product.name)
         .insert(Product,
             function (error, result) {
@@ -619,9 +674,14 @@ router.post(mongodbConfig.url.product.updateProduct, function (req, res) {
     console.log('Update product ' + req.body);
     var Product = req.body;
     var o_id = bson.BSONPure.ObjectID(Product._id.toString());
+<<<<<<< HEAD
     var updateDate = new Date ();
     updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
     Product.UpdateDate = updateDate;
+=======
+    console.log('file ' + Product.files);
+    console.log('file[0] ' + Product.files[0]);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     db.collection(mongodbConfig.mongodb.product.name)
         .update({
                 _id: o_id
@@ -641,8 +701,15 @@ router.post(mongodbConfig.url.product.updateProduct, function (req, res) {
                     'ContainWholesalePrice': Product.ContainWholesalePrice,
                     'ContainSpecialPrice': Product.ContainSpecialPrice,
                     'ContainQuantity': Product.ContainQuantity,
+<<<<<<< HEAD
                     'UpdateBy' : Product.UpdateBy,
                     'UpdateDate': Product.UpdateDate
+=======
+                    'UpdateDate': ISODate(Product.UpdateDate),
+                    'UpdateBy': Product.UpdateBy,
+                    'CreateBy': Product.CreateBy,
+                    'CreateDate': ISODate(Product.CreateDate)
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 }
             },
             function (error, result) {

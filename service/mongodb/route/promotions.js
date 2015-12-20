@@ -11,7 +11,13 @@ router.get(mongodbConfig.url.promotion.home, function (req, res, next) {
  	db.collection(mongodbConfig.mongodb.promotion.name)
         .find({})
         .toArray(function (err, promotion) {
+<<<<<<< HEAD
 
+=======
+            console.log(promotion);
+		//	var pmdate = promotion.PMDate;
+		//	var curDate = new Date();
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 			var diff = new Date() - promotion[0].PMDate;
 			var datediff = diff/(1000*60*60*24);
 			var monthdiff = datediff/(30);
@@ -27,20 +33,42 @@ router.get(mongodbConfig.url.promotion.home, function (req, res, next) {
                 reject(Error("It broke"));
               }
             });
+<<<<<<< HEAD
+=======
+
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             promise.then(function( message ) {
               console.log( message );
               res.send(message);
             },
             function( err ) {
+<<<<<<< HEAD
             //  console.log( err );
               res.send(err);
             });
+=======
+              console.log( err );
+              res.send(err);
+            });
+         //   res.send(promotion[0].PMDate +' -  ' + new Date() +' -  ' +diff+' -  ' +datediff+' -  ' +parseInt(monthdiff)+' -  ' +yeardiff);
+         
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         });
 });
 
 router.get('/in', function (req, res, next) {
+<<<<<<< HEAD
  	var currentDate = new Date().toISOString().split('T')[0].split('-');
 
+=======
+ //   res.send('this is promotion module');
+    
+ 	var currentDate = new Date().toISOString().split('T')[0].split('-');
+ //	var end = new Date().toISOString().split('T')[0].split('-');
+ //	console.log(new Date().toISOString().split('T')[0].split('-'));
+ //	console.log(end[2]+"-"+end[1]+"-"+end[0]+"T00:00:00.000Z");
+ //	console.log(start[2]+"-"+start[1]+"-"+start[0]+"T00:00:00.000Z");
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
  	db.collection(mongodbConfig.mongodb.promotion.name)
         .find({
         	'ProductPromotionList.ProductCode' : 'PD0001',
@@ -54,6 +82,14 @@ router.get('/in', function (req, res, next) {
         })
         .toArray(function (err, promotion) {
         	if (err) console.log(err, err.stack.split("\n"));
+<<<<<<< HEAD
+=======
+            console.log(promotion);
+            console.log(promotion[0].ProductPromotionList);
+            console.log(promotion[0].ProductPromotionList[0].DiscountPercent);
+         //   res.send(promotion[0].PMDate +' -  ' + new Date() +' -  ' +diff+' -  ' +datediff+' -  ' +parseInt(monthdiff)+' -  ' +yeardiff);
+         //	res.send(promotion[0].ProductPromotionList[0].DiscountPercent);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         });
 });
 
@@ -74,8 +110,13 @@ router.get('/array', function (req, res) {
             	var fil2 = promotions[i].ProductPromotionList.filter(function (product) { 
             		return product.ProductCode == "PD0002";
             	});
+<<<<<<< HEAD
             //	console.log(fil1);
             //	console.log(fil2);
+=======
+            	console.log(fil1);
+            	console.log(fil2);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             }
         });
 })
@@ -85,7 +126,11 @@ router.get('/LoadAllPromotion', function(req, res, next) {
 	db.collection(mongodbConfig.mongodb.promotion.name)
         .find({})
         .toArray(function (err, promotions) {
+<<<<<<< HEAD
         //    console.log(promotions);
+=======
+            console.log(promotions);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             res.json(promotions);
         });
 });
@@ -111,6 +156,7 @@ router.get('/LoadPromotionByObjId/:PromotionId', function (req, res, next) {
 router.post('/CreatePromotion', function (req, res) {
 	var Promotion = req.body;
     console.log('create Promotion ' + Promotion);
+<<<<<<< HEAD
     var createDate = new Date ();
     createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
     Promotion.CreateDate = createDate;
@@ -119,6 +165,8 @@ router.post('/CreatePromotion', function (req, res) {
     delete Promotion.AddProductPromotion;
     delete Promotion.AddDiscountPercent;
 
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     db.collection(mongodbConfig.mongodb.promotion.name)
         .insert(Promotion,
             function (error, result) {
@@ -130,24 +178,39 @@ router.post('/CreatePromotion', function (req, res) {
 router.post('/UpdatePromotion', function (req, res) {
     var Promotion = req.body;
     var o_id = bson.BSONPure.ObjectID(Promotion._id.toString());
+<<<<<<< HEAD
     var updateDate = new Date ();
     updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
 
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     db.collection(mongodbConfig.mongodb.promotion.name)
         .update({
                 _id: o_id
             }, {
                 $set: {
+<<<<<<< HEAD
                     'StartDate': Promotion.StartDate,
                     'EndDate' : Promotion.EndDate,
                     'UpdateBy' : Promotion.UpdateBy,
                     'UpdateDate' : updateDate,
                     'ProductPromotionList' : Promotion.ProductPromotionList
+=======
+                    
+                    'StartDate': ISODate(Promotion.StartDate),
+                    'EndDate' : ISODate(Promotion.EndDate),
+                    'ProductCode' : Promotion.ProductCode,
+                    'DiscountPercent' : Promotion.DiscountPercent
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 }
             },
             function (error, result) {
                 if (error) throw error
+<<<<<<< HEAD
                 console.log(result.PromotionCode);
+=======
+                console.log(result.ProductCode);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 res.json(result);
             });
 });
@@ -167,9 +230,12 @@ router.post('/DeletePromotion/:PromotionId', function (req, res) {
         });
 
 });
+<<<<<<< HEAD
 
 function RemoveUnusedField(promotion) {
     
 }
 
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 module.exports = router;

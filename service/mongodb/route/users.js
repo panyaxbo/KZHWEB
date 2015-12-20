@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
+<<<<<<< HEAD
 var bcrypt = require('bcrypt');
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 /* GET users listing. */
 router.get(mongodbConfig.url.user.loadAllUser, function (req, res) {
     db.collection(mongodbConfig.mongodb.user.name)
@@ -48,6 +51,7 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
     var Username = req.params.Email;
     var Password = req.params.Password;
     console.log(Username + " " + Password);
+<<<<<<< HEAD
     
     global.db.collection(mongodbConfig.mongodb.user.name).findOne({$or: [ { Username: Username }, { Email : Username } ]}
         , function (err, doc) {
@@ -124,6 +128,12 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
         }
     });
 
+=======
+    var query = {
+        Username: Username,
+        Password: Password
+    }
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     var findOneAppUser = function (query, callback) {
         db.collection(mongodbConfig.mongodb.user.name).findOne(query, function (err, doc) {
             if (err) {
@@ -132,11 +142,19 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
                 // as the first argument (notice that I added an argument 
                 // to the definition of your callback above)
                 console.log(err);
+<<<<<<< HEAD
             //    res.json(500).json(err);
             //    return;
             } else {
                 // call your callback with no error and the data
            //     console.log(doc);
+=======
+                res.json(500).json(err);
+                return;
+            } else {
+                // call your callback with no error and the data
+                console.log(doc);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 callback(null, doc);
             }
         });
@@ -144,11 +162,19 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
     var findOneRole = function (queryRole, callback) {
         db.collection(mongodbConfig.mongodb.role.name).findOne(queryRole, function (err, doc) {
             if (err) {
+<<<<<<< HEAD
              //   console.log(err);
              //   res.json(500).json(err);
             return;
             } else {
             //    console.log(doc);
+=======
+                console.log(err);
+                res.json(500).json(err);
+            return;
+            } else {
+                console.log(doc);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 callback(null, doc);
             }
         });
@@ -156,21 +182,86 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
     var findOneStaff = function (queryStaff, callback) {
         db.collection(mongodbConfig.mongodb.staff.name).findOne(queryStaff, function (err, doc) {
             if (err) {
+<<<<<<< HEAD
             //    console.log(err);
             //    res.json(500).json(err);
             //    return;
             } else {
              //   console.log(doc);
+=======
+                console.log(err);
+                res.json(500).json(err);
+                return;
+            } else {
+                console.log(doc);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 callback(null, doc);
             }
         });
     }
+<<<<<<< HEAD
     
+=======
+    findOneAppUser(query, function (err, doc) {
+        if (err) {
+            // something went wrong
+            res.json(500).json(err);
+            return;
+        }
+        if (doc) {
+            console.log('account exists');
+        //    console.dir(doc);
+            var qRole = {
+                'RoleCode': doc.RoleCode
+            }
+            var qStaff = {
+                'StaffCode': doc.StaffCode
+            }
+            // User nothave rolecode and staffcode
+            if (doc.RoleCode !== undefined && doc.RoleCode.length > 0) {
+                findOneRole(qRole, function (errRole, docRole) {
+                    if (errRole) {
+                        console.log(errRole);
+                        return;
+                    }
+                    if (docRole) {
+                        console.dir(docRole);
+                        doc.Role = docRole;
+                        if (doc.StaffCode !== undefined && doc.StaffCode.length > 0) {
+                            // Find Staff
+                            findOneStaff(qStaff, function (errStaff, docStaff) {
+                                if (errStaff) {
+                                    console.log(errStaff);
+                                    return;
+                                }
+                                if (docStaff) {
+                                    console.dir(docStaff);
+                                    doc.Staff = docStaff;
+                                    res.json(doc);
+                                }
+                            });
+                        } else {
+                            console.log(doc);
+                            res.json(doc);
+
+                        }
+                    }
+                });
+            } else {
+                res.json(doc);
+            }
+        } else {
+            res.json(500).json(err);
+            return;
+        }
+    }); //End findOneAppUser 
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 }); // End Find by Username and Password
 // Create AppUser
 router.post(mongodbConfig.url.user.createAppUser, function (req, res) {
     var AppUser = req.body;
     console.log('create user ' + AppUser);
+<<<<<<< HEAD
     var createDate = new Date ();
     createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
     
@@ -181,6 +272,9 @@ router.post(mongodbConfig.url.user.createAppUser, function (req, res) {
     var hash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
     AppUser.Password = hash;
+=======
+    AppUser.CreateDate = new Date();
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     db.collection(mongodbConfig.mongodb.user.name)
         .insert(AppUser,
             function (error, appuser) {
@@ -193,8 +287,11 @@ router.post(mongodbConfig.url.user.createAppUser, function (req, res) {
 router.post(mongodbConfig.url.user.updateAppUser, function (req, res) {
     var AppUser = req.body;
     var o_id = bson.BSONPure.ObjectID(AppUser._id.toString());
+<<<<<<< HEAD
     var updateDate = new Date ();
     updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     db.collection(mongodbConfig.mongodb.user.name)
         .update({
                 _id: o_id
@@ -202,6 +299,7 @@ router.post(mongodbConfig.url.user.updateAppUser, function (req, res) {
                 $set: {
                     'Username': AppUser.Username,
                     'Password': AppUser.Password,
+<<<<<<< HEAD
                     'Firstname' : AppUser.Firstname,
                     'Lastname' : AppUser.Lastname,
                     'StaffCode': AppUser.StaffCode,
@@ -212,6 +310,11 @@ router.post(mongodbConfig.url.user.updateAppUser, function (req, res) {
                     'IsActivate' : AppUser.IsActivate,
                     'UpdateBy' : AppUser.UpdateBy,
                     'UpdateDate' : updateDate
+=======
+                    'StaffCode': AppUser.StaffCode,
+                    'RoleCode': AppUser.RoleCode,
+                    'UpdateDate' : (new Date())
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 }
             },
             function (error, result) {
@@ -238,8 +341,12 @@ router.get(mongodbConfig.url.user.isExistUsername, function(req, res) {
     var username = req.params.Username;
     db.collection(mongodbConfig.mongodb.user.name).findOne(
         {
+<<<<<<< HEAD
             'Username' : username,
             'Terminal' : 'web'
+=======
+            'Username' : username
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         }
         , function (err, user) {
         if (err) {
@@ -258,10 +365,17 @@ router.get(mongodbConfig.url.user.isExistUsername, function(req, res) {
 
 router.get(mongodbConfig.url.user.isExistEmail, function(req, res) {
     var email = req.params.Email;
+<<<<<<< HEAD
     db.collection(mongodbConfig.mongodb.user.name).findOne(
         {
             'Email' : email,
             'Terminal' : 'web'
+=======
+
+    db.collection(mongodbConfig.mongodb.user.name).findOne(
+        {
+            'Email' : email
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         }
         , function (err, user) {
         if (err) {
@@ -282,6 +396,7 @@ router.get(mongodbConfig.url.user.isExistEmail, function(req, res) {
 router.post(mongodbConfig.url.user.createAppUserByUsernameAndPasswordAndEmail, function (req, res) {
     var User = req.body;
     var username = req.params.Username;
+<<<<<<< HEAD
     var email = req.params.Email;
     var password = req.params.EncPassword;
     var hash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
@@ -289,13 +404,25 @@ router.post(mongodbConfig.url.user.createAppUserByUsernameAndPasswordAndEmail, f
     var appuser = {
         'Username' : username,
         'Password' : hash,
+=======
+    var password = req.params.EncPassword;
+    var email = req.params.Email;
+    var appuser = {
+        'Username' : username,
+        'Password' : password,
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         'Email' : email,
         'Firstname' : User.Firstname,
         'Lastname' : User.Lastname,
         'IsActivate': false,
         'RoleCode' : 'RL0005',
+<<<<<<< HEAD
         'UserType' : 'user',
         'Terminal' : 'web'
+=======
+        'UserType' : 'User',
+        'Terminal' : 'Web'
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     };
     db.collection(mongodbConfig.mongodb.user.name)
         .insert(appuser, function (error, result) {
@@ -318,8 +445,13 @@ router.get(mongodbConfig.url.user.activateAppUserViaEmail, function (req, res) {
     var Password = req.params.Password;
     db.collection(mongodbConfig.mongodb.user.name)
         .update({
+<<<<<<< HEAD
                 'Username': Username
              //   'Password': Password
+=======
+                'Username': Username,
+                'Password': Password
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             }, {
                 $set: {
                     'IsActivate': true
@@ -337,11 +469,19 @@ router.get(mongodbConfig.url.user.activateAppUserViaEmail, function (req, res) {
 // Is user activate
 router.get(mongodbConfig.url.user.isActivateUser, function (req, res) {
     var Username = req.params.Username;
+<<<<<<< HEAD
  //   var Password = req.params.Password;
     db.collection(mongodbConfig.mongodb.user.name).findOne(
         {
             'Username' : Username
         //    'Password' : Password
+=======
+    var Password = req.params.Password;
+    db.collection(mongodbConfig.mongodb.user.name).findOne(
+        {
+            'Username' : Username,
+            'Password' : Password
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         }
         , function (err, user) {
         if (err) {
@@ -358,6 +498,7 @@ router.get(mongodbConfig.url.user.isActivateUser, function (req, res) {
     });
 });
 
+<<<<<<< HEAD
 // Change password
 router.get('/PerformChangePassword/:Email/:Password', function (req, res) {
     var email = req.params.Email;
@@ -430,4 +571,6 @@ router.post('/CreateAndUpdateWithSocial', function (req, res) {
             }
     });
 });
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 module.exports = router;

@@ -8,6 +8,7 @@ router.get(mongodbConfig.url.product_category.home, function (req, res, next) {
 
 
 router.get(mongodbConfig.url.product_category.loadAllProductCategory, function (req, res) {
+<<<<<<< HEAD
     global.db.collection(mongodbConfig.mongodb.product_category.name)
         .find({})
         .toArray(function (err, items) {
@@ -63,11 +64,22 @@ router.get('/LoadProductCategoryByCondition/:ProductCategoryCode/:ProductCategor
             $orderby: { ProductCategoryCode : 1 }
         })
         .toArray(function (err, items) {
+=======
+    console.log('ProductCategories.js');
+    db.collection(mongodbConfig.mongodb.product_category.name)
+        .find({})
+        .toArray(function (err, items) {
+            console.log(items);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             res.json(items);
         });
 });
 
 router.get(mongodbConfig.url.product_category.loadProductCategoryByObjId, function (req, res) {
+<<<<<<< HEAD
+=======
+    console.log('ProductCategories id ' + req.params.ProductCategoryId);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     var ProductCategoryId = req.params.ProductCategoryId;
     var o_id = bson.BSONPure.ObjectID(ProductCategoryId);
     db.collection(mongodbConfig.mongodb.product_category.name)
@@ -108,7 +120,11 @@ router.get(mongodbConfig.url.product_category.loadProductCategoryByObjId, functi
 router.get(mongodbConfig.url.product_category.loadProductCategoryById, function (req, res) {
     console.log('ProductCategories id ' + req.params.ProductCategoryId);
     var ProductCategoryId = req.params.ProductCategoryId;
+<<<<<<< HEAD
     db.collection(mongodbConfig.mongodb.product_category.name)
+=======
+    db.collection(config.mongodb.product_category.name)
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         .find({
             'Id': parseInt(ProductCategoryId)
         })
@@ -121,7 +137,11 @@ router.get(mongodbConfig.url.product_category.loadProductCategoryById, function 
 router.get(mongodbConfig.url.product_category.loadProductCategoryByProductCategoryCode, function (req, res) {
     console.log('ProductCategory Code ' + req.params.ProductCategoryCode);
     var ProductCategoryCode = req.params.ProductCategoryCode;
+<<<<<<< HEAD
     db.collection(mongodbConfig.mongodb.product_category.name)
+=======
+    db.collection(config.mongodb.product_category.name)
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         .find({
             'ProductCategoryCode': ProductCategoryCode
         })
@@ -138,9 +158,14 @@ router.post(mongodbConfig.url.product_category.createProductCategory, function (
     var createDate = new Date ();
     createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
     ProductCategory.CreateDate = createDate;
+<<<<<<< HEAD
     ProductCategory.UpdateDate = createDate;
     db.collection(mongodbConfig.mongodb.product_category.name)
         .insert(ProductCategory,
+=======
+    db.collection(config.mongodb.product_category.name)
+        .insert(ProductType,
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             function (error, result) {
                 if (error) throw error
                 res.json(result);
@@ -151,6 +176,7 @@ router.post(mongodbConfig.url.product_category.createProductCategory, function (
 router.post(mongodbConfig.url.product_category.updateProductCategory, function (req, res) {
     console.log('update product category ' + req.body);
     var ProductCategory = req.body;
+<<<<<<< HEAD
     
     var id = ProductCategory._id;
     var o_id = bson.BSONPure.ObjectID(id.toString());
@@ -158,6 +184,11 @@ router.post(mongodbConfig.url.product_category.updateProductCategory, function (
     updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
     ProductCategory.UpdateDate = updateDate;
     db.collection(mongodbConfig.mongodb.product_category.name)
+=======
+    var BSON = mongodb.BSONPure;
+    var o_id = new BSON.ObjectID(ProductCategory._id);
+    db.collection(config.mongodb.product_category.name)
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         .update({
                 _id: o_id
             }, {
@@ -165,6 +196,7 @@ router.post(mongodbConfig.url.product_category.updateProductCategory, function (
                     'ProductCategoryNameTh': ProductCategory.ProductCategoryNameTh,
                     'ProductCategoryNameEn': ProductCategory.ProductCategoryNameEn,
                     'ProductCategoryNameCn': ProductCategory.ProductCategoryNameCn,
+<<<<<<< HEAD
                     'ProductTypeCode': ProductCategory.ProductTypeCode,
                     'UpdateBy' : ProductCategory.UpdateBy,
                     'UpdateDate' : updateDate
@@ -172,6 +204,13 @@ router.post(mongodbConfig.url.product_category.updateProductCategory, function (
             },
             function (error, result) {
                 if (error) console.log(error, error.stack.split("\n"));
+=======
+                    'ProductTypeCode': ProductCategory.ProductTypeCode
+                }
+            },
+            function (error, result) {
+                if (error) throw error
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 res.json(result);
             });
 });
@@ -179,6 +218,7 @@ router.post(mongodbConfig.url.product_category.updateProductCategory, function (
 // Delete Product Category
 router.get(mongodbConfig.url.product_category.deleteProductCategoryByProductCategoryId, function (req, res) {
     var ProductCategoryId = req.params.ProductCategoryId;
+<<<<<<< HEAD
     console.log('delete cat ' + ProductCategoryId);
     var o_id = bson.BSONPure.ObjectID(ProductCategoryId.toString());
     db.collection(mongodbConfig.mongodb.product_category.name)
@@ -186,6 +226,16 @@ router.get(mongodbConfig.url.product_category.deleteProductCategoryByProductCate
             _id: o_id
         }, function (error, result) {
             if (error) console.log(error, error.stack.split("\n"));
+=======
+    console.log('create product category ' + ProductCategoryId);
+    var BSON = mongodb.BSONPure;
+    var o_id = new BSON.ObjectID(ProductCategoryId);
+    db.collection(config.mongodb.product_category.name)
+        .remove({
+            _id: o_id
+        }, function (error, result) {
+            if (error) throw error
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 
             res.json(result);
         });

@@ -6,15 +6,24 @@ https://github.com/marcaube/bootstrap-magnify
 
 !function ($) {
 
+<<<<<<< HEAD
     'use strict'; // jshint
+=======
+    "use strict"; // jshint ;_;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 
 
     /* MAGNIFY PUBLIC CLASS DEFINITION
      * =============================== */
 
     var Magnify = function (element, options) {
+<<<<<<< HEAD
         this.init('magnify', element, options);
     };
+=======
+        this.init('magnify', element, options)
+    }
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 
     Magnify.prototype = {
 

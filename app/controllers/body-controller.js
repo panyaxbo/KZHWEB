@@ -1,7 +1,15 @@
+<<<<<<< HEAD
 app.controller("BodyController", function ($scope, $location, $anchorScroll, $filter, ngTableParams, Upload, $rootScope, blockUI, 
     $http, $filter, MenuService, ReceiptOrderService, UserService, BASE_URL) {
     $scope.Product = [];
   
+=======
+app.controller("BodyController", function ($scope, $location, $anchorScroll, ngTableParams, Upload, $rootScope, blockUI, 
+    $http, MenuService, ReceiptOrderService, UserService, BASE_URL) {
+    $scope.Product = [];
+//$scope.translatedText = $translate('ANOTHER_TEXT', { value: 10 });
+//$translate.instant('TITLE.DASHBOARD');
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     $scope.ROHead = {
         SumAmount: 0,
         SumVatAmount: 0,
@@ -24,9 +32,14 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         LastName: '',
         IsActivate : false
     };
+<<<<<<< HEAD
     
     $scope.ROLineList = [];
     $scope.SelectedMenu = "";
+=======
+    $scope.ROLineList = [];
+    $scope.SelectedMenu = "product";
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     $scope.SelectedCurrency = "thb";
     $scope.CurrencySymbol = "฿";
     $scope.Multiplier = 1;
@@ -34,6 +47,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     //    $scope.ROLineList = $rootScope.ROLineList;
 
     // Initialize General Setting Module
+<<<<<<< HEAD
     $scope.ViewProductTypeData = { CreateDate : new Date(), UpdateDate : new Date() };
     $scope.SearchProductTypeData = {};
     
@@ -67,6 +81,38 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     $scope.ViewUomData = { CreateDate : new Date(), UpdateDate : new Date() };
     $scope.SearchUomData = {};
 
+=======
+    $scope.ViewProductTypeData = {};
+    $scope.SearchProductTypeData = {};
+    
+    $scope.ViewProductCategoryData = {};
+    $scope.SearchProductCategory = {};
+    
+    $scope.ViewProductData = {};
+    $scope.SearchProductData = {};
+
+    $scope.ViewPromotionData = {};
+    $scope.SearchPromotionData = {};
+
+    $scope.ViewCustomerData = {};
+    $scope.SearchCustomerData = {};
+
+    $scope.ViewCustomerTypeData = {};
+    $scope.SearchCustomerTypeData = {};
+
+    $scope.ViewSupplierData = {};
+    $scope.SearchSupplierData = {};
+
+    $scope.ViewStaffData = {};
+    $scope.SearchStaffData = {};
+
+    $scope.ViewAppUserData = {};
+    $scope.SearchAppUserData = {};
+
+    $scope.ViewRoleData = {};
+    $scope.SearchRoleData = {};
+
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     $scope.ViewReceiptData = {};
 
     $scope.step = 1;
@@ -79,22 +125,38 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     $scope.PaymentType= "";
 
     $scope.$on('handleHeadMenuBroadcast', function (event, args) {
+<<<<<<< HEAD
     //    console.log('broadcast from head to body '+args.SelectedMenu);
    
         $scope.SelectedMenu = args.SelectedMenu;
         if ($scope.SelectedMenu == 'history') {
             $scope.StartDate = new Date().getDate() +"/" + (new Date().getMonth() + 1) +"/" + new Date().getFullYear() ;
             $scope.EndDate = new Date().getDate() +"/" + (new Date().getMonth() + 1) +"/" + new Date().getFullYear();
+=======
+        console.log('broadcast from head to body '+args.SelectedMenu);
+   
+        $scope.SelectedMenu = args.SelectedMenu;
+        if ($scope.SelectedMenu == 'history') {
+            $scope.StartDate = new Date().getDate() +"-" + (new Date().getMonth() + 1) +"-" + new Date().getFullYear() ;
+            $scope.EndDate = new Date().getDate() +"-" + (new Date().getMonth() + 1) +"-" + new Date().getFullYear();
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             $scope.SearchPaymentStatus = "N";
             $scope.SearchShippingStatus = "N";
         }
         else if ($scope.SelectedMenu == 'customer-order') {
+<<<<<<< HEAD
             $scope.SearchCustomerOrderStartDate = new Date().getDate() +"/" + (new Date().getMonth() + 1) +"/" + new Date().getFullYear() ;
             $scope.SearchCustomerOrderEndDate = new Date().getDate() +"/" + (new Date().getMonth() + 1) +"/" + new Date().getFullYear();
             $scope.SearchCustomerOrderPaymentStatus = "N";
             $scope.SearchCustomerOrderShippingStatus = "N";
             $scope.SearchCustomerRONo = '';
             $scope.SearchCustomerName = '';
+=======
+            $scope.StartDate = new Date().getDate() +"-" + (new Date().getMonth() + 1) +"-" + new Date().getFullYear() ;
+            $scope.EndDate = new Date().getDate() +"-" + (new Date().getMonth() + 1) +"-" + new Date().getFullYear();
+            $scope.SearchPaymentStatus = "N";
+            $scope.SearchShippingStatus = "N";
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         }
         else if ($scope.SelectedMenu == 'setting') {
             $('#ProductTypeTab').addClass("active");
@@ -103,7 +165,12 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         else if ($scope.SelectedMenu  == 'shipment') {
             $('html, body').animate({ scrollTop: $('#shipment-section').offset().top }, 'slow');
         } 
+<<<<<<< HEAD
     //    console.log('body $scope.SelectedMenu ' + $scope.SelectedMenu);
+=======
+        
+        console.log('body $scope.SelectedMenu ' + $scope.SelectedMenu);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
      
     });
 
@@ -187,7 +254,10 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         var url = "http://localhost:3000/products/LoadProduct";
         $http.get(url)
             .success(function (data) {
+<<<<<<< HEAD
                 console.log(data);
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 $scope.Product = data;
 
 
@@ -283,6 +353,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     $scope.$apply(function(){
                         var someimage = document.getElementById('ThumbnailProductImage_'+SelectedProduct.ProductCode);
                         var myimg = someimage.getElementsByTagName('img')[2]; //[0] stripe-new [1] stripe-sale
+<<<<<<< HEAD
                         // If product not has image
                         if (myimg !== undefined) {
                             var image_tag = myimg.cloneNode(true); // Must clone because image thumbnail will disappear
@@ -293,6 +364,17 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     });
                   } else {
                     //    swal("Cancelled", "Your imaginary file is safe :)", "error");
+=======
+                        var image_tag = myimg.cloneNode(true); // Must clone because image thumbnail will disappear
+
+                        image_tag.setAttribute("width", "50px");
+                        image_tag.setAttribute("height", "50px");
+                        $('#CartProduct_'+SelectedProduct.ProductCode).append(image_tag);
+
+                    });
+                  } else {
+                        swal("Cancelled", "Your imaginary file is safe :)", "error");
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                   }
                 });
             } else {
@@ -334,6 +416,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
     // Function for Product Type Module
     $scope.SearchProductType = function () {
+<<<<<<< HEAD
         var typecode = '';
         var typename = '';
         if ($scope.SearchProductTypeData.ProductTypeCode === undefined || $scope.SearchProductTypeData.ProductTypeCode.length <= 0) {
@@ -358,6 +441,13 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                         $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                     }
                 });
+=======
+        console.log('search product type');
+        var url = "http://localhost:3000/product_types/LoadProductType";
+        $http.get(url)
+            .success(function (data) {
+                $scope.SearchProductTypes = data;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             })
             .error(function (err) {
                 alert('err  +' + err);
@@ -373,17 +463,25 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             ProductTypeCode: '',
             ProductTypeNameEn: '',
             ProductTypeNameTh: '',
+<<<<<<< HEAD
             ProductTypeNameCn: '',
             CreateBy: $scope.User.Username,
             CreateDate: new Date(),
             UpdateBy: $scope.User.Username,
             UpdateDate: new Date()
+=======
+            ProductTypeNameCn: ''
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         }
         $("#div-product-type-table").hide("slow");
         $("#div-product-type-detail").show("slow");
     }
     $scope.ViewProductType = function (id) {
+<<<<<<< HEAD
         var url = BASE_URL.PATH + "/product_types/LoadProductTypeByObjId/" + id;
+=======
+        var url = "http://localhost:3000/product_types/LoadProductTypeByObjId/" + id;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         $http.get(url)
             .success(function (data) {
                 console.log('success ' + data._id + data.ProductTypeCode);
@@ -392,6 +490,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 $scope.ViewProductTypeData.ProductTypeNameTh = data.ProductTypeNameTh;
                 $scope.ViewProductTypeData.ProductTypeNameEn = data.ProductTypeNameEn;
                 $scope.ViewProductTypeData.ProductTypeNameCn = data.ProductTypeNameCn;
+<<<<<<< HEAD
                 if (isEmpty(data.CreateBy)) {
                     $scope.ViewProductTypeData.CreateBy = $scope.User.Username;
                 } else {
@@ -412,6 +511,8 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 } else {
                     $scope.ViewProductTypeData.UpdateDate = data.UpdateDate;
                 }
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             })
             .error(function (err) {
                 console.log('err ' + err);
@@ -420,6 +521,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-product-type-table").hide("slow");
         $("#div-product-type-detail").show("slow");
     }
+<<<<<<< HEAD
     $scope.ConsiderDeleteProductType = function (mode, data) {
         if (mode === 'search') {
             $scope.DeleteProductType(data);
@@ -435,23 +537,61 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
           showCancelButton: true,
           confirmButtonColor: "#DD6B55",
           confirmButtonText: "Yes, delete " + ProductTypeData.ProductTypeCode + " !",
+=======
+    $scope.DeleteProductType = function () {
+    /**    var isDelete = confirm("คุณต้องการลบรายการ ชนิดสินค้า " + $scope.ViewProductTypeData.ProductTypeNameTh + " ใช่ หรือ ไม่?");
+        if (isDelete) {
+            var url = "http://localhost:3000/product_types/DeleteProductType/" + id;
+            $http.get(url)
+                .success(function (data) {
+                    alert("ลบรายการชนิดสินค้า " + $scope.ViewProductTypeData.ProductTypeNameTh + " สำเร็จ !!!");
+                    $scope.SearchProductType();
+                })
+                .error(function (data) {
+
+                });
+
+        } else {
+
+        }**/
+
+        swal({
+          title: "Are you sure?",
+          text: "คุณต้องการลบรายการชนิดสินค้า " + $scope.ViewProductTypeData.ProductTypeCode + " !",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Yes, delete " +$scope.ViewProductTypeData.ProductTypeCode + " !",
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
           cancelButtonText: "No, cancel please!",
           closeOnConfirm: false,
           closeOnCancel: false
         },
         function(isConfirm){
           if (isConfirm) {
+<<<<<<< HEAD
             var url = BASE_URL.PATH + "/product_types/DeleteProductType/" + ProductTypeData._id;
                 $http.get(url)
                 .success(function (data) {
                     swal("Deleted!", "ลบรายการชนิดสินค้า " + ProductTypeData.ProductTypeNameTh + " สำเร็จ !!!", "success");
+=======
+            var url = "http://localhost:3000/product_types/DeleteProductType/" + $scope.ViewProductTypeData._id;
+                $http.get(url)
+                .success(function (data) {
+                 //   alert("ลบรายการชนิดสินค้า " + $scope.ViewProductTypeData.ProductTypeNameTh + " สำเร็จ !!!");
+                    swal("Deleted!", "ลบรายการชนิดสินค้า " + $scope.ViewProductTypeData.ProductTypeNameTh + " สำเร็จ !!!", "success");
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                     $scope.SearchProductType();
                 })
                 .error(function (data) {
 
                 });
           } else {
+<<<<<<< HEAD
                 swal("Cancelled", "Your product type is safe :)", "error");
+=======
+                swal("Cancelled", "Your imaginary file is safe :)", "error");
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
           }
         });
     }
@@ -461,6 +601,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-product-type-table").show("slow");
         $("#div-product-type-detail").hide("slow");
     }
+<<<<<<< HEAD
     $scope.$watch('ProductTypeCreateDate', function (newValue) {
         $scope.ViewProductTypeData.CreateDate = $filter('date')(newValue, 'dd/MM/yyyy HH:mm'); // Or whatever format your real model should use
     });
@@ -475,6 +616,8 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     $scope.$watch('ViewProductTypeData.UpdateDate', function (newValue) {
         $scope.ProductTypeUpdateDate = $filter('date')(newValue, 'dd/MM/yyyy HH:mm'); // Or whatever format your input should use
     });
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     $scope.SaveProductType = function () {
 
         if ($scope.ViewProductTypeData._id == '' || $scope.ViewProductTypeData._id == undefined) {
@@ -498,15 +641,24 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var NewProductTypeCode = "";
+<<<<<<< HEAD
             var GenCodeURL = BASE_URL.PATH + "/appconfig/GetNewCode/PT";
+=======
+            var GenCodeURL = "http://localhost:3000/appconfig/GetNewCode/PT";
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewProductTypeCode = data;
                     console.log('get new code ' + NewProductTypeCode);
                     $scope.ViewProductTypeData.ProductTypeCode = NewProductTypeCode;
+<<<<<<< HEAD
                     $scope.ViewProductTypeData.CreateBy = $scope.User.Username;
                     $scope.ViewProductTypeData.UpdateBy = $scope.User.Username;
                     var url = BASE_URL.PATH + "/product_types/CreateProductType/";
+=======
+
+                    var url = "http://localhost:3000/product_types/CreateProductType/";
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                     $http.post(url, $scope.ViewProductTypeData)
                         .success(function (data) {
                             swal("Created !", "สร้างรายการชนิดสินค้า " + $scope.ViewProductTypeData.ProductTypeCode + " สำเร็จ !!!", "success");
@@ -543,8 +695,12 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
+<<<<<<< HEAD
             var url = BASE_URL.PATH +  "/product_types/UpdateProductType/";
             $scope.ViewProductTypeData.UpdateBy = $scope.User.Username;
+=======
+            var url = "http://localhost:3000/product_types/UpdateProductType/";
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                $http.post(url, $scope.ViewProductTypeData)
                 .success(function (data) {
                     swal("Updated !!!", "แก้ไขรายการชนิดสินค้า " + data.ProductTypeCode + " สำเร็จ !!!", "success");
@@ -562,6 +718,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
     // Start Function for Product Category Module
     $scope.SearchProductCategory = function () {
+<<<<<<< HEAD
         var catcode = '';
         var catname = '';
         var typecode = '';
@@ -585,6 +742,12 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $http.get(url)
         .success(function (data) {
             //    console.log(data.length);
+=======
+        var url = "http://localhost:3000/product_categories/LoadProductCategory";
+        $http.get(url)
+        .success(function (data) {
+                $scope.SearchProductCategories = data;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 $scope.ProductCategoryTableParams = new ngTableParams({
                     page: 1,            // show first page
                     count: 10           // count per page
@@ -594,6 +757,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                         $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                     }
                 });
+<<<<<<< HEAD
                 // Load Product types
                 type_list_url = BASE_URL.PATH + "/product_types/LoadProductType";
                 $http.get(type_list_url)
@@ -607,6 +771,11 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             })
             .error(function (data) {
              //   alert(data);
+=======
+            })
+            .error(function (data) {
+                alert(data);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             });
         $("#div-product-category-table").show("slow");
         $("#div-product-category-detail").hide("slow");
@@ -617,6 +786,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             ProductCategoryNameEn: '',
             ProductCategoryNameTh: '',
             ProductCategoryNameCn: '',
+<<<<<<< HEAD
             ProductTypeCode: '',
             CreateBy: $scope.User.Username,
             CreateDate: new Date(),
@@ -624,6 +794,11 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             UpdateDate: new Date()
         }
         var url = BASE_URL.PATH + "/product_types/LoadProductType";
+=======
+            ProductTypeCode: ''
+        }
+        var url = "http://localhost:3000/product_types/LoadProductType";
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         $http.get(url)
         .success(function (data) {
             $scope.SelectProductTypeList = data;
@@ -637,7 +812,11 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-product-category-detail").show("slow");
     }
     $scope.ViewProductCategory = function (id) {
+<<<<<<< HEAD
         var url = BASE_URL.PATH + "/product_categories/LoadProductCategoryByObjId/" + id;
+=======
+        var url = "http://localhost:3000/product_categories/LoadProductCategoryByObjId/" + id;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         console.log(id);
         $http.get(url)
             .success(function (data) {
@@ -648,6 +827,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 $scope.ViewProductCategoryData.ProductCategoryNameEn = data.ProductCategoryNameEn;
                 $scope.ViewProductCategoryData.ProductCategoryNameCn = data.ProductCategoryNameCn;
                 $scope.ViewProductCategoryData.ProductTypeCode = data.ProductTypeCode;
+<<<<<<< HEAD
                 if (isEmpty(data.CreateBy)) {
                     $scope.ViewProductCategoryData.CreateBy = $scope.User.Username;
                 } else {
@@ -671,6 +851,13 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             //    console.log('data.ProductTypeCode ' + data.ProductTypeCode);
                 
                 var productTypeURL = BASE_URL.PATH + "/product_types/LoadProductType";
+=======
+                //Set Value to Select <option>
+                console.log('data.ProductTypeCode ' + data.ProductTypeCode);
+                
+          //      console.log('$scope.SelectedProductType ' + $scope.SelectedProductType.ProductTypeCode);
+                var productTypeURL = "http://localhost:3000/product_types/LoadProductType";
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 $http.get(productTypeURL)
                     .success(function (productTypes) {
                         $scope.SelectProductTypeList = productTypes;
@@ -686,6 +873,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-product-category-table").hide("slow");
         $("#div-product-category-detail").show("slow");
     }
+<<<<<<< HEAD
     $scope.ConsiderDeleteProductCategory = function (mode, data) {
         if (mode === 'search') {
             $scope.DeleteProductCategory(data);
@@ -694,12 +882,19 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         }
     }
     $scope.DeleteProductCategory = function (ProductCategoryData) {
+=======
+    $scope.DeleteProductCategory = function () {
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         //#55dd6b : green
         //#dd6b55: red
         //#5583dd : blue
         swal({
           title: "Are you sure?",
+<<<<<<< HEAD
           text: "คุณต้องการลบรายการ ประเภทสินค้า " + ProductCategoryData.ProductCategoryNameTh + " ใช่ หรือ ไม่?",
+=======
+          text: "คุณต้องการลบรายการ ประเภทสินค้า " + $scope.ViewProductCategoryData.ProductCategoryNameTh + " ใช่ หรือ ไม่?",
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
           type: "warning",
           showCancelButton: true,
           confirmButtonColor: "#dd6b55",
@@ -710,10 +905,17 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
+<<<<<<< HEAD
             var url = BASE_URL.PATH + "/product_categories/DeleteProductCategory/" + ProductCategoryData._id;
                $http.get(url)
                 .success(function (data) {
                     swal("Deleted !!!", "ลบรายการประเภทสินค้า " + ProductCategoryData.ProductCategoryCode + " สำเร็จ !!!", "success");
+=======
+            var url = "http://localhost:3000/product_categories/DeleteProductCategory/";
+               $http.post(url, $scope.ViewProductCategoryData)
+                .success(function (data) {
+                    swal("Deleted !!!", "ลบรายการประเภทสินค้า " + data.ProductCategoryCode + " สำเร็จ !!!", "success");
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                     $scope.SearchProductCategory();
                 })
                 .error(function (data) {
@@ -724,6 +926,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
           }
         });
     }
+<<<<<<< HEAD
     $scope.$watch('ProductCategoryCreateDate', function (newValue) {
         $scope.ViewProductCategoryData.CreateDate = $filter('date')(newValue, 'dd/MM/yyyy HH:mm'); // Or whatever format your real model should use
     });
@@ -738,6 +941,8 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     $scope.$watch('ViewProductCategoryData.UpdateDate', function (newValue) {
         $scope.ProductCategoryUpdateDate = $filter('date')(newValue, 'dd/MM/yyyy HH:mm'); // Or whatever format your input should use
     });
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     $scope.CreateProductCategory = function () {
         swal({
           title: "Are you sure?",
@@ -753,15 +958,24 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var NewProductCategoryCode = "";
+<<<<<<< HEAD
             var GenCodeURL = BASE_URL.PATH + "/appconfig/GetNewCode/PC";
+=======
+            var GenCodeURL = "http://localhost:3000/appconfig/GetNewCode/PC";
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewProductCategoryCode = data;
                     console.log('get new code ' + NewProductCategoryCode);
                     $scope.ViewProductCategoryData.ProductCategoryCode = NewProductCategoryCode;
+<<<<<<< HEAD
                     $scope.ViewProductCategoryData.CreateBy = $scope.User.Username;
                     $scope.ViewProductCategoryData.UpdateBy = $scope.User.Username;
                     var url = BASE_URL.PATH + "/product_categories/CreateProductCategory/";
+=======
+
+                    var url = "http://localhost:3000/product_categories/CreateProductCategory/";
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                     $http.post(url, $scope.ViewProductCategoryData)
                         .success(function (data) {
                             swal("Created !", "สร้างรายการประเภทสินค้า " + $scope.ViewProductCategoryData.ProductCategoryCode + " สำเร็จ !!!", "success");
@@ -794,11 +1008,18 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
+<<<<<<< HEAD
             var url = BASE_URL.PATH + "/product_categories/UpdateProductCategory/";
             $scope.ViewProductCategoryData.UpdateBy = $scope.User.Username;
                $http.post(url, $scope.ViewProductCategoryData)
                 .success(function (data) {
                     swal("Updated !!!", "แก้ไขรายการชนิดสินค้า " + $scope.ViewProductCategoryData.ProductCategoryCode + " สำเร็จ !!!", "success");
+=======
+            var url = "http://localhost:3000/product_categories/UpdateProductCategory/";
+               $http.post(url, $scope.ViewProductCategoryData)
+                .success(function (data) {
+                    swal("Updated !!!", "แก้ไขรายการชนิดสินค้า " + data.ProductCategoryCode + " สำเร็จ !!!", "success");
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                     $scope.SearchProductCategory();
                 })
                 .error(function (data) {
@@ -826,6 +1047,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
     // Start Function for Product Module
     $scope.SearchProduct = function () {
+<<<<<<< HEAD
         var code = '';
         var name = '';
         var catcode = '';
@@ -846,6 +1068,9 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             catcode = $scope.SearchProductCategory;
         }
         var url = BASE_URL.PATH + "/products/LoadProductByCondition/" + code + "/" + name + "/" + catcode;
+=======
+        var url = "http://localhost:3000/products/LoadProduct";
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         $http.get(url)
         .success(function (data) {
                 $scope.SearchProducts = data;
@@ -859,6 +1084,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                         $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                     }
                 });
+<<<<<<< HEAD
 
                 // Load Product Category
                 category_list_url = BASE_URL.PATH + "/product_categories/LoadProductCategory";
@@ -872,11 +1098,17 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             })
             .error(function (data) {
                 
+=======
+            })
+            .error(function (data) {
+                alert(data);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             });
         $("#div-product-table").show("slow");
         $("#div-product-detail").hide("slow");
     }
     $scope.NewProduct = function () {
+<<<<<<< HEAD
         $scope.ViewProductData = {
             ProductCode: '',
             ProductNameEn: '',
@@ -918,11 +1150,17 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         .error(function (error) {
 
         });
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         $("#div-product-table").hide("slow");
         $("#div-product-detail").show("slow");
     }
     $scope.ViewProduct = function (id) {
+<<<<<<< HEAD
         var url = BASE_URL.PATH + "/products/LoadProductByObjId/" + id;
+=======
+        var url = "http://localhost:3000/products/LoadProductByObjId/" + id;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         $http.get(url)
             .success(function (data) {
                 $scope.ViewProductData = data;
@@ -942,6 +1180,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 $scope.ViewProductData.ContainSpecialPrice = data.ContainSpecialPrice;
                 $scope.ViewProductData.ContainQuantity = data.ContainQuantity;
 
+<<<<<<< HEAD
                 $scope.ViewProductData.ProductCategoryCode = data.ProductCategoryCode;
                 $scope.ViewProductData.UomCode = data.UomCode;
                 $scope.ViewProductData.ContainUomCode = data.ContainUomCode;
@@ -968,6 +1207,14 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 }
                 //Load Product Category
                 var category_url = BASE_URL.PATH + "/product_categories/LoadProductCategory";
+=======
+                $scope.SelectedProductCategory = data.ProductCategoryCode;
+                $scope.SelectedUom = data.UomCode;
+                $scope.SelectedContainUom = data.ContainUomCode;
+
+                //Load Product Category
+                var category_url = "http://localhost:3000/product_categories/LoadProductCategory";
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 $http.get(category_url)
                 .success(function(data) {
                     $scope.SelectProductCategoryList = data;
@@ -976,7 +1223,11 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
                 });
                 //Load Uom
+<<<<<<< HEAD
                 var uom_url = BASE_URL.PATH + "/uoms/LoadNotContainUom";
+=======
+                var uom_url = "http://localhost:3000/uoms/LoadNotContainUom";
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 $http.get(uom_url)
                 .success(function(data) {
                     $scope.SelectUomList = data;
@@ -985,7 +1236,11 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
                 });
                 //Load Contain Uom
+<<<<<<< HEAD
                 var containuom_url = BASE_URL.PATH + "/uoms/LoadContainUom";
+=======
+                var containuom_url = "http://localhost:3000/uoms/LoadContainUom";
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 $http.get(containuom_url)
                 .success(function(data) {
                     $scope.SelectContainUomList = data;
@@ -996,7 +1251,11 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 console.log(data);
 
                 // Download Image for User Thumbnail
+<<<<<<< HEAD
         /*        var downloadThumbnailUrl = BASE_URL.PATH + '/images/downloadProductImageThumbnail/' + data._id + '/' + data.ProductCode;
+=======
+                var downloadThumbnailUrl = BASE_URL.PATH + '/images/downloadProductImageThumbnail/' + data._id + '/' + data.ProductCode;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 $http.get(downloadThumbnailUrl)
                 .success(function (data, status, headers, config) {
                 //    $scope.User.ProfileImage = data;
@@ -1006,7 +1265,11 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 .error(function (data, status, headers, config) {
                     console.log(data);
 
+<<<<<<< HEAD
                 });*/
+=======
+                });
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             })
             .error(function (data) {
                 console.log(data);
@@ -1014,6 +1277,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-product-table").hide("slow");
         $("#div-product-detail").show("slow");
     }
+<<<<<<< HEAD
     $scope.ConsiderDeleteProduct = function (mode, data) {
         if (mode === 'search') {
             $scope.DeleteProduct(data);
@@ -1025,6 +1289,12 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         swal({
           title: "Are you sure?",
           text: "คุณต้องการลบรายการ สินค้า " + ProductData.ProductNameTh + " ใช่ หรือ ไม่?",
+=======
+    $scope.DeleteProduct = function () {
+        swal({
+          title: "Are you sure?",
+          text: "คุณต้องการลบรายการ สินค้า " + $scope.ViewProductData.ProductNameTh + " ใช่ หรือ ไม่?",
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
           type: "warning",
           showCancelButton: true,
           confirmButtonColor: "#dd6b55",
@@ -1035,10 +1305,17 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
+<<<<<<< HEAD
             var url = BASE_URL.PATH + "/products/DeleteProduct/" + ProductData._id;
                $http.post(url, ProductData)
                 .success(function (data) {
                     swal("Deleted !!!","ลบรายการสินค้า " +ProductData.ProductNameTh + "สำเร็จ !!!", "success");
+=======
+            var url = "http://localhost:3000/products/DeleteProduct/";
+               $http.post(url, $scope.ViewProductData)
+                .success(function (data) {
+                    swal("Deleted !!!","ลบรายการสินค้า " +$scope.ViewProductData.ProductNameTh + "สำเร็จ !!!", "success");
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                     $scope.SearchProduct();
                 })
                 .error(function (data) {
@@ -1055,6 +1332,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-product-table").show("slow");
         $("#div-product-detail").hide("slow");
     }
+<<<<<<< HEAD
     $scope.$watch('ProductCreateDate', function (newValue) {
         $scope.ViewProductData.CreateDate = $filter('date')(newValue, 'dd/MM/yyyy HH:mm'); // Or whatever format your real model should use
     });
@@ -1069,6 +1347,8 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     $scope.$watch('ViewProductData.UpdateDate', function (newValue) {
         $scope.ProductUpdateDate = $filter('date')(newValue, 'dd/MM/yyyy HH:mm'); // Or whatever format your input should use
     });
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     $scope.CreateProduct = function () {
         swal({
           title: "Are you sure?",
@@ -1084,18 +1364,30 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var NewProductCategoryCode = "";
+<<<<<<< HEAD
             var GenCodeURL = BASE_URL.PATH + "/appconfig/GetNewCode/PD";
+=======
+            var GenCodeURL = "http://localhost:3000/appconfig/GetNewCode/PD";
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewProductCode = data;
                     console.log('get new code ' + NewProductCode);
                     $scope.ViewProductData.ProductCode = NewProductCode;
+<<<<<<< HEAD
                     $scope.ViewProductData.ProductCategoryCode = $scope.SelectProductCategoryList.ProductCategoryCode;
                     $scope.ViewProductData.UomCode = $scope.SelectUomList.UomCode;
                     $scope.ViewProductData.ContainUomCode = $scope.SelectContainUomList.UomCode;
                     $scope.ViewProductData.CreateBy = $scope.User.Username;
                     $scope.ViewProductData.UpdateBy = $scope.User.Username;
                     var url = BASE_URL.PATH + "/products/CreateProduct/";
+=======
+                    $scope.ViewProductData.ProductCategoryCode = $scope.SelectedProductCategory;
+                    $scope.ViewProductData.UomCode = $scope.SelectedUom;
+                    $scope.ViewProductData.ContainUomCode = $scope.SelectedContainUom;
+                    $scope.ViewProductData.CreateDate = (new Date()).toISOString().slice(0,10).replace(/-/g,"");
+                    var url = "http://localhost:3000/products/CreateProduct/";
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 
                     $http.post(url, $scope.ViewProductData)
                         .success(function (data) {
@@ -1132,11 +1424,19 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
+<<<<<<< HEAD
             var url = BASE_URL.PATH + "/products/UpdateProduct/";
             $scope.ViewProductData.ProductCategoryCode = $scope.SelectedProductCategory;
             $scope.ViewProductData.UomCode = $scope.SelectedUom;
             $scope.ViewProductData.ContainUomCode = $scope.SelectedContainUom;
             $scope.ViewProductData.UpdateBy = $scope.User.Username;
+=======
+            var url = "http://localhost:3000/products/UpdateProduct/";
+            $scope.ViewProductData.ProductCategoryCode = $scope.SelectedProductCategory;
+            $scope.ViewProductData.UomCode = $scope.SelectedUom;
+            $scope.ViewProductData.ContainUomCode = $scope.SelectedContainUom;
+            $scope.ViewProductData.UpdateDate = (new Date()).toISOString().slice(0,10).replace(/-/g,"");
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             $http.post(url, $scope.ViewProductData)
                 .success(function (data) {
                     swal("Updated !!!", "แก้ไขรายการสินค้า " + data.ProductCode + " สำเร็จ !!!", "success");
@@ -1159,17 +1459,31 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     }
 
     $scope.CheckPromotionIsExpire = function(expireDate) {
+<<<<<<< HEAD
         if (Date.parse(expireDate) > new Date()) {
          //   console.log("Date.parse(expireDate) > new Date() " + Date.parse(expireDate) > new Date());
             return true;
         } else if (Date.parse(expireDate) <= new Date()) {
         //    console.log("Date.parse(expireDate) <= new Date()" + Date.parse(expireDate) <= new Date());
+=======
+    //    console.log(expireDate);
+     //   console.log(new Date().toISOString());
+        if (Date.parse(expireDate) > new Date()) {
+            console.log("Date.parse(expireDate) > new Date() " + Date.parse(expireDate) > new Date());
+            return true;
+        } else if (Date.parse(expireDate) <= new Date()) {
+            console.log("Date.parse(expireDate) <= new Date()" + Date.parse(expireDate) <= new Date());
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             return false;
         }
     }
     // Start Function for Promotion Module
     $scope.SearchPromotion = function () {
+<<<<<<< HEAD
         var url = BASE_URL.PATH + "/promotions/LoadAllPromotion";
+=======
+        var url = "http://localhost:3000/promotions/LoadAllPromotion";
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         $http.get(url)
         .success(function (data) {
                 $scope.SearchPromotions = data;
@@ -1191,6 +1505,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-promotion-detail").hide("slow");
 
     }
+<<<<<<< HEAD
     
     
     $scope.SearchPromotionProduct = function() {
@@ -1311,6 +1626,39 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
     $scope.ViewPromotion = function (id) {
         var url = BASE_URL.PATH + "/promotions/LoadPromotionByObjId/" + id;
+=======
+    $scope.NewPromotion = function () {
+        $("#div-promotion-table").hide("slow");
+        $("#div-promotion-detail").show("slow");
+        $scope.SearchPromotionProduct();
+    }
+    
+    $scope.SearchPromotionProduct = function() {
+        var url = BASE_URL.PATH + "/products/LoadProduct";
+    //    $scope.ViewPromotionData.UpdateDate = (new Date()).toISOString().slice(0,10).replace(/-/g,"");
+        $http.get(url)
+            .success(function (items, status, headers, config) {
+            //    swal("Updated !!!", "แก้ไขรายการสินค้า " + data.PromotionCode + " สำเร็จ !!!", "success");
+            //    console.log(items);
+                $('#SelectProductPromotionList').select2({ 
+                    
+                         data:{ results: items, text: 'ProductNameTh' },
+                         formatSelection: formatProductPromotion,
+                            formatResult: formatProductPromotion 
+                    
+                });
+            })
+            .error(function (items, status, headers, config) {
+                console.log('error ' + status);
+            });
+    }
+    function formatProductPromotion(item) { 
+         console.log(item);
+        return item.ProductNameTh; 
+    };
+    $scope.ViewPromotion = function (id) {
+        var url = "http://localhost:3000/promotions/LoadPromotionByObjId/" + id;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         $http.get(url)
             .success(function (data) {
                 $scope.ViewPromotionData = data;
@@ -1320,6 +1668,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 $scope.ViewPromotionData.EndDate = data.EndDate;
                 $scope.ViewPromotionData.DiscountPercent = data.DiscountPercent;
                 $scope.ViewPromotionData.IsActive = data.IsActive;
+<<<<<<< HEAD
                 $scope.ViewPromotionData.ProductPromotionList = data.ProductPromotionList;
 
                 $scope.ProductPromotionTableParams = new ngTableParams({
@@ -1331,10 +1680,13 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                         $defer.resolve(data.ProductPromotionList.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                     }
                 });
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             })
             .error(function (data) {
                 console.log(data);
             });
+<<<<<<< HEAD
         $scope.SearchPromotionProduct();
         $("#div-promotion-table").hide("slow");
         $("#div-promotion-detail").show("slow");
@@ -1350,6 +1702,15 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         swal({
           title: "Are you sure?",
           text: "คุณต้องการลบรายการ โปรโมชั่น " + PromotionData.PromotionNameTh + " ใช่ หรือ ไม่?",
+=======
+        $("#div-promotion-table").hide("slow");
+        $("#div-promotion-detail").show("slow");
+    }
+    $scope.DeletePromotion = function () {
+        swal({
+          title: "Are you sure?",
+          text: "คุณต้องการลบรายการ โปรโมชั่น " + $scope.ViewPromotionData.ProductNameTh + " ใช่ หรือ ไม่?",
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
           type: "warning",
           showCancelButton: true,
           confirmButtonColor: "#dd6b55",
@@ -1360,11 +1721,19 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
+<<<<<<< HEAD
             var url = BASE_URL.PATH + "/promotions/DeletePromotion/";
                $http.post(url, PromotionData)
                 .success(function (data) {
                     swal("Deleted !!!","ลบรายการโปรโมชั่น " +PromotionData.PromotionNameTh + "สำเร็จ !!!", "success");
                     $scope.SearchPromotion();
+=======
+            var url = "http://localhost:3000/promotions/DeletePromotion/";
+               $http.post(url, $scope.ViewPromotionData)
+                .success(function (data) {
+                    swal("Deleted !!!","ลบรายการโปรโมชั่น " +$scope.ViewPromotionData.PromotionNameTh + "สำเร็จ !!!", "success");
+                    $scope.SearchProduct();
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 })
                 .error(function (data) {
 
@@ -1395,15 +1764,24 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var NewProductCategoryCode = "";
+<<<<<<< HEAD
             var GenCodeURL = BASE_URL.PATH + "/appconfig/GetNewCode/PM";
+=======
+            var GenCodeURL = "http://localhost:3000/appconfig/GetNewCode/PM";
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewPromotionCode = data;
                     console.log('get new code ' + NewPromotionCode);
                     $scope.ViewPromotionData.PromotionCode = NewPromotionCode;
+<<<<<<< HEAD
                     $scope.ViewPromotionData.CreateBy = $scope.User.Username;
                     $scope.ViewPromotionData.UpdateBy = $scope.User.Username;
                     var url = BASE_URL.PATH + "/promotions/CreatePromotion/";
+=======
+                    $scope.ViewPromotionData.CreateDate = (new Date()).toISOString().slice(0,10).replace(/-/g,"");
+                    var url = "http://localhost:3000/promotions/CreatePromotion/";
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 
                     $http.post(url, $scope.ViewPromotionData)
                         .success(function (data) {
@@ -1423,6 +1801,21 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
           }
         });
     }
+<<<<<<< HEAD
+=======
+
+    // gives another movie array on change
+    $scope.updateMovies = function(typed){
+        console.log('yourchoice ' + yourchoice);
+        console.log('typed ' + typed);
+        // MovieRetriever could be some service returning a promise
+        
+        $scope.newmovies = MovieRetriever.getmovies(typed);
+        $scope.newmovies.then(function(data){
+          $scope.movies = data;
+        });
+    }
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
    
     $scope.UpdatePromotion = function () {
         swal({
@@ -1438,11 +1831,19 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
+<<<<<<< HEAD
             var url = BASE_URL.PATH + "/promotions/UpdatePromotion/";
             $scope.ViewPromotionData.UpdateBy = $scope.User.Username;
             $http.post(url, $scope.ViewPromotionData)
                 .success(function (data) {
                     swal("Updated !!!", "แก้ไขรายการโปรโมชั่น " + data.PromotionCode + " สำเร็จ !!!", "success");
+=======
+            var url = "http://localhost:3000/promotions/UpdateProduct/";
+            $scope.ViewPromotionData.UpdateDate = (new Date()).toISOString().slice(0,10).replace(/-/g,"");
+            $http.post(url, $scope.ViewPromotionData)
+                .success(function (data) {
+                    swal("Updated !!!", "แก้ไขรายการสินค้า " + data.PromotionCode + " สำเร็จ !!!", "success");
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                     $scope.SearchPromotion();
                 })
                 .error(function (data) {
@@ -1468,7 +1869,11 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 console.log(file);
                 Upload
                 .upload({
+<<<<<<< HEAD
                     url: BASE_URL.PATH + '/aws/uploadUserImage/'+$scope.User.Id + '/'+ $scope.User.Username,
+=======
+                    url: BASE_URL.PATH + '/images/uploadUserImage/'+$scope.User.Id + '/'+ $scope.User.Username,
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                     file: file
                 })
                 .progress(function (evt) {
@@ -1478,7 +1883,11 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 .success(function (data, status, headers, config) {
                     // Download Image for User Profile
                     console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
+<<<<<<< HEAD
                     var downloadUrl = BASE_URL.PATH + '/aws/downloadUserImageProfile/'+$scope.User.Id + '/'+ $scope.User.Username;
+=======
+                    var downloadUrl = BASE_URL.PATH + '/images/downloadUserImageProfile/'+$scope.User.Id + '/'+ $scope.User.Username;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                     $http.get(downloadUrl)
                     .success(function (data, status, headers, config) {
                         $scope.User.ProfileImage = data;
@@ -1490,7 +1899,11 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                         console.log(data);
                     });
                     // Download Image for User Thumbnail
+<<<<<<< HEAD
                     var downloadThumbnailUrl = BASE_URL.PATH + '/aws/downloadUserImageThumbnail/'+$scope.User.Id + '/'+ $scope.User.Username;
+=======
+                    var downloadThumbnailUrl = BASE_URL.PATH + '/images/downloadUserImageThumbnail/'+$scope.User.Id + '/'+ $scope.User.Username;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                     $http.get(downloadThumbnailUrl)
                     .success(function (data, status, headers, config) {
                     //    $scope.User.ProfileImage = data;
@@ -1519,7 +1932,11 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 console.log(file);
                 Upload
                 .upload({
+<<<<<<< HEAD
                     url: BASE_URL.PATH + '/aws/uploadProductImage/'+ProductId+ '/'+ ProductCode + '/admin',
+=======
+                    url: BASE_URL.PATH + '/images/uploadProductImage/'+ProductId+ '/'+ ProductCode,
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                     file: file
                 })
                 .progress(function (evt) {
@@ -1529,8 +1946,12 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 .success(function (data, status, headers, config) {
                     // Download Image for Product
                     console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
+<<<<<<< HEAD
 
                     var downloadUrl = BASE_URL.PATH + '/aws/downloadProductImageThumbnail/' + ProductId + '/' + ProductCode;
+=======
+                    var downloadUrl = BASE_URL.PATH + '/images/downloadProductImageThumbnail/' + ProductId + '/' + ProductCode;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                     $http.get(downloadUrl)
                     .success(function (data, status, headers, config) {
                     //    $scope.User.ProfileImage = data;
@@ -1552,6 +1973,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     };
     // End Function for Product Module
 
+<<<<<<< HEAD
     $scope.UploadPaymentDocument = function (files, RONo) {
         if (files && files.length) {
             for (var i = 0; i < files.length; i++) {
@@ -1589,11 +2011,14 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         
     };
 
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     // Start Function for Customer Type Module
     $scope.SearchCustomerType = function () {
         var url = "http://localhost:3000/customer_types/LoadCustomerType";
         $http.get(url)
         .success(function (data) {
+<<<<<<< HEAD
             //    $scope.SearchCustomerTypes = data;
                 $scope.CustomerTypeTableParams = new ngTableParams({
                     page: 1,            // show first page
@@ -1604,6 +2029,9 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                         $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                     }
                 });
+=======
+                $scope.SearchCustomerTypes = data;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             })
             .error(function (data) {
                 alert(data);
@@ -1615,6 +2043,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     $scope.NewCustomerType = function () {
 
         $scope.ViewCustomerTypeData = {
+<<<<<<< HEAD
             CustomerTypeCode : '',
             CustomerTypeNameTh : '',
             CustomerTypeNameEn : '',
@@ -1622,13 +2051,23 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             CreateDate: new Date(),
             UpdateBy: $scope.User.Username,
             UpdateDate: new Date()
+=======
+            _id : '',
+            CustomerTypeCode : '',
+            CustomerTypeNameTh : '',
+            CustomerTypeNameEn : ''
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         }
 
         $("#div-customer-type-table").fadeOut();
         $("#div-customer-type-detail").fadeIn();
     }
     $scope.ViewCustomerType = function (id) {
+<<<<<<< HEAD
         var url = BASE_URL.PATH + "/customer_types/LoadCustomerTypeByObjId/" + id;
+=======
+        var url = "http://localhost:3000/customer_types/LoadCustomerTypeByObjId/" + id;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         console.log(id);
         $http.get(url)
             .success(function (data) {
@@ -1636,6 +2075,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 $scope.ViewCustomerTypeData.CustomerTypeCode = data.CustomerTypeCode;
                 $scope.ViewCustomerTypeData.CustomerTypeNameEn = data.CustomerTypeNameEn;
                 $scope.ViewCustomerTypeData.CustomerTypeNameTh = data.CustomerTypeNameTh;
+<<<<<<< HEAD
                 if (isEmpty(data.CreateBy)) {
                     $scope.ViewCustomerTypeData.CreateBy = $scope.User.Username;
                 } else {
@@ -1656,6 +2096,8 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 } else {
                     $scope.ViewCustomerTypeData.CreateDate = data.CreateDate;
                 }
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             })
             .error(function (data) {
                 console.log(data);
@@ -1663,6 +2105,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-customer-type-table").fadeOut();
         $("#div-customer-type-detail").fadeIn();
     }
+<<<<<<< HEAD
     $scope.ConsiderDeleteCustomerType = function (mode, data) {
         if (mode === 'search') {
             $scope.DeleteCustomerType (data);
@@ -1674,6 +2117,12 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         swal({
           title: "Are you sure?",
           text: "คุณต้องการลบรายการ ชนิดลูกค้า " + CustomerTypeData.CustomerTypeNameTh + " ใช่ หรือ ไม่?",
+=======
+    $scope.DeleteCustomerType = function () {
+        swal({
+          title: "Are you sure?",
+          text: "คุณต้องการลบรายการ ชนิดลูกค้า " + $scope.ViewCustomerTypeData.CustomerTypeNameTh + " ใช่ หรือ ไม่?",
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
           type: "warning",
           showCancelButton: true,
           confirmButtonColor: "#dd6b55",
@@ -1684,6 +2133,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
+<<<<<<< HEAD
             var url = BASE_URL.PATH + "/customer_types/DeleteCustomerType/" + CustomerTypeData._id;
                $http.get(url)
                 .success(function (data) {
@@ -1691,6 +2141,13 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     $scope.$apply(function(){
                         $scope.SearchCustomerType();
                     });
+=======
+            var url = "http://localhost:3000/customer_types/DeleteCustomerType/";
+               $http.post(url, $scope.ViewCustomerTypeData)
+                .success(function (data) {
+                    swal("Deleted !!!","ลบรายการชนิดลูกค้า " +$scope.ViewCustomerTypeData.CustomerTypeNameTh + "สำเร็จ !!!", "success");
+                    $scope.SearchCustomerType();
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 })
                 .error(function (data) {
 
@@ -1706,6 +2163,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-customer-type-table").fadeIn("slow");
         $("#div-customer-type-detail").fadeOut("slow");
     }
+<<<<<<< HEAD
     $scope.$watch('CustomerTypeCreateDate', function (newValue) {
         $scope.ViewCustomerTypeData.CreateDate = $filter('date')(newValue, 'dd/MM/yyyy HH:mm'); // Or whatever format your real model should use
     });
@@ -1728,6 +2186,33 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
           showCancelButton: true,
           confirmButtonColor: "#5583dd",
           confirmButtonText: "Yes, create Customer Type!",
+=======
+    $scope.CreateCustomerType = function () {
+    /*    var isCreate = confirm("คุณต้องการสร้างรายการ ชนิดลูกค้า " + $scope.ViewCustomerTypeData.CutomerTypeNameTh + " ใช่ หรือ ไม่?");
+        if (isCreate) {
+            var url = "http://localhost:3000/customer_types/CreateCustomerType/";
+            console.log('create angualr ' + $scope.ViewCustomerTypeData);
+            $http.post(url, $scope.ViewCustomerTypeData)
+                .success(function (data) {
+                    console.log('create success');
+                    $scope.ViewCustomerTypeData.CustomerTypeCode = data.CustomerTypeCode
+                    alert("สร้างรายการชนิดลูกค้า " + data.CustomerTypeNameTh + " สำเร็จ !!!");
+                })
+                .error(function (data) {
+                    console.log(data);
+                });
+
+        } else {
+
+        }*/
+        swal({
+          title: "Are you sure?",
+          text: "คุณต้องการสร้างรายการ ชนิดลูกค้า " + $scope.ViewCustomerTypeData.CutomerTypeNameTh + " ใช่ หรือ ไม่?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#5583dd",
+          confirmButtonText: "Yes, create it!",
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
           cancelButtonText: "No, cancel please!",
           closeOnConfirm: false,
           closeOnCancel: false
@@ -1735,12 +2220,17 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var NewProductCategoryCode = "";
+<<<<<<< HEAD
             var GenCodeURL = BASE_URL.PATH + "/appconfig/GetNewCode/CT";
+=======
+            var GenCodeURL = "http://localhost:3000/appconfig/GetNewCode/CT";
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewCustomerTypeCode = data;
                     console.log('get new code ' + NewCustomerTypeCode);
                     $scope.ViewCustomerTypeData.CustomerTypeCode = NewCustomerTypeCode;
+<<<<<<< HEAD
                     $scope.ViewCustomerTypeData.CreateBy = $scope.User.Username;
                     $scope.ViewCustomerTypeData.UpdateBy = $scope.User.Username;
                     var url = BASE_URL.PATH + "/customer_types/CreateCustomerType/";
@@ -1748,6 +2238,13 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     $http.post(url, $scope.ViewCustomerTypeData)
                         .success(function (data) {
                             swal("Created !", "สร้างรายการชนิดลูกค้า " + $scope.ViewCustomerTypeData.CustomerTypeNameTh + " สำเร็จ !!!", "success");
+=======
+                    var url = "http://localhost:3000/products/CreateProduct/";
+
+                    $http.post(url, $scope.ViewCustomerTypeData)
+                        .success(function (data) {
+                            swal("Created !", "สร้างรายการชนิดลูกค้า " + $scope.ViewCustomerTypeData.CustomerTypeCode + " สำเร็จ !!!", "success");
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                             $scope.SearchCustomerType();
                         })
                         .error(function (data) {
@@ -1764,6 +2261,24 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         });
     }
     $scope.UpdateCustomerType = function () {
+<<<<<<< HEAD
+=======
+    /*    var isUpdate = confirm("คุณต้องการแก้ไขรายการ ชนิดลูกค้า " + $scope.ViewCustomerTypeData.CustomerTypeNameTh + " ใช่หรือไม่ ?");
+        if (isUpdate) {
+            var url = "http://localhost:3000/customer_types/UpdateCustomerType/";
+            console.log('update angualr ' + $scope.ViewCustomerTypeData);
+            $http.post(url, $scope.ViewCustomerTypeData)
+                .success(function (data) {
+                    console.log('update success');
+                    alert("แก้ไขรายการประเภทสินค้า " + data.CustomerTypeNameTh + " เรียบร้อย !!! ");
+                })
+                .error(function (data) {
+                    console.log(data);
+                });
+        } else {
+
+        }*/
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         //#55dd6b : green
 //#dd6b55: red
 //#5583dd : blue
@@ -1781,7 +2296,10 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var url = "http://localhost:3000/customer_types/UpdateCustomerType/";
+<<<<<<< HEAD
             $scope.ViewCustomerTypeData.UpdateBy = $scope.User.Username;
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             $http.post(url, $scope.ViewCustomerTypeData)
                 .success(function (data) {
                     swal("Updated !!!", "แก้ไขรายการชนิดลูกค้า " + data.CustomerTypeCode + " สำเร็จ !!!", "success");
@@ -1809,7 +2327,11 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         var url = "http://localhost:3000/customers/LoadCustomer";
         $http.get(url)
         .success(function (data) {
+<<<<<<< HEAD
             //    $scope.SearchCustomers = data;
+=======
+                $scope.SearchCustomers = data;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 $scope.CustomerTableParams = new ngTableParams({
                     page: 1,            // show first page
                     count: 10           // count per page
@@ -1819,6 +2341,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                         $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                     }
                 });
+<<<<<<< HEAD
 
                 type_url = BASE_URL.PATH + "/customer_types/LoadCustomerType";
                 $http.get(url)
@@ -1828,6 +2351,8 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 .error(function(error) {
 
                 });
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             })
             .error(function (data) {
                 alert(data);
@@ -1848,6 +2373,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             FaxNo : '',
             MobileNo : '',
             Email : '',
+<<<<<<< HEAD
             Description : '',
             CreateBy: $scope.User.Username,
             CreateDate: new Date(),
@@ -1863,6 +2389,11 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         .error(function(data) {
 
         });
+=======
+            Description : ''
+        };
+
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         $("#div-customer-table").fadeOut();
         $("#div-customer-detail").fadeIn();
     }
@@ -1883,6 +2414,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 $scope.ViewCustomerData.CustomerAddress = data.CustomerAddress;
                 $scope.ViewCustomerData.Email = data.Email;
                 $scope.ViewCustomerData.Description = data.Description;
+<<<<<<< HEAD
                 if (isEmpty(data.CreateBy)) {
                     $scope.ViewCustomerData.CreateBy = $scope.User.Username;
                 } else {
@@ -1903,6 +2435,12 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 } else {
                     $scope.ViewCustomerData.CreateDate = data.CreateDate;
                 }
+=======
+                $scope.ViewCustomerData.CreateBy = data.CreateBy;
+                $scope.ViewCustomerData.CreateDate = data.CreateDate;
+                $scope.ViewCustomerData.UpdateBy = data.UpdateBy;
+                $scope.ViewCustomerData.UpdateDate = data.UpdateDate;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 
             })
             .error(function (data) {
@@ -1911,6 +2449,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-customer-table").fadeOut();
         $("#div-customer-detail").fadeIn();
     }
+<<<<<<< HEAD
 
     $scope.ConsiderDeleteCustomer = function(mode, data) {
         if (mode === 'search') {
@@ -1923,6 +2462,12 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         swal({
           title: "Are you sure?",
           text: "คุณต้องการลบรายการ ลูกค้าชื่อ " + CustomerData.CustomerNameTh + " ใช่ หรือ ไม่?",
+=======
+    $scope.DeleteCustomer = function () {
+        swal({
+          title: "Are you sure?",
+          text: "คุณต้องการลบรายการ ลูกค้าชื่อ " + $scope.ViewCustomerData.CustomerNameTh + " ใช่ หรือ ไม่?",
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
           type: "warning",
           showCancelButton: true,
           confirmButtonColor: "#dd6b55",
@@ -1933,10 +2478,17 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
+<<<<<<< HEAD
             var url = "http://localhost:3000/customers/DeleteCustomer/" + CustomerData._id;
                $http.get(url)
                 .success(function (data) {
                     swal("Deleted !!!","ลบรายการลูกค้า " + CustomerData.CustomerNameTh + "สำเร็จ !!!", "success");
+=======
+            var url = "http://localhost:3000/customers/DeleteCustomer/";
+               $http.post(url, $scope.ViewCustomerTypeData)
+                .success(function (data) {
+                    swal("Deleted !!!","ลบรายการลูกค้า " +$scope.ViewCustomerData.CustomerNameTh + "สำเร็จ !!!", "success");
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                     $scope.SearchCustomer();
                 })
                 .error(function (data) {
@@ -1953,6 +2505,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-customer-table").fadeIn();
         $("#div-customer-detail").fadeOut();
     }
+<<<<<<< HEAD
     $scope.$watch('CustomerCreateDate', function (newValue) {
         $scope.ViewCustomerData.CreateDate = $filter('date')(newValue, 'dd/MM/yyyy HH:mm'); // Or whatever format your real model should use
     });
@@ -1967,6 +2520,8 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     $scope.$watch('ViewCustomerData.UpdateDate', function (newValue) {
         $scope.CustomerUpdateDate = $filter('date')(newValue, 'dd/MM/yyyy HH:mm'); // Or whatever format your input should use
     });
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     $scope.CreateCustomer = function () {
         swal({
           title: "Are you sure?",
@@ -1988,8 +2543,11 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     NewCustomerCode = data;
                     console.log('get new code ' + NewCustomerCode);
                     $scope.ViewCustomerData.CustomerCode = NewCustomerCode;
+<<<<<<< HEAD
                     $scope.ViewCustomerData.CreateBy = $scope.User.Username;
                     $scope.ViewCustomerData.UpdateBy = $scope.User.Username;
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                     var url = "http://localhost:3000/customers/CreateCustomer/";
 
                     $http.post(url, $scope.ViewCustomerData)
@@ -2025,7 +2583,10 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var url = "http://localhost:3000/customers/UpdateCustomer/";
+<<<<<<< HEAD
             $scope.ViewCustomerData.UpdateBy = $scope.User.Username;
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             $http.post(url, $scope.ViewCustomerData)
                 .success(function (data) {
                     swal("Updated !!!", "แก้ไขรายการลูกค้า " + data.CustomerCode + " สำเร็จ !!!", "success");
@@ -2048,6 +2609,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     }
     // End Function for Customer Module
 
+<<<<<<< HEAD
 
     // Start Function for AppUser Module
     $scope.SearchAppUser = function () {
@@ -2301,12 +2863,18 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     }
     // End Function for AppUser Module
     
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     // Start Function for Supplier Module
     $scope.SearchSupplier = function () {
         var url = "http://localhost:3000/suppliers/LoadSupplier";
         $http.get(url)
         .success(function (data) {
+<<<<<<< HEAD
             //    $scope.SearchSuppliers = data;
+=======
+                $scope.SearchSuppliers = data;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 $scope.SupplierTableParams = new ngTableParams({
                     page: 1,            // show first page
                     count: 10           // count per page
@@ -2327,11 +2895,15 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $scope.ViewSupplierData = {
             SupplierCode: '',
             SupplierNameEn: '',
+<<<<<<< HEAD
             SupplierNameTh: '',
             CreateBy: $scope.User.Username,
             CreateDate: new Date(),
             UpdateBy: $scope.User.Username,
             UpdateDate: new Date()
+=======
+            SupplierNameTh: ''
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         }
 
         $("#div-supplier-table").hide("slow");
@@ -2347,6 +2919,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 $scope.ViewSupplierData.SupplierCode = data.SupplierCode;
                 $scope.ViewSupplierData.SupplierNameTh = data.SupplierNameTh;
                 $scope.ViewSupplierData.SupplierNameEn = data.SupplierNameEn;
+<<<<<<< HEAD
                 
                 if (isEmpty(data.CreateBy)) {
                     $scope.ViewSupplierData.CreateBy = $scope.User.Username;
@@ -2368,6 +2941,9 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 } else {
                     $scope.ViewSupplierData.CreateDate = data.CreateDate;
                 }
+=======
+               
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 //Set Value to Select <option>
                 console.log('data.SupplierCode ' + data.SupplierCode);
      
@@ -2378,6 +2954,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-supplier-table").hide("slow");
         $("#div-supplier-detail").show("slow");
     }
+<<<<<<< HEAD
     $scope.ConsiderDeleteSupplier = function(mode, data) {
         if (mode === 'search') {
             $scope.DeleteSupplier (data);
@@ -2386,12 +2963,19 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         }
     }
     $scope.DeleteSupplier = function (SupplierData) {
+=======
+    $scope.DeleteSupplier = function () {
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         //#55dd6b : green
         //#dd6b55: red
         //#5583dd : blue
         swal({
           title: "Are you sure?",
+<<<<<<< HEAD
           text: "คุณต้องการลบรายการ ผู้ขาย " + SupplierData.SupplierNameTh + " ใช่ หรือ ไม่?",
+=======
+          text: "คุณต้องการลบรายการ ผู้ขาย " + $scope.ViewSupplierData.SupplierNameTh + " ใช่ หรือ ไม่?",
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
           type: "warning",
           showCancelButton: true,
           confirmButtonColor: "#dd6b55",
@@ -2403,9 +2987,15 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var url = "http://localhost:3000/suppliers/DeleteSupplier/";
+<<<<<<< HEAD
                $http.post(url, SupplierData)
                 .success(function (data) {
                     swal("Deleted !!!", "ลบรายการผู้ขาย " + SupplierData.SupplierCode + " สำเร็จ !!!", "success");
+=======
+               $http.post(url, $scope.ViewSupplierData)
+                .success(function (data) {
+                    swal("Deleted !!!", "ลบรายการผู้ขาย " + data.SupplierCode + " สำเร็จ !!!", "success");
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                     $scope.SearchSupplier();
                 })
                 .error(function (data) {
@@ -2416,6 +3006,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
           }
         });
     }
+<<<<<<< HEAD
     $scope.$watch('SupplierCreateDate', function (newValue) {
         $scope.ViewSupplierData.CreateDate = $filter('date')(newValue, 'dd/MM/yyyy HH:mm'); // Or whatever format your real model should use
     });
@@ -2428,6 +3019,8 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     $scope.$watch('ViewSupplierData.UpdateDate', function (newValue) {
         $scope.SupplierUpdateDate = $filter('date')(newValue, 'dd/MM/yyyy HH:mm'); // Or whatever format your input should use
     });
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     $scope.CreateSupplier = function () {
         swal({
           title: "Are you sure?",
@@ -2449,8 +3042,12 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     NewSupplierCode = data;
                     console.log('get new code ' + NewSupplierCode);
                     $scope.ViewSupplierData.SupplierCode = NewSupplierCode;
+<<<<<<< HEAD
                     $scope.ViewSupplierData.CreateBy = $scope.User.Username;
                     $scope.ViewSupplierData.UpdateBy = $scope.User.Username;
+=======
+
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                     var url = "http://localhost:3000/suppliers/CreateSupplier/";
                     $http.post(url, $scope.ViewSupplierData)
                         .success(function (data) {
@@ -2485,6 +3082,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var url = "http://localhost:3000/suppliers/UpdateSupplier/";
+<<<<<<< HEAD
             $scope.ViewSupplierData.UpdateBy = $scope.User.Username;
             $http.post(url, $scope.ViewSupplierData)
             .success(function (data) {
@@ -2494,6 +3092,16 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             .error(function (data) {
 
             });
+=======
+               $http.post(url, $scope.ViewSupplierData)
+                .success(function (data) {
+                    swal("Updated !!!", "แก้ไขรายการผู้ขาย " + data.SupplierCode + " สำเร็จ !!!", "success");
+                    $scope.SearchSupplier();
+                })
+                .error(function (data) {
+
+                });
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
           } else {
                 swal("Cancelled", "Your data is safe :)", "error");
           }
@@ -2514,12 +3122,22 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     }
     // End Function for Supplier Module
     
+<<<<<<< HEAD
     // Start Function for Uom Module
     $scope.SearchUom = function () {
         var url = "http://localhost:3000/uoms/LoadUom";
         $http.get(url)
         .success(function (data) {
                 $scope.UomTableParams = new ngTableParams({
+=======
+    // Start Function for AppUser Module
+    $scope.SearchAppUser = function () {
+        var url = "http://localhost:3000/users/LoadAppUser";
+        $http.get(url)
+        .success(function (data) {
+                $scope.SearchAppUsers = data;
+                $scope.AppUserTableParams = new ngTableParams({
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                     page: 1,            // show first page
                     count: 10           // count per page
                 }, {
@@ -2532,6 +3150,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             .error(function (data) {
                 alert(data);
             });
+<<<<<<< HEAD
         $("#div-uom-table").show("slow");
         $("#div-uom-detail").hide("slow");
     }
@@ -2583,10 +3202,42 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 } else {
                     $scope.ViewUomData.UpdateDate = data.UpdateDate;
                 }
+=======
+        $("#div-user-table").show("slow");
+        $("#div-user-detail").hide("slow");
+    }
+    $scope.NewAppUser = function () {
+        $scope.ViewAppUserData = {
+            Email: '',
+            Username: '',
+            Password: '',
+            Firstname : '',
+            Lastname : ''
+        }
+
+        $("#div-user-table").hide("slow");
+        $("#div-user-detail").show("slow");
+    }
+    $scope.ViewAppUser = function (id) {
+        var url = "http://localhost:3000/users/LoadAppUserByObjId/" + id;
+        console.log(id);
+        $http.get(url)
+            .success(function (data) {
+                $scope.ViewAppUserData = data;
+                $scope.ViewAppUserData._id = data._id;
+                $scope.ViewAppUserData.Username = data.Username;
+                $scope.ViewAppUserData.Password = data.Password;
+                $scope.ViewAppUserData.Firstname = data.Firstname;
+                $scope.ViewAppUserData.Lastname = data.Lastname;
+                //Set Value to Select <option>
+                console.log('data.Username ' + data.Username);
+     
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             })
             .error(function (data) {
                 console.log(data);
             });
+<<<<<<< HEAD
         $("#div-uom-table").hide("slow");
         $("#div-uom-detail").show("slow");
     }
@@ -2601,6 +3252,18 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         swal({
           title: "Are you sure?",
           text: "คุณต้องการลบรายการ หน่วย " + UomData.UomNameTh + " ใช่ หรือ ไม่?",
+=======
+        $("#div-user-table").hide("slow");
+        $("#div-user-detail").show("slow");
+    }
+    $scope.DeleteAppUser = function () {
+        //#55dd6b : green
+        //#dd6b55: red
+        //#5583dd : blue
+        swal({
+          title: "Are you sure?",
+          text: "คุณต้องการลบรายการ ผู้ใช้ระบบ " + $scope.ViewAppUserData.Username + " ใช่ หรือ ไม่?",
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
           type: "warning",
           showCancelButton: true,
           confirmButtonColor: "#dd6b55",
@@ -2611,11 +3274,19 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
+<<<<<<< HEAD
             var url = "http://localhost:3000/uoms/DeleteUom/" + UomData._id;
                $http.get(url)
                 .success(function (data) {
                     swal("Deleted !!!", "ลบรายการหน่วย " + UomData.UomCode + " สำเร็จ !!!", "success");
                     $scope.SearchUom();
+=======
+            var url = "http://localhost:3000/users/DeleteAppUser/";
+               $http.post(url, $scope.ViewSupplierData)
+                .success(function (data) {
+                    swal("Deleted !!!", "ลบรายการผู้ใช้ระบบ " + data.Username + " สำเร็จ !!!", "success");
+                    $scope.SearchSupplier();
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 })
                 .error(function (data) {
 
@@ -2625,6 +3296,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
           }
         });
     }
+<<<<<<< HEAD
     $scope.$watch('UomCreateDate', function (newValue) {
         $scope.ViewUomData.CreateDate = $filter('date')(newValue, 'dd/MM/yyyy HH:mm'); // Or whatever format your real model should use
     });
@@ -2641,6 +3313,12 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         swal({
           title: "Are you sure?",
           text: "คุณต้องการสร้างรายการ หน่วย " + $scope.ViewUomData.UomNameTh + " ใช่ หรือ ไม่?",
+=======
+    $scope.CreateAppUser = function () {
+        swal({
+          title: "Are you sure?",
+          text: "คุณต้องการสร้างรายการ ผู้ใช้ระบบ " + $scope.ViewAppUserData.Username + " ใช่ หรือ ไม่?",
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
           type: "warning",
           showCancelButton: true,
           confirmButtonColor: "#5583dd",
@@ -2651,6 +3329,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
+<<<<<<< HEAD
             var NewUomCode = "";
             var GenCodeURL = "http://localhost:3000/appconfig/GetNewCode/UO";
             $http.get(GenCodeURL)
@@ -2665,6 +3344,21 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                         .success(function (data) {
                             swal("Created !", "สร้างรายการหน่วย " + $scope.ViewUomData.UomCode + " สำเร็จ !!!", "success");
                             $scope.SearchUom();
+=======
+            var NewSupplierCode = "";
+            var GenCodeURL = "http://localhost:3000/appconfig/GetNewCode/SP";
+            $http.get(GenCodeURL)
+                .success(function(data) {
+                    NewSupplierCode = data;
+                    console.log('get new code ' + NewSupplierCode);
+                    $scope.ViewSupplierData.SupplierCode = NewSupplierCode;
+
+                    var url = "http://localhost:3000/users/CreateAppUser/";
+                    $http.post(url, $scope.ViewAppUserData)
+                        .success(function (data) {
+                            swal("Created !", "สร้างรายการผู้ใช้ระบบ " + $scope.ViewAppUserData.Username + " สำเร็จ !!!", "success");
+                            $scope.SearchAppUser();
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                         })
                         .error(function (data) {
 
@@ -2679,6 +3373,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
           }
         });
     }
+<<<<<<< HEAD
     $scope.UpdateUom = function () {
         swal({
           title: "Are you sure?",
@@ -2687,12 +3382,23 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
           showCancelButton: true,
           confirmButtonColor: "#55dd6b",
           confirmButtonText: "Yes, update Uom!",
+=======
+    $scope.UpdateAppUser = function () {
+        swal({
+          title: "Are you sure?",
+          text: "คุณต้องการแก้ไขรายการ ผู้ขาย " + $scope.ViewAppUserData.Username + " ใช่หรือไม่ ?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#55dd6b",
+          confirmButtonText: "Yes, update AppUser !!",
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
           cancelButtonText: "No, cancel please!",
           closeOnConfirm: false,
           closeOnCancel: false
         },
         function(isConfirm){
           if (isConfirm) {
+<<<<<<< HEAD
             var url = "http://localhost:3000/uoms/UpdateUom/";
             $scope.ViewUomData.UpdateBy = $scope.User.Username;
             $http.post(url, $scope.ViewUomData)
@@ -2703,11 +3409,23 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             .error(function (data) {
 
             });
+=======
+            var url = "http://localhost:3000/users/UpdateAppUser/";
+               $http.post(url, $scope.ViewAppUserData)
+                .success(function (data) {
+                    swal("Updated !!!", "แก้ไขรายการผู้ใช้ระบบ " + data.Username + " สำเร็จ !!!", "success");
+                    $scope.SearchAppUser();
+                })
+                .error(function (data) {
+
+                });
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
           } else {
                 swal("Cancelled", "Your data is safe :)", "error");
           }
         });
     }
+<<<<<<< HEAD
     $scope.SaveUom = function () {
         if ($scope.ViewUomData._id == '' || $scope.ViewUomData._id == undefined) {
             $scope.CreateUom();
@@ -2722,12 +3440,30 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-uom-detail").hide("slow");
     }
     // End Function for Uom Module
+=======
+    $scope.SaveAppUser = function () {
+        if ($scope.ViewAppUserData._id == '' || $scope.ViewAppUserData._id == undefined) {
+            $scope.CreateAppUser();
+        } else if ($scope.ViewAppUserData._id != '') {
+            $scope.UpdateAppUser();
+        }
+    }
+    $scope.CancelAppUser = function () {
+        $scope.SearchAppUser();
+
+        $("#div-user-table").show("slow");
+        $("#div-user-detail").hide("slow");
+    }
+    // End Function for AppUser Module
+
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 
     // Start Function for Staff Module
     $scope.SearchStaff = function () {
         var url = "http://localhost:3000/staffs/LoadStaff";
         $http.get(url)
         .success(function (data) {
+<<<<<<< HEAD
         //    $scope.SearchStaffs = data;
             $scope.StaffTableParams = new ngTableParams({
                     page: 1,            // show first page
@@ -2738,6 +3474,9 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                         $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                     }
                 });
+=======
+            $scope.SearchStaffs = data;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         })
         .error(function (data) {
             alert(data);
@@ -2749,6 +3488,10 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
     $scope.NewStaff = function () {
         $scope.ViewStaffData = {
+<<<<<<< HEAD
+=======
+            _id : '',
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             Title : '',
             StaffCode : '',
             Firstname : '',
@@ -2765,11 +3508,16 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             StaffStatus : '',
             StartDate : '',
             ResignDate : '',
+<<<<<<< HEAD
             BirthDate: '',
             CreateBy: $scope.User.Username,
             CreateDate: new Date(),
             UpdateBy: $scope.User.Username,
             UpdateDate: new Date()
+=======
+            BirthDate: ''
+
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         };
 
         $("#div-staff-table").fadeOut();
@@ -2783,6 +3531,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 $scope.ViewStaffData = data;
                 $scope.ViewStaffData._id = data._id;
                 $scope.ViewStaffData.Title = data.Title;
+<<<<<<< HEAD
                 $scope.ViewStaffData.Firstname = data.Firstname;
                 $scope.ViewStaffData.Lastname = data.Lastname;
                 $scope.ViewStaffData.Nickname = data.Nickname;
@@ -2817,10 +3566,26 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             })
             .error(function (data) {
              //   console.log(data);
+=======
+                $scope.ViewStaffData.Title = data.Title;
+                $scope.ViewStaffData.Title = data.Title;
+                $scope.ViewStaffData.Title = data.Title;
+                $scope.ViewStaffData.Title = data.Title;
+                $scope.ViewStaffData.Title = data.Title;
+                $scope.ViewStaffData.Title = data.Title;
+                $scope.ViewStaffData.Title = data.Title;
+                $scope.ViewStaffData.Title = data.Title;
+                $scope.ViewStaffData.Title = data.Title;
+                console.log(data);
+            })
+            .error(function (data) {
+                console.log(data);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             });
         $("#div-staff-table").fadeOut();
         $("#div-staff-detail").fadeIn();
     }
+<<<<<<< HEAD
 
     $scope.ConsiderDeleteStaff = function(mode, data) {
         if (mode === 'search') {
@@ -2834,6 +3599,12 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         swal({
           title: "Are you sure?",
           text: "คุณต้องการลบรายการ พนักงานชื่อ " + StaffData.Firstname + " " + StaffData.Lastname + " ใช่ หรือ ไม่?",
+=======
+    $scope.DeleteStaff = function (Staff) {
+        swal({
+          title: "Are you sure?",
+          text: "คุณต้องการลบรายการ พนักงานชื่อ " + Staff.Firstname + " " + Staff.Lastname + " ใช่ หรือ ไม่?",
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
           type: "warning",
           showCancelButton: true,
           confirmButtonColor: "#dd6b55",
@@ -2845,16 +3616,27 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var url = "http://localhost:3000/staffs/DeleteStaff/";
+<<<<<<< HEAD
                $http.post(url, StaffData)
                 .success(function (data) {
                     swal("Deleted !!!","ลบรายการพนักงาน " + StaffData.Firstname + "สำเร็จ !!!", "success");
                     $scope.SearchStaff();
+=======
+               $http.post(url, $scope.ViewCustomerTypeData)
+                .success(function (data) {
+                    swal("Deleted !!!","ลบรายการลูกค้า " +$scope.ViewCustomerData.CustomerNameTh + "สำเร็จ !!!", "success");
+                    $scope.SearchCustomer();
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 })
                 .error(function (data) {
 
                 });
           } else {
+<<<<<<< HEAD
                 swal("Cancelled", "Your staff data is safe :)", "error");
+=======
+                swal("Cancelled", "Your customer data is safe :)", "error");
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
           }
         });
     }
@@ -2864,6 +3646,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-Staff-table").fadeIn();
         $("#div-Staff-detail").fadeOut();
     }
+<<<<<<< HEAD
     $scope.$watch('StaffCreateDate', function (newValue) {
         $scope.ViewStaffData.CreateDate = $filter('date')(newValue, 'dd/MM/yyyy HH:mm'); // Or whatever format your real model should use
     });
@@ -2876,13 +3659,18 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     $scope.$watch('ViewStaffData.UpdateDate', function (newValue) {
         $scope.StaffUpdateDate = $filter('date')(newValue, 'dd/MM/yyyy HH:mm'); // Or whatever format your input should use
     });
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     $scope.CreateStaff = function () {
         var isCreate = confirm("คุณต้องการสร้างรายการ พนักงาน " + $scope.ViewStaffData.Firstname + " ใช่ หรือ ไม่?");
         if (isCreate) {
             var url = "http://localhost:3000/staffs/CreateStaff/";
             console.log('create staff ' + $scope.ViewStaffData);
+<<<<<<< HEAD
             $scope.ViewStaffData.CreateBy = $scope.User.Username;
             $scope.ViewStaffData.UpdateBy = $scope.User.Username;
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             $http.post(url, $scope.ViewStaffData)
                 .success(function (data) {
                     console.log('create success');
@@ -2901,7 +3689,12 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         var isUpdate = confirm("คุณต้องการแก้ไขรายการ พนักงาน " + $scope.ViewStaffData.Firstname + " ใช่หรือไม่ ?");
         if (isUpdate) {
             var url = "http://localhost:3000/customers/UpdateCustomer/";
+<<<<<<< HEAD
             $scope.ViewStaffData.UpdateBy = $scope.User.Username;
+=======
+            console.log('update staff ' + $scope.ViewStaffData);
+      //      $scope.ViewCustomerTypeData.ProductTypeCode = $scope.SelectedProductTypeCodeValue.ProductTypeCode;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             $http.post(url, $scope.ViewStaffData)
                 .success(function (data) {
                     console.log('update success');
@@ -2929,6 +3722,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         var url = "http://localhost:3000/roles/LoadRole";
         $http.get(url)
         .success(function (data) {
+<<<<<<< HEAD
             //    $scope.SearchRoles = data;
                 $scope.RoleTableParams = new ngTableParams({
                     page: 1,            // show first page
@@ -2939,6 +3733,9 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                         $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                     }
                 });
+=======
+                $scope.SearchRoles = data;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             })
             .error(function (data) {
                 alert(data);
@@ -2948,6 +3745,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     }
 
     $scope.NewRole = function () {
+<<<<<<< HEAD
         $scope.ViewRoleData = {
             RoleCode : '',
             RoleNameTh : '',
@@ -2957,6 +3755,8 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             UpdateBy: $scope.User.Username,
             UpdateDate: new Date()
         }
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         $("#div-role-table").hide("slow");
         $("#div-role-detail").show("slow");
     }
@@ -2969,6 +3769,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 $scope.ViewRoleData.RoleCode = data.RoleCode;
                 $scope.ViewRoleData.RoleNameEn = data.RoleNameEn;
                 $scope.ViewRoleData.RoleNameTh = data.RoleNameTh;
+<<<<<<< HEAD
                 if (isEmpty(data.CreateBy)) {
                     $scope.ViewRoleData.CreateBy = $scope.User.Username;
                 } else {
@@ -2989,6 +3790,9 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 } else {
                     $scope.ViewRoleData.CreateDate = data.CreateDate;
                 }
+=======
+                console.log(data);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             })
             .error(function (data) {
                 console.log(data);
@@ -2996,6 +3800,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-role-table").hide("slow");
         $("#div-role-detail").show("slow");
     }
+<<<<<<< HEAD
     $scope.ConsiderDeleteRole = function (mode, data) {
         if (mode === 'search') {
             $scope.DeleteRole (data);
@@ -3030,11 +3835,22 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                  swal("Cancelled", "Your staff data is safe :)", "error");
             }
         });
+=======
+    $scope.DeleteRole = function () {
+        var isDelete = confirm("คุณต้องการลบรายการ บทบาท " + $scope.ViewRoleData.RoleNmaeTh + " ใช่ หรือ ไม่?");
+        if (isDelete) {
+
+            $scope.SearchRole();
+        } else {
+
+        }
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     }
     $scope.CancelRole = function () {
         $("#div-role-table").show("slow");
         $("#div-role-detail").hide("slow");
     }
+<<<<<<< HEAD
     $scope.$watch('RoleCreateDate', function (newValue) {
         $scope.ViewRoleData.CreateDate = $filter('date')(newValue, 'dd/MM/yyyy HH:mm'); // Or whatever format your real model should use
     });
@@ -3122,6 +3938,48 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         if ($scope.ViewRoleData._id === undefined || $scope.ViewRoleData._id.length <= 0) {
             $scope.CreateRole();
         } else {
+=======
+    $scope.CreateRole = function () {
+        var isCreate = confirm("คุณต้องการสร้างรายการ บทบาท " + $scope.ViewRoleData.RoleCode + " ใช่ หรือ ไม่?");
+        if (isCreate) {
+            var url = "http://localhost:3000/roles/CreateRole/";
+            console.log('create role ' + $scope.ViewRoleData);
+            $http.post(url, $scope.ViewRoleData)
+                .success(function (data) {
+                    console.log('create success');
+                    $scope.ViewRoleData.RoleCode = data.RoleCode
+                    alert("สร้างรายการบทบาท " + data.RoleCode + " สำเร็จ !!!");
+                })
+                .error(function (data) {
+                    console.log(data);
+                });
+
+        } else {
+
+        }
+    }
+    $scope.UpdateRole = function () {
+        var isUpdate = confirm("คุณต้องการแก้ไขรายการ บทบาท " + $scope.ViewRoleData.RoleCode + " ใช่หรือไม่ ?");
+        if (isUpdate) {
+            var url = "http://localhost:3000/roles/UpdateRole/";
+            console.log('update role ' + $scope.ViewRoleData);
+      //      $scope.ViewCustomerTypeData.ProductTypeCode = $scope.SelectedProductTypeCodeValue.ProductTypeCode;
+            $http.post(url, $scope.ViewRoleData)
+                .success(function (data) {
+                    console.log('update success');
+                    alert("แก้ไขรายการบทบาท " + data.RoleCode + " เรียบร้อย !!! ");
+                })
+                .error(function (data) {
+                    console.log(data);
+                });
+        } else {
+        }
+    }
+    $scope.SaveRole = function () {
+        if ($scope.ViewRoleData._id == '') {
+            $scope.CreateRole();
+        } else if ($scope.ViewRoleData._id != '') {
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             $scope.UpdateRole();
         }
     }
@@ -3237,6 +4095,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         var url = "http://localhost:3000/provinces/LoadProvince/";
         $http.get(url)
             .success(function (provinces) {
+<<<<<<< HEAD
                 $scope.SelectBillingProvinceList = provinces;
                 $scope.SelectReceiptProvinceList = provinces;
                 $scope.ROHead.BillingProvinceId = "";
@@ -3247,11 +4106,20 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 $scope.ROHead.ReceiptDistrictId = "";
                 $scope.ROHead.ReceiptSubDistrictId = "";
                 $scope.ROHead.ReceiptZipCode = "";
+=======
+                $scope.SelectProvinceList = provinces;
+            //    console.log(provinces);
+                $scope.ROHead.ProvinceId = "";
+                $scope.ROHead.DistrictId = "";
+                $scope.ROHead.SubDistrictId = "";
+                $scope.ROHead.ZipCode = "";
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             })
             .error(function (provinces) {
                 console.log(provinces);
             });
     }
+<<<<<<< HEAD
     $scope.UpdateBillingProvince = function() {
         console.log("ProvinceId " + $scope.ROHead.BillingProvinceId);
         var url = "http://localhost:3000/districts/LoadDistrictByProvinceId/"+  $scope.ROHead.BillingProvinceId;
@@ -3269,11 +4137,20 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $http.get(url)
             .success(function (districts) {
                 $scope.SelectReceiptDistrictList = districts;
+=======
+    $scope.UpdateProvince = function() {
+        console.log("ProvinceId " + $scope.ROHead.ProvinceId);
+        var url = "http://localhost:3000/districts/LoadDistrictByProvinceId/"+  $scope.ROHead.ProvinceId;
+        $http.get(url)
+            .success(function (districts) {
+                $scope.SelectDistrictList = districts;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             })
             .error(function (districts) {
                 console.log(districts);
             });
     }
+<<<<<<< HEAD
     $scope.UpdateBillingDistrict = function() {
         var url = "http://localhost:3000/subdistricts/LoadSubDistrictByDistrictId/"+ $scope.ROHead.BillingDistrictId;
         $http.get(url)
@@ -3289,11 +4166,20 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $http.get(url)
             .success(function (subdistricts) {
                 $scope.SelectReceiptSubDistrictList = subdistricts;
+=======
+
+    $scope.UpdateDistrict = function() {
+        var url = "http://localhost:3000/subdistricts/LoadSubDistrictByDistrictId/"+ $scope.ROHead.DistrictId;
+        $http.get(url)
+            .success(function (subdistricts) {
+                $scope.SelectSubDistrictList = subdistricts;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             })
             .error(function (subdistricts) {
                 console.log(subdistricts);
         });
     }
+<<<<<<< HEAD
     $scope.UpdateBillingSubDistrict = function() {
         var url = "http://localhost:3000/subdistricts/LoadSubDistrictBySubDistrictId/"+ $scope.ROHead.BillingSubDistrictId;
         $http.get(url)
@@ -3317,6 +4203,17 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 console.log(zipcode.ZipCode);
                 $scope.SelectReceiptZipCodeList = zipcode;
                 $scope.ROHead.ReceiptZipCode = zipcode.ZipCode;
+=======
+
+    $scope.UpdateSubDistrict = function() {
+        var url = "http://localhost:3000/subdistricts/LoadSubDistrictBySubDistrictId/"+ $scope.ROHead.SubDistrictId;
+        $http.get(url)
+            .success(function (zipcode) {
+        //        console.log(zipcode);
+                console.log(zipcode.ZipCode);
+                $scope.SelectZipCodeList = zipcode;
+                $scope.ROHead.ZipCode = zipcode.ZipCode;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             })
             .error(function (zipcode) {
                 console.log(zipcode);
@@ -3342,6 +4239,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             swal("เตือน", "คุณต้องใส่ที่อยู่เพื่อรับสินค้า", "warning");
             return;
         }
+<<<<<<< HEAD
         if (!$scope.ROHead.BillingProvinceId || 0 === $scope.ROHead.BillingProvinceId.length) {
             swal("เตือน", "คุณต้องเลือก จังหวัด", "warning");
             return;
@@ -3355,10 +4253,26 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             return;
         }
         if (!$scope.ROHead.BillingZipCode || 0 === $scope.ROHead.BillingZipCode.length) {
+=======
+        if (!$scope.ROHead.ProvinceId || 0 === $scope.ROHead.ProvinceId.length) {
+            swal("เตือน", "คุณต้องเลือก จังหวัด", "warning");
+            return;
+        }
+        if (!$scope.ROHead.DistrictId || 0 === $scope.ROHead.DistrictId.length) {
+            swal("เตือน", "คุณต้องเลือก เขต/อำเภอ", "warning");
+            return;
+        }
+        if (!$scope.ROHead.SubDistrictId || 0 === $scope.ROHead.SubDistrictId.length) {
+            swal("เตือน", "คุณต้องเลือก แขวง/ตำบล", "warning");
+            return;
+        }
+        if (!$scope.ROHead.ZipCode || 0 === $scope.ROHead.ZipCode.length) {
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             swal("เตือน", "คุณต้องเลือก รหัสไปรษณีร์", "warning");
             return;
         }
 
+<<<<<<< HEAD
         if (!$scope.ROHead.ReceiptName || 0 === $scope.ROHead.ReceiptName.length) {
             swal("เตือน", "คุณต้องใส่ชื่อที่อยู่ที่แสดงในใบเสร็จ", "warning");
             return;
@@ -3384,6 +4298,8 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             return;
         }
 
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         $scope.step = 2;
         $("#nav-step2").removeAttr("disabled");
         $("#nav-step2").addClass("btn-primary");
@@ -3481,7 +4397,10 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     $scope.SearchHistoryReceipt = function() {
         var historyReceiptUrl = BASE_URL.PATH + "/receipts/LoadROHeadByUserIdAndStatus/"+$scope.User.Id+"/"+$scope.SearchPaymentStatus
         +"/"+$scope.SearchShippingStatus+"/"+$scope.StartDate+"/"+$scope.EndDate;
+<<<<<<< HEAD
         console.log(historyReceiptUrl);
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         $http.get(historyReceiptUrl)
         .success(function (data) {
             if (data.length > 0 ) {
@@ -3500,6 +4419,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             }
         })
         .error(function (data) {
+<<<<<<< HEAD
             console.log(data);
         });
     }
@@ -3522,6 +4442,21 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         .success(function (data) {
             if (data.length > 0 ) {
                 $scope.SearchCustomerOrders = data;
+=======
+            alert(data);
+        });
+     //   $("#div-product-category-table").show("slow");
+     //   $("#div-product-category-detail").hide("slow");
+    }
+
+    $scope.SearchCustomerOrder = function() {
+        var customerOrderUrl = BASE_URL.PATH + "/receipts/LoadROHeadByStaff/"+ $scope.SearchCustomerRONo+"/"+ $scope.SearchCustomerName+"/"+$scope.SearchPaymentStatus
+        +"/"+$scope.SearchShippingStatus+"/"+$scope.StartDate+"/"+$scope.EndDate;
+        $http.get(customerOrderUrl)
+        .success(function (data) {
+            if (data.length > 0 ) {
+                $scope.SearchCustomerOrder = data;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 $scope.CustomerOrderTableParams = new ngTableParams({
                     page: 1,            // show first page
                     count: 10           // count per page
@@ -3536,12 +4471,20 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             }
         })
         .error(function (data) {
+<<<<<<< HEAD
             console.log(data);
         });
     }
 
    
 
+=======
+            alert(data);
+        });
+     //   $("#div-product-category-table").show("slow");
+     //   $("#div-product-category-detail").hide("slow");
+    }
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     $scope.PDF = function() {
         $http.post('https://api.twilio.com/2015-07-09/Accounts/AC18d3cf60c6c6840932587231874b6c0b/SMS/Messages')
         .success(function (data) {
@@ -3552,6 +4495,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         });
     }
 
+<<<<<<< HEAD
     $scope.InitCustomerOrder = function () {
         var load_customer_url = BASE_URL.PATH + "/users/LoadAppUser";
         $('#SelectCustomerList').select2({ 
@@ -3679,5 +4623,56 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             });
             
         }
+=======
+    $scope.LoadProductImageByProductCode = function (ProductImageRefId, ProductId, ProductCode) {
+    //  console.log("imagePath " + ProductImageRefId);
+      if (ProductImageRefId || ProductImageRefId !== undefined) {  
+          var downloadThumbnailUrl = BASE_URL.PATH + '/images/downloadProductImageShop/'+ProductId + '/'+ ProductCode;
+          $http.get(downloadThumbnailUrl)
+          .success(function (data, status, headers, config) {
+              $('#ThumbnailProductImage_'+ProductCode).children("img").remove();
+              $('#ThumbnailProductImage_'+ProductCode).append(data);
+          })
+          .error(function (data, status, headers, config) {
+              console.log(data);
+
+          });
+      }
+    }
+
+    $scope.SearchCustomerAutoComplete = function() {
+      //  $(function(){
+          var loadUserUrl = BASE_URL.PATH + '/users/LoadAppUser';
+          $http.get(loadUserUrl)
+          .success(function (data, status, headers, config) {
+            console.log(data);
+              // applied typeahead to the text input box
+           /*   $('#my-input').typeahead({
+                name: 'countries',
+
+                // data source
+                prefetch: data,
+
+                // max item numbers list in the dropdown
+                limit: 10
+              });*/
+
+              $('#my-input').typeahead(null, {
+                  hint: true,
+                  highlight: true,
+                  minLength: 1
+                },
+                {
+                  name: 'Firstname',
+                  source: data
+                });
+          })
+          .error(function(data, status, headers, config) {
+            console.log('error when load customer');
+          });
+          
+
+      //  });
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
     }
 });

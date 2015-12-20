@@ -534,6 +534,7 @@ body {
 .container {
     margin-top: -20px;
 }
+<<<<<<< HEAD
 
 .control-label {
     text-align : left;
@@ -584,3 +585,5 @@ body {
     background: inherit;
     left: 20px;
 }
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b

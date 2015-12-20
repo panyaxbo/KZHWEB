@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 'use strict'
 
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 (function (module) {
      
     var fileReader = function ($q, $log) {

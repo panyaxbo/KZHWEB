@@ -11,7 +11,11 @@ router.get(mongodbConfig.url.customer_type.loadAllCustomerType, function (req, r
     db.collection(mongodbConfig.mongodb.customer_type.name)
         .find()
         .toArray(function (err, items) {
+<<<<<<< HEAD
             if (err) console.log(err, err.stack.split("\n"));
+=======
+            console.log(items);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             res.json(items);
         });
 });
@@ -24,12 +28,24 @@ router.get(mongodbConfig.url.customer_type.loadCustomerTypeByObjId, function (re
         .findOne({
             '_id': o_id
         }, function (err, doc) {
+<<<<<<< HEAD
             if (err) console.log(err, err.stack.split("\n"));
             // call your callback with no error and the data
             console.log(doc);
             //     callback(null, doc);
             res.json(doc);
             
+=======
+            if (err) {
+                console.log(err);
+                //       callback(err);
+            } else {
+                // call your callback with no error and the data
+                console.log(doc);
+                //     callback(null, doc);
+                res.json(doc);
+            }
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
         });
 });
 
@@ -43,7 +59,11 @@ router.get(mongodbConfig.url.customer_type.loadCustomerTypeyById, function (req,
     db.collection(mongodbConfig.mongodb.customer_type.name)
         .find(query)
         .toArray(function (err, items) {
+<<<<<<< HEAD
             if (err) console.log(err, err.stack.split("\n"));
+=======
+            console.log(items);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             res.json(items);
         });
 });
@@ -65,6 +85,7 @@ router.get(mongodbConfig.url.customer_type.loadCustomerTypeByCustomerTypeCode, f
 router.post(mongodbConfig.url.customer_type.createCustomerType, function (req, res) {
     var CustomerType = req.body;
     console.log('create customer type ' + CustomerType);
+<<<<<<< HEAD
     var createDate = new Date ();
     createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
     CustomerType.CreateDate = createDate;
@@ -73,6 +94,15 @@ router.post(mongodbConfig.url.customer_type.createCustomerType, function (req, r
         .insert(CustomerType,
             function (err, result) {
                 if (err) console.log(err, err.stack.split("\n"));
+=======
+    var curDate = new Date ();
+    curDate.setHours ( curDate.getHours() + 7 );// GMT Bangkok +7
+    customer_type.CreateDate = curDate;
+    db.collection(mongodbConfig.mongodb.customer_type.name)
+        .insert(CustomerType,
+            function (error, result) {
+                if (error) throw error
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 res.json(result);
             });
 });
@@ -93,12 +123,20 @@ router.post(mongodbConfig.url.customer_type.updateCustomerType, function (req, r
                     'CustomerTypeNameEn': CustomerType.CustomerTypeNameEn,
                     'CustomerTypeNameCn': CustomerType.CustomerTypeNameCn,
                     'PriceType': CustomerType.PriceType,
+<<<<<<< HEAD
                     'UpdateBy' : CustomerType.UpdateBy,
                     'UpdateDate' : updateDate
                 }
             },
             function (err, result) {
                 if (err) console.log(err, err.stack.split("\n"));
+=======
+                    'UpdateDate' : updateDate
+                }
+            },
+            function (error, result) {
+                if (error) throw error
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
                 console.log(result.CustomerTypeNameEn);
                 res.json(result);
             });
@@ -112,8 +150,13 @@ router.get(mongodbConfig.url.customer_type.deleteCustomerTypeByCustomerTypeId, f
     db.collection(mongodbConfig.mongodb.customer_type.name)
         .remove({
             _id: o_id
+<<<<<<< HEAD
         }, function (err, result) {
             if (err) console.log(err, err.stack.split("\n"));
+=======
+        }, function (error, result) {
+            if (error) throw error
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             res.json(result);
         });
 });

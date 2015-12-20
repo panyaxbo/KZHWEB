@@ -12,13 +12,21 @@ var multipartMiddleware = multipart();
 router.post("/uploadUserImage/:UserId/:Username", multipartMiddleware,  function (req, res) {
 	var UserId = req.params.UserId;
 	var Username = req.params.Username;
+<<<<<<< HEAD
 //    console.log(req.body, req.files.file);
+=======
+    console.log(req.body, req.files.file);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 
     var o_id = bson.BSONPure.ObjectID(UserId);
     var gfs = grid(db, mongodb);
     var uploadDir = 'upload/user/';
     var fileExt = getFileExtension(req.files.file.originalFilename);
+<<<<<<< HEAD
 //    console.log('fileExt ' + fileExt);
+=======
+    console.log('fileExt ' + fileExt);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 
     //Remove exist image first
     db.collection('fs.files')
@@ -118,9 +126,14 @@ router.get("/downloadUserImageProfile/:UserId/:Username", multipartMiddleware,  
    .find({ "metadata.refId" : o_id})
    .toArray(function(err, files) {
 	    
+<<<<<<< HEAD
 		if (err) {
 			res.sendStatus(500);
 		}
+=======
+		if (err) throw err;
+		console.log(files);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 		if (files) {
 			files.forEach(function(file) {
 				var fileExt = getFileExtension(file.metadata.originalFilename);
@@ -156,12 +169,19 @@ router.get("/downloadUserImageThumbnail/:UserId/:Username", multipartMiddleware,
 	db.collection('fs.files')
    .find({ "metadata.refId" : o_id})
    .toArray(function(err, files) {
+<<<<<<< HEAD
 		if (err) {
 			res.sendStatus(500);
 		}
 		if (files) {
 			files.forEach(function(file) {
 
+=======
+		if (err) throw err;
+		console.log(files);
+		if (files) {
+			files.forEach(function(file) {
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 				var fileExt = getFileExtension(file.metadata.originalFilename);
 			    var readstream = fs.createReadStream('upload/user/' + Username + '.' + fileExt );
 				var bufs = [];
@@ -199,9 +219,13 @@ router.post("/uploadProductImage/:ProductId/:ProductCode", multipartMiddleware, 
         .remove({
             filename: ProductCode
         }, function (error, result) {
+<<<<<<< HEAD
             if (error) {
 				res.sendStatus(500);
 			}
+=======
+            if (error) throw error
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
             // streaming to gridfs
 		    // storing image in fs.files
 		   var writestream = gfs.createWriteStream({
@@ -220,9 +244,13 @@ router.post("/uploadProductImage/:ProductId/:ProductCode", multipartMiddleware, 
 		    db.collection('fs.files')
 		    .find({ "metadata.refId" : o_id})
 		    .toArray(function(err, file) {
+<<<<<<< HEAD
 				if (err) {
 					res.sendStatus(500);
 				}
+=======
+				if (err) throw err;
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 				if (file) {
 					var image_id = file._id;
 					db.collection(mongodbConfig.mongodb.product.name)
@@ -274,6 +302,7 @@ router.get("/downloadProductImageThumbnail/:ProductId/:ProductCode", multipartMi
 	db.collection('fs.files')
    .find({ "metadata.refId" : o_id})
    .toArray(function(err, files) {
+<<<<<<< HEAD
 		if (err) {
 			res.sendStatus(500);
 		}
@@ -301,6 +330,34 @@ router.get("/downloadProductImageThumbnail/:ProductId/:ProductCode", multipartMi
     		});
 		}   	
 	
+=======
+		if (err) throw err;
+		console.log(files);
+		if (files) {
+			files.forEach(function(file) {
+				var fileExt = getFileExtension(file.metadata.originalFilename);
+				console.log(ProductCode + fileExt);
+			    var readstream = fs.createReadStream('upload/product/' + ProductCode + '.' + fileExt);
+				var bufs = [];
+				readstream
+				.on('data', function(chunk) {
+				    bufs.push(chunk);
+				})
+				.on('end', function() { // done
+				    var fbuf = Buffer.concat(bufs);
+				    var base64 = (fbuf.toString('base64'));
+					console.log('data image url ' + base64);    
+				    res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive">');
+				});
+    		});
+		}   	
+	
+	//   	res.pipe(file);
+	/*	 files.forEach(function(file) {
+	      var gs = new mongodb.GridStore(db, file._id, 'r');
+	      ...
+	    });*/
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 	});
 });
 
@@ -313,12 +370,21 @@ router.get("/downloadProductImageShop/:ProductId/:ProductCode", multipartMiddlew
 	db.collection('fs.files')
    .find({ "metadata.refId" : o_id})
    .toArray(function(err, files) {
+<<<<<<< HEAD
 		if (err) {
 			res.sendStatus(500);
 		}
 		if (files) {
 			files.forEach(function(file) {
 				var fileExt = getFileExtension(file.metadata.originalFilename);
+=======
+		if (err) throw err;
+		console.log(files);
+		if (files) {
+			files.forEach(function(file) {
+				var fileExt = getFileExtension(file.metadata.originalFilename);
+				console.log(ProductCode + fileExt);
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 			    var readstream = fs.createReadStream('upload/product/' + ProductCode + '.' + fileExt);
 				var bufs = [];
 				readstream
@@ -327,6 +393,7 @@ router.get("/downloadProductImageShop/:ProductId/:ProductCode", multipartMiddlew
 				})
 				.on('end', function() { // done
 				    var fbuf = Buffer.concat(bufs);
+<<<<<<< HEAD
 				    var base64 = (fbuf.toString('base64')); 
 				    res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive" style="max-height: 200px;max-width: 200px;margin: 0 auto;">');
 				})
@@ -336,6 +403,20 @@ router.get("/downloadProductImageShop/:ProductId/:ProductCode", multipartMiddlew
 				});
     		});
 		}   	
+=======
+				    var base64 = (fbuf.toString('base64'));
+					console.log('data image url ' + base64);    
+				    res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive" style="max-height: 200px;max-width: 200px;margin: 0 auto;">');
+				});
+    		});
+		}   	
+	
+	//   	res.pipe(file);
+	/*	 files.forEach(function(file) {
+	      var gs = new mongodb.GridStore(db, file._id, 'r');
+	      ...
+	    });*/
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 	});
 });
 

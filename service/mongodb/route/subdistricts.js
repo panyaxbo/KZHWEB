@@ -27,7 +27,10 @@ router.get(mongodbConfig.url.subdistrict.loadSubDistrictBySubDistrictId, functio
         .toArray(function (err, subdistricts) {
             res.json(subdistricts);
         });
+<<<<<<< HEAD
         
+=======
+>>>>>>> 42da08fcd299a088efc5842e561276d485455a6b
 });
 
 module.exports = router;
