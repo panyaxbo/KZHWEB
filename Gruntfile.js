@@ -151,10 +151,13 @@ module.exports = function (grunt) {
                 reporter: require('jshint-stylish')
             },
             all: [
-        'Gruntfile.js',
-        '<%= config.app %>/scripts/{,*/}*.js',
-        '!<%= config.app %>/scripts/vendor/*',
-        'test/spec/{,*/}*.js'
+            'Gruntfile.js',
+            '<%= config.app %>/scripts/{,*/}*.js',
+            '<%= config.app %>/controllers/{,*/}*.js',
+            '<%= config.app %>/constants/{,*/}*.js',
+            '<%= config.app %>/directives/{,*/}*.js',
+            '!<%= config.app %>/scripts/vendor/*',
+            'test/spec/{,*/}*.js'
       ]
         },
 
@@ -198,6 +201,9 @@ module.exports = function (grunt) {
                 files: {
                     src: [
             '<%= config.dist %>/scripts/{,*/}*.js',
+            '<%= config.dist %>/controllers/{,*/}*.js',
+            '<%= config.dist %>/constants/{,*/}*.js',
+            '<%= config.dist %>/directives/{,*/}*.js',
             '<%= config.dist %>/styles/{,*/}*.css',
             '<%= config.dist %>/images/{,*/}*.*',
             '<%= config.dist %>/styles/fonts/{,*/}*.*',
@@ -398,8 +404,8 @@ module.exports = function (grunt) {
     'concurrent:dist',
     'autoprefixer',
     'concat',
-    'cssmin',
-    'uglify',
+  //  'cssmin',
+  //  'uglify',
     'copy:dist',
     'rev',
     'usemin',
