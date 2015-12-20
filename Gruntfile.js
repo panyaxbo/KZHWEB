@@ -444,7 +444,7 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
-    }
+    },
 
     buildcontrol: {
       options: {
@@ -461,7 +461,7 @@ module.exports = function (grunt) {
       },
       heroku: {
         options: {
-          remote: 'git@heroku.com:example-heroku-webapp-1988.git',
+          remote: 'git@heroku.com:shrouded-waters-7224.git',
           branch: 'master',
           tag: pkg.version
         }
