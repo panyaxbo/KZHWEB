@@ -18,6 +18,15 @@ var oauthConfig = require('../oauth/oauth-config.js');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var GooglePlusStrategy = require('passport-google-plus').Strategy;
 
+/*
+var TwitterStrategy = require('passport-twitter').Strategy;
+var InstagramStrategy = require('passport-instagram').Strategy;
+var LinkedinStrategy = require('passport-linkedin').Strategy;
+var GithubStrategy = require('passport-github').Strategy;
+var DropboxStrategy = require('passport-dropbox').Strategy;
+var FoursquareStrategy = require('passport-foursquare').Strategy;
+var SoundcloudStrategy = require('passport-soundcloud').Strategy;
+*/
 var cors = require('cors');
 var index = require('./route/index');
 var appconfig = require('./route/appconfig');
@@ -80,25 +89,22 @@ app.use('/oauths', oauths);
 var port = process.env.PORT || 3000;
 
 app.listen(port, function () {
-	console.log("Start server port " + port + " is OK...");
+//	console.log("Start server port " + port + " is OK...");
 });
 
 // For localhost use
-/*
 mongodb.MongoClient.connect(mongodbConfig.connection_url + mongodbConfig.collection_name, function (err, database) {
     if (err) throw err;
 
     db = database;
 });
-*/
-// For remote MongoLab
-
+/*
 mongodb.MongoClient.connect("mongodb://kzhparts:kzhpartsadmin@ds033123.mongolab.com:33123/kzhparts", function (err, database) {
     if (err) console.log(err, err.stack.split("\n"));
     console.log(database);
     db = database;
 });
-
+*/
 process.on('uncaughtException', function (err) {
     console.log(err);
 }); 

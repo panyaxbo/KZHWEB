@@ -57,10 +57,9 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
     var message_title_error = $filter('translate')('MESSAGE.TITLE_ERROR');
 
     console.log($cookies.get('User'));
-    //   console.log($cookies.getObject('User'));
+       console.log($cookies.getObject('User'));
     if ($cookies.getObject('User') !== undefined) {
-    //  console.log('wanna eat cookie');
-        $scope.User = $cookies.getObject('User');
+      console.log('wanna eat cookie');
         $scope.User.Firstname = $cookies.getObject('User').Firstname;
          $scope.User.Lastname = $cookies.getObject('User').Lastname;
       
@@ -970,7 +969,7 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
 
     $scope.ShipmentProcess = function () {
         console.log("shipment..");
-        if ($scope.IsUserInSession()) {
+        if ($scope.IsUserIsSession()) {
           console.log('user lod in ');
           $("#CartModal").modal("toggle");
 
@@ -1061,10 +1060,10 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
         }
     };
 
-    $scope.IsUserInSession = function()  {
+    $scope.IsUserIsSession = function()  {
       if (!$scope.User || $scope.User.Id.length <= 0) {
         return false;
-      } else if ($scope.User || $scope.User.Id.length > 0) {
+      } else if ($scope.User.Id.length > 0) {
         return true;
       }
     }

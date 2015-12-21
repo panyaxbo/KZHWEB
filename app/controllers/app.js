@@ -71,7 +71,6 @@ app.config(function ($translateProvider) {
                 DEFINITION : 'ข้อกำหนด',
                 CUSTOMER: 'การสั่งซื้อของลูกค้า',
                 ABOUT: 'เกี่ยวกับเรา',
-                CONTACT: 'ติดต่อเรา',
                 ACCOUNT: 'ตั้งค่าบัญชี',
                 HISTORY: 'ประวัติการซื้อ',
                 GENERAL: 'ตั้งค่าทั่วไป',
@@ -150,36 +149,6 @@ app.config(function ($translateProvider) {
         },
         BODY: {
             NAV: {},
-            CAROUSEL : {
-                ONE : {
-                    TITLE : '',
-                    TEXT : ''
-                },
-                TWO : {
-                    TITLE : '',
-                    TEXT : ''
-                },
-                THREE : {
-                    TITLE : '',
-                    TEXT : ''
-                },
-                FOUR : {
-                    TITLE : '',
-                    TEXT : ''
-                },
-                FIVE : {
-                    TITLE : '',
-                    TEXT : ''
-                },
-                SIX : {
-                    TITLE : '',
-                    TEXT : ''
-                },
-                SEVEN : {
-                    TITLE : '',
-                    TEXT : ''
-                }
-            },
             SECTION: {
                 PRODUCT: {
                     QTY: 'จำนวน',
@@ -205,9 +174,6 @@ app.config(function ($translateProvider) {
                 ABOUT: {
                     HEAD: "เกี่ยวกับเรา"
                 },
-                CONTACT: {
-                    HEAD: "ติดต่อเรา"
-                },
                 GOOGLE_MAP: {
                     HEAD: "แผนที่",
                     ADDRESS1: '30-32 หมู่. 2 ',
@@ -227,7 +193,6 @@ app.config(function ($translateProvider) {
                         STEP : 'ที่อยู่จัดส่งสินค้า',
                         BILL_STEP : 'ที่อยู่จัดส่งสินค้า :',
                         BILL_NAME: 'ชื่อ :',
-                        BILL_EMAIL: 'อีเมล :',
                         BILL_ADDRESS: 'ที่อยู่ :',
                         BILL_PROVINCE: 'จังหวัด :',
                         BILL_SELECT_PROVINCE: '--- เลือก จังหวัด ---',
@@ -717,7 +682,6 @@ app.config(function ($translateProvider) {
                 PAYMENT_N_DELIVERY: 'Payment & Delivery',
                 DEFINITION : 'Definition',
                 ABOUT: 'About us',
-                CONTACT: 'Contact us',
                 CUSTOMER: 'Customer Order',
                 ACCOUNT: 'Account Setting',
                 HISTORY: 'Purchase History',
@@ -814,15 +778,11 @@ app.config(function ($translateProvider) {
                 ABOUT : {
                     HEAD : "About us"
                 },
-                CONTACT: {
-                    HEAD : "Contact us"
-                },
                 SHIPMENT: {
                     HEAD : "Shipment",
                     BILLING : {
                         STEP : 'Billing Address',
                         NAME: 'Name',
-                        BILL_EMAIL: 'Email :',
                         ADDRESS: 'Address',
                         PROVINCE: 'Province',
                         SELECT_PROVINCE: '--- Choose Province ---',
@@ -1198,7 +1158,6 @@ app.config(function ($translateProvider) {
                 PAYMENT_N_DELIVERY: '付款 & 交貨',
                 DEFINITION : '條款',
                 ABOUT: '關於我們',
-                CONTACT: '聯繫我們',
                 CUSTOMER: '客戶下單',
                 ACCOUNT: '賬戶設置',
                 HISTORY: '購買歷史',
@@ -1294,9 +1253,6 @@ app.config(function ($translateProvider) {
                 ABOUT : {
                     HEAD: "關於我們"
                 },
-                CONTACT: {
-                    HEAD: "聯繫我們"
-                },
                 GOOGLE_MAP: {
                     HEAD : "裝船",
                     ADDRESS1: '30-32 隊. 2 Thepnimit 路 ',
@@ -1315,7 +1271,6 @@ app.config(function ($translateProvider) {
                     BILLING : {
                         STEP : '帳單地址',
                         NAME: '名稱',
-                        BILL_EMAIL: '電子郵件',
                         ADDRESS: '地址',
                         PROVINCE: '省',
                         SELECT_PROVINCE: '--- 選擇 省 ---',
