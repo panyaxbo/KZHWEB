@@ -13,20 +13,8 @@ global.url = require('url');
 global.db;
 global.collection;
 
-var passport = require('passport');
 var oauthConfig = require('../oauth/oauth-config.js');
-var FacebookStrategy = require('passport-facebook').Strategy;
-var GooglePlusStrategy = require('passport-google-plus').Strategy;
 
-/*
-var TwitterStrategy = require('passport-twitter').Strategy;
-var InstagramStrategy = require('passport-instagram').Strategy;
-var LinkedinStrategy = require('passport-linkedin').Strategy;
-var GithubStrategy = require('passport-github').Strategy;
-var DropboxStrategy = require('passport-dropbox').Strategy;
-var FoursquareStrategy = require('passport-foursquare').Strategy;
-var SoundcloudStrategy = require('passport-soundcloud').Strategy;
-*/
 var cors = require('cors');
 var index = require('./route/index');
 var appconfig = require('./route/appconfig');
@@ -87,26 +75,58 @@ app.use('/bcrypts', bcrypts);
 app.use('/oauths', oauths);
 
 var port = process.env.PORT || 3000;
+var mongolab_uri = process.env.MONGOLAB_URI || 'mongodb://aaa:bbb@ds033123.mongolab.com:33123/kzhparts';
+var heroku_mongolab_uri = process.env.MONGOLAB_URI || 'mongodb://heroku_dmj53qsq:snsjuqkbr1cp1unjoibhem0iob@ds033915.mongolab.com:33915/heroku_dmj53qsq';
 
 app.listen(port, function () {
 //	console.log("Start server port " + port + " is OK...");
 });
-
+app.on('close', function() {
+	console.log('gonna close leaw!!!');
+  app.listen(port);
+});
 // For localhost use
+
 mongodb.MongoClient.connect(mongodbConfig.connection_url + mongodbConfig.collection_name, function (err, database) {
     if (err) throw err;
 
     db = database;
 });
+
 /*
-mongodb.MongoClient.connect("mongodb://kzhparts:kzhpartsadmin@ds033123.mongolab.com:33123/kzhparts", function (err, database) {
+mongodb.MongoClient.connect(mongolab_uri, function (err, database) {
     if (err) console.log(err, err.stack.split("\n"));
     console.log(database);
     db = database;
 });
 */
+/*
+mongodb.MongoClient.connect(heroku_mongolab_uri, function (err, database) {
+    if (err) console.log(err, err.stack.split("\n"));
+    console.log(database);
+    db = database;
+});
+*/
+app.use(function(err, req, res, next) {
+    res.end(err.message); // this catches the error!!
+});
+
 process.on('uncaughtException', function (err) {
-    console.log(err);
+    console.log(err, err.stack.split("\n"));
 }); 
+
+process.on( 'SIGTERM', function () {
+
+   server.close(function () {
+     console.log( "Closed out remaining connections.");
+     // Close db connections, etc.
+   });
+
+   setTimeout( function () {
+     console.error("Could not close connections in time, forcefully shutting down");
+     process.exit(1); 
+   }, 30*1000);
+
+});
 
 module.exports = app;

@@ -282,13 +282,15 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                   if (isConfirm) {
                     $scope.$apply(function(){
                         var someimage = document.getElementById('ThumbnailProductImage_'+SelectedProduct.ProductCode);
+                        
                         var myimg = someimage.getElementsByTagName('img')[2]; //[0] stripe-new [1] stripe-sale
-                        var image_tag = myimg.cloneNode(true); // Must clone because image thumbnail will disappear
+                        if (myimg !== undefined) {
+                            var image_tag = myimg.cloneNode(true); // Must clone because image thumbnail will disappear
 
-                        image_tag.setAttribute("width", "50px");
-                        image_tag.setAttribute("height", "50px");
-                        $('#CartProduct_'+SelectedProduct.ProductCode).append(image_tag);
-
+                            image_tag.setAttribute("width", "50px");
+                            image_tag.setAttribute("height", "50px");
+                            $('#CartProduct_'+SelectedProduct.ProductCode).append(image_tag);
+                        }
                     });
                   } else {
                         swal("Cancelled", "Your imaginary file is safe :)", "error");

@@ -12,7 +12,16 @@ router.get(mongodbConfig.url.province.loadAllProvince, function (req, res) {
         	 "$query":{}, "$orderby":{ "Province": 1 }
         })
         .toArray(function (err, provinces) {
-            res.json(provinces);
+        	console.log('has provinces');
+        	if (provinces) {
+	            res.json(provinces);
+	        } else if (!provinces) {
+	        	return;
+	        } else {
+	        	console.log(error, error.stack.split("\n"));
+	        	res.sendStatus(500);
+                return;
+	        }
         });
 });
 

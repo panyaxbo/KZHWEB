@@ -1,8 +1,7 @@
 'use strict';
 
-var app = angular.module('KZHWEB', ['ngAnimate', 'ngFileUpload', '720kb.datepicker','blockUI'
-    ,'ngDialog', 'ngPasswordStrength', 'ngTable','flow'
-    ,'pascalprecht.translate', 'vcRecaptcha','autocomplete', 'ngCookies']);
+var app = angular.module('KZHWEB', ['ngRoute', 'ngAnimate', 'ngFileUpload', '720kb.datepicker','blockUI'
+    ,'ngDialog', 'ngPasswordStrength', 'ngTable','pascalprecht.translate', 'vcRecaptcha','autocomplete', 'ngCookies']);
 
 app.directive('ngHasfocus', function() {
     return function(scope, element, attrs) {
@@ -71,6 +70,7 @@ app.config(function ($translateProvider) {
                 DEFINITION : 'ข้อกำหนด',
                 CUSTOMER: 'การสั่งซื้อของลูกค้า',
                 ABOUT: 'เกี่ยวกับเรา',
+                CONTACT: 'ติดต่อเรา',
                 ACCOUNT: 'ตั้งค่าบัญชี',
                 HISTORY: 'ประวัติการซื้อ',
                 GENERAL: 'ตั้งค่าทั่วไป',
@@ -149,6 +149,36 @@ app.config(function ($translateProvider) {
         },
         BODY: {
             NAV: {},
+            CAROUSEL : {
+                ONE : {
+                    TITLE : '',
+                    TEXT : '',
+                },
+                TWO : {
+                    TITLE : '',
+                    TEXT : '',
+                },
+                THREE : {
+                    TITLE : '',
+                    TEXT : '',
+                },
+                FOUR : {
+                    TITLE : '',
+                    TEXT : '',
+                },
+                FIVE : {
+                    TITLE : '',
+                    TEXT : '',
+                },
+                SIX : {
+                    TITLE : '',
+                    TEXT : '',
+                },
+                SEVEN : {
+                    TITLE : '',
+                    TEXT : '',
+                }
+            },
             SECTION: {
                 PRODUCT: {
                     QTY: 'จำนวน',
@@ -174,6 +204,9 @@ app.config(function ($translateProvider) {
                 ABOUT: {
                     HEAD: "เกี่ยวกับเรา"
                 },
+                CONTACT: {
+                    HEAD: "ติดต่อเรา"
+                },
                 GOOGLE_MAP: {
                     HEAD: "แผนที่",
                     ADDRESS1: '30-32 หมู่. 2 ',
@@ -191,10 +224,11 @@ app.config(function ($translateProvider) {
                     HEAD : "การขนส่ง",
                     BILLING : {
                         STEP : 'ที่อยู่จัดส่งสินค้า',
-                        BILL_STEP : 'ที่อยู่จัดส่งสินค้า :',
-                        BILL_NAME: 'ชื่อ :',
-                        BILL_ADDRESS: 'ที่อยู่ :',
-                        BILL_PROVINCE: 'จังหวัด :',
+                        BILL_STEP : 'ที่อยู่จัดส่งสินค้า',
+                        BILL_NAME: 'ชื่อ',
+                        BILL_EMAIL: 'อีเมล',
+                        BILL_ADDRESS: 'ที่อยู่',
+                        BILL_PROVINCE: 'จังหวัด',
                         BILL_SELECT_PROVINCE: '--- เลือก จังหวัด ---',
                         BILL_DISTRICT: 'เขต/อำเภอ :',
                         BILL_SELECT_DISTRICT: '--- เลือก เขต/อำเภอ ---',
@@ -202,21 +236,21 @@ app.config(function ($translateProvider) {
                         BILL_SELECT_SUBDISTRICT: '--- เลือก แขวง/ตำบล ---',
                         BILL_ZIPCODE: 'รหัสไปรษณีย์ :',
                         BILL_SELECT_ZIPCODE: '--- เลือก ไปรษณีย์ ---',
-                        BILL_TEL_NO: 'โทรศัพท์:',
-                        BILL_MOBILE_NO: 'มือถือ :',
+                        TEL_NO: 'โทรศัพท์',
+                        MOBILE_NO: 'มือถือ',
 
                         SAME_ADDRESS : "ที่อยู่เดียวกับที่จัดส่ง",
 
-                        RO_STEP : 'ที่อยู่ที่แสดงในใบเสร็จ :',
-                        RO_NAME: 'ชื่อ :',
-                        RO_ADDRESS: 'ที่อยู่:',
-                        RO_PROVINCE: 'จังหวัด :',
+                        RO_STEP : 'ที่อยู่ที่แสดงในใบเสร็จ ',
+                        RO_NAME: 'ชื่อ ',
+                        RO_ADDRESS: 'ที่อยู่',
+                        RO_PROVINCE: 'จังหวัด',
                         RO_SELECT_PROVINCE: '--- เลือก จังหวัด ---',
-                        RO_DISTRICT: 'เขต/อำเภอ :',
+                        RO_DISTRICT: 'เขต/อำเภอ',
                         RO_SELECT_DISTRICT: '--- เลือก เขต/อำเภอ ---',
-                        RO_SUBDISTRICT: 'แขวง/ตำบล :',
+                        RO_SUBDISTRICT: 'แขวง/ตำบล',
                         RO_SELECT_SUBDISTRICT: '--- เลือก แขวง/ตำบล ---',
-                        RO_ZIPCODE: 'รหัสไปรษณีย์ :',
+                        RO_ZIPCODE: 'รหัสไปรษณีย์',
                         RO_SELECT_ZIPCODE: '--- เลือก ไปรษณีย์ ---',
 
                         BUTTON_NEXT: 'ขั้นตอนต่อไป'
@@ -682,6 +716,7 @@ app.config(function ($translateProvider) {
                 PAYMENT_N_DELIVERY: 'Payment & Delivery',
                 DEFINITION : 'Definition',
                 ABOUT: 'About us',
+                CONTACT : 'Contact us',
                 CUSTOMER: 'Customer Order',
                 ACCOUNT: 'Account Setting',
                 HISTORY: 'Purchase History',
@@ -778,20 +813,42 @@ app.config(function ($translateProvider) {
                 ABOUT : {
                     HEAD : "About us"
                 },
+                CONTACT: {
+                    HEAD: "Contact us"
+                },
                 SHIPMENT: {
                     HEAD : "Shipment",
                     BILLING : {
                         STEP : 'Billing Address',
-                        NAME: 'Name',
-                        ADDRESS: 'Address',
-                        PROVINCE: 'Province',
-                        SELECT_PROVINCE: '--- Choose Province ---',
-                        DISTRICT: 'District',
-                        SELECT_DISTRICT: '--- Choose District ---',
-                        SUBDISTRICT: 'Sub-District',
-                        SELECT_SUBDISTRICT: '--- Choose Sub-District ---',
-                        ZIPCODE: 'ZipCode',
-                        SELECT_ZIPCODE: '--- Choose ZipCode ---',
+                        BILL_STEP : 'Billing Address',
+                        BILL_NAME: 'Name',
+                        BILL_EMAIL: 'Email',
+                        BILL_ADDRESS: 'Address',
+                        BILL_PROVINCE: 'Province',
+                        BILL_SELECT_PROVINCE: '--- Choose Province ---',
+                        BILL_DISTRICT: 'District',
+                        BILL_SELECT_DISTRICT: '--- Choose District ---',
+                        BILL_SUBDISTRICT: 'Sub-District',
+                        BILL_SELECT_SUBDISTRICT: '--- Choose Sub-District ---',
+                        BILL_ZIPCODE: 'ZipCode',
+                        BILL_SELECT_ZIPCODE: '--- Choose ZipCode ---',
+                        TEL_NO: 'Tel No',
+                        MOBILE_NO: 'Mobile No',
+
+                        SAME_ADDRESS : "Same as billing address",
+
+                        RO_STEP : 'Receipt Address',
+                        RO_NAME: 'Name',
+                        RO_ADDRESS: 'Address',
+                        RO_PROVINCE: 'Province',
+                        RO_SELECT_PROVINCE: '--- Choose Province ---',
+                        RO_DISTRICT: 'District',
+                        RO_SELECT_DISTRICT: '--- Choose District ---',
+                        RO_SUBDISTRICT: 'Sub-District',
+                        RO_SELECT_SUBDISTRICT: '--- Choose Sub-District ---',
+                        RO_ZIPCODE: 'ZipCode',
+                        RO_SELECT_ZIPCODE: '--- Choose ZipCode ---',
+
                         BUTTON_NEXT: 'Next'
                     },
                     PAYMENT: {
@@ -1158,6 +1215,7 @@ app.config(function ($translateProvider) {
                 PAYMENT_N_DELIVERY: '付款 & 交貨',
                 DEFINITION : '條款',
                 ABOUT: '關於我們',
+                CONTACT: '聯繫我們',
                 CUSTOMER: '客戶下單',
                 ACCOUNT: '賬戶設置',
                 HISTORY: '購買歷史',
@@ -1253,6 +1311,9 @@ app.config(function ($translateProvider) {
                 ABOUT : {
                     HEAD: "關於我們"
                 },
+                CONTACT: {
+                    HEAD: "聯繫我們"
+                },
                 GOOGLE_MAP: {
                     HEAD : "裝船",
                     ADDRESS1: '30-32 隊. 2 Thepnimit 路 ',
@@ -1270,17 +1331,37 @@ app.config(function ($translateProvider) {
                     HEAD : "裝船",
                     BILLING : {
                         STEP : '帳單地址',
-                        NAME: '名稱',
-                        ADDRESS: '地址',
-                        PROVINCE: '省',
-                        SELECT_PROVINCE: '--- 選擇 省 ---',
-                        DISTRICT: '區',
-                        SELECT_DISTRICT: '--- 選擇 區 ---',
-                        SUBDISTRICT: '分地區',
-                        SELECT_SUBDISTRICT: '--- 選擇 分地區 ---',
-                        ZIPCODE: '郵政編碼',
-                        SELECT_ZIPCODE: '--- 選擇 郵政編碼 ---',
+                        BILL_STEP : '帳單地址',
+                        BILL_NAME: '名稱',
+                        BILL_EMAIL: '電子郵件',
+                        BILL_ADDRESS: '地址',
+                        BILL_PROVINCE: '省',
+                        BILL_SELECT_PROVINCE: '--- 選擇 省 ---',
+                        BILL_DISTRICT: '區',
+                        BILL_SELECT_DISTRICT: '--- 選擇 區 ---',
+                        BILL_SUBDISTRICT: '分地區',
+                        BILL_SELECT_SUBDISTRICT: '--- 選擇 分地區 ---',
+                        BILL_ZIPCODE: '郵政編碼',
+                        BILL_SELECT_ZIPCODE: '--- 選擇 郵政編碼 ---',
+                        TEL_NO : '電話號碼',
+                        MOBILE_NO : '手機號碼',
+
+                        SAME_ADDRESS : "與付款地址相同",
+
+                        RO_STEP : '收貨地址',
+                        RO_NAME: '名稱',
+                        RO_ADDRESS: '地址',
+                        RO_PROVINCE: '省',
+                        RO_SELECT_PROVINCE: '--- 選擇 省 ---',
+                        RO_DISTRICT: '區',
+                        RO_SELECT_DISTRICT: '--- 選擇 區 ---',
+                        RO_SUBDISTRICT: '分地區',
+                        RO_SELECT_SUBDISTRICT: '--- 選擇 分地區 ---',
+                        RO_ZIPCODE: '郵政編碼',
+                        RO_SELECT_ZIPCODE: '--- 選擇 郵政編碼 ---',
+
                         BUTTON_NEXT: '下一步'
+
                     },
                     PAYMENT: {
                         STEP : '付款',

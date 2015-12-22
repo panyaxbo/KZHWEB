@@ -1,6 +1,5 @@
 app.controller("HeaderController", function ($scope, $location, $window, $filter, $anchorScroll, Upload,$rootScope, $http, $translate,$timeout, 
-  blockUI, ngDialog, MenuService, LocaleService, ReceiptOrderService, CurrencyService, BASE_URL, $cookies, 
- vcRecaptchaService) {
+  blockUI, ngDialog, MenuService, LocaleService, ReceiptOrderService, CurrencyService, BASE_URL, $cookies, vcRecaptchaService) {
 
     $scope.Locale = "th";
     $scope.Currency = "thb";
@@ -326,12 +325,16 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
         console.log(response);
         // 
         var createAndCheckLofinSocialUrl = BASE_URL.PATH + '/users/CreateAndUpdateWithSocial';
+        
         $http.post(createAndCheckLofinSocialUrl, response)
         .success(function (data, status, headers, config) {
-
+          console.log(data);
         })
         .error(function (data, status, headers, config) {
-
+          console.log(data);
+          console.log(status);
+          console.log(headers);
+          console.log(config);
         });
     }
 
@@ -969,14 +972,14 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
 
     $scope.ShipmentProcess = function () {
         console.log("shipment..");
-        if ($scope.IsUserIsSession()) {
+        if ($scope.IsUserInSession()) {
           console.log('user lod in ');
           $("#CartModal").modal("toggle");
 
-      //    $scope.SelectedMenu = "shipment";
+          $scope.SelectedMenu = "shipment";
           
-      //    MenuService.Menu.SelectedMenu = "shipment";
-      //    $('html, body').animate({ scrollTop: $('#shipment-section').offset().top }, 'slow');
+          MenuService.Menu.SelectedMenu = "shipment";
+          $('html, body').animate({ scrollTop: $('#shipment-section').offset().top }, 'slow');
           $scope.$emit('handleHeadMenuEmit', {
               SelectedMenu: 'shipment'
           });
@@ -1060,8 +1063,8 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
         }
     };
 
-    $scope.IsUserIsSession = function()  {
-      if (!$scope.User || $scope.User.Id.length <= 0) {
+    $scope.IsUserInSession = function()  {
+      if (!$scope.User) {
         return false;
       } else if ($scope.User.Id.length > 0) {
         return true;

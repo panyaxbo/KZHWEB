@@ -10,28 +10,22 @@
     <link rel="shortcut icon" href="/images/favicon.ico">
     <link rel="stylesheet" href="/bower_components/BrandButtons/dist/brand-buttons.min.css" />
     <link rel="stylesheet" href="/bower_components/allmighty-autocomplete/style/autocomplete.css" />
-    <link rel="stylesheet" href="/bower_components/angular-block-ui/dist/angular-block-ui.css" />
     <link rel="stylesheet" href="/bower_components/angularjs-datepicker/dist/angular-datepicker.min.css" />
-    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/bower_components/fontawesome/css/font-awesome.css" />
     <link rel="stylesheet" href="/bower_components/bootstrap-social/bootstrap-social.css" />
     <link rel="stylesheet" href="/bower_components/ng-table/dist/ng-table.min.css" />
-    <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog.css" />
-    <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog-theme-default.css" />
+    <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog.min.css" />
+    <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog-theme-default.min.css" />
     <link rel="stylesheet" href="/bower_components/pnotify/pnotify.core.css" />
     <link rel="stylesheet" href="/bower_components/pnotify/pnotify.buttons.css" />
     <link rel="stylesheet" href="/bower_components/pnotify/pnotify.history.css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" />
     <link rel="stylesheet" href="/bower_components/sweetalert/dist/sweetalert.css" />
-    <link rel="stylesheet" href="/bower_components/bootstrap-social/bootstrap-social.css" />
-    <link rel="stylesheet" href="/bower_components/angular-block-ui/dist/angular-block-ui.css" />
-    <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog.css" />
-    <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog-theme-default.css" />
-    <link rel="stylesheet" href="/bower_components/angularjs-datepicker/dist/angular-datepicker.min.css" />
-    <link rel="stylesheet" href="/bower_components/ng-table/dist/ng-table.css">
+    <link rel="stylesheet" href="/bower_components/angular-block-ui/dist/angular-block-ui.min.css" />
+    <link rel="stylesheet" href="/bower_components/ng-table/dist/ng-table.min.css">
     <link rel="stylesheet" href="/styles/bootstrap-magnify.css">
     <link rel="stylesheet" href="/styles/search.css">
-    <link rel="stylesheet" href="/bower_components/pnotify/pnotify.core.css">
     <link rel="stylesheet" href="/styles/step.css">
     <link rel="import" href="/bower_components/number-format/src/number-format.html">
     <!-- build:css(.tmp) styles/main.css -->
@@ -67,22 +61,14 @@
                 <li>
                     <a href="#product-section" ng-click="SelectedHeadMenu('product')" class="head-menu">{{'HEAD.MENU.PRODUCT' | translate}}</a>
                 </li>
-             <!--   <li>
-                    <a href="#webboard-section" ng-click="SelectedHeadMenu('webboard')" class="head-menu">{{'HEAD.MENU.WEBBOARD' | translate}}</a>
-                </li>
-                
                 <li>
-                    <a href="#payment-section" ng-click="SelectedHeadMenu('payment')" class="head-menu">{{'HEAD.MENU.PAYMENT' | translate}}</a>
-                </li>
-                <li>
-                    <a href="#payment-section" ng-click="SelectedHeadMenu('payment')" class="head-menu">{{'HEAD.MENU.DELIVERY' | translate}}</a>
+                    <a href="#payment-section" ng-click="SelectedHeadMenu('payment')" class="head-menu">{{'HEAD.MENU.PAYMENT_N_DELIVERY' | translate}}</a>
                 </li>
                 <li>
                     <a href="#about-section" ng-click="SelectedHeadMenu('about')" class="head-menu">{{'HEAD.MENU.ABOUT' | translate}}</a>
                 </li>
--->
                 <li>
-                    <a href="#payment-section" ng-click="SelectedHeadMenu('payment')" class="head-menu">{{'HEAD.MENU.PAYMENT_N_DELIVERY' | translate}}</a>
+                    <a href="#contact-section" ng-click="SelectedHeadMenu('contact')" class="head-menu">{{'HEAD.MENU.CONTACT' | translate}}</a>
                 </li>
                 <li>
                     <div>
@@ -471,6 +457,7 @@
                                                         </form>
                                                     </div>
                                                     <div class="form-group">
+                                                        <label class="control-label"></label>
                                                         <div class="controls">
                                                             <label class="checkbox"><input type="checkbox">
                                                             {{'HEAD.MODAL_SIGNIN.TERM_SERVICE_LABEL' | translate}} 
@@ -592,55 +579,60 @@
                 </ol>
                 <div class="carousel-inner">
                     <div class="item active" align="center">
-                        <img src="/images/kzh01.jpg" alt="...">
+                        <img src="/images/kzh01.jpg" alt="{{'BODY.CAROUSEL.ONE.TOOLTIP' | translate}}">
                         <div class="carousel-caption">
-                            <h3>AAAAAA</h3>
-                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                            <h3>{{'BODY.CAROUSEL.ONE.TITLE' | translate}}</h3>
+                            <p>{{'BODY.CAROUSEL.ONE.TEXT' | translate}}</p>
                         </div>
                     </div>
                     <div class="item" align="center">
                         <img src="/images/kzh02.jpg" alt="...">
                         <div class="carousel-caption ">
-                            <h3>AAAAAA</h3>
-                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                            <h3>{{'BODY.CAROUSEL.TWO.TITLE' | translate}}</h3>
+                            <p>{{'BODY.CAROUSEL.TWO.TEXT' | translate}}</p>
                         </div>
                     </div>
                     <div class="item" align="center">
                         <img src="/images/kzh03.jpg" alt="...">
                         <div class="carousel-caption ">
-
+                            <h3>{{'BODY.CAROUSEL.THREE.TITLE' | translate}}</h3>
+                            <p>{{'BODY.CAROUSEL.THREE.TEXT' | translate}}</p>
                         </div>
                     </div>
                     <div class="item" align="center">
                         <img src="/images/kzh04.jpg" alt="...">
                         <div class="carousel-caption ">
-
+                            <h3>{{'BODY.CAROUSEL.FOUR.TITLE' | translate}}</h3>
+                            <p>{{'BODY.CAROUSEL.FOUR.TEXT' | translate}}</p>
                         </div>
                     </div>
                     <div class="item" align="center">
                         <img src="/images/kzh05.jpg" alt="...">
                         <div class="carousel-caption ">
-
+                            <h3>{{'BODY.CAROUSEL.FIVE.TITLE' | translate}}</h3>
+                            <p>{{'BODY.CAROUSEL.FIVE.TEXT' | translate}}</p>
                         </div>
                     </div>
                     <div class="item" align="center">
                         <img src="/images/kzh06.jpg" alt="...">
                         <div class="carousel-caption ">
-
+                            <h3>{{'BODY.CAROUSEL.SIX.TITLE' | translate}}</h3>
+                            <p>{{'BODY.CAROUSEL.SIX.TEXT' | translate}}</p>
                         </div>
                     </div>
                     <div class="item" align="center">
                         <img src="/images/kzh07.jpg" alt="...">
                         <div class="carousel-caption ">
-
+                            <h3>{{'BODY.CAROUSEL.SEVEN.TITLE' | translate}}</h3>
+                            <p>{{'BODY.CAROUSEL.SEVEN.TEXT' | translate}}</p>
                         </div>
                     </div>
                 </div>
                 <!-- Controls -->
-                <a class="left carousel-control " href="#carousel-example-generic" role="button" data-slide="prev">
+                <a class="left carousel-control" data-target="#carousel-example-generic" role="button" data-slide="prev" style="cursor:pointer">
                     <span class="glyphicon glyphicon-chevron-left"></span>
                 </a>
-                <a class="right carousel-control " href="#carousel-example-generic" role="button" data-slide="next">
+                <a class="right carousel-control" data-target="#carousel-example-generic" role="button" data-slide="next" style="cursor:pointer">
                     <span class="glyphicon glyphicon-chevron-right"></span>
                 </a>
             </div>
@@ -666,7 +658,7 @@
                     <tr>
                         <td style="center">
                             <a href="#google-map-section" ng-click="SelectedBodyMenu('google-map')">
-                             <img src="/images/google-map.png" width="100px " height="50px">
+                             <img src="/images/google-map.png" width="100px " height="65px" class="img-responsive">
                             </a>
                         </td>
                     </tr>
@@ -677,7 +669,7 @@
                     </tr>
                     <tr>
                         <td style="center">
-                            <a href="#thai-post-section" ng-click="SelectedBodyMenu('thai-post')"><img src="/images/thaipost.png" width="100px" height="50px">
+                            <a href="#thai-post-section" ng-click="SelectedBodyMenu('thai-post')"><img src="/images/thaipost.png" width="100px" height="65px" class="img-responsive">
                             </a>
                         </td>
                     </tr>
@@ -805,67 +797,15 @@
                 <!-- <div> payment method -->
                 <div id="payment-section"  name="payment-section" class="section" ng-show="SelectedMenu === 'payment'">
                     <h3>{{'BODY.SECTION.PAYMENT.HEAD' | translate}}</h3>
-                    <table>
-                        <tr>
-                            <td>
-                                1.
-                            </td>
-                            <td>
-                                <img src="/images/bbl.png " width="40px " height="40px" />
-                            </td>
-                            <td translate="BODY.SECTION.PAYMENT.BBL_ACC ">
-                                หมายเลข 440-99934-3454
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                2.
-                            </td>
-                            <td>
-                                <img src="/images/kbank.png " width="40px " height="40px" />
-                            </td>
-                            <td translate="BODY.SECTION.PAYMENT.KBANK_ACC">
-                                หมายเลข 440-99934-3454
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                3.
-                            </td>
-                            <td>
-                                <img src="images/scb.png " width="40px " height="40px " />
-                            </td>
-                            <td translate="BODY.SECTION.PAYMENT.SCB_ACC">
-                                หมายเลข 440-99934-3454
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                4.
-                            </td>
-                            <td>
-                                <img src="images/ktb.png " width="40px " height="40px " />
-                            </td>
-                            <td translate="BODY.SECTION.PAYMENT.KTB_ACC">
-                                หมายเลข 440-99934-3454
-                            </td>
-                        </tr>
-                            <td>
-                        <tr>
-                                5.
-                            </td>
-                            <td>
-                                <img src="images/kcc.png " width="40px" height="40px" />
-                            </td>
-                            <td translate="BODY.SECTION.PAYMENT.KCC_ACC">
-                                หมายเลข 440-99934-3454
-                            </td>
-                        </tr>
-                    </table>
+                    <img src="/images/How-To-Purchase.png" width="950" height="1350" class="img-respinsive">
                 </div>
                 <!-- <div> about us -->
                 <div id="about-section" name="about-section" class="section" ng-show="SelectedMenu === 'about'">
                     <h3>{{'BODY.SECTION.ABOUT.HEAD' | translate}}</h3>
+                </div>
+                <!-- <div> about us -->
+                <div id="contact-section" name="contact-section" class="section" ng-show="SelectedMenu === 'contact'">
+                    <h3>{{'BODY.SECTION.CONTACT.HEAD' | translate}}</h3>
                 </div>
                 <!-- <div> google map -->
                 <div id="google-map-section" name="google-map-section" class="section" ng-show="SelectedMenu === 'google-map'">
@@ -925,26 +865,34 @@
                                                   <legend>&nbsp;</legend>
                                                   <!-- Text input-->
                                                   <div class="form-group">
-                                                        <label class="col-md-4 control-label">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_NAME' | translate}}</label>
+                                                        <label class="col-md-4 control-label">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_NAME' | translate}} :</label>
                                                         <div class="col-md-8">
                                                             <input maxlength="200" type="text" ng-model="ROHead.BillingName" required="required" 
-                                                            class="form-control" placeholder="Enter Company Name" />
+                                                            class="form-control" placeholder="{{'BODY.SECTION.SHIPMENT.BILLING.BILL_NAME' | translate}}" />
                                                         </div>
                                                   </div>
                                                   <div class="form-group"></div>
                                                   <div class="form-group">
-                                                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_ADDRESS' | translate}}</label>
+                                                        <label class="col-md-4 control-label">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_EMAIL' | translate}} :</label>
+                                                        <div class="col-md-8">
+                                                            <input maxlength="200" type="text" ng-model="ROHead.BillingEmail" required="required" 
+                                                            class="form-control" placeholder="{{'BODY.SECTION.SHIPMENT.BILLING.BILL_EMAIL' | translate}}" />
+                                                        </div>
+                                                  </div>
+                                                  <div class="form-group"></div>
+                                                  <div class="form-group">
+                                                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_ADDRESS' | translate}} :</label>
                                                     <div class="col-sm-8">
-                                                      <input type="text" ng-model="ROHead.BillingAddress" required="required" placeholder="Address" class="form-control">
+                                                      <input type="text" ng-model="ROHead.BillingAddress" required="required" placeholder="{{'BODY.SECTION.SHIPMENT.BILLING.BILL_ADDRESS' | translate}}" class="form-control">
                                                     </div>
                                                   </div>
                                                   <div class="form-group"></div>
                                                   <!-- Text input-->
                                                   <div class="form-group">
-                                                    <label class="col-md-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_PROVINCE' | translate}}</label>
+                                                    <label class="col-md-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_PROVINCE' | translate}} :</label>
                                                     <div class="col-md-8">
                                                       <select id="SelectProvince" name="selectbasic" class="form-control input-md" 
-                                                   ng-model="ROHead.ProvinceId" ng-options="Province._id as Province.Province for Province in SelectProvinceList" ng-change="UpdateProvince()" required="required">
+                                                   ng-model="ROHead.BillingProvinceId" ng-options="Province._id as Province.Province for Province in SelectBillingProvinceList" ng-change="UpdateBillingProvince()" required="required">
                                                             <option value="">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_SELECT_PROVINCE' | translate}}</option>
                                                        </select>
                                                     </div>
@@ -952,11 +900,11 @@
                                                   <div class="form-group"></div>
                                                   <!-- Text input-->
                                                   <div class="form-group">
-                                                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_DISTRICT' | translate}}</label>
+                                                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_DISTRICT' | translate}} :</label>
                                                     <div class="col-sm-8">
                                                        <select id="SelectDistrictList" name="selectbasic" class="form-control input-md"  
                                                        required="required"
-                                                       ng-model="ROHead.DistrictId" ng-options="District._id as District.District for District in SelectDistrictList" ng-change="UpdateDistrict(District._id)">
+                                                       ng-model="ROHead.BillingDistrictId" ng-options="District._id as District.District for District in SelectBillingDistrictList" ng-change="UpdateBillingDistrict(District._id)">
                                                             <option value="">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_SELECT_DISTRICT' | translate}}</option>
                                                        </select>
                                                     </div>
@@ -964,28 +912,41 @@
                                                   <div class="form-group"></div>
                                                   <!-- Text input-->
                                                   <div class="form-group">
-                                                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_SUBDISTRICT' | translate}}</label>
+                                                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_SUBDISTRICT' | translate}} :</label>
                                                     <div class="col-sm-8">
                                                       <select id="SelectSubDistrictList" name="selectbasic" class="form-control input-md" 
-                                                       required="required" ng-model="ROHead.SubDistrictId" ng-options="SubDistrict._id as SubDistrict.SubDistrict for SubDistrict in SelectSubDistrictList" ng-change="UpdateSubDistrict()">
+                                                       required="required" ng-model="ROHead.BillingSubDistrictId" ng-options="SubDistrict._id as SubDistrict.SubDistrict for SubDistrict in SelectBillingSubDistrictList" ng-change="UpdateBillingSubDistrict()">
                                                             <option value="">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_SELECT_SUBDISTRICT' | translate}}</option>
                                                        </select>
                                                     </div>
-                                                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_ZIPCODE' | translate}}</label>
+                                                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_ZIPCODE' | translate}} :</label>
                                                     <div class="col-sm-8">
-                                                      <select id="SelectZipCodeList" name="selectbasic" class="form-control input-md" ng-model="ROHead.ZipCode" ng-options="ZipCode._id as ZipCode.ZipCode for ZipCode in SelectZipCodeList"  required="required">
+                                                      <select id="SelectZipCodeList" name="selectbasic" class="form-control input-md" ng-model="ROHead.BillingZipCode" ng-options="ZipCode._id as ZipCode.ZipCode for ZipCode in SelectBillingZipCodeList"  required="required">
                                                             <option value="">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_SELECT_ZIPCODE' | translate}}</option>
                                                       </select>
                                                     </div>
                                                   </div>
+                                                  <div class="form-group">
+                                                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.TEL_NO' | translate}} :</label>
+                                                    <div class="col-sm-8">
+                                                       <input type="text" ng-model="ROHead.TelNo" required="required" placeholder="{{'BODY.SECTION.SHIPMENT.BILLING.TEL_NO' | translate}}" class="form-control">
+                                                    </div>
+                                                  </div>
+                                                  <div class="form-group"></div>
+                                                  <div class="form-group">
+                                                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.MOBILE_NO' | translate}} :</label>
+                                                    <div class="col-sm-8">
+                                                       <input type="text" ng-model="ROHead.MobileNo" required="required" placeholder="{{'BODY.SECTION.SHIPMENT.BILLING.MOBILE_NO' | translate}}" class="form-control">
+                                                    </div>
+                                                  </div>
+                                                  <div class="form-group"></div>
                                               </form>
                                             </div><!-- /.col-lg-12 -->
                                         </div><!-- /.row -->
                                         
-                                        
                                         <h3>{{'BODY.SECTION.SHIPMENT.BILLING.STEP' | translate}}</h3> 
                                         <div class="row form-group">
-                                            <input type="checkbox" ng-model="IsSameAddress" > {{'BODY.SECTION.SHIPMENT.BILLING.SAME_ADDRESS' | translate}}
+                                            <input type="checkbox" ng-model="IsSameAddress" ng-click="PerformSameBillAndReceiptAddress()"> {{'BODY.SECTION.SHIPMENT.BILLING.SAME_ADDRESS' | translate}}
                                         </div>
                                         <div class="row form-group">
                                             <div>
@@ -994,26 +955,26 @@
                                                   <legend>&nbsp;</legend>
                                                   <!-- Text input-->
                                                   <div class="form-group">
-                                                        <label class="col-md-4 control-label">{{'BODY.SECTION.SHIPMENT.BILLING.RO_NAME' | translate}}</label>
+                                                        <label class="col-md-4 control-label" style="text-align: left">{{'BODY.SECTION.SHIPMENT.BILLING.RO_NAME' | translate}} :</label>
                                                         <div class="col-md-8">
-                                                            <input maxlength="200" type="text" ng-model="ROHead.BillingName" required="required" 
+                                                            <input maxlength="200" type="text" ng-model="ROHead.ROName" required="required" 
                                                             class="form-control" placeholder="Enter Company Name" />
                                                         </div>
                                                   </div>
                                                   <div class="form-group"></div>
                                                   <div class="form-group">
-                                                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.RO_ADDRESS' | translate}}</label>
+                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SHIPMENT.BILLING.RO_ADDRESS' | translate}} :</label>
                                                     <div class="col-sm-8">
-                                                      <input type="text" ng-model="ROHead.BillingAddress" required="required" placeholder="Address" class="form-control">
+                                                      <input type="text" ng-model="ROHead.ROAddress" required="required" placeholder="{{'BODY.SECTION.SHIPMENT.BILLING.RO_ADDRESS' | translate}}" class="form-control">
                                                     </div>
                                                   </div>
                                                   <div class="form-group"></div>
                                                   <!-- Text input-->
                                                   <div class="form-group">
-                                                    <label class="col-md-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.RO_PROVINCE' | translate}}</label>
+                                                    <label class="col-md-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SHIPMENT.BILLING.RO_PROVINCE' | translate}}</label>
                                                     <div class="col-md-8">
                                                       <select id="SelectProvince" name="selectbasic" class="form-control input-md" 
-                                                   ng-model="ROHead.ProvinceId" ng-options="Province._id as Province.Province for Province in SelectProvinceList" ng-change="UpdateProvince()" required="required">
+                                                   ng-model="ROHead.ReceiptProvinceId" ng-options="Province._id as Province.Province for Province in SelectReceiptProvinceList" ng-change="UpdateReceiptProvince()" required="required">
                                                             <option value="">{{'BODY.SECTION.SHIPMENT.BILLING.RO_SELECT_PROVINCE' | translate}}</option>
                                                        </select>
                                                     </div>
@@ -1021,11 +982,11 @@
                                                   <div class="form-group"></div>
                                                   <!-- Text input-->
                                                   <div class="form-group">
-                                                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.RO_DISTRICT' | translate}}</label>
+                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SHIPMENT.BILLING.RO_DISTRICT' | translate}}</label>
                                                     <div class="col-sm-8">
                                                        <select id="SelectDistrictList" name="selectbasic" class="form-control input-md"  
                                                        required="required"
-                                                       ng-model="ROHead.DistrictId" ng-options="District._id as District.District for District in SelectDistrictList" ng-change="UpdateDistrict(District._id)">
+                                                       ng-model="ROHead.ReceiptDistrictId" ng-options="District._id as District.District for District in SelectReceiptDistrictList" ng-change="UpdateReceiptDistrict()">
                                                             <option value="">{{'BODY.SECTION.SHIPMENT.BILLING.RO_SELECT_DISTRICT' | translate}}</option>
                                                        </select>
                                                     </div>
@@ -1033,16 +994,16 @@
                                                   <div class="form-group"></div>
                                                   <!-- Text input-->
                                                   <div class="form-group">
-                                                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.RO_SUBDISTRICT' | translate}}</label>
+                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SHIPMENT.BILLING.RO_SUBDISTRICT' | translate}}</label>
                                                     <div class="col-sm-8">
                                                       <select id="SelectSubDistrictList" name="selectbasic" class="form-control input-md" 
-                                                       required="required" ng-model="ROHead.SubDistrictId" ng-options="SubDistrict._id as SubDistrict.SubDistrict for SubDistrict in SelectSubDistrictList" ng-change="UpdateSubDistrict()">
+                                                       required="required" ng-model="ROHead.ReceiptSubDistrictId" ng-options="SubDistrict._id as SubDistrict.SubDistrict for SubDistrict in SelectReceiptSubDistrictList" ng-change="UpdateReceiptSubDistrict()">
                                                             <option value="">{{'BODY.SECTION.SHIPMENT.BILLING.RO_SELECT_SUBDISTRICT' | translate}}</option>
                                                        </select>
                                                     </div>
-                                                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.RO_ZIPCODE' | translate}}</label>
+                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SHIPMENT.BILLING.RO_ZIPCODE' | translate}}</label>
                                                     <div class="col-sm-8">
-                                                      <select id="SelectZipCodeList" name="selectbasic" class="form-control input-md" ng-model="ROHead.ZipCode" ng-options="ZipCode._id as ZipCode.ZipCode for ZipCode in SelectZipCodeList"  required="required">
+                                                      <select id="SelectZipCodeList" name="selectbasic" class="form-control input-md" ng-model="ROHead.ReceiptZipCode" ng-options="ZipCode._id as ZipCode.ZipCode for ZipCode in SelectReceiptZipCodeList"  required="required">
                                                             <option value="">{{'BODY.SECTION.SHIPMENT.BILLING.RO_SELECT_ZIPCODE' | translate}}</option>
                                                       </select>
                                                     </div>
@@ -3769,7 +3730,7 @@
                 <div class="row">
                       <div class="col-md-4">
                         <center>
-                          <img src="/images/tyre.png" width="64" height="64"  alt="the-brains">
+                          <img src="/images/tyre.png" width="64" height="64"  alt="the-brains" class="img-responsive">
                           <br>
                           <h4 class="footertext">{{'FOOTER.TYRE.HEAD' | translate}}</h4>
                           <p class="footertext">{{'FOOTER.TYRE.REMARK' | translate}}<br>
@@ -3777,7 +3738,7 @@
                       </div>
                       <div class="col-md-4">
                         <center>
-                          <img src="/images/lubricant.png" width="64" height="64" alt="...">
+                          <img src="/images/lubricant.png" width="64" height="64" alt="..." class="img-responsive">
                           <br>
                           <h4 class="footertext">{{'FOOTER.LUBRICANT.HEAD' | translate}}</h4>
                           <p class="footertext">{{'FOOTER.LUBRICANT.REMARK' | translate}}<br>
@@ -3785,7 +3746,7 @@
                       </div>
                       <div class="col-md-4">
                         <center>
-                          <img src="/images/battery.png" width="64" height="64" alt="...">
+                          <img src="/images/battery.png" width="64" height="64" alt="..." class="img-responsive">
                           <br>
                           <h4 class="footertext">{{'FOOTER.BATTERY.HEAD' | translate}}</h4>
                           <p class="footertext">{{'FOOTER.BATTERY.REMARK' | translate}}<br>
@@ -3793,7 +3754,7 @@
                       </div>
                       <div class="col-md-4">
                         <center>
-                          <img src="/images/brake.png" width="64" height="64"  alt="the-brains">
+                          <img src="/images/brake.png" width="64" height="64"  alt="the-brains" class="img-responsive">
                           <br>
                           <h4 class="footertext">{{'FOOTER.BRAKE.HEAD' | translate}}</h4>
                           <p class="footertext">{{'FOOTER.BRAKE.REMARK' | translate}}<br>
@@ -3801,7 +3762,7 @@
                       </div>
                       <div class="col-md-4">
                         <center>
-                          <img src="/images/shock.png" width="64" height="64" alt="...">
+                          <img src="/images/shock.png" width="64" height="64" alt="..." class="img-responsive">
                           <br>
                           <h4 class="footertext">{{'FOOTER.SHOCK.HEAD' | translate}}</h4>
                           <p class="footertext">{{'FOOTER.SHOCK.REMARK' | translate}}<br>
@@ -3809,7 +3770,7 @@
                       </div>
                       <div class="col-md-4">
                         <center>
-                          <img src="/images/wrench.png" width="64" height="64" alt="...">
+                          <img src="/images/wrench.png" width="64" height="64" alt="..." class="img-responsive">
                           <br>
                           <h4 class="footertext">{{'FOOTER.WRENCH.HEAD' | translate}}</h4>
                           <p class="footertext">{{'FOOTER.WRENCH.HEAD' | translate}}<br>
@@ -3846,15 +3807,15 @@
         </script>
 
         <script src="/bower_components/jquery/dist/jquery.min.js"></script>
-        <script src="/bower_components/angular/angular.min.js"></script>
-        <script src="/bower_components/flow.js/dist/flow.js"></script>
-        <script src="/bower_components/ng-flow/dist/ng-flow.js"></script>
+        <script src="/bower_components/angular/angular.js"></script>
+        <script src="/bower_components/angular-route/angular-route.min.js"></script>
         <script src="/bower_components/platform/platform.js"></script>
         <script src="/bower_components/less/dist/less.js"></script>
         <script src="/bower_components/lodash/lodash.js"></script>
         <script src="/bower_components/angular-block-ui/dist/angular-block-ui.min.js"></script>
         <script src="/bower_components/ngDialog/js/ngDialog.min.js"></script>
         <script src="/bower_components/angularjs-datepicker/dist/angular-datepicker.min.js"></script>
+        <script src="/bower_components/angular-cookies/angular-cookies.min.js"></script>
         <script src="/bower_components/ng-password-strength/dist/scripts/ng-password-strength.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
         <script src="/bower_components/ng-file-upload/ng-file-upload.js"></script>

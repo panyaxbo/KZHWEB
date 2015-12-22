@@ -11,8 +11,15 @@ router.get(mongodbConfig.url.product_category.loadAllProductCategory, function (
     db.collection(mongodbConfig.mongodb.product_category.name)
         .find({})
         .toArray(function (err, items) {
-        //    console.log(items);
-            res.json(items);
+            if (items) {
+                res.json(items);
+            } else if (!items) {
+                return;
+            } else {
+                console.log(error, error.stack.split("\n"));
+                res.sendStatus(500);
+                return;
+            }
         });
 });
 function GenerateTextStringQuery (searchArray) {

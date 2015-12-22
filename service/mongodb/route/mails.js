@@ -217,7 +217,7 @@ router.get('/SendEmailForgetPassword/:CustomerEmail/:Host/:BacktoURL', function 
 '	<tbody>'+
 '		<tr>'+
 '			<td style="border-top:#e41f28 solid 6px;font:normal 13px/18px Arial,Helvetica,sans-serif;padding:45px 17px 30px 17px" valign="top">'+
-'			<h2 style="font:normal"><img height="20" src="cid:letter@kzh.parts.co.th" style="margin-right:10px" width="21" >&nbsp;&nbsp;Recovery your password</h2>'+
+'			<h2 style="font:normal"><img height="20" src="cid:recovery@kzh.parts.co.th" style="margin-right:10px" width="21" >&nbsp;&nbsp;Recovery your password</h2>'+
 '			<p>การเรียกคืนรหัสผ่าน ,<br>'+
 '			<br>'+
 '<a href="' + forgetPasswordLink + '" type="application/x-www-form-urlencoded" style="background-color:#F64747;border-radius:4px;color:#ffffff;display:inline-block;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:bold;line-height:50px;text-align:center;text-decoration:none;width:240px;align:center; " target="_blank">Recovery Password</a>'+
@@ -232,7 +232,7 @@ router.get('/SendEmailForgetPassword/:CustomerEmail/:Host/:BacktoURL', function 
 '	</tbody>'+
 '</table>'+
 mailConfig.MAIL_CONTENT_FOOTER,
-attachments : mailConfig.MAIL_ATTACHMENTS
+attachments : mailConfig.MAIL_ATTACHMENTS_FORGET_PASSWORD
 	}
 
 	smtpTransport.sendMail(mailOptions, function(error, response){

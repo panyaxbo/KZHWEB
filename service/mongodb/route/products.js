@@ -12,8 +12,15 @@ router.get('/LoadProductForPromotion', function (req, res) {
         .find({})
         .limit(100)
         .toArray(function (err, items) {
-            if (err) throw err;
-            res.json(items);
+            if (items) {
+                res.json(items);
+            } else if (!items) {
+                return;
+            } else {
+                console.log(error, error.stack.split("\n"));
+                res.sendStatus(500);
+                return;
+            }
         });
 });
 
@@ -75,108 +82,116 @@ router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
         .find({})
         .limit(40)
         .toArray(function (err, items) {
-            if (err) throw err;
-            var productsToFind = items.length;
-            var products = [];
-            for (var i = 0; i < items.length; i++) {
-            //    console.log("items[" +i+"]");
-                var product = items[i];
-                processing(product, function (err, product) {
-                    if (err) console.log(err, err.stack.split("\n"));
-                    // Found Item is New Arrival ?
-                    if (typeof(product.CreateDate) != 'undefined' && product.CreateDate != null)
-                    {
-                        // Do something with some_variable
-                        var curDate = new Date();
-                        var diff = curDate - product.CreateDate(); // to millisecond
-                        var monthDiff = diff/(1000*60*60*24*30); // make dif of month
-                        if (monthDiff < 1) { // New Arrival must less than a month
-                            product.IsNew = true;
+            if (items) {
+                var productsToFind = items.length;
+                var products = [];
+                for (var i = 0; i < items.length; i++) {
+                //    console.log("items[" +i+"]");
+                    var product = items[i];
+                    processing(product, function (err, product) {
+
+                        if (err) console.log(err, err.stack.split("\n"));
+                        // Found Item is New Arrival ?
+                        if (typeof(product.CreateDate) != 'undefined' && product.CreateDate != null)
+                        {
+                            // Do something with some_variable
+                            var curDate = new Date();
+                            var diff = curDate - product.CreateDate(); // to millisecond
+                            var monthDiff = diff/(1000*60*60*24*30); // make dif of month
+                            if (monthDiff < 1) { // New Arrival must less than a month
+                                product.IsNew = true;
+                            } else {
+                                product.IsNew = false;
+                            }
                         } else {
                             product.IsNew = false;
                         }
-                    } else {
-                        product.IsNew = false;
-                    }
 
-                /*    findPromotion(product, function (err, promotion) {
-                        if (err) console.log(err, err.stack.split("\n"));
-                        
-                        if (promotion) {
+                    /*    findPromotion(product, function (err, promotion) {
+                            if (err) console.log(err, err.stack.split("\n"));
+                            
+                            if (promotion) {
+                                product.Promotion = promotion;
+                            }
+                            // End find product has new arrival
+                            products.push(product);
+                            productsToFind -= 1;
+                            console.log(productsToFind);
+                            if (productsToFind === 0) {
+                                res.json(products);
+                            }
+                        });*/
+
+                        var promisePromotion = new Promise(function(resolve, reject) {
+                            // do a thing, possibly async, then…
+                            var currentDate = new Date().toISOString().split('T')[0].split('-');
+                            db.collection(mongodbConfig.mongodb.promotion.name)
+                            .find({
+                                'ProductPromotionList.ProductCode' : product.ProductCode,
+                                'StartDate': {
+                                    //currentDate[0] = year 
+                                   $lte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
+                                },
+                                'EndDate' : {
+                                   $gte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
+                                },
+                                'IsActive' : true
+                            })
+                            .toArray(function (err, promotions) {
+                                var filterPromotion = {};
+                                for (i=0; i < promotions.length; i++) {
+                                    filterPromotion = promotions[i].ProductPromotionList.filter(function (p) { 
+                                        return p.ProductCode == product.ProductCode;
+                                    });
+                                }
+                                if (!isEmpty(filterPromotion)) {
+                                    resolve(filterPromotion);
+                                }
+                                else {
+                                    reject(Error(err));
+                                }
+                            });
+                          
+                        });
+
+                        promisePromotion.then(function( promotion ) {
+                        //   console.log( productsToFind );
                             product.Promotion = promotion;
-                        }
-                        // End find product has new arrival
-                        products.push(product);
-                        productsToFind -= 1;
-                        console.log(productsToFind);
-                        if (productsToFind === 0) {
-                            res.json(products);
-                        }
-                    });*/
+                            products.push(product);
+                            productsToFind -= 1;
 
-                    var promisePromotion = new Promise(function(resolve, reject) {
-                        // do a thing, possibly async, then…
-                        var currentDate = new Date().toISOString().split('T')[0].split('-');
-                        db.collection(mongodbConfig.mongodb.promotion.name)
-                        .find({
-                            'ProductPromotionList.ProductCode' : product.ProductCode,
-                            'StartDate': {
-                                //currentDate[0] = year 
-                               $lte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
-                            },
-                            'EndDate' : {
-                               $gte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
-                            },
-                            'IsActive' : true
-                        })
-                        .toArray(function (err, promotions) {
-                            var filterPromotion = {};
-                            for (i=0; i < promotions.length; i++) {
-                                filterPromotion = promotions[i].ProductPromotionList.filter(function (p) { 
-                                    return p.ProductCode == product.ProductCode;
-                                });
+                            if (productsToFind === 0) {
+                                res.json(products);
                             }
-                            if (!isEmpty(filterPromotion)) {
-                                resolve(filterPromotion);
-                            }
-                            else {
-                                reject(Error(err));
+                        },
+                        function( err ) {
+                        //  console.log( err );
+                          products.push(product);
+                          productsToFind -= 1;
+
+                            if (productsToFind === 0) {
+                                res.json(products);
                             }
                         });
-                      
-                    });
-
-                    promisePromotion.then(function( promotion ) {
-                    //   console.log( productsToFind );
-                        product.Promotion = promotion;
-                        products.push(product);
+                        
+                        // End find product has new arrival
+                   /*     
+                   products.push(product);
                         productsToFind -= 1;
 
                         if (productsToFind === 0) {
                             res.json(products);
                         }
-                    },
-                    function( err ) {
-                    //  console.log( err );
-                      products.push(product);
-                      productsToFind -= 1;
-
-                        if (productsToFind === 0) {
-                            res.json(products);
-                        }
+                        */
+                        
                     });
-                    
-                    // End find product has new arrival
-               /*     
-               products.push(product);
-                    productsToFind -= 1;
-
-                    if (productsToFind === 0) {
-                        res.json(products);
-                    }
-                    */
-                    
-                });
+                }
+            } else if (!items) {
+                return;
+            } else {
+                console.log(error, error.stack.split("\n"));
+                res.sendStatus(500);
+                return;
             }
         });
 

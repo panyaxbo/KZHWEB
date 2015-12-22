@@ -47,8 +47,7 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
     console.log('user.js -> /users ');
     var Username = req.params.Email;
     var Password = req.params.Password;
-    console.log(Username + " " + Password);
- 
+    
     db.collection(mongodbConfig.mongodb.user.name).findOne({$or: [ { Username: Username }, { Email : Username } ]}, function (err, doc) {
         if (doc) {
             console.log(doc);
@@ -84,24 +83,6 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
                                     if (docRole) {
                                         console.dir(docRole);
                                         doc.Role = docRole;
-                                    /*    if (doc.StaffCode !== undefined && doc.StaffCode.length > 0) {
-                                            // Find Staff
-                                            findOneStaff(qStaff, function (errStaff, docStaff) {
-                                                if (errStaff) {
-                                                    console.log(errStaff);
-                                                    return;
-                                                }
-                                                if (docStaff) {
-                                                    console.dir(docStaff);
-                                                    doc.Staff = docStaff;
-                                                    res.json(doc);
-                                                }
-                                            });
-                                        } else {
-                                            console.log(doc);
-                                            res.json(doc);
-
-                                        }*/
                                         res.json(doc);
                                     }
                                 });
@@ -116,6 +97,8 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
                     res.sendStatus(500);
                 }  
             });
+        } if (!doc) {
+            res.sendStatus(200);
         } else {
              console.log(err);
         }
@@ -124,16 +107,8 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
     var findOneAppUser = function (query, callback) {
         db.collection(mongodbConfig.mongodb.user.name).findOne(query, function (err, doc) {
             if (err) {
-                // don't use throw when in async code
-                // the convention is to call your callback with the error
-                // as the first argument (notice that I added an argument 
-                // to the definition of your callback above)
                 console.log(err);
-            //    res.json(500).json(err);
-            //    return;
             } else {
-                // call your callback with no error and the data
-           //     console.log(doc);
                 callback(null, doc);
             }
         });
@@ -380,8 +355,8 @@ router.get('/PerformChangePassword/:Email/:Password', function (req, res) {
             });
 });
 
-
 router.post('/CreateAndUpdateWithSocial', function (req, res) {
+    console.log('into create social');
     var Social = req.body;
     db.collection(mongodbConfig.mongodb.user.name)
         .findOne(
