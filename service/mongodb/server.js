@@ -79,7 +79,8 @@ var mongolab_uri = process.env.MONGOLAB_URI || 'mongodb://aaa:bbb@ds033123.mongo
 var heroku_mongolab_uri = process.env.MONGOLAB_URI || 'mongodb://heroku_dmj53qsq:snsjuqkbr1cp1unjoibhem0iob@ds033915.mongolab.com:33915/heroku_dmj53qsq';
 
 app.listen(port, function () {
-//	console.log("Start server port " + port + " is OK...");
+	console.log("Start server port " + app.get('port') + " is OK...");
+  
 });
 app.on('close', function() {
 	console.log('gonna close leaw!!!');
@@ -107,14 +108,16 @@ mongodb.MongoClient.connect(heroku_mongolab_uri, function (err, database) {
     db = database;
 });
 */
-app.use(function(err, req, res, next) {
-    res.end(err.message); // this catches the error!!
-});
 
 process.on('uncaughtException', function (err) {
     console.log(err, err.stack.split("\n"));
 }); 
 
+app.use(function(err, req, res, next){
+  console.error(err.stack);
+  res.send(500, 'Something broke!');
+});
+/*
 process.on( 'SIGTERM', function () {
 
    server.close(function () {
@@ -128,5 +131,5 @@ process.on( 'SIGTERM', function () {
    }, 30*1000);
 
 });
-
+*/
 module.exports = app;

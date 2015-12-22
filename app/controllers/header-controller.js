@@ -219,6 +219,8 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
             $('#UserProfileImage').children("img").remove();
             var imageLinkedinTag = "<img src='" + linkedinImageUrl + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
             $('#UserProfileImage').append(imageLinkedinTag);
+
+            $("#LoginModal").modal("toggle");
         }
         else if (provider === 'instagram') {
           $scope.User.Firstname = response.alias;

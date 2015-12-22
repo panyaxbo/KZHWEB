@@ -366,7 +366,6 @@ router.post(mongodbConfig.url.receipt.createReceipt, function (req, res) {
     var curDate = new Date ();
     curDate.setHours ( curDate.getHours() + 7 );// GMT Bangkok +7
     ROHead.RODate = curDate; 
-//    console.log('ROHead.RODate '+ ROHead.RODate);
     var CreateROLine = function (roline, callback) {
         delete roline.Uoms;
         db.collection(mongodbConfig.mongodb.roline.name)
@@ -392,7 +391,7 @@ router.post(mongodbConfig.url.receipt.createReceipt, function (req, res) {
                 var CreateROLineList = [];
                 for (var i = 0; i < ROLineList.length; i++) {
                     var roline = ROLineList[i];
-                    roline.ROHeadId = rohead._id;// bson.BSONPure.ObjectID(ROHead._id);
+                    roline.ROHeadId = bson.BSONPure.ObjectID(rohead._id);
                     CreateROLine(roline, function (err, created_roline) {
                         if (err) {
                             console.log(err, err.stack.split("\n"));
@@ -465,10 +464,10 @@ router.get(mongodbConfig.url.receipt.loadROHeadByUserIdAndStatus, function (req,
    // var currentDate = new Date().toISOString().split('T')[0].split('-');
     db.collection(mongodbConfig.mongodb.rohead.name)
         .find({
-          
                 RODate : {
-                   $gte : new Date(StartYear+"-"+StartMonth+"-"+StartDate+"T00:00:00.000Z"),
-                   $lte : new Date(EndYear+"-"+EndMonth+"-"+EndDate+"T00:00:00.000Z")
+                   $gte : new Date(StartYear+"-"+StartMonth+"-"+StartDate+"T00:00:00.000Z")
+               //    ,
+               //    $lt : new Date(EndYear+"-"+EndMonth+"-"+EndDate+"T99:99:99.999Z")
                 }
             ,
             PaymentStatus: paymentStatus,
@@ -508,8 +507,9 @@ router.get(mongodbConfig.url.receipt.loadROHeadByStaff, function (req, res) {
     if (userId.length <= 0) { 
         query = {
             RODate : {
-                   $gte : new Date(StartYear+"-"+StartMonth+"-"+StartDate+"T00:00:00.000Z"),
-                   $lte : new Date(EndYear+"-"+EndMonth+"-"+EndDate+"T00:00:00.000Z")
+                   $gte : new Date(StartYear+"-"+StartMonth+"-"+StartDate+"T00:00:00.000Z")
+              //     ,
+              //     $lte : new Date(EndYear+"-"+EndMonth+"-"+EndDate+"T00:00:00.000Z")
                 },
             PaymentStatus: paymentStatus,
             ShippingStatus: shippingStatus,
@@ -518,8 +518,9 @@ router.get(mongodbConfig.url.receipt.loadROHeadByStaff, function (req, res) {
     } else {
         query = {
             RODate : {
-                   $gte : new Date(StartYear+"-"+StartMonth+"-"+StartDate+"T00:00:00.000Z"),
-                   $lte : new Date(EndYear+"-"+EndMonth+"-"+EndDate+"T00:00:00.000Z")
+                   $gte : new Date(StartYear+"-"+StartMonth+"-"+StartDate+"T00:00:00.000Z")
+               //    ,
+               //    $lte : new Date(EndYear+"-"+EndMonth+"-"+EndDate+"T00:00:00.000Z")
                 },
             PaymentStatus: paymentStatus,
             ShippingStatus: shippingStatus,

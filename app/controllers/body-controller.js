@@ -3434,10 +3434,9 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         .success(function(data, status, headers, config) {
             var newRONo = data;
             if (!newRONo) {
-                
             } else if (newRONo) {
                   blockUI.message("25%");
-                  var sendEmailStaffUrl = BASE_URL.PATH + "/mails/SendEmailStaffNewOrder/"+ $scope.User.Email+ "/" + newRONo;
+                  var sendEmailStaffUrl = BASE_URL.PATH + "/mails/SendEmailStaffNewOrder/" + newRONo;
                   var sendEmailCustomerUrl = BASE_URL.PATH + "/mails/SendEmailCustomerNewOrder/" + $scope.User.Email + "/" + newRONo;
                   var createReceiptUrl = BASE_URL.PATH + '/receipts/CreateReceipt';
                   $scope.ROHead.RODate = new Date(); //(new Date()).toISOString();
@@ -3448,6 +3447,8 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                   $scope.ROHead.UserId = $scope.User.Id;
                   $scope.ROHead.PaymentStatus = "N";
                   $scope.ROHead.ShippingStatus = "N";
+                  $scope.ROHead.StaffApprovePaymentStatus = "N";
+
                   $http.post(createReceiptUrl, $scope.ROHead)
                   .success(function (data, status, headers, config) {
                       blockUI.message("53%");
@@ -3462,20 +3463,23 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                             swal("Thank you for your order", "You can check and track your order in history.", "success");
                           })
                           .error(function (data, status, headers, config) {
+                                blockUI.stop();
                                 console.log('error sending email customer');
                           });
                       })
                       .error(function (data, status, headers, config) {
+                            blockUI.stop();
                             console.log('error sending email staff');
                       });    
                   })
                   .error(function(data, status, headers, config) {
+                        blockUI.stop();
                         console.log('create ro head ');
                   });
                   //end of create receipt
             }
         }).error(function(data, status, headers, config) {
-
+            blockUI.stop();
         });
     }
 

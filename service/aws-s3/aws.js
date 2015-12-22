@@ -260,14 +260,16 @@ router.get('/downloadUserImageThumbnail/:UserId/:Username', function(req, res) {
   var Username = req.params.Username;
 
   user_s3fsImpl.readFile(home_bucket + user_bucket + Username + '.png', function (err, data) {
-    if (!data) {
-      console.log(err, err.stack.split("\n"));
-      res.sendStatus(500);
-      return;
-    }
-    else { 
+    if (data) {
       var base64 = (data.toString('base64')); 
       res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive" >');
+    } else if (!data) {
+        res.sendStatus(200);
+        return;
+    } else { 
+        console.log(err, err.stack.split("\n"));
+        res.sendStatus(500);
+        return;
     }
   });
 });
@@ -328,11 +330,7 @@ router.get('/downloadReceiptPaymentThumbnail/:RONo', function(req, res) {
         .findOne({
             'name': RONo
         }, function (err, file) {
-            if (err) {
-                console.log(err, err.stack.split("\n"));
-                res.sendStatus(500);
-                return;
-            } else {
+             if (file){
                 receipt_s3fsImpl.readFile(home_bucket + receipt_bucket + file.originalFilename , function (err, data) {
                   if (!data) {
                     console.log(err, err.stack.split("\n"));
@@ -344,6 +342,14 @@ router.get('/downloadReceiptPaymentThumbnail/:RONo', function(req, res) {
                     res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive" >');
                   }
                 });
+            } else if (!file) {
+             //   console.log(err, err.stack.split("\n"));
+                res.sendStatus(200);
+                return;
+            } else {
+                console.log(err, err.stack.split("\n"));
+                res.sendStatus(500);
+                return;
             }
         });
 

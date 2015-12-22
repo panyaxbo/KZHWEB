@@ -67,7 +67,7 @@ attachments : mailConfig.MAIL_ATTACHMENTS
 		});
 });
 
-router.get('/SendEmailStaffNewOrder/:CustomerEmail/:RONo', function (req, res) {
+router.get('/SendEmailCustomerNewOrder/:CustomerEmail/:RONo', function (req, res) {
 	var email = req.params.CustomerEmail;
 	var roNo = req.params.RONo;
 
@@ -95,7 +95,7 @@ router.get('/SendEmailStaffNewOrder/:CustomerEmail/:RONo', function (req, res) {
 '	<tbody>'+
 '		<tr>'+
 '			<td style="border-top:#e41f28 solid 6px;font:normal 13px/18px Arial,Helvetica,sans-serif;padding:45px 17px 30px 17px" valign="top">'+
-'			<h2 style="font:normal"><img height="20" src="cid:letter@kzh.parts.co.th" style="margin-right:10px" width="15" >&nbsp;&nbsp;Your order number ' +roNo+ '</h2>'+
+'			<h2 style="font:normal"><img height="20" src="cid:receipt@kzh.parts.co.th" style="margin-right:10px" width="20" >&nbsp;&nbsp;Your order number ' +roNo+ '</h2>'+
 ''+
 '			<p>Dear Valued Customer ,<br>'+
 '			<br>'+
@@ -113,7 +113,7 @@ router.get('/SendEmailStaffNewOrder/:CustomerEmail/:RONo', function (req, res) {
 '	</tbody>'+
 '</table>'+
 mailConfig.MAIL_CONTENT_FOOTER,
-attachments : mailConfig.MAIL_ATTACHMENTS
+attachments : mailConfig.MAIL_ATTACHMENTS_CUSTOMER
 	}
 
 	smtpTransport.sendMail(mailOptions, function(error, response){
@@ -127,8 +127,10 @@ attachments : mailConfig.MAIL_ATTACHMENTS
 		   res.sendStatus(200);
 		});
 });
-router.get('/SendEmailCustomerNewOrder/:CustomerEmail/:RONo', function (req, res) {
-	var email = req.params.CustomerEmail;
+
+// Staff receive mail after customer create Receipt
+router.get('/SendEmailStaffNewOrder/:RONo', function (req, res) {
+//	var email = req.params.CustomerEmail;
 	var roNo = req.params.RONo;
 
 	var smtpTransport = nodemailer.createTransport(mailConfig.MAIL_TRANSFER_PROTOCOL, {
@@ -146,9 +148,9 @@ router.get('/SendEmailCustomerNewOrder/:CustomerEmail/:RONo', function (req, res
 	});
 
 	var mailOptions = {
-		  from: email, // sender address
+		  from: "KZH Parts <kzh.parts@gmail.com>", // sender address
 		  to: "KZH Parts <kzh.parts@gmail.com>",
-		  subject: "Your invoice No." + roNo, // Subject line
+		  subject: "Customer create invoice No." + roNo, // Subject line
 		  generateTextFromHTML: true,
 		  html : mailConfig.MAIL_CONTENT_TITLE +
 
@@ -156,10 +158,10 @@ router.get('/SendEmailCustomerNewOrder/:CustomerEmail/:RONo', function (req, res
 '	<tbody>'+
 '		<tr>'+
 '			<td style="border-top:#e41f28 solid 6px;font:normal 13px/18px Arial,Helvetica,sans-serif;padding:45px 17px 30px 17px" valign="top">'+
-'			<h2 style="font:normal"><img height="20" src="cid:letter@kzh.parts.co.th" style="margin-right:10px" width="21" >&nbsp;&nbsp;Customer created receipt no. ' +roNo+ '</h2>'+
+'			<h2 style="font:normal"><img height="20" src="cid:create@kzh.parts.co.th" style="margin-right:10px" width="21" >&nbsp;&nbsp;Customer created receipt no. ' +roNo+ '</h2>'+
 '			<p>Customer has been created new order ,<br>'+
 '			<br>'+
-'			Hello, I\'ve made new order with amount {{SumAmount}},please investigate my order for product in stock and shipping.<br><br>'+
+'			Hello, I\'ve made new order with amount ,please investigate my order for product in stock and shipping.<br><br>'+
 '			<br>'+
 '			</p>'+
 '			<p>&nbsp;</p>'+
@@ -171,7 +173,7 @@ router.get('/SendEmailCustomerNewOrder/:CustomerEmail/:RONo', function (req, res
 '	</tbody>'+
 '</table>'+
 mailConfig.MAIL_CONTENT_FOOTER,
-attachments : mailConfig.MAIL_ATTACHMENTS
+attachments : mailConfig.MAIL_ATTACHMENTS_STAFF
 	}
 
 	smtpTransport.sendMail(mailOptions, function(error, response){
@@ -186,6 +188,7 @@ attachments : mailConfig.MAIL_ATTACHMENTS
 		});
 });
 
+// Send recovery link to input password
 router.get('/SendEmailForgetPassword/:CustomerEmail/:Host/:BacktoURL', function (req, res) {
 	var CustomerEmail = req.params.CustomerEmail;
 	var Host = req.params.Host;

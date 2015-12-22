@@ -957,21 +957,20 @@
                                                   <div class="form-group">
                                                         <label class="col-md-4 control-label" style="text-align: left">{{'BODY.SECTION.SHIPMENT.BILLING.RO_NAME' | translate}} :</label>
                                                         <div class="col-md-8">
-                                                            <input maxlength="200" type="text" ng-model="ROHead.ROName" required="required" 
-                                                            class="form-control" placeholder="Enter Company Name" />
+                                                            <input maxlength="200" type="text" ng-model="ROHead.ReceiptName" required="required" 
+                                                            class="form-control" placeholder="{{'BODY.SECTION.SHIPMENT.BILLING.RO_NAME' | translate}}" />
                                                         </div>
                                                   </div>
-                                                  <div class="form-group"></div>
                                                   <div class="form-group">
                                                     <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SHIPMENT.BILLING.RO_ADDRESS' | translate}} :</label>
                                                     <div class="col-sm-8">
-                                                      <input type="text" ng-model="ROHead.ROAddress" required="required" placeholder="{{'BODY.SECTION.SHIPMENT.BILLING.RO_ADDRESS' | translate}}" class="form-control">
+                                                      <input type="text" ng-model="ROHead.ReceiptAddress" required="required" placeholder="{{'BODY.SECTION.SHIPMENT.BILLING.RO_ADDRESS' | translate}}" class="form-control">
                                                     </div>
                                                   </div>
-                                                  <div class="form-group"></div>
+                                                  
                                                   <!-- Text input-->
                                                   <div class="form-group">
-                                                    <label class="col-md-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SHIPMENT.BILLING.RO_PROVINCE' | translate}}</label>
+                                                    <label class="col-md-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SHIPMENT.BILLING.RO_PROVINCE' | translate}} :</label>
                                                     <div class="col-md-8">
                                                       <select id="SelectProvince" name="selectbasic" class="form-control input-md" 
                                                    ng-model="ROHead.ReceiptProvinceId" ng-options="Province._id as Province.Province for Province in SelectReceiptProvinceList" ng-change="UpdateReceiptProvince()" required="required">
@@ -979,10 +978,10 @@
                                                        </select>
                                                     </div>
                                                   </div>
-                                                  <div class="form-group"></div>
+                                                  
                                                   <!-- Text input-->
                                                   <div class="form-group">
-                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SHIPMENT.BILLING.RO_DISTRICT' | translate}}</label>
+                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SHIPMENT.BILLING.RO_DISTRICT' | translate}} :</label>
                                                     <div class="col-sm-8">
                                                        <select id="SelectDistrictList" name="selectbasic" class="form-control input-md"  
                                                        required="required"
@@ -991,17 +990,17 @@
                                                        </select>
                                                     </div>
                                                   </div>
-                                                  <div class="form-group"></div>
+                                                  
                                                   <!-- Text input-->
                                                   <div class="form-group">
-                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SHIPMENT.BILLING.RO_SUBDISTRICT' | translate}}</label>
+                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SHIPMENT.BILLING.RO_SUBDISTRICT' | translate}} :</label>
                                                     <div class="col-sm-8">
                                                       <select id="SelectSubDistrictList" name="selectbasic" class="form-control input-md" 
                                                        required="required" ng-model="ROHead.ReceiptSubDistrictId" ng-options="SubDistrict._id as SubDistrict.SubDistrict for SubDistrict in SelectReceiptSubDistrictList" ng-change="UpdateReceiptSubDistrict()">
                                                             <option value="">{{'BODY.SECTION.SHIPMENT.BILLING.RO_SELECT_SUBDISTRICT' | translate}}</option>
                                                        </select>
                                                     </div>
-                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SHIPMENT.BILLING.RO_ZIPCODE' | translate}}</label>
+                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SHIPMENT.BILLING.RO_ZIPCODE' | translate}} :</label>
                                                     <div class="col-sm-8">
                                                       <select id="SelectZipCodeList" name="selectbasic" class="form-control input-md" ng-model="ROHead.ReceiptZipCode" ng-options="ZipCode._id as ZipCode.ZipCode for ZipCode in SelectReceiptZipCodeList"  required="required">
                                                             <option value="">{{'BODY.SECTION.SHIPMENT.BILLING.RO_SELECT_ZIPCODE' | translate}}</option>
@@ -3419,7 +3418,7 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            <button type="button" class="btn btn-success btn-lg btn-block" ng-click="UploadPaymentDocument($files, ViewHistoryRO.RONo)" ng-disabled="ViewHistoryRO.StaffApprovePaymentStatus === 'Y'">
+                                            <button type="button" class="btn btn-success btn-lg btn-block" ngf-select ngf-change="UploadPaymentDocument($files, ViewHistoryRO.RONo)" ng-disabled="ViewHistoryRO.StaffApprovePaymentStatus === 'Y'">
                                                 {{'BODY.SECTION.VIEW_RO_MODAL.UPLOAD_BUTTON' | translate}}   <span class="glyphicon glyphicon-upload"></span>
                                             </button></td>
                                         </div>
@@ -3503,7 +3502,7 @@
                                 <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.CUSTOMER_ORDER.CUSTOMER' | translate}}</label>
                                 <div class="col-sm-4">
                                     <select id="SelectCustomerList" class="js-example-basic-single" ng-init="InitCustomerOrder()" style=
-                                    "width:340px"></select>                                   
+                                    "width:285px"></select>                                   
                                 </div>
                             </div>
                             <div class="form-group">
