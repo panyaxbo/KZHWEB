@@ -91,20 +91,20 @@ app.on('close', function() {
   // app.listen(port);
 });
 // For localhost use
-
+/*
 mongodb.MongoClient.connect(mongodbConfig.connection_url + mongodbConfig.collection_name, function (err, database) {
     if (err) throw err;
 
     db = database;
 });
+*/
 
-/*
 mongodb.MongoClient.connect(mongolab_uri, function (err, database) {
     if (err) console.log(err, err.stack.split("\n"));
     console.log(database);
     db = database;
 });
-*/
+
 
 /*
 mongodb.MongoClient.connect(heroku_mongolab_uri, function (err, database) {

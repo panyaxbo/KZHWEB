@@ -296,7 +296,6 @@ router.get("/ActivateAppUser/:EncodeUrl", function (req, res) {
     var decodeString = Base64.decode(encodeUrl , serverConfig.app.passphrase);
     var txtString = decodeString.split('|');
     var user = txtString[0];
-    console.log(user);
     db.collection(mongodbConfig.mongodb.user.name)
         .update({
                 'Username': user
@@ -305,7 +304,7 @@ router.get("/ActivateAppUser/:EncodeUrl", function (req, res) {
                     'IsActivate': true
                 }
             },
-            function (error, res) {
+            function (error, stat) {
                 if (error) {
                     res.sendStatus(500);
                 } else {
