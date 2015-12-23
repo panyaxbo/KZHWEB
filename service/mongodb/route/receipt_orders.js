@@ -36,11 +36,14 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
                             'ROHeadId': obj_id
                         })
                         .toArray(function (err, ROLineList) {
-                          if ( !err) {
-                            resolve(ROLineList);
-                          }
-                          else {
+                            console.log(ROLineList);
+                          if (err) {
                             reject(Error("Billing Province It broke"));
+                           
+                          } else if (ROLineList) {
+                            resolve(ROLineList);
+                          } else if (!ROLineList) {
+                            reject(Error("no data"));
                           }
                     });
                 });
@@ -136,7 +139,7 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
                 });
                 LoadROLineListPromise
                 .then(function( data ) {
-                    console.log('Roline list promise');
+                    console.log('Roline list promise' +data);
                     ROHead.ROLineList = data;
                     return LoadBillingProvincePromise;
                 })

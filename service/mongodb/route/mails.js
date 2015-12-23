@@ -295,7 +295,7 @@ router.get('/ApprovePaymentDocument/:UserId', function (req, res) {
 			'	<tbody>'+
 			'		<tr>'+
 			'			<td style="border-top:#e41f28 solid 6px;font:normal 13px/18px Arial,Helvetica,sans-serif;padding:45px 17px 30px 17px" valign="top">'+
-			'			<h2 style="font:normal"><img height="20" src="cid:letter@kzh.parts.co.th" style="margin-right:10px" width="21" >&nbsp;&nbsp;Recovery your password</h2>'+
+			'			<h2 style="font:normal"><img height="24" src="cid:approve@kzh.parts.co.th" style="margin-right:10px" width="24" >&nbsp;&nbsp;เรียนลูกค้าที่มีค่า</h2>'+
 			'			<p>การชำระเงินของท่านได้รับการอนุมัติ<br>'+
 			'			<br>'+
 			'			<br>'+
@@ -309,7 +309,7 @@ router.get('/ApprovePaymentDocument/:UserId', function (req, res) {
 			'	</tbody>'+
 			'</table>'+
 			mailConfig.MAIL_CONTENT_FOOTER,
-			attachments : mailConfig.MAIL_ATTACHMENTS
+			attachments : mailConfig.MAIL_ATTACHMENTS_APPROVE
 		}
 
 		smtpTransport.sendMail(mailOptions, function(error, response){
@@ -331,10 +331,12 @@ router.get('/ApprovePaymentDocument/:UserId', function (req, res) {
 
 // Reject Payment Document
 router.post('/RejectPaymentDocument', function (req, res) {
+	console.log( 'UserId' + UserId );
 	var ValidateForm = req.body;
 	var UserId = ValidateForm.UserId;
 	var RejectReason = ValidateForm.RejectReason;
-	
+	console.log( 'UserId' + UserId );
+	console.log( 'RejectReason ' + RejectReason);
 	var LoadUserPromise = new Promise(function(resolve, reject) {
     	var user_id = bson.BSONPure.ObjectID(UserId);
 	    db.collection(mongodbConfig.mongodb.user.name)
@@ -378,10 +380,10 @@ router.post('/RejectPaymentDocument', function (req, res) {
 			'	<tbody>'+
 			'		<tr>'+
 			'			<td style="border-top:#e41f28 solid 6px;font:normal 13px/18px Arial,Helvetica,sans-serif;padding:45px 17px 30px 17px" valign="top">'+
-			'			<h2 style="font:normal"><img height="20" src="cid:letter@kzh.parts.co.th" style="margin-right:10px" width="21" >&nbsp;&nbsp;'+
-			'Recovery your password</h2>'+
+			'			<h2 style="font:normal"><img height="24" src="cid:reject@kzh.parts.co.th" style="margin-right:10px" width="24" >&nbsp;&nbsp;'+
+			'เรียน ท่านลูกค้าที่มีค่า</h2>'+
 			
-			'			<p>การชำระเงินของท่านได้รับการอนุมัติ เนื่องจาก <br>'+ RejectReason +
+			'			<p>การชำระเงินของท่านไม่ได้รับการอนุมัติ เนื่องจาก <br>'+ RejectReason +
 			'			<br>'+
 			'			<br>'+
 			'			</p>'+
@@ -394,7 +396,7 @@ router.post('/RejectPaymentDocument', function (req, res) {
 			'	</tbody>'+
 			'</table>'+
 			mailConfig.MAIL_CONTENT_FOOTER,
-			attachments : mailConfig.MAIL_ATTACHMENTS
+			attachments : mailConfig.MAIL_ATTACHMENTS_REJECT
 		}
 
 		smtpTransport.sendMail(mailOptions, function(error, response){

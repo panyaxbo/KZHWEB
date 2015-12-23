@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var encode_base64 = require('base64').encode;
-var decode_base64 = require('base64').decode;
+
 var base64Config = require('./base64-config.js');
+var serverConfig = require('../server-config.js');
+var Base64 = require(appRoot +'/node_modules/js-base64/base64.min.js').Base64;
 
 router.get('/EncodeBase64/:String', function(req, res) {
   var StringText = req.params.String;
@@ -19,4 +20,15 @@ router.get('/DecodeBase64/:String', function(req, res) {
   });
 });
 
+
+router.get('/GenerateHashLink/:Username/:Password/:Email', function(req, res) {
+	var username = req.params.Username;
+	var password = req.params.Password;
+	var email = req.params.Email;
+	var concatString = username + '|' + password + '|' + email + '|' + serverConfig.app.checksum;
+	var base64String = Base64.encode(concatString, serverConfig.app.passphrase);
+
+	res.json(base64String);
+
+});
 module.exports = router;

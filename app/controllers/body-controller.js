@@ -3677,9 +3677,10 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     $http.post(rejectMailUrl, $scope.ValidateForm)
                     .success(function (data, status, headers, config) {
                         console.log('reject success');
+                        $('#ThumbnailReceiptPayment').modal('toggle');
                     })
                     .error(function (data, status, headers, config) {
-
+                        swal("เกิดข้อผิดพลาด", data, "error");
                     });
             });
             

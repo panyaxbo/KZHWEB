@@ -91,7 +91,7 @@ module.exports = function (grunt) {
       options: {
         port: 9000,
         // Change this to '0.0.0.0' to access the server from outside.
-        hostname: '0.0.0.0',
+        hostname: 'localhost',
         livereload: 55555
       },
       livereload: {
@@ -136,8 +136,15 @@ module.exports = function (grunt) {
       },
       dev: {
         options: {
+          script: 'service/mongodb/server.js'
+       //   ,
+       //   debug: true
+        }
+      },
+      prod: {
+        options: {
           script: 'service/mongodb/server.js',
-          debug: true
+          node_env: 'production'
         }
       }
     },

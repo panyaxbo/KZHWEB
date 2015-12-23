@@ -55,12 +55,11 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
     var message_title_warning = $filter('translate')('MESSAGE.TITLE_WARNING');
     var message_title_error = $filter('translate')('MESSAGE.TITLE_ERROR');
 
-    console.log($cookies.get('User'));
-       console.log($cookies.getObject('User'));
     if ($cookies.getObject('User') !== undefined) {
       console.log('wanna eat cookie');
+        $scope.User = $cookies.getObject('User');
         $scope.User.Firstname = $cookies.getObject('User').Firstname;
-         $scope.User.Lastname = $cookies.getObject('User').Lastname;
+        $scope.User.Lastname = $cookies.getObject('User').Lastname;
       
         $scope.Firstname = $cookies.getObject('User').Firstname;
         $scope.Lastname = $cookies.getObject('User').Lastname;
@@ -469,11 +468,9 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
     if (UserBackFromEmailActivateUrl.indexOf("confirm=") > -1 ) {
         blockUI.start("Please wait ...");
         var url = UserBackFromEmailActivateUrl.substr(UserBackFromEmailActivateUrl.indexOf("confirm=") + 8);
-        var decodeUrl = Base64.decode(url);
-        var res = decodeUrl.split('|');
-        var user = res[0];
-        var password = res[1];
-        var updateActivateUrl = BASE_URL.PATH + "/users/ActivateAppUser/" + user + "/" + password;
+    //    var decodeUrl = Base64.decode(url);
+    //    var updateActivateUrl = BASE_URL.PATH + "/users/ActivateAppUser/" + user + "/" + password;
+        var updateActivateUrl = BASE_URL.PATH + "/users/ActivateAppUser/" + url;
         blockUI.message("40%");
         $http.get(updateActivateUrl)
         .success(function(data, status, headers, config) {
@@ -522,27 +519,38 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
 
     $scope.Signup = function () {
       blockUI.start("Please wait while system sending email...");
-
-      var createUserURL = BASE_URL.PATH + "/users/CreateAppUser/" +$scope.Username+ "/" + $scope.Password + "/"+ $scope.Email;
+      console.log('1 Email ' +$scope.Email );
+      var email = $scope.Email;
+      var createUserURL = BASE_URL.PATH + "/users/CreateAppUser/" +$scope.Username+ "/" + $scope.Password + "/"+ email;
       $scope.User.Firstname = $scope.Firstname;
       $scope.User.Lastname = $scope.Lastname;
       $http.post(createUserURL, $scope.User)
         .success(function(data, status, headers, config) {
           blockUI.message("25%");
+           console.log('2 Email ' +$scope.Email );
           var hostPort = $location.host() + ':' +$location.port();
-          var encryptUrlActivate = Base64.encode($scope.Username +"|" + $scope.Password +'|' + $scope.Email +"|" + "KZH");
-            var emailConfirmURL = BASE_URL.PATH + "/mails/SendEmailConfirmation/"+ $scope.Email + "/"+hostPort +"/"+ encryptUrlActivate;
-            blockUI.message("75%");
-            $http.get(emailConfirmURL)
-            .success(function (data, status, headers, config) {
-              blockUI.message("100%");
-                blockUI.stop();
-                swal("Sign up almost Success", "Please check your email to activate your account", "success");
-                $("#LoginModal").modal("toggle");
+    //      var encryptUrlActivate = Base64.encode($scope.Username +"|" + $scope.Password +'|' + $scope.Email +"|" + "KZH");
+            var linkHashUrl = BASE_URL.PATH + "/base64/GenerateHashLink/"+ $scope.Username +"/" + $scope.Password +'/' + email;
+             console.log('3 Email ' +$scope.Email );
+            $http.get(linkHashUrl)
+            .success(function(data, status, headers, config) {
+                var encryptUrlActivate = data;
+                var emailConfirmURL = BASE_URL.PATH + "/mails/SendEmailConfirmation/"+ email + "/"+hostPort +"/"+ encryptUrlActivate;
+                  blockUI.message("75%");
+                  $http.get(emailConfirmURL)
+                  .success(function (data, status, headers, config) {
+                    blockUI.message("100%");
+                      blockUI.stop();
+                      swal("Sign up almost Success", "Please check your email to activate your account", "success");
+                      $("#LoginModal").modal("toggle");
+                  })
+                  .error(function (data, status, headers, config) {
+       
+                  });
             })
-            .error(function (data, status, headers, config) {
- 
-            });
+            .error(function(data, status, headers, config) {
+
+            });      
             //Clear Fields after sign up successfully
             $scope.Firstname = "";
             $scope.Lastname = "";
@@ -1024,11 +1032,25 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
     }
 
     // Re-capcha
-    $scope.response = null;
-    $scope.widgetId = null;
-    $scope.model = {
-        key: '6LeVN-ESAAAAAGFk4yeban3O4yjwoa7S-b2mVRWt'
-    };
+    var recaptchaURL = BASE_URL.PATH + "/recaptchas/GetRecaptchaKey";
+    $http.get(recaptchaURL)
+    .success(function(data, status, headers, config) {
+      $scope.response = null;
+      $scope.widgetId = null;
+      $scope.model = {
+          key: data
+      };
+    })
+    .error(function(data, status, headers, config) {
+    //  console.log("Oops!! error for loading profile pic from facebook ");
+    });
+
+
+ //   $scope.response = null;
+ //   $scope.widgetId = null;
+ //   $scope.model = {
+ //       key: '6LeVN-ESAAAAAGFk4yeban3O4yjwoa7S-b2mVRWt'
+ //   };
     $scope.setResponse = function (response) {
         console.info('Response available');
         $scope.response = response;
@@ -1044,7 +1066,7 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
     $scope.cbExpiration = function() {
         console.info('Captcha expired. Resetting response object');
         $scope.response = null;
-     };
+    };
     $scope.submit = function () {
         var valid;
         /**
@@ -1089,7 +1111,6 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
             blockUI.message("25%");
             if(data) {
               var hostWithPort = $location.host() + ':' +$location.port();
-          //    var encryptUrlActivate = Base64.encode($scope.Username +"|" + encPassword +'|' + $scope.Email +"|" + "KZH");
               var encryptUrlForgetPassword = Base64.encode($scope.ForgetPasswordEmail +"|" + "KZH");
               var forgetPasswordEmailUrl = BASE_URL.PATH + "/mails/SendEmailForgetPassword/"+ $scope.ForgetPasswordEmail +"/" + hostWithPort+ "/"+ encryptUrlForgetPassword;
               blockUI.message("75%");

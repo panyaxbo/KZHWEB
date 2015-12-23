@@ -39,532 +39,513 @@
 
     <div class="container">
 
-        <div class="header" id="div-header" ng-controller="HeaderController" style="top: 0px;padding-bottom:10px;margin-bottom: 10px; margin-top:15px">
-            <a href="#/">
-                <img src="images/KZH%20Logo.png" width="150px" height="50px">
-            </a>
-            <!-- div seach -->
-            <div id="SearchCriteria" class="kzhweb-search animate" style="top:85px;z-index:9999;width:80%">             
-                <div class="input-group">
-                  <input type="text" class="form-control" ng-model="SearchAllText" ng-enter="Search()" ng-keydown="expression" placeholder="{{'HEAD.MENU.SEARCH.PLACEHOLDER' | translate}}">
-                  <span class="input-group-btn">
-                    <button class="btn btn-danger" type="reset" ng-click="HideSearch()"><span class="glyphicon glyphicon-remove"></span></button>
-                  </span>
-                </div>
-              </div>
-            <ul class="nav nav-pills pull-right">
-                <li>
-                    <a href="" class="head-menu animate" ng-click="ShowSearch()">
-                        <span class="glyphicon glyphicon-search"></span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#product-section" ng-click="SelectedHeadMenu('product')" class="head-menu">{{'HEAD.MENU.PRODUCT' | translate}}</a>
-                </li>
-                <li>
-                    <a href="#payment-section" ng-click="SelectedHeadMenu('payment')" class="head-menu">{{'HEAD.MENU.PAYMENT_N_DELIVERY' | translate}}</a>
-                </li>
-                <li>
-                    <a href="#about-section" ng-click="SelectedHeadMenu('about')" class="head-menu">{{'HEAD.MENU.ABOUT' | translate}}</a>
-                </li>
-                <li>
-                    <a href="#contact-section" ng-click="SelectedHeadMenu('contact')" class="head-menu">{{'HEAD.MENU.CONTACT' | translate}}</a>
-                </li>
-                <li>
-                    <div>
-                        <button id="CartButton" class="btn btn-success" data-toggle="modal" data-target="#CartModal" ng-click="ViewCart()">
-                            <span class="glyphicon glyphicon-shopping-cart"></span> ({{ROHead.ROLineList.length}}) {{'HEAD.CART' | translate}}
+        <div class="header container-fluid" id="div-header" ng-controller="HeaderController" style="top: 0px;padding-bottom:10px;margin-bottom: 10px; margin-top:15px">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <a class="navbar-brand" href="#/">
+                    <img src="images/KZH%20Logo.png" width="150px" height="50px">
+                </a>
+                <!-- div seach -->
+                
+                <div id="SearchCriteria" class="kzhweb-search animate" style="top:85px;z-index:9999;width:80%">             
+                    <div class="input-group">
+                      <input type="text" class="form-control" ng-model="SearchAllText" ng-enter="Search()" ng-keydown="expression" placeholder="{{'HEAD.MENU.SEARCH.PLACEHOLDER' | translate}}">
+                      <span class="input-group-btn">
+                        <button class="btn btn-danger" type="reset" ng-click="HideSearch()"><span class="glyphicon glyphicon-remove"></span></button>
+                      </span>
+                    </div>
+                  </div>
+                <ul class="nav nav-pills pull-right">
+                    <li>
+                        <a href="" class="head-menu animate" ng-click="ShowSearch()">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#product-section" ng-click="SelectedHeadMenu('product')" class="head-menu">{{'HEAD.MENU.PRODUCT' | translate}}</a>
+                    </li>
+                    <li>
+                        <a href="#payment-section" ng-click="SelectedHeadMenu('payment')" class="head-menu">{{'HEAD.MENU.PAYMENT_N_DELIVERY' | translate}}</a>
+                    </li>
+                    <li>
+                        <a href="#about-section" ng-click="SelectedHeadMenu('about')" class="head-menu">{{'HEAD.MENU.ABOUT' | translate}}</a>
+                    </li>
+                    <li>
+                        <a href="#contact-section" ng-click="SelectedHeadMenu('contact')" class="head-menu">{{'HEAD.MENU.CONTACT' | translate}}</a>
+                    </li>
+                    <li>
+                        <div>
+                            <button id="CartButton" class="btn btn-success" data-toggle="modal" data-target="#CartModal" ng-click="ViewCart()">
+                                <span class="glyphicon glyphicon-shopping-cart"></span> ({{ROHead.ROLineList.length}}) {{'HEAD.CART' | translate}}
+                            </button>
+                            <div class="modal fade" id="CartModal">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <h4 class="modal-title">{{'HEAD.MODAL_CART.PRODUCT_CART' | translate}}</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="container">
+                        
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 col-md-offset-0">
+                                                    <div id="HideCartTable" ng-show="ROHead.ROLineList.length <= 0 || ROHead.ROLineList === undefined">
+                                                        <h3 class="text-center">--------- {{'HEAD.MODAL_CART.EMPTY_CART' | translate}} ---------</h3>
+                                                    </div>
+                                                    <div id="ShowCartTable" ng-show="ROHead.ROLineList.length > 0">
+                                                        <table id="CartTable" class="table table-hover table table-condensed" ng-show="ROHead.ROLineList.length > 0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>{{'HEAD.MODAL_CART.SEQ' | translate}}</th>
+                                                                    <th></th>
+                                                                    <th class="text-left">{{'HEAD.MODAL_CART.ITEM_NAME' | translate}}</th>
+                                                                    <th class="text-right">{{'HEAD.MODAL_CART.QTY' | translate}}</th>
+                                                                    <th class="text-left">{{'HEAD.MODAL_CART.UOM' | translate}}</th>
+                                                                    <th class="text-right">{{'HEAD.MODAL_CART.PRICE' | translate}}</th>
+                                                                    <th class="text-right">{{'HEAD.MODAL_CART.DISCOUNT' | translate}}</th>
+                                                                    <th class="text-right">{{'HEAD.MODAL_CART.AMOUNT' | translate}}</th>
+                                                                    <th> </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="ro in ROHead.ROLineList" id="CartRow{{$index}}">
+                                                                    <td class="col-sm-1 col-md-1 text-center" >
+                                                                        {{$index+1}}.
+                                                                    </td>
+                                                                    <td class="col-sm-1 col-md-1 text-center" >
+                                                                        <div id="CartProduct_{{ro.ProductCode}}">
+                                                                            
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="col-sm-5 col-md-5 text-left">
+                                                                        <div class="media">
+                                                                            <div class="media-body">
+                                                                                {{ro.ProductNameTh}}
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="col-xs-1 col-sm-1 col-md-1" style="text-align: right">
+                                                                        <input type="text" class="form-control input-sm" id="BuyQty" ng-model="ro.Quantity" 
+                                                                        ng-keyup="UpdateCartBuyQty($index, ro.Quantity)" >
+                                                                    </td>
+                                                                    <td class="col-sm-1 col-md-1" style="text-align: center">
+                                                                        <select id="SelectUomList" name="selectbasic" class="form-control input-sm" ng-model="ro.UomCode" ng-options="Uom.UomCode as Uom.UomNameTh for Uom in ro.Uoms" ng-change="UpdateCartUom(ro, ro.UomCode, $index)">
+                                                                        </select>
+                                                                    </td>
+                                                                    <td class="col-sm-1 col-md-1 text-right"><strong>{{CurrencySymbol}} {{(ro.Price * Multiplier) | currency:''}}</strong>
+                                                                    </td>
+                                                                    <td class="col-sm-1 col-md-1 text-right"><strong>{{CurrencySymbol}} {{(ro.DiscountAmount * Multiplier) | currency:''}}</strong>
+                                                                    </td>
+                                                                    <td class="col-sm-4 col-md-4 text-right"><strong>{{CurrencySymbol}} {{(ro.Amount * Multiplier) | currency:''}}</strong>
+                                                                    </td>
+                                                                    <td class="col-sm-1 col-md-1">
+                                                                        <button type="button" class="btn btn-danger btn-xs" ng-click="DeleteCartProduct(this, ro, $index)">
+                                                                            <span class="glyphicon glyphicon-trash"></span> 
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="3"> </td>
+                                                                    <td colspan="2">  
+                                                                        <h5>{{'HEAD.MODAL_CART.SUMAMT' | translate}}</h5> 
+                                                                    </td>
+                                                                    <td colspan="3" class="text-right">  
+                                                                        <h5><strong>{{CurrencySymbol}} {{(ROHead.SumAmount * Multiplier)  | currency:''}}</strong></h5> 
+                                                                    </td>
+                                                                    <td>   </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="3"> </td>
+                                                                    <td colspan="2">  
+                                                                        <h5>{{'HEAD.MODAL_CART.SUMDISCAMT' | translate}}</h5>
+                                                                    </td>
+                                                                    <td colspan="3" class="text-right">  
+                                                                        <h5><strong>{{CurrencySymbol}} {{(ROHead.SumDiscountAmount * Multiplier) | currency:''}}</strong></h5>
+                                                                    </td>
+                                                                    <td>   </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="3"> </td>
+                                                                    <td colspan="2">  
+                                                                        <h5>{{'HEAD.MODAL_CART.SUMVATAMT' | translate}}</h5>
+                                                                    </td>
+                                                                    <td colspan="3" class="text-right">  
+                                                                        <h5><strong>{{CurrencySymbol}} {{(ROHead.SumVatAmount * Multiplier) | currency:''}}</strong></h5>
+                                                                    </td>
+                                                                    <td>   </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="3"> </td>
+                                                                    <td colspan="2">  
+                                                                        <h4>{{'HEAD.MODAL_CART.NETAMT' | translate}}</h4>
+                                                                    </td>
+                                                                    <td colspan="3" class="text-right">  
+                                                                        <h4><strong>{{CurrencySymbol}} {{(ROHead.NetAmount * Multiplier) | currency:''}}</strong></h4>
+                                                                    </td>
+                                                                    <td>   </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="9">
+                                                                        <div class="col-sm-offset-2 col-sm-10">
+                                                                            <div class="pull-right">
+                                                                                <button type="button" class="btn btn-default" ng-click="ContinueShopping()">
+                                                                                <span class="glyphicon glyphicon-shopping-cart"></span> {{'HEAD.MODAL_CART.SHOP_BUTTON' | translate}}
+                                                                            </button>
+
+                                                                                <button type="button" class="btn btn-danger" ng-click="ClearCart()">
+                                                                                <span class="glyphicon glyphicon-trash"></span> {{'HEAD.MODAL_CART.CLEAR_BUTTON' | translate}}
+                                                                            </button>
+
+                                                                                <button type="button" class="btn btn-success" ng-click="ShipmentProcess()">
+                                                                                {{'HEAD.MODAL_CART.CHECKOUT_BUTTON' | translate}} <span class="glyphicon glyphicon-play"></span>
+                                                                            </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <!--Shopping Cart Modal /.modal-content -->
+                                </div>
+                                <!-- Shopping Cart Modal /.modal-dialog -->
+                            </div>
+                            <!-- Shopping Cart Modal /.modal -->
+                        </div>
+                    </li>
+                    <li>
+                        <button id="LoginButton" class="btn btn-primary" data-toggle="modal" data-target="#LoginModal" ng-show="!IsLogin" ng-hide="IsLogin">
+                            <span class="glyphicon glyphicon-log-in"></span> {{'HEAD.SIGNIN' | translate}}
                         </button>
-                        <div class="modal fade" id="CartModal">
-                            <div class="modal-dialog modal-lg">
+                        <button id="LogoutButton" class="btn btn-danger" ng-click="Logout()" ng-show="IsLogin" ng-hide="!IsLogin">
+                            <span class="glyphicon glyphicon-log-out"></span> {{'HEAD.SIGNOUT' | translate}}
+                        </button>
+                        <div class="modal fade" id="ForgetPasswordModal">
+                            <div class="modal-dialog ">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-offset-2 col-xs-8 col-sm-8 col-md-8 text-center">
+                                                <div class="form-group text-center">
+                                                    <i class="fa fa-lock fa-5x"></i>
+                                                </div>
+                                                <div class="form-group text-center">
+                                                    <h2>{{'HEAD.MODAL_FORGET_PASSWORD.TITLE' | translate}} </h2>
+                                                </div>
+                                                <div class="form-group text-center">
+                                                    <h4>{{'HEAD.MODAL_FORGET_PASSWORD.TEXT' | translate}} </h4>
+                                                </div>
+                                                <div class="form-group text-center">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                                        <input type="text" class="form-control input-lg" ng-model="ForgetPasswordEmail" placeholder="email address">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button class="btn btn-primary btn-block btn-lg" ng-click="SendEmailForgetPassword()" >
+                                                        <span class="glyphicon glyphicon-envelope"></span> {{'HEAD.MODAL_FORGET_PASSWORD.SEND_EMAIL_BUTTON' | translate}}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.modal-content -->
+
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+                                <!-- /.modal -->
+                            </div>
+                        </div>
+                        <div class="modal fade" id="InputPasswordModal">
+                            <div class="modal-dialog ">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-offset-2 col-xs-8 col-sm-8 col-md-8 text-center">
+                                                <div class="form-group text-center">
+                                                    <i class="fa fa-unlock fa-5x"></i>
+                                                </div>
+                                                <div class="form-group text-center">
+                                                    <h2>{{'HEAD.MODAL_INPUT_PASSWORD.TITLE' | translate}} </h2>
+                                                </div>
+                                                <div class="form-group text-center">
+                                                    <h4>{{'HEAD.MODAL_INPUT_PASSWORD.TEXT' | translate}} </h4>
+                                                </div>
+                                                <div class="form-group text-center">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                                        <input type="password" class="form-control input-lg" ng-model="ChangeForgetPassword" placeholder="{{'HEAD.MODAL_INPUT_PASSWORD.PASSWORD' | translate}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group text-center">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                                        <input type="password" class="form-control input-lg" ng-model="ConfirmChangeForgetPassword" placeholder="{{'HEAD.MODAL_INPUT_PASSWORD.CONFIRM_PASSWORD' | translate}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button class="btn btn-primary btn-block btn-lg" ng-click="ChangePassword()" >
+                                                        <span class="glyphicon glyphicon-floppy-saved"></span> {{'HEAD.MODAL_INPUT_PASSWORD.SEND_EMAIL_BUTTON' | translate}}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.modal-content -->
+
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+                                <!-- /.modal -->
+                            </div>
+                        </div>
+                        <div class="modal fade" id="LoginModal">
+                            <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                                         </button>
-                                        <h4 class="modal-title">{{'HEAD.MODAL_CART.PRODUCT_CART' | translate}}</h4>
+                                        <h4 class="modal-title">{{'HEAD.MODAL_SIGNIN.HEAD' | translate}}</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <div class="container">
-                    
-                                        </div>
-
                                         <div class="row">
-                                            <div class="col-sm-12 col-md-12 col-md-offset-0">
-                                                <div id="HideCartTable" ng-show="ROHead.ROLineList.length <= 0 || ROHead.ROLineList === undefined">
-                                                    <h3 class="text-center">--------- {{'HEAD.MODAL_CART.EMPTY_CART' | translate}} ---------</h3>
-                                                </div>
-                                                <div id="ShowCartTable" ng-show="ROHead.ROLineList.length > 0">
-                                                    <table id="CartTable" class="table table-hover table table-condensed" ng-show="ROHead.ROLineList.length > 0">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>{{'HEAD.MODAL_CART.SEQ' | translate}}</th>
-                                                                <th></th>
-                                                                <th class="text-left">{{'HEAD.MODAL_CART.ITEM_NAME' | translate}}</th>
-                                                                <th class="text-right">{{'HEAD.MODAL_CART.QTY' | translate}}</th>
-                                                                <th class="text-left">{{'HEAD.MODAL_CART.UOM' | translate}}</th>
-                                                                <th class="text-right">{{'HEAD.MODAL_CART.PRICE' | translate}}</th>
-                                                                <th class="text-right">{{'HEAD.MODAL_CART.DISCOUNT' | translate}}</th>
-                                                                <th class="text-right">{{'HEAD.MODAL_CART.AMOUNT' | translate}}</th>
-                                                                <th> </th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr ng-repeat="ro in ROHead.ROLineList" id="CartRow{{$index}}">
-                                                                <td class="col-sm-1 col-md-1 text-center" >
-                                                                    {{$index+1}}.
-                                                                </td>
-                                                                <td class="col-sm-1 col-md-1 text-center" >
-                                                                    <div id="CartProduct_{{ro.ProductCode}}">
-                                                                        
-                                                                    </div>
-                                                                </td>
-                                                                <td class="col-sm-5 col-md-5 text-left">
-                                                                    <div class="media">
-                                                                        <div class="media-body">
-                                                                            {{ro.ProductNameTh}}
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="col-xs-1 col-sm-1 col-md-1" style="text-align: right">
-                                                                    <input type="text" class="form-control input-sm" id="BuyQty" ng-model="ro.Quantity" 
-                                                                    ng-keyup="UpdateCartBuyQty($index, ro.Quantity)" >
-                                                                </td>
-                                                                <td class="col-sm-1 col-md-1" style="text-align: center">
-                                                                    <select id="SelectUomList" name="selectbasic" class="form-control input-sm" ng-model="ro.UomCode" ng-options="Uom.UomCode as Uom.UomNameTh for Uom in ro.Uoms" ng-change="UpdateCartUom(ro, ro.UomCode, $index)">
-                                                                    </select>
-                                                                </td>
-                                                                <td class="col-sm-1 col-md-1 text-right"><strong>{{CurrencySymbol}} {{(ro.Price * Multiplier) | currency:''}}</strong>
-                                                                </td>
-                                                                <td class="col-sm-1 col-md-1 text-right"><strong>{{CurrencySymbol}} {{(ro.DiscountAmount * Multiplier) | currency:''}}</strong>
-                                                                </td>
-                                                                <td class="col-sm-4 col-md-4 text-right"><strong>{{CurrencySymbol}} {{(ro.Amount * Multiplier) | currency:''}}</strong>
-                                                                </td>
-                                                                <td class="col-sm-1 col-md-1">
-                                                                    <button type="button" class="btn btn-danger btn-xs" ng-click="DeleteCartProduct(this, ro, $index)">
-                                                                        <span class="glyphicon glyphicon-trash"></span> 
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="3"> </td>
-                                                                <td colspan="2">  
-                                                                    <h5>{{'HEAD.MODAL_CART.SUMAMT' | translate}}</h5> 
-                                                                </td>
-                                                                <td colspan="3" class="text-right">  
-                                                                    <h5><strong>{{CurrencySymbol}} {{(ROHead.SumAmount * Multiplier)  | currency:''}}</strong></h5> 
-                                                                </td>
-                                                                <td>   </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="3"> </td>
-                                                                <td colspan="2">  
-                                                                    <h5>{{'HEAD.MODAL_CART.SUMDISCAMT' | translate}}</h5>
-                                                                </td>
-                                                                <td colspan="3" class="text-right">  
-                                                                    <h5><strong>{{CurrencySymbol}} {{(ROHead.SumDiscountAmount * Multiplier) | currency:''}}</strong></h5>
-                                                                </td>
-                                                                <td>   </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="3"> </td>
-                                                                <td colspan="2">  
-                                                                    <h5>{{'HEAD.MODAL_CART.SUMVATAMT' | translate}}</h5>
-                                                                </td>
-                                                                <td colspan="3" class="text-right">  
-                                                                    <h5><strong>{{CurrencySymbol}} {{(ROHead.SumVatAmount * Multiplier) | currency:''}}</strong></h5>
-                                                                </td>
-                                                                <td>   </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="3"> </td>
-                                                                <td colspan="2">  
-                                                                    <h4>{{'HEAD.MODAL_CART.NETAMT' | translate}}</h4>
-                                                                </td>
-                                                                <td colspan="3" class="text-right">  
-                                                                    <h4><strong>{{CurrencySymbol}} {{(ROHead.NetAmount * Multiplier) | currency:''}}</strong></h4>
-                                                                </td>
-                                                                <td>   </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="9">
-                                                                    <div class="col-sm-offset-2 col-sm-10">
-                                                                        <div class="pull-right">
-                                                                            <button type="button" class="btn btn-default" ng-click="ContinueShopping()">
-                                                                            <span class="glyphicon glyphicon-shopping-cart"></span> {{'HEAD.MODAL_CART.SHOP_BUTTON' | translate}}
-                                                                        </button>
-
-                                                                            <button type="button" class="btn btn-danger" ng-click="ClearCart()">
-                                                                            <span class="glyphicon glyphicon-trash"></span> {{'HEAD.MODAL_CART.CLEAR_BUTTON' | translate}}
-                                                                        </button>
-
-                                                                            <button type="button" class="btn btn-success" ng-click="ShipmentProcess()">
-                                                                            {{'HEAD.MODAL_CART.CHECKOUT_BUTTON' | translate}} <span class="glyphicon glyphicon-play"></span>
-                                                                        </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                                <!--Shopping Cart Modal /.modal-content -->
-                            </div>
-                            <!-- Shopping Cart Modal /.modal-dialog -->
-                        </div>
-                        <!-- Shopping Cart Modal /.modal -->
-                    </div>
-                </li>
-                <li>
-                    <button id="LoginButton" class="btn btn-primary" data-toggle="modal" data-target="#LoginModal" ng-show="!IsLogin" ng-hide="IsLogin">
-                        <span class="glyphicon glyphicon-log-in"></span> {{'HEAD.SIGNIN' | translate}}
-                    </button>
-                    <button id="LogoutButton" class="btn btn-danger" ng-click="Logout()" ng-show="IsLogin" ng-hide="!IsLogin">
-                        <span class="glyphicon glyphicon-log-out"></span> {{'HEAD.SIGNOUT' | translate}}
-                    </button>
-                    <div class="modal fade" id="ForgetPasswordModal">
-                        <div class="modal-dialog ">
-                            <div class="modal-content">
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-md-offset-2 col-xs-8 col-sm-8 col-md-8 text-center">
-                                            <div class="form-group text-center">
-                                                <i class="fa fa-lock fa-5x"></i>
-                                            </div>
-                                            <div class="form-group text-center">
-                                                <h2>{{'HEAD.MODAL_FORGET_PASSWORD.TITLE' | translate}} </h2>
-                                            </div>
-                                            <div class="form-group text-center">
-                                                <h4>{{'HEAD.MODAL_FORGET_PASSWORD.TEXT' | translate}} </h4>
-                                            </div>
-                                            <div class="form-group text-center">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                                    <input type="text" class="form-control input-lg" ng-model="ForgetPasswordEmail" placeholder="email address">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <button class="btn btn-primary btn-block btn-lg" ng-click="SendEmailForgetPassword()" >
-                                                    <span class="glyphicon glyphicon-envelope"></span> {{'HEAD.MODAL_FORGET_PASSWORD.SEND_EMAIL_BUTTON' | translate}}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- /.modal-content -->
-
-                                </div>
-                                <!-- /.modal-dialog -->
-                            </div>
-                            <!-- /.modal -->
-                        </div>
-                    </div>
-                    <div class="modal fade" id="InputPasswordModal">
-                        <div class="modal-dialog ">
-                            <div class="modal-content">
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-md-offset-2 col-xs-8 col-sm-8 col-md-8 text-center">
-                                            <div class="form-group text-center">
-                                                <i class="fa fa-unlock fa-5x"></i>
-                                            </div>
-                                            <div class="form-group text-center">
-                                                <h2>{{'HEAD.MODAL_INPUT_PASSWORD.TITLE' | translate}} </h2>
-                                            </div>
-                                            <div class="form-group text-center">
-                                                <h4>{{'HEAD.MODAL_INPUT_PASSWORD.TEXT' | translate}} </h4>
-                                            </div>
-                                            <div class="form-group text-center">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                                                    <input type="password" class="form-control input-lg" ng-model="ChangeForgetPassword" placeholder="{{'HEAD.MODAL_INPUT_PASSWORD.PASSWORD' | translate}}">
-                                                </div>
-                                            </div>
-                                            <div class="form-group text-center">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                                                    <input type="password" class="form-control input-lg" ng-model="ConfirmChangeForgetPassword" placeholder="{{'HEAD.MODAL_INPUT_PASSWORD.CONFIRM_PASSWORD' | translate}}">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <button class="btn btn-primary btn-block btn-lg" ng-click="ChangePassword()" >
-                                                    <span class="glyphicon glyphicon-floppy-saved"></span> {{'HEAD.MODAL_INPUT_PASSWORD.SEND_EMAIL_BUTTON' | translate}}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- /.modal-content -->
-
-                                </div>
-                                <!-- /.modal-dialog -->
-                            </div>
-                            <!-- /.modal -->
-                        </div>
-                    </div>
-                    <div class="modal fade" id="LoginModal">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                                    </button>
-                                    <h4 class="modal-title">{{'HEAD.MODAL_SIGNIN.HEAD' | translate}}</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-xs-6">
-                                            <div class="well">
-                                                <form id="loginForm" role="form">
-                                                    <div class="form-group">
-                                                        <label for="username" class="control-label">{{'HEAD.MODAL_SIGNIN.LABEL_USERNAME' | translate}}</label>
-                                                        <input type="text" class="form-control" id="username" name="username" value="" required title="Please enter you username" placeholder="example@gmail.com" ng-model="username" data-error="Bruh, that email address is invalid">
-                                                        <span class="help-block"></span>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="password" class="control-label">{{'HEAD.MODAL_SIGNIN.LABEL_PASSWORD' | translate}}</label>
-                                                        <input type="password" class="form-control" id="password" name="password" value="" required ng-model="password">
-                                                        <span class="help-block"></span>
-                                                    </div>
-                                                     <div class="controls">
-                                                        <div id="LoginErrorAlert" class="alert alert-danger fade in" style="display: none">
-                                                            <!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
-                                                            <strong>{{LoginErrorMessage}}</strong> 
+                                            <div class="col-xs-6">
+                                                <div class="well">
+                                                    <form id="loginForm" role="form">
+                                                        <div class="form-group">
+                                                            <label for="username" class="control-label">{{'HEAD.MODAL_SIGNIN.LABEL_USERNAME' | translate}}</label>
+                                                            <input type="text" class="form-control" id="username" name="username" value="" required title="Please enter you username" placeholder="example@gmail.com" ng-model="username" data-error="Bruh, that email address is invalid">
+                                                            <span class="help-block"></span>
                                                         </div>
-                                                    </div>
-                                                    <div>
-                                                        <label>
-                                                            <a ng-click="ForgetPassword()">{{'HEAD.MODAL_SIGNIN.FORGET_PASSWORD' | translate}}</a>
-                                                        </label>
-                                                    </div>
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" ng-model="RememberMe" id="remember"> {{'HEAD.MODAL_SIGNIN.REMEMBER_ME' | translate}}
-                                                        </label>
-                                                        <p class="help-block">{{'HEAD.MODAL_SIGNIN.REMEMBER_ME_REASON' | translate}}</p>
-                                                    </div>
-                                                    <button type="submit" class="btn btn-success btn-block" ng-click="Login()">
-                                                        <span class="glyphicon glyphicon-log-in" ></span> {{'HEAD.MODAL_SIGNIN.BUTTON_SIGNIN' | translate}}</button>
-                                                    
-                                                    <hr>
-                                                    <p class="text-center" style="margin-top:10px;">OR</p>
-                                                    <a class="btn btn-block btn-social btn-facebook" ng-click="LoginWithSocial('facebook')">
-                                                        <i class="fa fa-facebook"></i> {{'HEAD.MODAL_SIGNIN.FACEBOOK_SIGNIN' | translate}}
-                                                    </a>
-                                                    <a class="btn btn-block btn-social btn-google" ng-click="LoginWithSocial('google_plus')">
-                                                        <i class="fa fa-google"></i> {{'HEAD.MODAL_SIGNIN.GOOGLE_PLUS_SIGNIN' | translate}}
-                                                    </a>
-                                                    
-                                                    <a class="btn btn-block btn-social btn-twitter" ng-click="LoginWithSocial('twitter')">
-                                                        <i class="fa fa-twitter"></i> {{'HEAD.MODAL_SIGNIN.TWITTER_SIGNIN' | translate}}
-                                                    </a>
-                                                    <a class="btn btn-block btn-social btn-linkedin" ng-click="LoginWithSocial('linkedin')">
-                                                        <i class="fa fa-linkedin"></i> {{'HEAD.MODAL_SIGNIN.LINKEDIN_SIGNIN' | translate}}
-                                                    </a>
-                                                   <a class="btn btn-block btn-social btn-instagram" ng-click="LoginWithSocial('instagram')">
-                                                        <i class="fa fa-instagram"></i> {{'HEAD.MODAL_SIGNIN.INSTAGRAM_SIGNIN' | translate}}
-                                                    </a>
-                                                    <a class="btn btn-block btn-social btn-github" ng-click="LoginWithSocial('github')">
-                                                        <i class="fa fa-github"></i> {{'HEAD.MODAL_SIGNIN.GITHUB_SIGNIN' | translate}}
-                                                    </a>
-                                                    <a class="btn btn-block btn-social btn-dropbox" ng-click="LoginWithSocial('dropbox')">
-                                                        <i class="fa fa-dropbox"></i> {{'HEAD.MODAL_SIGNIN.DROPBOX_SIGNIN' | translate}}
-                                                    </a>
-                                                    <a class="btn btn-block btn-social btn-foursquare" ng-click="LoginWithSocial('foursquare')">
-                                                        <i class="fa fa-foursquare"></i> {{'HEAD.MODAL_SIGNIN.FOURSQUARE_SIGNIN' | translate}}
-                                                    </a>
-                                                    <a class="btn btn-block btn-social btn-soundcloud" ng-click="LoginWithSocial('soundcloud')">
-                                                        <i class="fa fa-soundcloud"></i> {{'HEAD.MODAL_SIGNIN.SOUNDCLOUD_SIGNIN' | translate}}
-                                                    </a>
+                                                        <div class="form-group">
+                                                            <label for="password" class="control-label">{{'HEAD.MODAL_SIGNIN.LABEL_PASSWORD' | translate}}</label>
+                                                            <input type="password" class="form-control" id="password" name="password" value="" required ng-model="password">
+                                                            <span class="help-block"></span>
+                                                        </div>
+                                                         <div class="controls">
+                                                            <div id="LoginErrorAlert" class="alert alert-danger fade in" style="display: none">
+                                                                <!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
+                                                                <strong>{{LoginErrorMessage}}</strong> 
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <label>
+                                                                <a ng-click="ForgetPassword()">{{'HEAD.MODAL_SIGNIN.FORGET_PASSWORD' | translate}}</a>
+                                                            </label>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" ng-model="RememberMe" id="remember"> {{'HEAD.MODAL_SIGNIN.REMEMBER_ME' | translate}}
+                                                            </label>
+                                                            <p class="help-block">{{'HEAD.MODAL_SIGNIN.REMEMBER_ME_REASON' | translate}}</p>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-success btn-block" ng-click="Login()">
+                                                            <span class="glyphicon glyphicon-log-in" ></span> {{'HEAD.MODAL_SIGNIN.BUTTON_SIGNIN' | translate}}</button>
+                                                        
+                                                        <hr>
+                                                        <p class="text-center" style="margin-top:10px;">OR</p>
+                                                        <a class="btn btn-block btn-social btn-facebook" ng-click="LoginWithSocial('facebook')">
+                                                            <i class="fa fa-facebook"></i> {{'HEAD.MODAL_SIGNIN.FACEBOOK_SIGNIN' | translate}}
+                                                        </a>
+                                                        <a class="btn btn-block btn-social btn-google" ng-click="LoginWithSocial('google_plus')">
+                                                            <i class="fa fa-google"></i> {{'HEAD.MODAL_SIGNIN.GOOGLE_PLUS_SIGNIN' | translate}}
+                                                        </a>
+                                                        
+                                                        <a class="btn btn-block btn-social btn-twitter" ng-click="LoginWithSocial('twitter')">
+                                                            <i class="fa fa-twitter"></i> {{'HEAD.MODAL_SIGNIN.TWITTER_SIGNIN' | translate}}
+                                                        </a>
+                                                        <a class="btn btn-block btn-social btn-linkedin" ng-click="LoginWithSocial('linkedin')">
+                                                            <i class="fa fa-linkedin"></i> {{'HEAD.MODAL_SIGNIN.LINKEDIN_SIGNIN' | translate}}
+                                                        </a>
+                                                       <a class="btn btn-block btn-social btn-instagram" ng-click="LoginWithSocial('instagram')">
+                                                            <i class="fa fa-instagram"></i> {{'HEAD.MODAL_SIGNIN.INSTAGRAM_SIGNIN' | translate}}
+                                                        </a>
+                                                        <a class="btn btn-block btn-social btn-github" ng-click="LoginWithSocial('github')">
+                                                            <i class="fa fa-github"></i> {{'HEAD.MODAL_SIGNIN.GITHUB_SIGNIN' | translate}}
+                                                        </a>
+                                                        <a class="btn btn-block btn-social btn-dropbox" ng-click="LoginWithSocial('dropbox')">
+                                                            <i class="fa fa-dropbox"></i> {{'HEAD.MODAL_SIGNIN.DROPBOX_SIGNIN' | translate}}
+                                                        </a>
+                                                        <a class="btn btn-block btn-social btn-foursquare" ng-click="LoginWithSocial('foursquare')">
+                                                            <i class="fa fa-foursquare"></i> {{'HEAD.MODAL_SIGNIN.FOURSQUARE_SIGNIN' | translate}}
+                                                        </a>
+                                                        <a class="btn btn-block btn-social btn-soundcloud" ng-click="LoginWithSocial('soundcloud')">
+                                                            <i class="fa fa-soundcloud"></i> {{'HEAD.MODAL_SIGNIN.SOUNDCLOUD_SIGNIN' | translate}}
+                                                        </a>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <div class="well">
+                                                <form id="SignupForm" ng-submit="Signup()" role="form" type="multipart/form-data">
+                                                        <div class="form-group">
+                                                            <label class="control-label" for="inputFirst">{{'HEAD.MODAL_SIGNIN.FIRST_NAME' | translate}}</label>
+                                                            <div class="controls">
+                                                                <input id="Firstname" ng-model="Firstname" placeholder="E.g. Ashwin" type="text" 
+                                                                class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label" for="inputLast">{{'HEAD.MODAL_SIGNIN.LAST_NAME' | translate}}</label>
+                                                            <div class="controls">
+                                                                <input id="Lastname" ng-model="Lastname" placeholder="E.g. Hegde" type="text" 
+                                                                class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label" for="inputEmail">{{'HEAD.MODAL_SIGNIN.EMAIL' | translate}}</label>
+                                                            <div class="controls">
+                                                                <input id="Email" ng-model="Email" placeholder="E.g. ashwinh@cybage.com" 
+                                                                type="text" class="form-control" ng-keydown="ValidateEmail()"/>
+                                                            </div>
+                                                            <div class="controls">
+                                                            <!--    <img id="ValidateSignupEmail" src="" width="30" height="30">-->
+                                                                <div id="EmailAlert" class="alert alert-warning fade in" style="display: none">
+                                                                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                                                    <strong>{{EmailValidateMessage}}</strong> 
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label" for="inputUser">{{'HEAD.MODAL_SIGNIN.USERNAME' | translate}}</label>
+                                                            <div class="controls">
+                                                                <input id="Username" ng-model="Username" placeholder="E.g. ashwinhegde" 
+                                                                type="text" class="form-control" ng-blur="ValidateExistUsername()">
+                                                            </div>
+                                                            <div class="controls">
+                                                                <div id="UsernameAlert" class="alert alert-warning fade in" style="display: none">
+                                                                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                                                    <strong>{{UsernameValidateMessage}}</strong> 
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="control-label" for="inputPassword">{{'HEAD.MODAL_SIGNIN.PASSWORD' | translate}}</label>
+                                                            <div class="controls">
+                                                                <input id="Password" ng-model="Password" placeholder="Min. 8 Characters" type="password" 
+                                                                class="form-control" >
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="control-label">{{'HEAD.MODAL_SIGNIN.STRENGTH' | translate}}</label>
+                                                            <div class="controls">
+                                                                <div ng-password-strength="Password" strength="passStrength" inner-class="progress-bar" 
+                                                                inner-class-prefix="progress-bar-"></div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                        <label class="control-label">{{'HEAD.MODAL_SIGNIN.RECAPTCHA' | translate}}</label>
+                                                            <!-- Call a method in the scope of your controller to handle data submit -->
+                                                            <form ng-submit="submit()">
+                                                                <div
+                                                                    vc-recaptcha
+                                                                    theme="'light'"
+                                                                    key="model.key"
+                                                                    on-create="setWidgetId(widgetId)"
+                                                                    on-success="setResponse(response)"
+                                                                    on-expire="cbExpiration()"
+                                                                ></div>
+                                                            </form>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label"></label>
+                                                            <div class="controls">
+                                                                <label class="checkbox"><input type="checkbox" ng-model="IsAcceptCondition">
+                                                                {{'HEAD.MODAL_SIGNIN.TERM_SERVICE_LABEL' | translate}} 
+                                                                <a href="#">{{'HEAD.MODAL_SIGNIN.TERM_SERVICE' | translate}}</a></label> 
+                                                            </div>
+                                                        </div>
+                                                        <button class="btn btn-primary" type="submit" ng-click="Signup()" 
+                                                        ng-disabled="ExistUsername || ExistEmail || !ValidEmail || !IsHuman || !IsAcceptCondition">
+                                                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> {{'HEAD.MODAL_SIGNIN.BUTTON_SIGNUP' | translate}}
+                                                        </button> 
                                                 </form>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-xs-6">
-                                            <div class="well">
-                                            <form id="SignupForm" ng-submit="Signup()" role="form" type="multipart/form-data">
-                                                    <div class="form-group">
-                                                        <label class="control-label" for="inputFirst">{{'HEAD.MODAL_SIGNIN.FIRST_NAME' | translate}}</label>
-                                                        <div class="controls">
-                                                            <input id="Firstname" ng-model="Firstname" placeholder="E.g. Ashwin" type="text" 
-                                                            class="form-control">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="control-label" for="inputLast">{{'HEAD.MODAL_SIGNIN.LAST_NAME' | translate}}</label>
-                                                        <div class="controls">
-                                                            <input id="Lastname" ng-model="Lastname" placeholder="E.g. Hegde" type="text" 
-                                                            class="form-control">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="control-label" for="inputEmail">{{'HEAD.MODAL_SIGNIN.EMAIL' | translate}}</label>
-                                                        <div class="controls">
-                                                            <input id="Email" ng-model="Email" placeholder="E.g. ashwinh@cybage.com" 
-                                                            type="text" class="form-control" ng-keydown="ValidateEmail()"/>
-                                                        </div>
-                                                        <div class="controls">
-                                                        <!--    <img id="ValidateSignupEmail" src="" width="30" height="30">-->
-                                                            <div id="EmailAlert" class="alert alert-warning fade in" style="display: none">
-                                                                <a href="#" class="close" data-dismiss="alert">&times;</a>
-                                                                <strong>{{EmailValidateMessage}}</strong> 
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="control-label" for="inputUser">{{'HEAD.MODAL_SIGNIN.USERNAME' | translate}}</label>
-                                                        <div class="controls">
-                                                            <input id="Username" ng-model="Username" placeholder="E.g. ashwinhegde" 
-                                                            type="text" class="form-control" ng-blur="ValidateExistUsername()">
-                                                        </div>
-                                                        <div class="controls">
-                                                            <div id="UsernameAlert" class="alert alert-warning fade in" style="display: none">
-                                                                <a href="#" class="close" data-dismiss="alert">&times;</a>
-                                                                <strong>{{UsernameValidateMessage}}</strong> 
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                        <!-- /.modal-content -->
 
-                                                    <div class="form-group">
-                                                        <label class="control-label" for="inputPassword">{{'HEAD.MODAL_SIGNIN.PASSWORD' | translate}}</label>
-                                                        <div class="controls">
-                                                            <input id="Password" ng-model="Password" placeholder="Min. 8 Characters" type="password" 
-                                                            class="form-control" >
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label class="control-label">{{'HEAD.MODAL_SIGNIN.STRENGTH' | translate}}</label>
-                                                        <div class="controls">
-                                                            <div ng-password-strength="Password" strength="passStrength" inner-class="progress-bar" 
-                                                            inner-class-prefix="progress-bar-"></div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                    <label class="control-label">{{'HEAD.MODAL_SIGNIN.RECAPTCHA' | translate}}</label>
-                                                        <!-- Call a method in the scope of your controller to handle data submit -->
-                                                        <form ng-submit="submit()">
-                                                            <div
-                                                                vc-recaptcha
-                                                                theme="'light'"
-                                                                key="model.key"
-                                                                on-create="setWidgetId(widgetId)"
-                                                                on-success="setResponse(response)"
-                                                                on-expire="cbExpiration()"
-                                                            ></div>
-                                                        </form>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="control-label"></label>
-                                                        <div class="controls">
-                                                            <label class="checkbox"><input type="checkbox">
-                                                            {{'HEAD.MODAL_SIGNIN.TERM_SERVICE_LABEL' | translate}} 
-                                                            <a href="#">{{'HEAD.MODAL_SIGNIN.TERM_SERVICE' | translate}}</a></label> 
-                                                        </div>
-                                                    </div>
-                                                    <button class="btn btn-primary" type="submit" ng-click="Signup()" 
-                                                    ng-disabled="ExistUsername || ExistEmail || !ValidEmail">
-                                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> {{'HEAD.MODAL_SIGNIN.BUTTON_SIGNUP' | translate}}
-                                                    </button> 
-                                            </form>
-                                            </div>
-                                        </div>
                                     </div>
-                                    <!-- /.modal-content -->
-
+                                    <!-- /.modal-dialog -->
                                 </div>
-                                <!-- /.modal-dialog -->
+                                <!-- /.modal -->
                             </div>
-                            <!-- /.modal -->
                         </div>
-                    </div>
-                </li>
+                    </li>
 
-                <li class="dropdown" class="head-menu" style="margin-top:-10px">
-                     <a href="#" class="dropdown-toggle head-menu" data-toggle="dropdown"><span id="SelectedDropdownLanguage"><img src="/images/th.png">&nbsp;ไทย</span><b class="caret"></b></a>
-                      <ul id="DropdownLanguage" class="dropdown-menu">
-                        <li><a href="#" ng-click="SelectedLocale('th')"><img src="/images/th.png">&nbsp;ไทย</a>
-                        </li>
-                        <li><a href="#" ng-click="SelectedLocale('us')"><img src="/images/us.png">&nbsp;English</a>
-                        </li>
-                        <li><a href="#" ng-click="SelectedLocale('cn')"><img src="/images/cn.png">&nbsp;中國</a>
-                        </li>
-                      </ul>
-                </li>
-            <!--    <li class="dropdown" class="head-menu" style="margin-top:5px">
-                    <div>
-                        <a href="#" class="dropdown-toggle head-menu" data-toggle="dropdown">
-                        <span id="SelectedDropdownCurrency">฿ THB</span><b class="caret"></b></a>
-                        <ul id="DropdownCurrency" class="dropdown-menu">
-                            <li><a href="#" ng-click="SelectedHeadCurrency('thb')" id="THB" class="head-menu">
-                                ฿ THB</a>
+                    <li class="dropdown" class="head-menu" style="margin-top:-10px">
+                         <a href="#" class="dropdown-toggle head-menu" data-toggle="dropdown"><span id="SelectedDropdownLanguage"><img src="/images/th.png">&nbsp;ไทย</span><b class="caret"></b></a>
+                          <ul id="DropdownLanguage" class="dropdown-menu">
+                            <li><a href="#" ng-click="SelectedLocale('th')"><img src="/images/th.png">&nbsp;ไทย</a>
                             </li>
-                            <li><a href="#" ng-click="SelectedHeadCurrency('usd')" id="USD" class="head-menu">
-                                $ USD</a>
+                            <li><a href="#" ng-click="SelectedLocale('us')"><img src="/images/us.png">&nbsp;English</a>
                             </li>
-                            <li><a href="#" ng-click="SelectedHeadCurrency('eur')" id="EUR" class="head-menu">
-                                € EUR</a>
+                            <li><a href="#" ng-click="SelectedLocale('cn')"><img src="/images/cn.png">&nbsp;中國</a>
                             </li>
-                            <li><a href="#" ng-click="SelectedHeadCurrency('gbp')" id="GBP" class="head-menu">
-                                £ GBP</a>
-                            </li>
-                            <li><a href="#" ng-click="SelectedHeadCurrency('cny')" id="CNY" class="head-menu">
-                                ¥ CNY</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>-->
-                <li class="dropdown" class="head-menu" style="margin-top:5px">
-                    <div>
-                       <div id="UserProfileImage">
-                           <img src="/images/noProfileImg.png"  class="img-circle" width="40" height="40" ng-show="!IsLogin || User.ProfileImage === undefined" style="margin-top:-5px">
-                       </div>
-                    <!--   <img src="User.ProfileImage" ng-binding="User.ProfileImage" class="img-circle" width="40" height="40" ng-show="IsLogin && User.ProfileImage.length > 0" style="margin-top:-5px">-->
-                    </div>
-                </li>
-                <li class="dropdown" class="head-menu" style="margin-top:5px">
-                    <div>
-                        <div ng-show="IsAdmin && !IsGuest">
-                            <!-- code to render a large video block-->
-                            <a href="#" class="dropdown-toggle head-menu" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
-                             {{User.Firstname}}<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#account-section" ng-click="SelectedHeadMenu('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}} </a>
-                                </li>
-                                <li><a href="#customer-order-section" ng-click="SelectedHeadMenu('customer-order')"><span class="glyphicon glyphicon-tasks"></span> {{'HEAD.MENU.CUSTOMER' | translate}} </a>
-                                </li>
-                                <li><a href="#history-section" ng-click="SelectedHeadMenu('history')"><span class="glyphicon glyphicon-time"></span> {{'HEAD.MENU.HISTORY' | translate}}</a>
-                                </li>
-                                <li><a href="#setting-section" ng-click="SelectedHeadMenu('setting')"><span class="glyphicon glyphicon-cog"></span> {{'HEAD.MENU.GENERAL' | translate}}</a>
-                                </li>
-                                <li class="divider"></li>
-                                <li><a href="#" ng-click="Logout()"><span class="glyphicon glyphicon-off"></span> {{'HEAD.MENU.LOGOUT' | translate}}</a>
-                                </li>
-                            </ul>
+                          </ul>
+                    </li>
+                
+                    <li class="dropdown" class="head-menu" style="margin-top:5px">
+                        <div>
+                           <div id="UserProfileImage">
+                               <img src="/images/noProfileImg.png"  class="img-circle" width="40" height="40" ng-show="!IsLogin || User.ProfileImage === undefined" style="margin-top:-5px">
+                           </div>
+                        <!--   <img src="User.ProfileImage" ng-binding="User.ProfileImage" class="img-circle" width="40" height="40" ng-show="IsLogin && User.ProfileImage.length > 0" style="margin-top:-5px">-->
                         </div>
-                        <div ng-show="!IsAdmin && !IsGuest">
-                            <!-- code to render the regular video block -->
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
-                             {{User.Firstname}}<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#account-section" ng-click="SelectedHeadMenu('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}}</a>
-                                </li>
-                                <li> <a href="#history-section" ng-click="SelectedHeadMenu('history')"><span class="glyphicon glyphicon-time"></span> {{'HEAD.MENU.HISTORY' | translate}}</a>
-                                <li class="divider"></li>
-                                <li><a ng-href="#" ng-click="Logout()"><span class="glyphicon glyphicon-off"></span> {{'HEAD.MENU.LOGOUT' | translate}}</a>
+                    </li>
+                    <li class="dropdown" class="head-menu" style="margin-top:5px">
+                        <div>
+                            <div ng-show="IsAdmin && !IsGuest">
+                                <!-- code to render a large video block-->
+                                <a href="#" class="dropdown-toggle head-menu" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
+                                 {{User.Firstname}}<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#account-section" ng-click="SelectedHeadMenu('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}} </a>
                                     </li>
-                                </li>
-                            </ul>
+                                    <li><a href="#customer-order-section" ng-click="SelectedHeadMenu('customer-order')"><span class="glyphicon glyphicon-tasks"></span> {{'HEAD.MENU.CUSTOMER' | translate}} </a>
+                                    </li>
+                                    <li><a href="#history-section" ng-click="SelectedHeadMenu('history')"><span class="glyphicon glyphicon-time"></span> {{'HEAD.MENU.HISTORY' | translate}}</a>
+                                    </li>
+                                    <li><a href="#setting-section" ng-click="SelectedHeadMenu('setting')"><span class="glyphicon glyphicon-cog"></span> {{'HEAD.MENU.GENERAL' | translate}}</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li><a href="#" ng-click="Logout()"><span class="glyphicon glyphicon-off"></span> {{'HEAD.MENU.LOGOUT' | translate}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div ng-show="!IsAdmin && !IsGuest">
+                                <!-- code to render the regular video block -->
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
+                                 {{User.Firstname}}<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#account-section" ng-click="SelectedHeadMenu('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}}</a>
+                                    </li>
+                                    <li> <a href="#history-section" ng-click="SelectedHeadMenu('history')"><span class="glyphicon glyphicon-time"></span> {{'HEAD.MENU.HISTORY' | translate}}</a>
+                                    <li class="divider"></li>
+                                    <li><a ng-href="#" ng-click="Logout()"><span class="glyphicon glyphicon-off"></span> {{'HEAD.MENU.LOGOUT' | translate}}</a>
+                                        </li>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div ng-show="!IsAdmin && IsGuest">
+                                <!-- code to render the regular video block -->
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
+                                 {{User.Firstname}}<b class="caret"></b></a>
+                            </div>
                         </div>
-                        <div ng-show="!IsAdmin && IsGuest">
-                            <!-- code to render the regular video block -->
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
-                             {{User.Firstname}}<b class="caret"></b></a>
-                        </div>
-                    </div>
-                </li>
+                    </li>
+            </div>
         </div>
        <div id="div-body" ng-controller="BodyController">
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
@@ -3426,7 +3407,7 @@
                                             <div class="text-center">
                                                 <h1>{{'BODY.SECTION.VIEW_RO_MODAL.IMAGE_PAYMENT_DOCUMENT' | translate}}</h1>
                                             </div>
-                                            <div class="text-center" align="center" valign="center">
+                                            <div class="text-center col-md-11 col-sm-offset-1">
                                                 <div id="ThumbnailReceiptPayment"></div>
                                             </div>
                                         </div>
@@ -3647,7 +3628,7 @@
                                         <div class="text-center">
                                             <h1>{{'BODY.SECTION.VIEW_RO_MODAL.IMAGE_PAYMENT_DOCUMENT' | translate}}</h1>
                                         </div>
-                                        <div class="text-center" align="center" valign="center">
+                                        <div class="text-center col-md-11 col-sm-offset-1">
                                             <div id="ThumbnailStaffViewReceiptPayment"></div>
                                         </div>
                                         <div class="text-center">

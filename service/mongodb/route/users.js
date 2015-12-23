@@ -1,6 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcrypt');
+//var serverConfig = require('../server-config.js');
+
+var Base64 = require(appRoot + '/node_modules/js-base64/base64.min.js').Base64;
+
 /* GET users listing. */
 router.get(mongodbConfig.url.user.loadAllUser, function (req, res) {
     db.collection(mongodbConfig.mongodb.user.name)
@@ -285,19 +289,23 @@ router.post(mongodbConfig.url.user.createAppUserByUsernameAndPasswordAndEmail, f
 });
 
 // Update AppUser Activate from EMail
-router.get(mongodbConfig.url.user.activateAppUserViaEmail, function (req, res) {
-    var Username = req.params.Username;
-    var Password = req.params.Password;
+router.get("/ActivateAppUser/:EncodeUrl", function (req, res) {
+ //   var Username = req.params.Username;
+//    var Password = req.params.Password;
+    var encodeUrl = req.params.EncodeUrl;
+    var decodeString = Base64.decode(encodeUrl , serverConfig.app.passphrase);
+    var txtString = decodeString.split('|');
+    var user = txtString[0];
+    console.log(user);
     db.collection(mongodbConfig.mongodb.user.name)
         .update({
-                'Username': Username
-             //   'Password': Password
+                'Username': user
             }, {
                 $set: {
                     'IsActivate': true
                 }
             },
-            function (error, result) {
+            function (error, res) {
                 if (error) {
                     res.sendStatus(500);
                 } else {
@@ -310,7 +318,8 @@ router.get(mongodbConfig.url.user.activateAppUserViaEmail, function (req, res) {
 router.get(mongodbConfig.url.user.isActivateUser, function (req, res) {
     var Username = req.params.Username;
  //   var Password = req.params.Password;
-    db.collection(mongodbConfig.mongodb.user.name).findOne(
+    db.collection(mongodbConfig.mongodb.user.name)
+        .findOne(
         {
             'Username' : Username
         //    'Password' : Password
