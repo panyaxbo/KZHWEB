@@ -308,8 +308,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.app %>/images',
-          src: '{,*/}*.{png,jpg,jpeg,gif}',
-     //     src: '{,*/}*.battery.png',      
+          src: '{,*/}*.{ico,png,jpg,jpeg,gif}',   
           dest: '<%= yeoman.dist %>/images'
         }]
       }
@@ -363,7 +362,7 @@ module.exports = function (grunt) {
      cssmin: {
        dist: {
          files: {
-           '<%= yeoman.dist %>/styles/main.css': [
+           '<%= yeoman.dist %>/styles/{,*/}*.css': [
              '.tmp/styles/{,*/}*.css',
              '<%= yeoman.app %>/styles/{,*/}*.css'
            ]
@@ -373,9 +372,11 @@ module.exports = function (grunt) {
      uglify: {
        dist: {
          files: {
-           '<%= yeoman.dist %>/scripts/scripts.js': [
-             '<%= yeoman.dist %>/scripts/scripts.js'
-           ]
+           '<%= yeoman.dist %>/scripts/scripts.js': ['<%= yeoman.app %>/scripts/{,*/}*.js'],
+           '<%= yeoman.dist %>/controllers/controllers.js': ['<%= yeoman.app %>/controllers/{,*/}*.js'],
+           '<%= yeoman.dist %>/constants/constants.js': ['<%= yeoman.app %>/constants/{,*/}*.js'],
+           '<%= yeoman.dist %>/directives/directives.js': ['<%= yeoman.app %>/directives/{,*/}*.js'],
+           '<%= yeoman.dist %>/services/services.js': ['<%= yeoman.app %>/services/{,*/}*.js']
          }
        }
      },
