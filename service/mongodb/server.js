@@ -82,6 +82,8 @@ var port = process.env.PORT || 3000;
 var mongolab_uri = process.env.MONGOLAB_URI || 'mongodb://aaa:bbb@ds033123.mongolab.com:33123/kzhparts';
 var heroku_mongolab_uri = process.env.MONGOLAB_URI || 'mongodb://heroku_dmj53qsq:snsjuqkbr1cp1unjoibhem0iob@ds033915.mongolab.com:33915/heroku_dmj53qsq';
 
+app.set('', port);
+
 app.listen(port, function () {
 	console.log("Start server port " + port + " is OK...");
 });
