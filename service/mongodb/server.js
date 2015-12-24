@@ -124,6 +124,13 @@ app.use(function(err, req, res, next){
   console.error(err.stack);
   //res.send(500, 'Something broke!');
 });
+  console.error(appRoot +'/app/');
+// viewed at http://localhost:8080
+app.get('/', function(req, res) {
+  console.log(__dirname);
+  console.log(appRoot);
+    res.sendFile(appRoot + '/app/index.html');
+});
 
 /*
 process.on( 'SIGTERM', function () {
