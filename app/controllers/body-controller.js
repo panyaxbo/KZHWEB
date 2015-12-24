@@ -157,7 +157,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         });
     }
     $scope.LoadProductType = function () {
-        var url = "http://localhost:3000/product_types/LoadProductType";
+        var url = $location.host() +':3000' + '/product_types/LoadProductType';
         $http.get(url)
             .success(function (data) {
                 //        console.log(data);
@@ -171,20 +171,15 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             });
     }
     $scope.LoadProductCategory = function () {
-        var url = "http://localhost:3000/product_categories/LoadProductCategory";
+        var url = $location.host() + ':3000' + '/product_categories/LoadProductCategory';
         $http.get(url)
             .success(function (data) {
-                //        console.log(data);
-                //         console.log(data[0]);
-                //         console.log(data[0].ProductTypeCode);
                 $scope.ProductCategory = data;
-                //     console.log(data);
-                //       $scope.CurrentIndex = index;
             })
             .error(function () {});
     }
     $scope.LoadProduct = function () {
-        var url = "http://localhost:3000/products/LoadProduct";
+        var url = $location.host() + ':3000' + '/products/LoadProduct';
         $http.get(url)
             .success(function (data) {
                 console.log(data);
@@ -3235,7 +3230,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     }
     // End Function for Receipt Module
     $scope.InitShipment = function() {
-        var url = "http://localhost:3000/provinces/LoadProvince/";
+        var url = $location.host() + ':3000' + '/provinces/LoadProvince/';
         $http.get(url)
             .success(function (provinces) {
                 $scope.SelectBillingProvinceList = provinces;

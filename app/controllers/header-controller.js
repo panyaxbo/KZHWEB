@@ -113,7 +113,7 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
         blockUI.stop();
     }
 
-    var oauthURL = BASE_URL.PATH + "/oauths/GetPublicKey";
+    var oauthURL = $location.host() +':3000' + "/oauths/GetPublicKey";
     $http.get(oauthURL)
     .success(function(data, status, headers, config) {
         OAuth.initialize(data);
@@ -1032,7 +1032,7 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
     }
 
     // Re-capcha
-    var recaptchaURL = BASE_URL.PATH + "/recaptchas/GetRecaptchaKey";
+    var recaptchaURL = $location.host() +':3000' + "/recaptchas/GetRecaptchaKey";
     $http.get(recaptchaURL)
     .success(function(data, status, headers, config) {
       $scope.response = null;
