@@ -1,7 +1,7 @@
 {
   "name": "kzhweb",
   "version": "1.0.0",
-  "main": "/service/mongodb/server.js",
+  "main": "service/mongodb/server.js",
   "cacheDirectories": [
     "node_modules",
     "bower_components",

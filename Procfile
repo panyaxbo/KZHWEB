@@ -1,1 +1,1 @@
-web: node /service/mongodb/server.js
+web: node service/mongodb/server.js
