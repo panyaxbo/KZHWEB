@@ -67,6 +67,10 @@ router.get(mongodbConfig.url.staff.loadStaffByStaffCode, function (req, res) {
 router.post(mongodbConfig.url.staff.createStaff, function (req, res) {
     var Staff = req.body;
     console.log('create staff ' + Staff);
+    var createDate = new Date ();
+    createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
+    Staff.CreateDate = createDate;
+    Staff.UpdateDate = createDate;
     db.collection(mongodbConfig.mongodb.staff.name)
         .insert(Staff,
             function (error, staff) {
@@ -82,6 +86,9 @@ router.post(mongodbConfig.url.staff.updateStaff, function (req, res) {
 
     var id = Staff._id;
     var o_id = bson.BSONPure.ObjectID(id.toString());
+    var updateDate = new Date ();
+    updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
+    Staff.UpdateDate = updateDate;
     db.collection(mongodbConfig.mongodb.staff.name)
         .update({
                 _id: o_id
@@ -99,7 +106,9 @@ router.post(mongodbConfig.url.staff.updateStaff, function (req, res) {
                     'RoleCode': Staff.RoleCode,
                     'StartDate' : Staff.StartDate,
                     'EndDate' : Staff.EndDate, 
-                    'BirthDate' : Staff.BirthDate
+                    'BirthDate' : Staff.BirthDate,
+                    'UpdateBy' : Staff.UpdateBy,
+                    'UpdateDate' : updateDate
                 }
             },
             function (error, staff) {

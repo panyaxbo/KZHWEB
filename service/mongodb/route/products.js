@@ -7,127 +7,191 @@ router.get(mongodbConfig.url.product.home, function (req, res, next) {
 });
 
 /* GET users listing. */
-router.get('LoadProductForPromotion', function (req, res) {
-    console.log('LoadProductForPromotion');
+router.get('/LoadProductForPromotion', function (req, res) {
     db.collection(mongodbConfig.mongodb.product.name)
         .find({})
         .limit(100)
         .toArray(function (err, items) {
-            if (err) throw err;
+            if (items) {
+                res.json(items);
+            } else if (!items) {
+                return;
+            } else {
+                console.log(error, error.stack.split("\n"));
+                res.sendStatus(500);
+                return;
+            }
+        });
+});
+
+function GenerateTextQuery (searchArray) {
+    var query = '';
+    for (var ix = 0; ix < searchArray.length; ix++) {
+        // last
+        if (ix >=  searchArray.length - 1) {
+            query += searchArray[ix];
+        } else {
+            query += searchArray[ix] + '|';
+        }
+    }
+    return query; 
+}
+
+router.get('/LoadProductByCondition/:ProductCode/:ProductName/:ProductCategoryCode', function(req, res) {
+    var Code = req.params.ProductCode;
+    var Name = req.params.ProductName;
+    var CatCode = req.params.ProductCategoryCode;
+    if (Code ==='$') {
+        Code = '';
+    }
+    if (Name ==='$') {
+        Name = '';
+    }
+    if (CatCode ==='$') {
+        CatCode = '';
+    }
+    var searchs = Name.split(/(?:,|;|\|| )+/);
+    var SearchName = GenerateTextQuery(searchs);
+    
+    var searchquery = {
+        'ProductCode' : {'$regex' : Code, '$options' : 'i'}
+        ,
+        'ProductCategoryCode' : {'$regex' : CatCode, '$options' : 'i'}
+        ,
+        $or : [
+            {'ProductNameTh' : {'$regex' : SearchName}}
+            ,
+            {'ProductNameEn' : {'$regex' : SearchName}}
+            ,
+            {'ProductNameCn' : {'$regex' : SearchName}}
+            ,
+            {'Remark' : {'$regex' : SearchName}}
+        ]
+    };
+    db.collection(mongodbConfig.mongodb.product.name)
+        .find({
+            $query: searchquery ,
+            $orderby: { ProductCode : 1 }
+        })
+        .toArray(function (err, items) {
             res.json(items);
         });
 });
 router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
-//    console.log('product.js');
-
     db.collection(mongodbConfig.mongodb.product.name)
         .find({})
         .limit(40)
         .toArray(function (err, items) {
-            if (err) throw err;
-        //    console.log(items);
-            var productsToFind = items.length;
-            var products = [];
-            console.log("Found Products..." + productsToFind);
-            for (var i = 0; i < items.length; i++) {
-                console.log("items[" +i+"]");
-                var product = items[i];
-                processing(product, function (err, product) {
-                    if (err) console.log(err, err.stack.split("\n"));
-                    // Found Item is New Arrival ?
-                    if (typeof(product.CreateDate) != 'undefined' && product.CreateDate != null)
-                    {
-                        // Do something with some_variable
-                        var curDate = new Date();
-                        var diff = curDate - product.CreateDate(); // to millisecond
-                        var monthDiff = diff/(1000*60*60*24*30); // make dif of month
-                        if (monthDiff < 1) { // New Arrival must less than a month
-                            product.IsNew = true;
+            if (items) {
+                var productsToFind = items.length;
+                var products = [];
+                for (var i = 0; i < items.length; i++) {
+                //    console.log("items[" +i+"]");
+                    var product = items[i];
+                    processing(product, function (err, product) {
+
+                        if (err) console.log(err, err.stack.split("\n"));
+                        // Found Item is New Arrival ?
+                        if (typeof(product.CreateDate) != 'undefined' && product.CreateDate != null)
+                        {
+                            // Do something with some_variable
+                            var curDate = new Date();
+                            var diff = curDate - product.CreateDate(); // to millisecond
+                            var monthDiff = diff/(1000*60*60*24*30); // make dif of month
+                            if (monthDiff < 1) { // New Arrival must less than a month
+                                product.IsNew = true;
+                            } else {
+                                product.IsNew = false;
+                            }
                         } else {
                             product.IsNew = false;
                         }
-                    } else {
-                        product.IsNew = false;
-                    }
 
-                /*    findPromotion(product, function (err, promotion) {
-                        if (err) console.log(err, err.stack.split("\n"));
-                        
-                        if (promotion) {
+                    /*    findPromotion(product, function (err, promotion) {
+                            if (err) console.log(err, err.stack.split("\n"));
+                            
+                            if (promotion) {
+                                product.Promotion = promotion;
+                            }
+                            // End find product has new arrival
+                            products.push(product);
+                            productsToFind -= 1;
+                            console.log(productsToFind);
+                            if (productsToFind === 0) {
+                                res.json(products);
+                            }
+                        });*/
+
+                        var promisePromotion = new Promise(function(resolve, reject) {
+                            // do a thing, possibly async, then…
+                            var currentDate = new Date().toISOString().split('T')[0].split('-');
+                            db.collection(mongodbConfig.mongodb.promotion.name)
+                            .find({
+                                'ProductPromotionList.ProductCode' : product.ProductCode,
+                                'StartDate': {
+                                    //currentDate[0] = year 
+                                   $lte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
+                                },
+                                'EndDate' : {
+                                   $gte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
+                                },
+                                'IsActive' : true
+                            })
+                            .toArray(function (err, promotions) {
+                                var filterPromotion = {};
+                                for (i=0; i < promotions.length; i++) {
+                                    filterPromotion = promotions[i].ProductPromotionList.filter(function (p) { 
+                                        return p.ProductCode == product.ProductCode;
+                                    });
+                                }
+                                if (!isEmpty(filterPromotion)) {
+                                    resolve(filterPromotion);
+                                }
+                                else {
+                                    reject(Error(err));
+                                }
+                            });
+                          
+                        });
+
+                        promisePromotion.then(function( promotion ) {
+                        //   console.log( productsToFind );
                             product.Promotion = promotion;
-                        }
-                        // End find product has new arrival
-                        products.push(product);
-                        productsToFind -= 1;
-                        console.log(productsToFind);
-                        if (productsToFind === 0) {
-                            res.json(products);
-                        }
-                    });*/
+                            products.push(product);
+                            productsToFind -= 1;
 
-                    var promisePromotion = new Promise(function(resolve, reject) {
-                        // do a thing, possibly async, then…
-                        var currentDate = new Date().toISOString().split('T')[0].split('-');
-                        db.collection(mongodbConfig.mongodb.promotion.name)
-                        .find({
-                            'ProductPromotionList.ProductCode' : product.ProductCode,
-                            'StartDate': {
-                                //currentDate[0] = year 
-                               $lte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
-                            },
-                            'EndDate' : {
-                               $gte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
-                            },
-                            'IsActive' : true
-                        })
-                        .toArray(function (err, promotions) {
-                            var filterPromotion = {};
-                            for (i=0; i < promotions.length; i++) {
-                                filterPromotion = promotions[i].ProductPromotionList.filter(function (p) { 
-                                    return p.ProductCode == product.ProductCode;
-                                });
+                            if (productsToFind === 0) {
+                                res.json(products);
                             }
-                            if (!isEmpty(filterPromotion)) {
-                                resolve(filterPromotion);
-                            }
-                            else {
-                                reject(Error(err));
+                        },
+                        function( err ) {
+                        //  console.log( err );
+                          products.push(product);
+                          productsToFind -= 1;
+
+                            if (productsToFind === 0) {
+                                res.json(products);
                             }
                         });
-                      
-                    });
-
-                    promisePromotion.then(function( promotion ) {
-                       console.log( productsToFind );
-                        product.Promotion = promotion;
-                        products.push(product);
+                        
+                        // End find product has new arrival
+                   /*     
+                   products.push(product);
                         productsToFind -= 1;
 
                         if (productsToFind === 0) {
                             res.json(products);
                         }
-                    },
-                    function( err ) {
-                      console.log( err );
-                      products.push(product);
-                      productsToFind -= 1;
-
-                        if (productsToFind === 0) {
-                            res.json(products);
-                        }
+                        */
+                        
                     });
-                    
-                    // End find product has new arrival
-               /*     
-               products.push(product);
-                    productsToFind -= 1;
-
-                    if (productsToFind === 0) {
-                        res.json(products);
-                    }
-                    */
-                    
-                });
+                }
+            } else if (!items) {
+                return;
+            } else {
+                console.log(error, error.stack.split("\n"));
+                res.sendStatus(500);
+                return;
             }
         });
 
@@ -202,6 +266,169 @@ router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
     }
 });
 
+function GenerateTextStringQuery (searchArray) {
+    var query = '';
+    for (var ix = 0; ix < searchArray.length; ix++) {
+        if (ix >=  searchArray.length - 1) {
+            query += searchArray[ix];
+        } else {
+            query += searchArray[ix] + ' ';
+        }
+    }
+    return query; 
+}
+
+router.get('/SearchProductWithCondition/:SearchConditionString', function (req, res) {
+    var searchString = req.params.SearchConditionString;
+    var searchs = searchString.split(/(?:,|;|\|| )+/);
+    console.log(searchs);
+    var query = GenerateTextStringQuery(searchs);
+    console.log(query);
+    db.collection(mongodbConfig.mongodb.product.name)
+        .find({
+            "$text": { "$search": query } 
+        })
+        .toArray(function (err, items) {
+            if (err) throw err;
+            var productsToFind = items.length;
+            var products = [];
+            for (var i = 0; i < items.length; i++) {
+                var product = items[i];
+                processing(product, function (err, product) {
+                    if (err) console.log(err, err.stack.split("\n"));
+                    // Found Item is New Arrival ?
+                    if (typeof(product.CreateDate) != 'undefined' && product.CreateDate != null)
+                    {
+                        // Do something with some_variable
+                        var curDate = new Date();
+                        var diff = curDate - product.CreateDate(); // to millisecond
+                        var monthDiff = diff/(1000*60*60*24*30); // make dif of month
+                        if (monthDiff < 1) { // New Arrival must less than a month
+                            product.IsNew = true;
+                        } else {
+                            product.IsNew = false;
+                        }
+                    } else {
+                        product.IsNew = false;
+                    }
+                    var promisePromotion = new Promise(function(resolve, reject) {
+                        // do a thing, possibly async, then…
+                        var currentDate = new Date().toISOString().split('T')[0].split('-');
+                        db.collection(mongodbConfig.mongodb.promotion.name)
+                        .find({
+                            'ProductPromotionList.ProductCode' : product.ProductCode,
+                            'StartDate': {
+                               $lte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
+                            },
+                            'EndDate' : {
+                               $gte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
+                            },
+                            'IsActive' : true
+                        })
+                        .toArray(function (err, promotions) {
+                            var filterPromotion = {};
+                            for (i=0; i < promotions.length; i++) {
+                                filterPromotion = promotions[i].ProductPromotionList.filter(function (p) { 
+                                    return p.ProductCode == product.ProductCode;
+                                });
+                            }
+                            if (!isEmpty(filterPromotion)) {
+                                resolve(filterPromotion);
+                            }
+                            else {
+                                reject(Error(err));
+                            }
+                        });
+                      
+                    });
+
+                    promisePromotion.then(function( promotion ) {
+                    //   console.log( productsToFind );
+                        product.Promotion = promotion;
+                        products.push(product);
+                        productsToFind -= 1;
+
+                        if (productsToFind === 0) {
+                            res.json(products);
+                        }
+                    },
+                    function( err ) {
+                    //  console.log( err );
+                      products.push(product);
+                      productsToFind -= 1;
+                        if (productsToFind === 0) {
+                            res.json(products);
+                        }
+                    });
+                });
+            }
+        });
+
+    var findUom = function (queryUom, callback) {
+        db.collection(mongodbConfig.mongodb.uom.name).find(queryUom).toArray(function (err, doc) {
+            if (err) {
+                callback(err);
+            } else {
+                callback(null, doc);
+            }
+        });
+    }
+
+    var processing = function (item, callback) {
+        var qUom = {
+                $or: [{
+                    UomCode: item.UomCode
+                    }, {
+                    UomCode: item.ContainUomCode
+                    }]
+            }
+            // Find uom
+        findUom(qUom, function (errUom, docUom) {
+            if (errUom) throw errUom;
+            if (docUom) {
+                item.Uom = docUom;
+                if (item.hasOwnProperty('Uom')) {
+                } else {
+                }
+                callback(null, item);
+            } else {
+            }
+        });
+    }　
+
+    var findPromotion = function (product, callback) {
+        // Start find product has new arrival
+        var currentDate = new Date().toISOString().split('T')[0].split('-');
+        db.collection(mongodbConfig.mongodb.promotion.name)
+        .find({
+            'ProductPromotionList.ProductCode' : product.ProductCode,
+            'StartDate': {
+                //currentDate[0] = year 
+               $lte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
+            },
+            'EndDate' : {
+               $gte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
+            },
+            'IsActive' : true
+        })
+        .toArray(function (err, promotions) {
+            if (err) { 
+             //   console.log(err, err.stack.split("\n"));
+                callback(err);
+            } 
+            var filterPromotion = {};
+            for (i=0; i < promotions.length; i++) {
+                filterPromotion = promotions[i].ProductPromotionList.filter(function (p) { 
+                    return p.ProductCode == product.ProductCode;
+                });
+            }
+            if (!isEmpty(filterPromotion)) {
+            //    console.log(filterPromotion);
+                callback(null, filterPromotion);
+            } 
+        });
+    }      
+});
 router.get(mongodbConfig.url.product.loadProductByObjId, function (req, res) {
     console.log('Product id ' + req.params.ProductId);
     var ProductId = req.params.ProductId;
@@ -266,9 +493,7 @@ router.get(mongodbConfig.url.product.loadProductByObjId, function (req, res) {
     };
 });
 
-
 router.get(mongodbConfig.url.product.loadProductById, function (req, res) {
-    console.log('product.js id ' + req.params.ProductId);
     var ProductId = req.params.ProductId;
     db.collection(mongodbConfig.mongodb.product.name)
         .find({
@@ -278,21 +503,30 @@ router.get(mongodbConfig.url.product.loadProductById, function (req, res) {
             console.log(items);
             res.json(items);
         });
-    //   });
+});
+
+router.get(mongodbConfig.url.product.loadProductPromotionByProductCode, function (req, res) {
+    var ProductCode = req.params.ProductCode;
+    db.collection(mongodbConfig.mongodb.product.name)
+        .findOne({
+                'ProductCode' : ProductCode
+            }, function (err, product) {
+                // delete product.Quantity
+                res.json(product);
+
+            });
 });
 
 router.get(mongodbConfig.url.product.loadProductByProductCode, function (req, res) {
     console.log('product.js id ' + req.params.ProductCode);
     var ProductCode = req.params.ProductCode;
     db.collection(mongodbConfig.mongodb.product.name)
-        .find({
-            'ProductCode': ProductCode
-        })
-        .toArray(function (err, items) {
-            console.log(items);
-            res.json(items);
-        });
-    //   });
+        .findOne({
+                'ProductCode' : ProductCode
+            }, function (err, product) {
+             //   console.log(product);
+                res.json(product);
+            });
 });
 
 router.get(mongodbConfig.url.product.loadProductByProductCategoryCode, function (req, res) {
@@ -383,6 +617,10 @@ router.get(mongodbConfig.url.product.loadProductByProductCategoryCode, function 
 router.post(mongodbConfig.url.product.createProduct, function (req, res) {
     var Product = req.body;
     console.log('create product ' + Product);
+    var createDate = new Date ();
+    createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
+    Product.CreateDate = createDate;
+    Product.UpdateDate = createDate;
     db.collection(mongodbConfig.mongodb.product.name)
         .insert(Product,
             function (error, result) {
@@ -396,8 +634,9 @@ router.post(mongodbConfig.url.product.updateProduct, function (req, res) {
     console.log('Update product ' + req.body);
     var Product = req.body;
     var o_id = bson.BSONPure.ObjectID(Product._id.toString());
-    console.log('file ' + Product.files);
-    console.log('file[0] ' + Product.files[0]);
+    var updateDate = new Date ();
+    updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
+    Product.UpdateDate = updateDate;
     db.collection(mongodbConfig.mongodb.product.name)
         .update({
                 _id: o_id
@@ -417,10 +656,8 @@ router.post(mongodbConfig.url.product.updateProduct, function (req, res) {
                     'ContainWholesalePrice': Product.ContainWholesalePrice,
                     'ContainSpecialPrice': Product.ContainSpecialPrice,
                     'ContainQuantity': Product.ContainQuantity,
-                    'UpdateDate': ISODate(Product.UpdateDate),
-                    'UpdateBy': Product.UpdateBy,
-                    'CreateBy': Product.CreateBy,
-                    'CreateDate': ISODate(Product.CreateDate)
+                    'UpdateBy' : Product.UpdateBy,
+                    'UpdateDate': Product.UpdateDate
                 }
             },
             function (error, result) {

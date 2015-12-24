@@ -6,15 +6,15 @@ https://github.com/marcaube/bootstrap-magnify
 
 !function ($) {
 
-    "use strict"; // jshint ;_;
+    'use strict'; // jshint
 
 
     /* MAGNIFY PUBLIC CLASS DEFINITION
      * =============================== */
 
     var Magnify = function (element, options) {
-        this.init('magnify', element, options)
-    }
+        this.init('magnify', element, options);
+    };
 
     Magnify.prototype = {
 

@@ -11,7 +11,7 @@ router.get(mongodbConfig.url.customer_type.loadAllCustomerType, function (req, r
     db.collection(mongodbConfig.mongodb.customer_type.name)
         .find()
         .toArray(function (err, items) {
-            console.log(items);
+            if (err) console.log(err, err.stack.split("\n"));
             res.json(items);
         });
 });
@@ -24,15 +24,12 @@ router.get(mongodbConfig.url.customer_type.loadCustomerTypeByObjId, function (re
         .findOne({
             '_id': o_id
         }, function (err, doc) {
-            if (err) {
-                console.log(err);
-                //       callback(err);
-            } else {
-                // call your callback with no error and the data
-                console.log(doc);
-                //     callback(null, doc);
-                res.json(doc);
-            }
+            if (err) console.log(err, err.stack.split("\n"));
+            // call your callback with no error and the data
+            console.log(doc);
+            //     callback(null, doc);
+            res.json(doc);
+            
         });
 });
 
@@ -46,7 +43,7 @@ router.get(mongodbConfig.url.customer_type.loadCustomerTypeyById, function (req,
     db.collection(mongodbConfig.mongodb.customer_type.name)
         .find(query)
         .toArray(function (err, items) {
-            console.log(items);
+            if (err) console.log(err, err.stack.split("\n"));
             res.json(items);
         });
 });
@@ -68,13 +65,14 @@ router.get(mongodbConfig.url.customer_type.loadCustomerTypeByCustomerTypeCode, f
 router.post(mongodbConfig.url.customer_type.createCustomerType, function (req, res) {
     var CustomerType = req.body;
     console.log('create customer type ' + CustomerType);
-    var curDate = new Date ();
-    curDate.setHours ( curDate.getHours() + 7 );// GMT Bangkok +7
-    customer_type.CreateDate = curDate;
+    var createDate = new Date ();
+    createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
+    CustomerType.CreateDate = createDate;
+    CustomerType.UpDateDate = createDate;
     db.collection(mongodbConfig.mongodb.customer_type.name)
         .insert(CustomerType,
-            function (error, result) {
-                if (error) throw error
+            function (err, result) {
+                if (err) console.log(err, err.stack.split("\n"));
                 res.json(result);
             });
 });
@@ -95,11 +93,12 @@ router.post(mongodbConfig.url.customer_type.updateCustomerType, function (req, r
                     'CustomerTypeNameEn': CustomerType.CustomerTypeNameEn,
                     'CustomerTypeNameCn': CustomerType.CustomerTypeNameCn,
                     'PriceType': CustomerType.PriceType,
+                    'UpdateBy' : CustomerType.UpdateBy,
                     'UpdateDate' : updateDate
                 }
             },
-            function (error, result) {
-                if (error) throw error
+            function (err, result) {
+                if (err) console.log(err, err.stack.split("\n"));
                 console.log(result.CustomerTypeNameEn);
                 res.json(result);
             });
@@ -113,8 +112,8 @@ router.get(mongodbConfig.url.customer_type.deleteCustomerTypeByCustomerTypeId, f
     db.collection(mongodbConfig.mongodb.customer_type.name)
         .remove({
             _id: o_id
-        }, function (error, result) {
-            if (error) throw error
+        }, function (err, result) {
+            if (err) console.log(err, err.stack.split("\n"));
             res.json(result);
         });
 });

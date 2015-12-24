@@ -8,17 +8,73 @@ router.get(mongodbConfig.url.product_category.home, function (req, res, next) {
 
 
 router.get(mongodbConfig.url.product_category.loadAllProductCategory, function (req, res) {
-    console.log('ProductCategories.js');
     db.collection(mongodbConfig.mongodb.product_category.name)
         .find({})
         .toArray(function (err, items) {
-            console.log(items);
+            if (items) {
+                res.json(items);
+            } else if (!items) {
+                return;
+            } else {
+                console.log(error, error.stack.split("\n"));
+                res.sendStatus(500);
+                return;
+            }
+        });
+});
+function GenerateTextStringQuery (searchArray) {
+    var query = '';
+    for (var ix = 0; ix < searchArray.length; ix++) {
+        // last
+        if (ix >=  searchArray.length - 1) {
+            query += searchArray[ix];
+        } else {
+            query += searchArray[ix] + '|';
+        }
+    }
+    return query; 
+}
+
+router.get('/LoadProductCategoryByCondition/:ProductCategoryCode/:ProductCategoryName/:ProductTypeCode', function (req, res) {
+    var CatCode = req.params.ProductCategoryCode;
+    var CatName = req.params.ProductCategoryName;
+    var TypeCode = req.params.ProductTypeCode;
+    if (CatCode ==='$') {
+        CatCode = '';
+    }
+    if (CatName ==='$') {
+        CatName = '';
+    }
+    if (TypeCode ==='$') {
+        TypeCode = '';
+    }
+    var searchs = CatName.split(/(?:,|;|\|| )+/);
+    var SearchName = GenerateTextStringQuery(searchs);
+    
+    var searchquery = {
+        'ProductCategoryCode' : {'$regex' : CatCode, '$options' : 'i'}
+        ,
+        'ProductTypeCode' : {'$regex' : TypeCode, '$options' : 'i'}
+        ,
+        $or : [
+            {'ProductCategoryNameTh' : {'$regex' : SearchName}}
+            ,
+            {'ProductCategoryNameEn' : {'$regex' : SearchName}}
+            ,
+            {'ProductCategoryNameCn' : {'$regex' : SearchName}}
+        ]
+    };
+    db.collection(mongodbConfig.mongodb.product_category.name)
+        .find({
+            $query: searchquery ,
+            $orderby: { ProductCategoryCode : 1 }
+        })
+        .toArray(function (err, items) {
             res.json(items);
         });
 });
 
 router.get(mongodbConfig.url.product_category.loadProductCategoryByObjId, function (req, res) {
-    console.log('ProductCategories id ' + req.params.ProductCategoryId);
     var ProductCategoryId = req.params.ProductCategoryId;
     var o_id = bson.BSONPure.ObjectID(ProductCategoryId);
     db.collection(mongodbConfig.mongodb.product_category.name)
@@ -59,7 +115,7 @@ router.get(mongodbConfig.url.product_category.loadProductCategoryByObjId, functi
 router.get(mongodbConfig.url.product_category.loadProductCategoryById, function (req, res) {
     console.log('ProductCategories id ' + req.params.ProductCategoryId);
     var ProductCategoryId = req.params.ProductCategoryId;
-    db.collection(config.mongodb.product_category.name)
+    db.collection(mongodbConfig.mongodb.product_category.name)
         .find({
             'Id': parseInt(ProductCategoryId)
         })
@@ -72,7 +128,7 @@ router.get(mongodbConfig.url.product_category.loadProductCategoryById, function 
 router.get(mongodbConfig.url.product_category.loadProductCategoryByProductCategoryCode, function (req, res) {
     console.log('ProductCategory Code ' + req.params.ProductCategoryCode);
     var ProductCategoryCode = req.params.ProductCategoryCode;
-    db.collection(config.mongodb.product_category.name)
+    db.collection(mongodbConfig.mongodb.product_category.name)
         .find({
             'ProductCategoryCode': ProductCategoryCode
         })
@@ -89,8 +145,9 @@ router.post(mongodbConfig.url.product_category.createProductCategory, function (
     var createDate = new Date ();
     createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
     ProductCategory.CreateDate = createDate;
-    db.collection(config.mongodb.product_category.name)
-        .insert(ProductType,
+    ProductCategory.UpdateDate = createDate;
+    db.collection(mongodbConfig.mongodb.product_category.name)
+        .insert(ProductCategory,
             function (error, result) {
                 if (error) throw error
                 res.json(result);
@@ -101,9 +158,13 @@ router.post(mongodbConfig.url.product_category.createProductCategory, function (
 router.post(mongodbConfig.url.product_category.updateProductCategory, function (req, res) {
     console.log('update product category ' + req.body);
     var ProductCategory = req.body;
-    var BSON = mongodb.BSONPure;
-    var o_id = new BSON.ObjectID(ProductCategory._id);
-    db.collection(config.mongodb.product_category.name)
+    
+    var id = ProductCategory._id;
+    var o_id = bson.BSONPure.ObjectID(id.toString());
+    var updateDate = new Date ();
+    updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
+    ProductCategory.UpdateDate = updateDate;
+    db.collection(mongodbConfig.mongodb.product_category.name)
         .update({
                 _id: o_id
             }, {
@@ -111,11 +172,13 @@ router.post(mongodbConfig.url.product_category.updateProductCategory, function (
                     'ProductCategoryNameTh': ProductCategory.ProductCategoryNameTh,
                     'ProductCategoryNameEn': ProductCategory.ProductCategoryNameEn,
                     'ProductCategoryNameCn': ProductCategory.ProductCategoryNameCn,
-                    'ProductTypeCode': ProductCategory.ProductTypeCode
+                    'ProductTypeCode': ProductCategory.ProductTypeCode,
+                    'UpdateBy' : ProductCategory.UpdateBy,
+                    'UpdateDate' : updateDate
                 }
             },
             function (error, result) {
-                if (error) throw error
+                if (error) console.log(error, error.stack.split("\n"));
                 res.json(result);
             });
 });
@@ -123,14 +186,13 @@ router.post(mongodbConfig.url.product_category.updateProductCategory, function (
 // Delete Product Category
 router.get(mongodbConfig.url.product_category.deleteProductCategoryByProductCategoryId, function (req, res) {
     var ProductCategoryId = req.params.ProductCategoryId;
-    console.log('create product category ' + ProductCategoryId);
-    var BSON = mongodb.BSONPure;
-    var o_id = new BSON.ObjectID(ProductCategoryId);
-    db.collection(config.mongodb.product_category.name)
+    console.log('delete cat ' + ProductCategoryId);
+    var o_id = bson.BSONPure.ObjectID(ProductCategoryId.toString());
+    db.collection(mongodbConfig.mongodb.product_category.name)
         .remove({
             _id: o_id
         }, function (error, result) {
-            if (error) throw error
+            if (error) console.log(error, error.stack.split("\n"));
 
             res.json(result);
         });

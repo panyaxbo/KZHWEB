@@ -21,6 +21,10 @@ router.get(mongodbConfig.url.supplier.loadAllSupplier, function (req, res) {
 router.post(mongodbConfig.url.supplier.createSupplier, function (req, res) {
     var Supplier = req.body;
     console.log('create supplier ' + Supplier);
+    var createDate = new Date ();
+    createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
+    Supplier.CreateDate = createDate;
+    Supplier.UpdateDate = createDate;
     db.collection(mongodbConfig.mongodb.supplier.name)
         .insert(Product,
             function (error, result) {
@@ -34,6 +38,8 @@ router.post(mongodbConfig.url.supplier.updateSupplier, function (req, res) {
     console.log('Update supplier ' + req.body);
     var Supplier = req.body;
     var o_id = bson.BSONPure.ObjectID(Supplier._id.toString());
+    var updateDate = new Date ();
+    updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
     db.collection(mongodbConfig.mongodb.supplier.name)
         .update({
                 _id: o_id
@@ -47,10 +53,8 @@ router.post(mongodbConfig.url.supplier.updateSupplier, function (req, res) {
                     'TelNo': Supplier.TelNo,
                     'FaxNo': Supplier.FaxNo,
                     'MobileNo': Supplier.MobileNo,
-                    'UpdateDate': ISODate(Supplier.UpdateDate),
                     'UpdateBy': Supplier.UpdateBy,
-                    'CreateBy': Supplier.CreateBy,
-                    'CreateDate': ISODate(Supplier.CreateDate)
+                    'UpdateDate': updateDate
                 }
             },
             function (error, result) {

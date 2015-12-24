@@ -3,7 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 
 global.mongodbConfig = require('../mongodb_config.json');
-global.mailConfig = require('../mail_config.json');
+global.serverConfig = require('../server-config.js');
 global.appRoot = require('app-root-path');
 global.mongodb = require('mongodb');
 global.bson = require('bson');
@@ -11,6 +11,8 @@ global.http = require('http');
 global.url = require('url');
 global.db;
 global.collection;
+
+var oauthConfig = require('../oauth/oauth-config.js');
 
 var cors = require('cors');
 var index = require('./route/index');
@@ -35,6 +37,12 @@ var stripe = require('../stripe/stripe');
 var promotions = require('./route/promotions');
 var suppliers = require('./route/suppliers');
 
+var aws = require('../aws-s3/aws');
+var bcrypts = require('../bcrypt/bcrypts');
+var oauths = require('../oauth/oauths');
+var recaptchas = require('../recaptcha/recaptcha');
+var cryptojs = require('../cryptojs/cryptojs');
+var base64 = require('../base64/base64');
 //app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -63,27 +71,73 @@ app.use('/stripe', stripe);
 app.use('/promotions', promotions);
 app.use('/suppliers', suppliers);
 
-app.listen(mongodbConfig.nodejs_port, function () {
-	console.log("Start server port " + mongodbConfig.nodejs_port + " is OK...");
+app.use('/aws', aws);
+app.use('/bcrypts', bcrypts);
+app.use('/oauths', oauths);
+app.use('/recaptchas', recaptchas);
+app.use('/cryptojs', cryptojs);
+app.use('/base64', base64);
+
+var port = process.env.PORT || 3000;
+var mongolab_uri = process.env.MONGOLAB_URI || 'mongodb://aaa:bbb@ds033123.mongolab.com:33123/kzhparts';
+var heroku_mongolab_uri = process.env.MONGOLAB_URI || 'mongodb://heroku_dmj53qsq:snsjuqkbr1cp1unjoibhem0iob@ds033915.mongolab.com:33915/heroku_dmj53qsq';
+
+app.set('', port);
+
+app.listen(port, function () {
+	console.log("Start server port " + port + " is OK...");
 });
 
+app.on('close', function() {
+	console.log('gonna close leaw!!!');
+  // app.listen(port);
+});
 // For localhost use
-
+/*
 mongodb.MongoClient.connect(mongodbConfig.connection_url + mongodbConfig.collection_name, function (err, database) {
     if (err) throw err;
 
     db = database;
 });
+*/
+
+mongodb.MongoClient.connect(mongolab_uri, function (err, database) {
+    if (err) console.log(err, err.stack.split("\n"));
+    console.log(database);
+    db = database;
+});
+
 
 /*
-mongodb.MongoClient.connect("mongodb://kzhparts:kzhpartsadmin@ds033123.mongolab.com:33123/kzhparts", function (err, database) {
+mongodb.MongoClient.connect(heroku_mongolab_uri, function (err, database) {
     if (err) console.log(err, err.stack.split("\n"));
     console.log(database);
     db = database;
 });
 */
+
 process.on('uncaughtException', function (err) {
-    console.log(err);
+    console.log(err, err.stack.split("\n"));
 }); 
 
+app.use(function(err, req, res, next){
+  console.error(err.stack);
+  //res.send(500, 'Something broke!');
+});
+
+/*
+process.on( 'SIGTERM', function () {
+
+   server.close(function () {
+     console.log( "Closed out remaining connections.");
+     // Close db connections, etc.
+   });
+
+   setTimeout( function () {
+     console.error("Could not close connections in time, forcefully shutting down");
+     process.exit(1); 
+   }, 30*1000);
+
+});
+*/
 module.exports = app;

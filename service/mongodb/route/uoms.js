@@ -5,8 +5,26 @@ router.get(mongodbConfig.url.uom.loadAllUom, function (req, res){
 	db.collection(mongodbConfig.mongodb.uom.name)
         .find({})
         .toArray(function (err, items) {
-            console.log(items);
+        //    console.log(items);
             res.json(items);
+        });
+});
+
+router.get(mongodbConfig.url.uom.loadUomByObjId, function (req, res) {
+    var UomId = req.params.UomId;
+    var o_id = bson.BSONPure.ObjectID(UomId.toString());
+    db.collection(mongodbConfig.mongodb.uom.name)
+        .findOne({
+            '_id': o_id
+        }, function (err, uom) {
+            if (err) {
+                console.log(err);
+                //       callback(err);
+            } else {
+                // call your callback with no error and the data
+            //    console.log(uom);
+                res.json(uom);
+            }
         });
 });
 
@@ -24,7 +42,7 @@ router.get(mongodbConfig.url.uom.loadNotContainUom, function (req, res) {
 	db.collection(mongodbConfig.mongodb.uom.name)
         .find({'IsContainer' : false})
         .toArray(function (err, items) {
-            console.log(items);
+        //    console.log(items);
             res.json(items);
         });
 });
@@ -33,7 +51,7 @@ router.get(mongodbConfig.url.uom.loadContainUom, function (req, res){
 	db.collection(mongodbConfig.mongodb.uom.name)
         .find({'IsContainer' : true})
         .toArray(function (err, items) {
-            console.log(items);
+        //    console.log(items);
             res.json(items);
         });
 });
@@ -42,8 +60,12 @@ router.get(mongodbConfig.url.uom.loadContainUom, function (req, res){
 router.post(mongodbConfig.url.uom.createUom, function (req, res) {
     var Uom = req.body;
     console.log('create uom ' + Uom);
+    var createDate = new Date ();
+    createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
+    Uom.CreateDate = createDate;
+    Uom.UpdateDate = createDate;
     db.collection(mongodbConfig.mongodb.uom.name)
-        .insert(Role,
+        .insert(Uom,
             function (error, uom) {
                 if (error) throw error
                 res.json(uom);
@@ -55,6 +77,8 @@ router.post(mongodbConfig.url.uom.updateUom, function (req, res) {
     console.log('update uom ' + req.body);
     var Uom = req.body;
     var o_id = bson.BSONPure.ObjectID(Uom._id);
+    var updateDate = new Date ();
+    updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
     db.collection(mongodbConfig.mongodb.uom.name)
         .update({
                 _id: o_id
@@ -65,7 +89,9 @@ router.post(mongodbConfig.url.uom.updateUom, function (req, res) {
                     'UomNameEn': Uom.UomNameEn,
                     'UomNameTh': Uom.UomNameTh,
                     'UomNameCn': Uom.UomNameCn,
-                    'IsContainer': Uom.IsContainer
+                    'IsContainer': Uom.IsContainer,
+                    'UpdateBy' : Uom.UpdateBy,
+                    'UpdateDate' : updateDate
                 }
             },
             function (error, uom) {
@@ -77,7 +103,7 @@ router.post(mongodbConfig.url.uom.updateUom, function (req, res) {
 // Delete Uom
 router.get(mongodbConfig.url.uom.deleteUomByUomId, function (req, res) {
     var UomId = req.params.UomId;
-    console.log('create uom ' + UomId);
+    console.log('delete uom ' + UomId);
     var o_id = bson.BSONPure.ObjectID(UomId);
     db.collection(mongodbConfig.mongodb.uom.name)
         .remove({

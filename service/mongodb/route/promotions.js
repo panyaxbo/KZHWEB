@@ -11,9 +11,7 @@ router.get(mongodbConfig.url.promotion.home, function (req, res, next) {
  	db.collection(mongodbConfig.mongodb.promotion.name)
         .find({})
         .toArray(function (err, promotion) {
-            console.log(promotion);
-		//	var pmdate = promotion.PMDate;
-		//	var curDate = new Date();
+
 			var diff = new Date() - promotion[0].PMDate;
 			var datediff = diff/(1000*60*60*24);
 			var monthdiff = datediff/(30);
@@ -29,28 +27,20 @@ router.get(mongodbConfig.url.promotion.home, function (req, res, next) {
                 reject(Error("It broke"));
               }
             });
-
             promise.then(function( message ) {
               console.log( message );
               res.send(message);
             },
             function( err ) {
-              console.log( err );
+            //  console.log( err );
               res.send(err);
             });
-         //   res.send(promotion[0].PMDate +' -  ' + new Date() +' -  ' +diff+' -  ' +datediff+' -  ' +parseInt(monthdiff)+' -  ' +yeardiff);
-         
         });
 });
 
 router.get('/in', function (req, res, next) {
- //   res.send('this is promotion module');
-    
  	var currentDate = new Date().toISOString().split('T')[0].split('-');
- //	var end = new Date().toISOString().split('T')[0].split('-');
- //	console.log(new Date().toISOString().split('T')[0].split('-'));
- //	console.log(end[2]+"-"+end[1]+"-"+end[0]+"T00:00:00.000Z");
- //	console.log(start[2]+"-"+start[1]+"-"+start[0]+"T00:00:00.000Z");
+
  	db.collection(mongodbConfig.mongodb.promotion.name)
         .find({
         	'ProductPromotionList.ProductCode' : 'PD0001',
@@ -64,11 +54,6 @@ router.get('/in', function (req, res, next) {
         })
         .toArray(function (err, promotion) {
         	if (err) console.log(err, err.stack.split("\n"));
-            console.log(promotion);
-            console.log(promotion[0].ProductPromotionList);
-            console.log(promotion[0].ProductPromotionList[0].DiscountPercent);
-         //   res.send(promotion[0].PMDate +' -  ' + new Date() +' -  ' +diff+' -  ' +datediff+' -  ' +parseInt(monthdiff)+' -  ' +yeardiff);
-         //	res.send(promotion[0].ProductPromotionList[0].DiscountPercent);
         });
 });
 
@@ -89,8 +74,8 @@ router.get('/array', function (req, res) {
             	var fil2 = promotions[i].ProductPromotionList.filter(function (product) { 
             		return product.ProductCode == "PD0002";
             	});
-            	console.log(fil1);
-            	console.log(fil2);
+            //	console.log(fil1);
+            //	console.log(fil2);
             }
         });
 })
@@ -100,7 +85,7 @@ router.get('/LoadAllPromotion', function(req, res, next) {
 	db.collection(mongodbConfig.mongodb.promotion.name)
         .find({})
         .toArray(function (err, promotions) {
-            console.log(promotions);
+        //    console.log(promotions);
             res.json(promotions);
         });
 });
@@ -126,6 +111,14 @@ router.get('/LoadPromotionByObjId/:PromotionId', function (req, res, next) {
 router.post('/CreatePromotion', function (req, res) {
 	var Promotion = req.body;
     console.log('create Promotion ' + Promotion);
+    var createDate = new Date ();
+    createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
+    Promotion.CreateDate = createDate;
+    Promotion.UpdateDate = createDate;
+
+    delete Promotion.AddProductPromotion;
+    delete Promotion.AddDiscountPercent;
+
     db.collection(mongodbConfig.mongodb.promotion.name)
         .insert(Promotion,
             function (error, result) {
@@ -137,21 +130,24 @@ router.post('/CreatePromotion', function (req, res) {
 router.post('/UpdatePromotion', function (req, res) {
     var Promotion = req.body;
     var o_id = bson.BSONPure.ObjectID(Promotion._id.toString());
+    var updateDate = new Date ();
+    updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
+
     db.collection(mongodbConfig.mongodb.promotion.name)
         .update({
                 _id: o_id
             }, {
                 $set: {
-                    
-                    'StartDate': ISODate(Promotion.StartDate),
-                    'EndDate' : ISODate(Promotion.EndDate),
-                    'ProductCode' : Promotion.ProductCode,
-                    'DiscountPercent' : Promotion.DiscountPercent
+                    'StartDate': Promotion.StartDate,
+                    'EndDate' : Promotion.EndDate,
+                    'UpdateBy' : Promotion.UpdateBy,
+                    'UpdateDate' : updateDate,
+                    'ProductPromotionList' : Promotion.ProductPromotionList
                 }
             },
             function (error, result) {
                 if (error) throw error
-                console.log(result.ProductCode);
+                console.log(result.PromotionCode);
                 res.json(result);
             });
 });
@@ -171,4 +167,9 @@ router.post('/DeletePromotion/:PromotionId', function (req, res) {
         });
 
 });
+
+function RemoveUnusedField(promotion) {
+    
+}
+
 module.exports = router;

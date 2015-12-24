@@ -3,8 +3,14 @@ var router = express.Router();
 
 router.get(mongodbConfig.url.role.loadAllRole, function (req, res) {
     console.log('role load all');
+    var RoleCode = req.params.RoleId;
+    var RoleName = req.params.RoleName;
     db.collection(mongodbConfig.mongodb.role.name)
-        .find({})
+        .find({
+         //   if (RoleCode !== undefined && RoleCode.length > 0) {
+         //       "RoleCode" : RoleCode
+        //    }
+        })
         .toArray(function (err, items) {
             console.log(items);
             res.json(items);
@@ -48,6 +54,10 @@ router.get(mongodbConfig.url.role.loadRoleByRoleCode, function (req, res) {
 router.post(mongodbConfig.url.role.createRole, function (req, res) {
     var Role = req.body;
     console.log('create role ' + Role);
+    var createDate = new Date ();
+    createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
+    Role.CreateDate = createDate;
+    Role.UpdateDate = createDate;
     db.collection(mongodbConfig.mongodb.role.name)
         .insert(Role,
             function (error, role) {
@@ -61,6 +71,8 @@ router.post(mongodbConfig.url.role.updateRole, function (req, res) {
     console.log('update role ' + req.body);
     var Role = req.body;
     var o_id = bson.BSONPure.ObjectID(Role._id);
+    var updateDate = new Date ();
+    updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
     db.collection(mongodbConfig.mongodb.role.name)
         .update({
                 _id: o_id
@@ -69,7 +81,9 @@ router.post(mongodbConfig.url.role.updateRole, function (req, res) {
                 {
                     'RoleCode' : Role.RoleCode,
                     'RoleNameEn': Role.RoleNameEn,
-                    'RoleNameTh': Role.RoleNameTh
+                    'RoleNameTh': Role.RoleNameTh,
+                    'UpdateBy' : Role.UpdateBy,
+                    'UpdateDate' : updateDate 
                 }
             },
             function (error, role) {

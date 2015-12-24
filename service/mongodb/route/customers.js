@@ -39,11 +39,9 @@ router.get(mongodbConfig.url.customer.loadCustomerByObjId, function (req, res) {
         }, function (err, customer) {
             if (err) {
                 console.log(err);
-                //       callback(err);
             } else {
                 // call your callback with no error and the data
                 console.log(customer);
-                //     callback(null, doc);
                 res.json(customer);
             }
         });
@@ -69,7 +67,9 @@ router.post(mongodbConfig.url.customer.createCustomer, function (req, res) {
     console.log('create customer ' + Customer);
     var createDate = new Date ();
     createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
-    customer_type.CreateDate = createDate;
+    customer.CreateDate = createDate;
+    customer.UpdateDate = createDate;
+
     db.collection(mongodbConfig.mongodb.customer.name)
         .insert(CustomerType,
             function (error, result) {
@@ -82,7 +82,8 @@ router.post(mongodbConfig.url.customer.createCustomer, function (req, res) {
 router.post(mongodbConfig.url.customer.updateCustomer, function (req, res) {
     console.log('Update customer 1 ' + req.body);
     var Customer = req.body;
-    var o_id = bson.BSONPure.ObjectID(Customer._id.toString());
+    var id = Customer._id;
+    var o_id = bson.BSONPure.ObjectID(id.toString());
     var updateDate = new Date ();
     updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
     db.collection(config.mongodb.customer.name)
@@ -91,7 +92,7 @@ router.post(mongodbConfig.url.customer.updateCustomer, function (req, res) {
             }, {
                 $set: {
                     'CustomerNameTh': Customer.CustomerNameTh,
-                    'CustomerNameEh': Customer.CustomerNameEn,
+                    'CustomerNameEn': Customer.CustomerNameEn,
                     'CustomerTypeCode': Customer.CustomerTypeCode,
                     'CustomerAddress': Customer.CustomerAddress,
                     'TelNo': Customer.TelNo,
@@ -100,26 +101,26 @@ router.post(mongodbConfig.url.customer.updateCustomer, function (req, res) {
                     'Email': Customer.Email,
                     'Description': Customer.Description,
                     'CustomerKnownName': Customer.CustomerKnownName,
+                    'UpdateBy' : Customer.UpdateBy,
                     'UpdateDate' : updateDate
                 }
             },
-            function (error, result) {
-                if (error) throw error
-                console.log(result.CustomerCode);
+            function (err, result) {
+                if (err) console.log(err, err.stack.split("\n"));
                 res.json(result);
             });
 });
 
-// Delete Customer Type
-router.get(mongodbConfig.url.customer.loadCustomerByCustomerCode, function (req, res) {
+// Delete Customer
+router.get(mongodbConfig.url.customer.deleteCustomerByCustomerId, function (req, res) {
     var CustomerId = req.params.CustomerId;
     
     var o_id = bson.BSONPure.ObjectID(CustomerId.toString());
     db.collection(mongodbConfig.mongodb.customer.name)
         .remove({
             _id: o_id
-        }, function (error, result) {
-            if (error) throw error
+        }, function (err, result) {
+            if (err) console.log(err, err.stack.split("\n"));
 
             res.json(result);
         });
@@ -133,17 +134,14 @@ router.get(mongodbConfig.url.customer.isExistCustomer, function (req, res) {
         .findOne(
             {FirstName: "FirstName"}, {LastName: "LastName"}
             , function (err, customer) {
-            if (err) {
-
-                console.log("thats' err " + err);
-            } else {
+                if (err) console.log(err, err.stack.split("\n"));
                 console.log("thats' good " + customer);
                 if (customer)  {
                     res.json(true);
                 } else {
                     res.json(false);
                 }
-            }
+            
         });
 });
 module.exports = router;
