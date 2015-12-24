@@ -1,5 +1,8 @@
 var express = require('express');
 var app = express();
+
+
+
 var bodyParser = require('body-parser');
 
 global.mongodbConfig = require('../mongodb_config.json');
@@ -11,6 +14,11 @@ global.http = require('http');
 global.url = require('url');
 global.db;
 global.collection;
+
+//app.use(express.static(__dirname));
+app.use(express.static('./app'));
+app.use(express.static('./bower_components'));
+//app.use(express.static(appRoot + '/controllers'));
 
 var oauthConfig = require('../oauth/oauth-config.js');
 
