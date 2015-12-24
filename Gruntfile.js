@@ -465,7 +465,7 @@ module.exports = function (grunt) {
     },
     heroku: {
       options: {
-        remote: 'git@heroku.com:shrouded-waters-7224.git',
+        remote: 'git.heroku.com/kzh-parts.git',
         branch: 'master',
         tag: pkg.version
       }
