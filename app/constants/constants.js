@@ -2,6 +2,6 @@
 
  angular.module('CONFIG', [])
 
-.constant('ENV', {name:'production',apiEndpoint:'https://kzh-parts.herokuapp.com:3000'})
+.constant('ENV', {name:'production',apiEndpoint:'https://kzh-parts.herokuapp.com'})
 
 ;
