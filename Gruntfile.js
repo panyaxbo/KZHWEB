@@ -425,6 +425,12 @@ module.exports = function (grunt) {
         cwd: '<%= yeoman.app %>/styles',
         dest: '.tmp/styles/',
         src: '{,*/}*.css'
+      },
+      nodejs: {
+        expand: true,
+        cwd: 'service',
+        dest: '<%= yeoman.dist %>/service',
+        src: '{,*/}*.*'
       }
     },
 
@@ -552,6 +558,7 @@ module.exports = function (grunt) {
     'useminPrepare',
 //    'concurrent:dist',
     'copy:styles',
+    'copy:nodejs',
         'imagemin',
         'svgmin',
     'autoprefixer',
@@ -578,6 +585,7 @@ module.exports = function (grunt) {
     'useminPrepare',
 //    'concurrent:dist',
     'copy:styles',
+    'copy:nodejs',
         'imagemin',
         'svgmin',
     'autoprefixer',

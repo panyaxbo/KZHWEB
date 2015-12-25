@@ -102,9 +102,10 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
                 }  
             });
         } if (!doc) {
-            res.sendStatus(200);
+            res.sendStatus(500);
+            return;
         } else {
-             console.log(err);
+            console.log(err);
         }
     });
 
