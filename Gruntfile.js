@@ -471,7 +471,7 @@ module.exports = function (grunt) {
     },
     heroku: {
       options: {
-        remote: 'git.heroku.com/fast-tundra-2780.git',
+        remote: 'git.heroku.com/serene-tor-8362.git',
         branch: 'master',
         tag: pkg.version
       }
