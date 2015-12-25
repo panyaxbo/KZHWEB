@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 
 var bodyParser = require('body-parser');
-
+var path = require('path');
 global.mongodbConfig = require('../mongodb_config.json');
 global.serverConfig = require('../server-config.js');
 global.appRoot = require('app-root-path');
@@ -15,6 +15,7 @@ global.collection;
 
 //app.use(express.static(__dirname));
 app.use(express.static('./app'));
+app.use(express.static(path.resolve(__dirname, '../../')));
 app.use(express.static('./bower_components'));
 //app.use(express.static(appRoot + '/controllers'));
 
@@ -85,12 +86,21 @@ app.use('/cryptojs', cryptojs);
 app.use('/base64', base64);
 
 
-var environment = process.ENV.NODE_ENV || '';
+var environment = process.env.NODE_ENV || '';
 var port = process.env.PORT || 3000;
 var mongolab_uri = process.env.MONGOLAB_URI || 'mongodb://aaa:bbb@ds033123.mongolab.com:33123/kzhparts';
 var heroku_mongolab_uri = process.env.MONGOLAB_URI || 'mongodb://heroku_dmj53qsq:snsjuqkbr1cp1unjoibhem0iob@ds033915.mongolab.com:33915/heroku_dmj53qsq';
 
 app.set('', port);
+
+app.get('/', function(req, res) {
+
+    if (environment !== 'production') {
+      res.sendFile(appRoot + '/app/index.html');
+    } else {
+      res.sendFile(path.resolve(__dirname, '../../') + '/index.html');
+    }
+});
 
 app.listen(port, function () {
 	console.log("Start server port " + port + " is OK...");
@@ -135,15 +145,7 @@ app.use(function(err, req, res, next){
   console.error(appRoot +'/app/');
 // viewed at http://localhost:8080
 
-app.get('/', function(req, res) {
-//  console.log(__dirname);
-//  console.log(appRoot);
-    if (environment !== 'production') {
-      res.sendFile(appRoot + '/app/index.html');
-    } else {
-      res.sendFile('/index.html');
-    }
-});
+
 
 /*
 process.on( 'SIGTERM', function () {
