@@ -471,7 +471,7 @@ module.exports = function (grunt) {
     },
     heroku: {
       options: {
-        remote: 'git.heroku.com/kzh-parts.git',
+        remote: 'git.heroku.com/fast-tundra-2780.git',
         branch: 'master',
         tag: pkg.version
       }
@@ -581,6 +581,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('heroku:production', [
     'clean:dist',
+    'ngconstant:production',
     'wiredep',
     'useminPrepare',
 //    'concurrent:dist',
