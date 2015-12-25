@@ -320,20 +320,22 @@ router.get(mongodbConfig.url.user.isActivateUser, function (req, res) {
     db.collection(mongodbConfig.mongodb.user.name)
         .findOne(
         {
-            'Username' : Username
-        //    'Password' : Password
+            'Username' : Username,
+            'Terminal' : 'web'
         }
         , function (err, user) {
         if (err) {
             console.log(err);
             res.json(500, err);
             return;
-        } else {
+        } else if (user){
             if (user.IsActivate)  {
                 res.json(true);
             } else {
                 res.json(false);
             }
+        } else {
+            return;
         }
     });
 });
