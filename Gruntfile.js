@@ -477,7 +477,7 @@ module.exports = function (grunt) {
     },
     heroku: {
       options: {
-        remote: 'git@heroku.com:serene-tor-8362.git',
+        remote: 'git@heroku.com:tranquil-plateau-5184.git',
         branch: 'master',
         tag: pkg.version
       }
