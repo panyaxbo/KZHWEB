@@ -431,6 +431,12 @@ module.exports = function (grunt) {
         cwd: 'service',
         dest: '<%= yeoman.dist %>/service',
         src: '{,*/}*.*'
+      },
+      configfile: {
+        expand: true,
+        cwd: './',
+        dest: '<%= yeoman.dist %>',
+        src: ['bower.json', 'package.json', 'Procfile']
       }
     },
 
@@ -559,6 +565,7 @@ module.exports = function (grunt) {
 //    'concurrent:dist',
     'copy:styles',
     'copy:nodejs',
+    'copy:configfile',
         'imagemin',
         'svgmin',
     'autoprefixer',
@@ -587,6 +594,7 @@ module.exports = function (grunt) {
 //    'concurrent:dist',
     'copy:styles',
     'copy:nodejs',
+    'copy:configfile',
         'imagemin',
         'svgmin',
     'autoprefixer',
