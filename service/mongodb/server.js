@@ -84,6 +84,8 @@ app.use('/recaptchas', recaptchas);
 app.use('/cryptojs', cryptojs);
 app.use('/base64', base64);
 
+
+var environment = process.ENV.NODE_ENV || '';
 var port = process.env.PORT || 3000;
 var mongolab_uri = process.env.MONGOLAB_URI || 'mongodb://aaa:bbb@ds033123.mongolab.com:33123/kzhparts';
 var heroku_mongolab_uri = process.env.MONGOLAB_URI || 'mongodb://heroku_dmj53qsq:snsjuqkbr1cp1unjoibhem0iob@ds033915.mongolab.com:33915/heroku_dmj53qsq';
@@ -132,10 +134,15 @@ app.use(function(err, req, res, next){
 });
   console.error(appRoot +'/app/');
 // viewed at http://localhost:8080
+
 app.get('/', function(req, res) {
 //  console.log(__dirname);
 //  console.log(appRoot);
-    res.sendFile(appRoot + '/app/index.html');
+    if (environment !== 'production') {
+      res.sendFile(appRoot + '/app/index.html');
+    } else {
+      res.sendFile('/index.html');
+    }
 });
 
 /*
