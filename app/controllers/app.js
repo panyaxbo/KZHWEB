@@ -1,7 +1,8 @@
 'use strict';
 
 var app = angular.module('KZHWEB', ['ngRoute', 'ngAnimate', 'ngFileUpload', '720kb.datepicker','blockUI'
-    ,'ngDialog', 'ngPasswordStrength', 'ngTable','pascalprecht.translate', 'vcRecaptcha','autocomplete', 'ngCookies']);
+    ,'ngDialog', 'ngPasswordStrength', 'ngTable','pascalprecht.translate', 'vcRecaptcha','autocomplete', 
+    'ngCookies', 'CONFIG']);
 
 app.directive('ngHasfocus', function() {
     return function(scope, element, attrs) {

@@ -1,5 +1,5 @@
 app.controller("HeaderController", function ($scope, $location, $window, $filter, $anchorScroll, Upload,$rootScope, $http, $translate,$timeout, 
-  blockUI, ngDialog, MenuService, LocaleService, ReceiptOrderService, CurrencyService, BASE_URL, $cookies, vcRecaptchaService) {
+  blockUI, ngDialog, MenuService, LocaleService, ReceiptOrderService, CurrencyService, ENV , $cookies, vcRecaptchaService) {
 
     $scope.Locale = "th";
     $scope.Currency = "thb";
@@ -77,7 +77,7 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
 
     $scope.Search = function() {
       console.log($scope.SearchAllText);
-      var searchProductURL = BASE_URL.PATH + "/products/SearchProductWithCondition/" + $scope.SearchAllText;
+      var searchProductURL = ENV.apiEndpoint + "/products/SearchProductWithCondition/" + $scope.SearchAllText;
       $http.get(searchProductURL)
       .success(function(data, status, headers, config) {
           $scope.Product = data;
@@ -113,7 +113,7 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
         blockUI.stop();
     }
 
-    var oauthURL = $location.host() +':3000' + "/oauths/GetPublicKey";
+    var oauthURL = ENV.apiEndpoint + "/oauths/GetPublicKey";
     $http.get(oauthURL)
     .success(function(data, status, headers, config) {
         OAuth.initialize(data);
@@ -325,7 +325,7 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
         response.provider = provider;
         console.log(response);
         // 
-        var createAndCheckLofinSocialUrl = BASE_URL.PATH + '/users/CreateAndUpdateWithSocial';
+        var createAndCheckLofinSocialUrl = ENV.apiEndpoint + '/users/CreateAndUpdateWithSocial';
         
         $http.post(createAndCheckLofinSocialUrl, response)
         .success(function (data, status, headers, config) {
@@ -464,13 +464,13 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
         });
     }
 
-    var UserBackFromEmailActivateUrl = $location.url();
-    if (UserBackFromEmailActivateUrl.indexOf("confirm=") > -1 ) {
+    var UserBackFromEmailUrl = $location.url();
+    if (UserBackFromEmailUrl.indexOf("confirm=") > -1 ) {
         blockUI.start("Please wait ...");
-        var url = UserBackFromEmailActivateUrl.substr(UserBackFromEmailActivateUrl.indexOf("confirm=") + 8);
+        var url = UserBackFromEmailUrl.substr(UserBackFromEmailUrl.indexOf("confirm=") + 8);
     //    var decodeUrl = Base64.decode(url);
     //    var updateActivateUrl = BASE_URL.PATH + "/users/ActivateAppUser/" + user + "/" + password;
-        var updateActivateUrl = BASE_URL.PATH + "/users/ActivateAppUser/" + url;
+        var updateActivateUrl = ENV.apiEndpoint + "/users/ActivateAppUser/" + url;
         blockUI.message("40%");
         $http.get(updateActivateUrl)
         .success(function(data, status, headers, config) {
@@ -483,12 +483,12 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
            swal("Error", "Cannot find your account.", "error");
         })
     // 
-    } else if (UserBackFromEmailActivateUrl.indexOf("forget=") > -1 ) {
+    } else if (UserBackFromEmailUrl.indexOf("forget=") > -1 ) {
         
      //   blockUI.start("Please wait ...");
-        var url = UserBackFromEmailActivateUrl.substr(UserBackFromEmailActivateUrl.indexOf("forget=") + 7);
-        console.log(UserBackFromEmailActivateUrl);
-        console.log(url);
+        var url = UserBackFromEmailUrl.substr(UserBackFromEmailUrl.indexOf("forget=") + 7);
+  //      console.log(UserBackFromEmailUrl);
+ //       console.log(url);
         var decodeUrl = Base64.decode(url);
         var res = decodeUrl.split('|');
         var email = res[0];
@@ -502,7 +502,7 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
     $scope.ChangePassword = function() {
       if ($scope.ChangeForgetPassword === $scope.ConfirmChangeForgetPassword) {
 
-        var changePasswordUrl = BASE_URL.PATH + "/users/PerformChangePassword/" + $scope.ForgetPasswordEmail + "/" + $scope.ChangeForgetPassword;
+        var changePasswordUrl = ENV.apiEndpoint + "/users/PerformChangePassword/" + $scope.ForgetPasswordEmail + "/" + $scope.ChangeForgetPassword;
         
         $http.get(changePasswordUrl)
         .success(function(data, status, headers, config) {
@@ -519,23 +519,20 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
 
     $scope.Signup = function () {
       blockUI.start("Please wait while system sending email...");
-      console.log('1 Email ' +$scope.Email );
       var email = $scope.Email;
-      var createUserURL = BASE_URL.PATH + "/users/CreateAppUser/" +$scope.Username+ "/" + $scope.Password + "/"+ email;
+      var createUserURL = ENV.apiEndpoint + "/users/CreateAppUser/" +$scope.Username+ "/" + $scope.Password + "/"+ email;
       $scope.User.Firstname = $scope.Firstname;
       $scope.User.Lastname = $scope.Lastname;
       $http.post(createUserURL, $scope.User)
         .success(function(data, status, headers, config) {
           blockUI.message("25%");
-           console.log('2 Email ' +$scope.Email );
           var hostPort = $location.host() + ':' +$location.port();
     //      var encryptUrlActivate = Base64.encode($scope.Username +"|" + $scope.Password +'|' + $scope.Email +"|" + "KZH");
-            var linkHashUrl = BASE_URL.PATH + "/base64/GenerateHashLink/"+ $scope.Username +"/" + $scope.Password +'/' + email;
-             console.log('3 Email ' +$scope.Email );
+            var linkHashUrl = ENV.apiEndpoint + "/base64/GenerateHashLink/"+ $scope.Username +"/" + $scope.Password +'/' + email;
             $http.get(linkHashUrl)
             .success(function(data, status, headers, config) {
                 var encryptUrlActivate = data;
-                var emailConfirmURL = BASE_URL.PATH + "/mails/SendEmailConfirmation/"+ email + "/"+hostPort +"/"+ encryptUrlActivate;
+                var emailConfirmURL = ENV.apiEndpoint + "/mails/SendEmailConfirmation/"+ email + "/"+hostPort +"/"+ encryptUrlActivate;
                   blockUI.message("75%");
                   $http.get(emailConfirmURL)
                   .success(function (data, status, headers, config) {
@@ -576,7 +573,7 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
     $scope.ValidateExistUsername = function () {
 
         if ($scope.Username.length > 0) {
-          var url = BASE_URL.PATH + "/users/IsExistUsername/" + $scope.Username;
+          var url = ENV.apiEndpoint + "/users/IsExistUsername/" + $scope.Username;
           $http.get(url)
             .success(function(data) {
               if (!data) {
@@ -626,7 +623,7 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
     $scope.ValidateExistEmail = function () {
       if ($scope.Email.length > 0) {
     //    console.log('ValidateExistEmail ');
-        var url = BASE_URL.PATH + "/users/IsExistEmail/" + $scope.Email;
+        var url = ENV.apiEndpoint + "/users/IsExistEmail/" + $scope.Email;
         $http.get(url)
           .success(function(data) {
             console.log('email exist ' + data);
@@ -653,7 +650,7 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
 
     $scope.Login = function () {
       
-      var url = BASE_URL.PATH + "/users/FindByUsernameAndPassword/" + $scope.username + "/" +  $scope.password;
+      var url = ENV.apiEndpoint + "/users/FindByUsernameAndPassword/" + $scope.username + "/" +  $scope.password;
       $http.get(url)
           .success(function (data, status, headers, config) {
               console.log('data ' + data);
@@ -665,7 +662,7 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
                   return;
               }
               // Check if is user activated?
-              var activateUrl = BASE_URL.PATH + "/users/isActivateUser/" + $scope.username + "/" + $scope.password;
+              var activateUrl = ENV.apiEndpoint + "/users/isActivateUser/" + $scope.username + "/" + $scope.password;
               $http.get(activateUrl)
               .success(function (activateUser) {
                 console.log(activateUser);
@@ -697,7 +694,7 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
                       now.setDate(now.getDate() + 1);
                       $cookies.putObject('User', $scope.User);
                     }
-                    var downloadUrl = BASE_URL.PATH + '/aws/downloadUserImageProfile/'+$scope.User.Id + '/'+ $scope.User.Username;
+                    var downloadUrl = ENV.apiEndpoint + '/aws/downloadUserImageProfile/'+$scope.User.Id + '/'+ $scope.User.Username;
                   $http.get(downloadUrl)
                   .success(function (data, status, headers, config) {
                       $scope.User.ProfileImage = data;
@@ -711,7 +708,7 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
 
                   });
                   // Download Image for User Thumbnail
-                  var downloadThumbnailUrl = BASE_URL.PATH + '/aws/downloadUserImageThumbnail/'+$scope.User.Id + '/'+ $scope.User.Username;
+                  var downloadThumbnailUrl = ENV.apiEndpoint + '/aws/downloadUserImageThumbnail/'+$scope.User.Id + '/'+ $scope.User.Username;
                   $http.get(downloadThumbnailUrl)
                   .success(function (data, status, headers, config) {
                   //    $scope.User.ProfileImage = data;
@@ -1032,7 +1029,7 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
     }
 
     // Re-capcha
-    var recaptchaURL = $location.host() +':3000' + "/recaptchas/GetRecaptchaKey";
+    var recaptchaURL = ENV.apiEndpoint + "/recaptchas/GetRecaptchaKey";
     $http.get(recaptchaURL)
     .success(function(data, status, headers, config) {
       $scope.response = null;
@@ -1104,7 +1101,7 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
       if (filter.test($scope.ForgetPasswordEmail) && $scope.ForgetPasswordEmail.length > 0) {
         console.log('valid');
         //check is email exist in system
-        var IsExistEmail = BASE_URL.PATH + "/users/IsExistEmail/" + $scope.ForgetPasswordEmail;
+        var IsExistEmail = ENV.apiEndpoint + "/users/IsExistEmail/" + $scope.ForgetPasswordEmail;
         $http.get(IsExistEmail)
         .success(function(data, status, headers, config) {
           // exist email ,then send email
@@ -1112,7 +1109,7 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
             if(data) {
               var hostWithPort = $location.host() + ':' +$location.port();
               var encryptUrlForgetPassword = Base64.encode($scope.ForgetPasswordEmail +"|" + "KZH");
-              var forgetPasswordEmailUrl = BASE_URL.PATH + "/mails/SendEmailForgetPassword/"+ $scope.ForgetPasswordEmail +"/" + hostWithPort+ "/"+ encryptUrlForgetPassword;
+              var forgetPasswordEmailUrl = ENV.apiEndpoint + "/mails/SendEmailForgetPassword/"+ $scope.ForgetPasswordEmail +"/" + hostWithPort+ "/"+ encryptUrlForgetPassword;
               blockUI.message("75%");
               $http.get(forgetPasswordEmailUrl)
               .success(function(data, status, headers, config) {
@@ -1143,7 +1140,7 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
     }
 
     $scope.TestBcrypt = function () {
-      var password_hash_url = BASE_URL.PATH + "/bcrypts/encryptBcrypt/" + $scope.text2bcrypt;
+      var password_hash_url = ENV.apiEndpoint + "/bcrypts/encryptBcrypt/" + $scope.text2bcrypt;
       $http.get(password_hash_url)
       .success(function(data, status, headers, config) {
           console.log(data);
@@ -1155,7 +1152,7 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
     }
 
     $scope.TestComBcrypt = function () {
-      var password_compare_url = BASE_URL.PATH + "/bcrypts/compareBcrypt/" + $scope.text2combcrypt;
+      var password_compare_url = ENV.apiEndpoint + "/bcrypts/compareBcrypt/" + $scope.text2combcrypt;
       $http.get(password_compare_url)
       .success(function(data, status, headers, config) {
           console.log(data);

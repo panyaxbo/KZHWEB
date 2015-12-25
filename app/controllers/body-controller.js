@@ -1,5 +1,5 @@
 app.controller("BodyController", function ($scope, $location, $anchorScroll, $filter, ngTableParams, Upload, $rootScope, blockUI, 
-    $http, $filter, MenuService, ReceiptOrderService, UserService, BASE_URL) {
+    $http, $filter, MenuService, ReceiptOrderService, UserService, ENV) {
     $scope.Product = [];
   
     $scope.ROHead = {
@@ -157,7 +157,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         });
     }
     $scope.LoadProductType = function () {
-        var url = $location.host() +':3000' + '/product_types/LoadProductType';
+        var url = ENV.apiEndpoint + '/product_types/LoadProductType';
         $http.get(url)
             .success(function (data) {
                 //        console.log(data);
@@ -171,7 +171,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             });
     }
     $scope.LoadProductCategory = function () {
-        var url = $location.host() + ':3000' + '/product_categories/LoadProductCategory';
+        var url = ENV.apiEndpoint  + '/product_categories/LoadProductCategory';
         $http.get(url)
             .success(function (data) {
                 $scope.ProductCategory = data;
@@ -179,7 +179,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             .error(function () {});
     }
     $scope.LoadProduct = function () {
-        var url = $location.host() + ':3000' + '/products/LoadProduct';
+        var url = ENV.apiEndpoint + '/products/LoadProduct';
         $http.get(url)
             .success(function (data) {
                 console.log(data);
@@ -311,7 +311,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     $scope.LoadProductByProductCategoryCode = function (ProductCategoryCode) {
         $('html, body').animate({ scrollTop: $('#product-section').offset().top }, 'slow');
 
-        var url = "http://localhost:3000/products/LoadProductByProductCategoryCode/" + ProductCategoryCode;
+        var url = ENV.apiEndpoint + "/products/LoadProductByProductCategoryCode/" + ProductCategoryCode;
         $http.get(url)
             .success(function (data) {
                 console.log(data);
@@ -342,7 +342,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         } else {
             typename = $scope.SearchProductTypeData.ProductTypeName;
         }
-        var url = "http://localhost:3000/product_types/LoadProductTypeByCondition/" + typecode + '/' + typename;
+        var url = ENV.apiEndpoint + "/product_types/LoadProductTypeByCondition/" + typecode + '/' + typename;
         $http.get(url)
             .success(function (data) {
                 $scope.ProductTypeTableParams = new ngTableParams({
@@ -379,7 +379,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-product-type-detail").show("slow");
     }
     $scope.ViewProductType = function (id) {
-        var url = "http://localhost:3000/product_types/LoadProductTypeByObjId/" + id;
+        var url = ENV.apiEndpoint + "/product_types/LoadProductTypeByObjId/" + id;
         $http.get(url)
             .success(function (data) {
                 console.log('success ' + data._id + data.ProductTypeCode);
@@ -437,7 +437,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/product_types/DeleteProductType/" + ProductTypeData._id;
+            var url = ENV.apiEndpoint + "/product_types/DeleteProductType/" + ProductTypeData._id;
                 $http.get(url)
                 .success(function (data) {
                     swal("Deleted!", "ลบรายการชนิดสินค้า " + ProductTypeData.ProductTypeNameTh + " สำเร็จ !!!", "success");
@@ -494,7 +494,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var NewProductTypeCode = "";
-            var GenCodeURL = BASE_URL.PATH + "/appconfig/GetNewCode/PT";
+            var GenCodeURL = ENV.apiEndpoint + "/appconfig/GetNewCode/PT";
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewProductTypeCode = data;
@@ -502,7 +502,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     $scope.ViewProductTypeData.ProductTypeCode = NewProductTypeCode;
                     $scope.ViewProductTypeData.CreateBy = $scope.User.Username;
                     $scope.ViewProductTypeData.UpdateBy = $scope.User.Username;
-                    var url = "http://localhost:3000/product_types/CreateProductType/";
+                    var url = ENV.apiEndpoint + "/product_types/CreateProductType/";
                     $http.post(url, $scope.ViewProductTypeData)
                         .success(function (data) {
                             swal("Created !", "สร้างรายการชนิดสินค้า " + $scope.ViewProductTypeData.ProductTypeCode + " สำเร็จ !!!", "success");
@@ -539,7 +539,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = BASE_URL.PATH +  "/product_types/UpdateProductType/";
+            var url = ENV.apiEndpoint +  "/product_types/UpdateProductType/";
             $scope.ViewProductTypeData.UpdateBy = $scope.User.Username;
                $http.post(url, $scope.ViewProductTypeData)
                 .success(function (data) {
@@ -577,7 +577,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         } else {
              typecode = $scope.SearchProductType;
         }
-        var url = BASE_URL.PATH + "/product_categories/LoadProductCategoryByCondition/" + catcode + '/' + catname + '/' + typecode;
+        var url = ENV.apiEndpoint + "/product_categories/LoadProductCategoryByCondition/" + catcode + '/' + catname + '/' + typecode;
         $http.get(url)
         .success(function (data) {
             //    console.log(data.length);
@@ -591,7 +591,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     }
                 });
                 // Load Product types
-                type_list_url = BASE_URL.PATH + "/product_types/LoadProductType";
+                type_list_url = ENV.apiEndpoint + "/product_types/LoadProductType";
                 $http.get(type_list_url)
                 .success(function (types) {
                     console.log(types.length);
@@ -619,7 +619,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             UpdateBy: $scope.User.Username,
             UpdateDate: new Date()
         }
-        var url = BASE_URL.PATH + "/product_types/LoadProductType";
+        var url = ENV.apiEndpoint + "/product_types/LoadProductType";
         $http.get(url)
         .success(function (data) {
             $scope.SelectProductTypeList = data;
@@ -633,7 +633,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-product-category-detail").show("slow");
     }
     $scope.ViewProductCategory = function (id) {
-        var url = BASE_URL.PATH + "/product_categories/LoadProductCategoryByObjId/" + id;
+        var url = ENV.apiEndpoint + "/product_categories/LoadProductCategoryByObjId/" + id;
         console.log(id);
         $http.get(url)
             .success(function (data) {
@@ -666,7 +666,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 }
                 console.log('data.ProductTypeCode ' + data.ProductTypeCode);
                 
-                var productTypeURL = "http://localhost:3000/product_types/LoadProductType";
+                var productTypeURL = ENV.apiEndpoint + "/product_types/LoadProductType";
                 $http.get(productTypeURL)
                     .success(function (productTypes) {
                         $scope.SelectProductTypeList = productTypes;
@@ -706,7 +706,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = BASE_URL.PATH + "/product_categories/DeleteProductCategory/" + ProductCategoryData._id;
+            var url = ENV.apiEndpoint + "/product_categories/DeleteProductCategory/" + ProductCategoryData._id;
                $http.get(url)
                 .success(function (data) {
                     swal("Deleted !!!", "ลบรายการประเภทสินค้า " + ProductCategoryData.ProductCategoryCode + " สำเร็จ !!!", "success");
@@ -749,7 +749,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var NewProductCategoryCode = "";
-            var GenCodeURL = BASE_URL.PATH + "/appconfig/GetNewCode/PC";
+            var GenCodeURL = ENV.apiEndpoint + "/appconfig/GetNewCode/PC";
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewProductCategoryCode = data;
@@ -757,7 +757,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     $scope.ViewProductCategoryData.ProductCategoryCode = NewProductCategoryCode;
                     $scope.ViewProductCategoryData.CreateBy = $scope.User.Username;
                     $scope.ViewProductCategoryData.UpdateBy = $scope.User.Username;
-                    var url = "http://localhost:3000/product_categories/CreateProductCategory/";
+                    var url = ENV.apiEndpoint + "/product_categories/CreateProductCategory/";
                     $http.post(url, $scope.ViewProductCategoryData)
                         .success(function (data) {
                             swal("Created !", "สร้างรายการประเภทสินค้า " + $scope.ViewProductCategoryData.ProductCategoryCode + " สำเร็จ !!!", "success");
@@ -790,7 +790,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/product_categories/UpdateProductCategory/";
+            var url = ENV.apiEndpoint + "/product_categories/UpdateProductCategory/";
             $scope.ViewProductCategoryData.UpdateBy = $scope.User.Username;
                $http.post(url, $scope.ViewProductCategoryData)
                 .success(function (data) {
@@ -841,7 +841,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         } else {
             catcode = $scope.SearchProductCategory;
         }
-        var url = BASE_URL.PATH + "/products/LoadProductByCondition/" + code + "/" + name + "/" + catcode;
+        var url = ENV.apiEndpoint + "/products/LoadProductByCondition/" + code + "/" + name + "/" + catcode;
         $http.get(url)
         .success(function (data) {
                 $scope.SearchProducts = data;
@@ -857,7 +857,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 });
 
                 // Load Product Category
-                category_list_url = BASE_URL.PATH + "/product_categories/LoadProductCategory";
+                category_list_url = ENV.apiEndpoint + "/product_categories/LoadProductCategory";
                 $http.get(category_list_url)
                 .success(function (categories) {
                     $scope.SearchProductCategoryList = categories;
@@ -884,7 +884,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             UpdateBy: $scope.User.Username,
             UpdateDate: new Date()
         }
-        var category_url = BASE_URL.PATH + "/product_categories/LoadProductCategory";
+        var category_url = ENV.apiEndpoint + "/product_categories/LoadProductCategory";
 
         $http.get(category_url)
         .success(function (data) {
@@ -895,7 +895,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
         });
 
-        var uom_url = "http://localhost:3000/uoms/LoadNotContainUom";
+        var uom_url = ENV.apiEndpoint + "/uoms/LoadNotContainUom";
         $http.get(uom_url)
         .success(function (data) {
             $scope.SelectUomList = data;
@@ -905,7 +905,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
         });
 
-        var contain_uom_url = "http://localhost:3000/uoms/LoadContainUom";
+        var contain_uom_url = ENV.apiEndpoint + "/uoms/LoadContainUom";
         $http.get(contain_uom_url)
         .success(function (data) {
             $scope.SelectContainUomList = data;
@@ -918,7 +918,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-product-detail").show("slow");
     }
     $scope.ViewProduct = function (id) {
-        var url = "http://localhost:3000/products/LoadProductByObjId/" + id;
+        var url = ENV.apiEndpoint + "/products/LoadProductByObjId/" + id;
         $http.get(url)
             .success(function (data) {
                 $scope.ViewProductData = data;
@@ -963,7 +963,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     $scope.ViewProductData.UpdateDate = data.UpdateDate;
                 }
                 //Load Product Category
-                var category_url = "http://localhost:3000/product_categories/LoadProductCategory";
+                var category_url = ENV.apiEndpoint + "/product_categories/LoadProductCategory";
                 $http.get(category_url)
                 .success(function(data) {
                     $scope.SelectProductCategoryList = data;
@@ -972,7 +972,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
                 });
                 //Load Uom
-                var uom_url = "http://localhost:3000/uoms/LoadNotContainUom";
+                var uom_url = ENV.apiEndpoint + "/uoms/LoadNotContainUom";
                 $http.get(uom_url)
                 .success(function(data) {
                     $scope.SelectUomList = data;
@@ -981,7 +981,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
                 });
                 //Load Contain Uom
-                var containuom_url = "http://localhost:3000/uoms/LoadContainUom";
+                var containuom_url = ENV.apiEndpoint + "/uoms/LoadContainUom";
                 $http.get(containuom_url)
                 .success(function(data) {
                     $scope.SelectContainUomList = data;
@@ -1031,7 +1031,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/products/DeleteProduct/" + ProductData._id;
+            var url = ENV.apiEndpoint + "/products/DeleteProduct/" + ProductData._id;
                $http.post(url, ProductData)
                 .success(function (data) {
                     swal("Deleted !!!","ลบรายการสินค้า " +ProductData.ProductNameTh + "สำเร็จ !!!", "success");
@@ -1080,7 +1080,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var NewProductCategoryCode = "";
-            var GenCodeURL = "http://localhost:3000/appconfig/GetNewCode/PD";
+            var GenCodeURL = ENV.apiEndpoint + "/appconfig/GetNewCode/PD";
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewProductCode = data;
@@ -1091,7 +1091,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     $scope.ViewProductData.ContainUomCode = $scope.SelectContainUomList.UomCode;
                     $scope.ViewProductData.CreateBy = $scope.User.Username;
                     $scope.ViewProductData.UpdateBy = $scope.User.Username;
-                    var url = "http://localhost:3000/products/CreateProduct/";
+                    var url = ENV.apiEndpoint + "/products/CreateProduct/";
 
                     $http.post(url, $scope.ViewProductData)
                         .success(function (data) {
@@ -1128,7 +1128,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/products/UpdateProduct/";
+            var url = ENV.apiEndpoint + "/products/UpdateProduct/";
             $scope.ViewProductData.ProductCategoryCode = $scope.SelectedProductCategory;
             $scope.ViewProductData.UomCode = $scope.SelectedUom;
             $scope.ViewProductData.ContainUomCode = $scope.SelectedContainUom;
@@ -1165,7 +1165,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     }
     // Start Function for Promotion Module
     $scope.SearchPromotion = function () {
-        var url = BASE_URL.PATH + "/promotions/LoadAllPromotion";
+        var url = ENV.apiEndpoint + "/promotions/LoadAllPromotion";
         $http.get(url)
         .success(function (data) {
                 $scope.SearchPromotions = data;
@@ -1190,7 +1190,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     
     
     $scope.SearchPromotionProduct = function() {
-        var load_product_url = BASE_URL.PATH + "/products/LoadProduct";
+        var load_product_url = ENV.apiEndpoint + "/products/LoadProduct";
         $('#SelectProductPromotionList').select2({ 
             ajax: {
                 dataType : "json",
@@ -1264,7 +1264,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         if (!IsNumeric($('#AddDiscountPercent').val())) {
             swal("เกิดข้อผิดพลาด !!!","ต้องใส่จำนวนส่วนลด หรือ ส่วนลดต้องเป็นตัวเลข และมากกว่า 0", "warning");
         } else {
-            var url = "http://localhost:3000/products/LoadProductByProductCode/" + $('#SelectProductPromotionList').val();
+            var url = ENV.apiEndpoint + "/products/LoadProductByProductCode/" + $('#SelectProductPromotionList').val();
             $http.get(url)
             .success(function (data) {
                 var len = 0;
@@ -1306,7 +1306,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
 
     $scope.ViewPromotion = function (id) {
-        var url = "http://localhost:3000/promotions/LoadPromotionByObjId/" + id;
+        var url = ENV.apiEndpoint + "/promotions/LoadPromotionByObjId/" + id;
         $http.get(url)
             .success(function (data) {
                 $scope.ViewPromotionData = data;
@@ -1356,7 +1356,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/promotions/DeletePromotion/";
+            var url = ENV.apiEndpoint + "/promotions/DeletePromotion/";
                $http.post(url, PromotionData)
                 .success(function (data) {
                     swal("Deleted !!!","ลบรายการโปรโมชั่น " +PromotionData.PromotionNameTh + "สำเร็จ !!!", "success");
@@ -1391,7 +1391,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var NewProductCategoryCode = "";
-            var GenCodeURL = "http://localhost:3000/appconfig/GetNewCode/PM";
+            var GenCodeURL = ENV.apiEndpoint + "/appconfig/GetNewCode/PM";
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewPromotionCode = data;
@@ -1399,7 +1399,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     $scope.ViewPromotionData.PromotionCode = NewPromotionCode;
                     $scope.ViewPromotionData.CreateBy = $scope.User.Username;
                     $scope.ViewPromotionData.UpdateBy = $scope.User.Username;
-                    var url = "http://localhost:3000/promotions/CreatePromotion/";
+                    var url = ENV.apiEndpoint + "/promotions/CreatePromotion/";
 
                     $http.post(url, $scope.ViewPromotionData)
                         .success(function (data) {
@@ -1434,7 +1434,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/promotions/UpdatePromotion/";
+            var url = ENV.apiEndpoint + "/promotions/UpdatePromotion/";
             $scope.ViewPromotionData.UpdateBy = $scope.User.Username;
             $http.post(url, $scope.ViewPromotionData)
                 .success(function (data) {
@@ -1464,7 +1464,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 console.log(file);
                 Upload
                 .upload({
-                    url: BASE_URL.PATH + '/aws/uploadUserImage/'+$scope.User.Id + '/'+ $scope.User.Username,
+                    url: ENV.apiEndpoint + '/aws/uploadUserImage/'+$scope.User.Id + '/'+ $scope.User.Username,
                     file: file
                 })
                 .progress(function (evt) {
@@ -1474,7 +1474,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 .success(function (data, status, headers, config) {
                     // Download Image for User Profile
                     console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
-                    var downloadUrl = BASE_URL.PATH + '/aws/downloadUserImageProfile/'+$scope.User.Id + '/'+ $scope.User.Username;
+                    var downloadUrl = ENV.apiEndpoint + '/aws/downloadUserImageProfile/'+$scope.User.Id + '/'+ $scope.User.Username;
                     $http.get(downloadUrl)
                     .success(function (data, status, headers, config) {
                         $scope.User.ProfileImage = data;
@@ -1486,7 +1486,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                         console.log(data);
                     });
                     // Download Image for User Thumbnail
-                    var downloadThumbnailUrl = BASE_URL.PATH + '/aws/downloadUserImageThumbnail/'+$scope.User.Id + '/'+ $scope.User.Username;
+                    var downloadThumbnailUrl = ENV.apiEndpoint + '/aws/downloadUserImageThumbnail/'+$scope.User.Id + '/'+ $scope.User.Username;
                     $http.get(downloadThumbnailUrl)
                     .success(function (data, status, headers, config) {
                     //    $scope.User.ProfileImage = data;
@@ -1515,7 +1515,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 console.log(file);
                 Upload
                 .upload({
-                    url: BASE_URL.PATH + '/aws/uploadProductImage/'+ProductId+ '/'+ ProductCode + '/admin',
+                    url: ENV.apiEndpoint + '/aws/uploadProductImage/'+ProductId+ '/'+ ProductCode + '/admin',
                     file: file
                 })
                 .progress(function (evt) {
@@ -1526,7 +1526,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     // Download Image for Product
                     console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
 
-                    var downloadUrl = BASE_URL.PATH + '/aws/downloadProductImageThumbnail/' + ProductId + '/' + ProductCode;
+                    var downloadUrl = ENV.apiEndpoint + '/aws/downloadProductImageThumbnail/' + ProductId + '/' + ProductCode;
                     $http.get(downloadUrl)
                     .success(function (data, status, headers, config) {
                     //    $scope.User.ProfileImage = data;
@@ -1555,7 +1555,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 console.log(file);
                 Upload
                 .upload({
-                    url: BASE_URL.PATH + '/aws/uploadReceiptPayment/'+ $scope.User.Id + '/' + $scope.User.Username + '/' + RONo,
+                    url: ENV.apiEndpoint + '/aws/uploadReceiptPayment/'+ $scope.User.Id + '/' + $scope.User.Username + '/' + RONo,
                     file: file
                 })
                 .progress(function (evt) {
@@ -1565,7 +1565,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 .success(function (data, status, headers, config) {
                    
                     // Download Image for User Thumbnail
-                    var downloadThumbnailUrl = BASE_URL.PATH + '/aws/downloadReceiptPaymentThumbnail/'+$scope.User.Id + '/' 
+                    var downloadThumbnailUrl = ENV.apiEndpoint + '/aws/downloadReceiptPaymentThumbnail/'+$scope.User.Id + '/' 
                     + $scope.User.Username + '/' + RONo;
                     $http.get(downloadThumbnailUrl)
                     .success(function (data, status, headers, config) {
@@ -1587,7 +1587,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
     // Start Function for Customer Type Module
     $scope.SearchCustomerType = function () {
-        var url = "http://localhost:3000/customer_types/LoadCustomerType";
+        var url = ENV.apiEndpoint + "/customer_types/LoadCustomerType";
         $http.get(url)
         .success(function (data) {
             //    $scope.SearchCustomerTypes = data;
@@ -1624,7 +1624,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-customer-type-detail").fadeIn();
     }
     $scope.ViewCustomerType = function (id) {
-        var url = "http://localhost:3000/customer_types/LoadCustomerTypeByObjId/" + id;
+        var url = ENV.apiEndpoint + "/customer_types/LoadCustomerTypeByObjId/" + id;
         console.log(id);
         $http.get(url)
             .success(function (data) {
@@ -1680,7 +1680,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/customer_types/DeleteCustomerType/" + CustomerTypeData._id;
+            var url = ENV.apiEndpoint + "/customer_types/DeleteCustomerType/" + CustomerTypeData._id;
                $http.get(url)
                 .success(function (data) {
                     swal("Deleted !!!","ลบรายการชนิดลูกค้า " + CustomerTypeData.CustomerTypeNameTh + "สำเร็จ !!!", "success");
@@ -1731,7 +1731,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var NewProductCategoryCode = "";
-            var GenCodeURL = "http://localhost:3000/appconfig/GetNewCode/CT";
+            var GenCodeURL = ENV.apiEndpoint + "/appconfig/GetNewCode/CT";
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewCustomerTypeCode = data;
@@ -1739,7 +1739,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     $scope.ViewCustomerTypeData.CustomerTypeCode = NewCustomerTypeCode;
                     $scope.ViewCustomerTypeData.CreateBy = $scope.User.Username;
                     $scope.ViewCustomerTypeData.UpdateBy = $scope.User.Username;
-                    var url = "http://localhost:3000/customer_types/CreateCustomerType/";
+                    var url = ENV.apiEndpoint + "/customer_types/CreateCustomerType/";
 
                     $http.post(url, $scope.ViewCustomerTypeData)
                         .success(function (data) {
@@ -1776,7 +1776,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/customer_types/UpdateCustomerType/";
+            var url = ENV.apiEndpoint + "/customer_types/UpdateCustomerType/";
             $scope.ViewCustomerTypeData.UpdateBy = $scope.User.Username;
             $http.post(url, $scope.ViewCustomerTypeData)
                 .success(function (data) {
@@ -1802,7 +1802,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
     // Start Function for Customer Module
     $scope.SearchCustomer = function () {
-        var url = "http://localhost:3000/customers/LoadCustomer";
+        var url = ENV.apiEndpoint + "/customers/LoadCustomer";
         $http.get(url)
         .success(function (data) {
             //    $scope.SearchCustomers = data;
@@ -1816,7 +1816,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     }
                 });
 
-                type_url = BASE_URL.PATH + "/customer_types/LoadCustomerType";
+                type_url = ENV.apiEndpoint + "/customer_types/LoadCustomerType";
                 $http.get(url)
                 .success(function (data) {
                     $scope.SearchCustomerTypeList = data;
@@ -1851,7 +1851,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             UpdateDate: new Date()
         };
         //Load Customer Type
-        var type_url = "http://localhost:3000/customer_types/LoadCustomerType";
+        var type_url = ENV.apiEndpoint + "/customer_types/LoadCustomerType";
         $http.get(type_url)
         .success(function(data) {
             $scope.SelectCustomerTypeList = data;
@@ -1863,7 +1863,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-customer-detail").fadeIn();
     }
     $scope.ViewCustomer = function (id) {
-        var url = "http://localhost:3000/customers/LoadCustomerByObjId/" + id;
+        var url = ENV.apiEndpoint + "/customers/LoadCustomerByObjId/" + id;
         console.log(id);
         $http.get(url)
             .success(function (data) {
@@ -1929,7 +1929,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/customers/DeleteCustomer/" + CustomerData._id;
+            var url = ENV.apiEndpoint + "/customers/DeleteCustomer/" + CustomerData._id;
                $http.get(url)
                 .success(function (data) {
                     swal("Deleted !!!","ลบรายการลูกค้า " + CustomerData.CustomerNameTh + "สำเร็จ !!!", "success");
@@ -1978,7 +1978,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var NewCustomerCode = "";
-            var GenCodeURL = "http://localhost:3000/appconfig/GetNewCode/CM";
+            var GenCodeURL = ENV.apiEndpoint + "/appconfig/GetNewCode/CM";
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewCustomerCode = data;
@@ -1986,7 +1986,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     $scope.ViewCustomerData.CustomerCode = NewCustomerCode;
                     $scope.ViewCustomerData.CreateBy = $scope.User.Username;
                     $scope.ViewCustomerData.UpdateBy = $scope.User.Username;
-                    var url = "http://localhost:3000/customers/CreateCustomer/";
+                    var url = ENV.apiEndpoint + "/customers/CreateCustomer/";
 
                     $http.post(url, $scope.ViewCustomerData)
                         .success(function (data) {
@@ -2020,7 +2020,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/customers/UpdateCustomer/";
+            var url = ENV.apiEndpoint + "/customers/UpdateCustomer/";
             $scope.ViewCustomerData.UpdateBy = $scope.User.Username;
             $http.post(url, $scope.ViewCustomerData)
                 .success(function (data) {
@@ -2047,7 +2047,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
     // Start Function for AppUser Module
     $scope.SearchAppUser = function () {
-        var url = "http://localhost:3000/users/LoadAppUser";
+        var url = ENV.apiEndpoint + "/users/LoadAppUser";
         $http.get(url)
         .success(function (data) {
                 $scope.AppUserTableParams = new ngTableParams({
@@ -2061,7 +2061,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 });
 
                 $scope.SearchTerminalList = GetTerminalList();
-                var load_role_url = "http://localhost:3000/roles/LoadRole";
+                var load_role_url = ENV.apiEndpoint + "/roles/LoadRole";
                 $http.get(load_role_url)
                 .success(function (roles) {
                     $scope.SearchRoleList = roles;
@@ -2100,8 +2100,8 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-user-detail").fadeIn();
     }
     $scope.ViewAppUser = function (id) {
-        var url = "http://localhost:3000/users/LoadAppUserByObjId/" + id;
-        console.log(id);
+        var url = ENV.apiEndpoint + "/users/LoadAppUserByObjId/" + id;
+    //    console.log(id);
         $http.get(url)
             .success(function (data) {
                 $scope.ViewAppUserData = data;
@@ -2167,7 +2167,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/users/DeleteAppUser/";
+            var url = ENV.apiEndpoint + "/users/DeleteAppUser/";
                $http.post(url, AppUserData)
                 .success(function (data) {
                     swal("Deleted !!!","ลบรายการผู้ใช้ระบบ " + AppUserData.Username + "สำเร็จ !!!", "success");
@@ -2215,7 +2215,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/users/CreateAppUser/";
+            var url = ENV.apiEndpoint + "/users/CreateAppUser/";
             $scope.ViewAppUserData.CreateBy = $scope.User.Username;
             $scope.ViewAppUserData.UpdateBy = $scope.User.Username;
             $http.post(url, $scope.ViewAppUserData)
@@ -2245,7 +2245,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/users/UpdateAppUser/";
+            var url = ENV.apiEndpoint + "/users/UpdateAppUser/";
             $scope.ViewAppUserData.UpdateBy = $scope.User.Username;
             $http.post(url, $scope.ViewAppUserData)
                 .success(function (data) {
@@ -2299,7 +2299,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     
     // Start Function for Supplier Module
     $scope.SearchSupplier = function () {
-        var url = "http://localhost:3000/suppliers/LoadSupplier";
+        var url = ENV.apiEndpoint + "/suppliers/LoadSupplier";
         $http.get(url)
         .success(function (data) {
             //    $scope.SearchSuppliers = data;
@@ -2334,7 +2334,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-supplier-detail").show("slow");
     }
     $scope.ViewSupplier = function (id) {
-        var url = "http://localhost:3000/suppliers/LoadSupplierByObjId/" + id;
+        var url = ENV.apiEndpoint + "/suppliers/LoadSupplierByObjId/" + id;
         console.log(id);
         $http.get(url)
             .success(function (data) {
@@ -2398,7 +2398,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/suppliers/DeleteSupplier/";
+            var url = ENV.apiEndpoint + "/suppliers/DeleteSupplier/";
                $http.post(url, SupplierData)
                 .success(function (data) {
                     swal("Deleted !!!", "ลบรายการผู้ขาย " + SupplierData.SupplierCode + " สำเร็จ !!!", "success");
@@ -2439,7 +2439,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var NewSupplierCode = "";
-            var GenCodeURL = "http://localhost:3000/appconfig/GetNewCode/SP";
+            var GenCodeURL = ENV.apiEndpoint + "/appconfig/GetNewCode/SP";
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewSupplierCode = data;
@@ -2447,7 +2447,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     $scope.ViewSupplierData.SupplierCode = NewSupplierCode;
                     $scope.ViewSupplierData.CreateBy = $scope.User.Username;
                     $scope.ViewSupplierData.UpdateBy = $scope.User.Username;
-                    var url = "http://localhost:3000/suppliers/CreateSupplier/";
+                    var url = ENV.apiEndpoint + "/suppliers/CreateSupplier/";
                     $http.post(url, $scope.ViewSupplierData)
                         .success(function (data) {
                             swal("Created !", "สร้างรายการผู้ขาย " + $scope.ViewSupplierData.SupplierCode + " สำเร็จ !!!", "success");
@@ -2480,7 +2480,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/suppliers/UpdateSupplier/";
+            var url = ENV.apiEndpoint + "/suppliers/UpdateSupplier/";
             $scope.ViewSupplierData.UpdateBy = $scope.User.Username;
             $http.post(url, $scope.ViewSupplierData)
             .success(function (data) {
@@ -2512,7 +2512,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     
     // Start Function for Uom Module
     $scope.SearchUom = function () {
-        var url = "http://localhost:3000/uoms/LoadUom";
+        var url = ENV.apiEndpoint + "/uoms/LoadUom";
         $http.get(url)
         .success(function (data) {
                 $scope.UomTableParams = new ngTableParams({
@@ -2548,7 +2548,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-uom-detail").show("slow");
     }
     $scope.ViewUom = function (id) {
-        var url = "http://localhost:3000/uoms/LoadUomByObjId/" + id;
+        var url = ENV.apiEndpoint + "/uoms/LoadUomByObjId/" + id;
         console.log(id);
         $http.get(url)
             .success(function (data) {
@@ -2607,7 +2607,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/uoms/DeleteUom/" + UomData._id;
+            var url = ENV.apiEndpoint + "/uoms/DeleteUom/" + UomData._id;
                $http.get(url)
                 .success(function (data) {
                     swal("Deleted !!!", "ลบรายการหน่วย " + UomData.UomCode + " สำเร็จ !!!", "success");
@@ -2648,7 +2648,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var NewUomCode = "";
-            var GenCodeURL = "http://localhost:3000/appconfig/GetNewCode/UO";
+            var GenCodeURL = ENV.apiEndpoint + "/appconfig/GetNewCode/UO";
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewUomCode = data;
@@ -2656,7 +2656,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     $scope.ViewUomData.UomCode = NewUomCode;
                     $scope.ViewUomData.CreateBy = $scope.User.Username;
                     $scope.ViewUomData.UpdateBy = $scope.User.Username;
-                    var url = "http://localhost:3000/uoms/CreateUom/";
+                    var url = ENV.apiEndpoint + "/uoms/CreateUom/";
                     $http.post(url, $scope.ViewUomData)
                         .success(function (data) {
                             swal("Created !", "สร้างรายการหน่วย " + $scope.ViewUomData.UomCode + " สำเร็จ !!!", "success");
@@ -2689,7 +2689,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/uoms/UpdateUom/";
+            var url = ENV.apiEndpoint + "/uoms/UpdateUom/";
             $scope.ViewUomData.UpdateBy = $scope.User.Username;
             $http.post(url, $scope.ViewUomData)
             .success(function (data) {
@@ -2721,7 +2721,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
     // Start Function for Staff Module
     $scope.SearchStaff = function () {
-        var url = "http://localhost:3000/staffs/LoadStaff";
+        var url = ENV.apiEndpoint + "/staffs/LoadStaff";
         $http.get(url)
         .success(function (data) {
         //    $scope.SearchStaffs = data;
@@ -2772,7 +2772,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-staff-detail").fadeIn();
     }
     $scope.ViewStaff = function (id) {
-        var url = "http://localhost:3000/staffs/LoadStaffByObjId/" + id;
+        var url = ENV.apiEndpoint + "/staffs/LoadStaffByObjId/" + id;
         console.log(id);
         $http.get(url)
             .success(function (data) {
@@ -2840,7 +2840,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/staffs/DeleteStaff/";
+            var url = ENV.apiEndpoint + "/staffs/DeleteStaff/";
                $http.post(url, StaffData)
                 .success(function (data) {
                     swal("Deleted !!!","ลบรายการพนักงาน " + StaffData.Firstname + "สำเร็จ !!!", "success");
@@ -2875,7 +2875,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     $scope.CreateStaff = function () {
         var isCreate = confirm("คุณต้องการสร้างรายการ พนักงาน " + $scope.ViewStaffData.Firstname + " ใช่ หรือ ไม่?");
         if (isCreate) {
-            var url = "http://localhost:3000/staffs/CreateStaff/";
+            var url = ENV.apiEndpoint + "/staffs/CreateStaff/";
             console.log('create staff ' + $scope.ViewStaffData);
             $scope.ViewStaffData.CreateBy = $scope.User.Username;
             $scope.ViewStaffData.UpdateBy = $scope.User.Username;
@@ -2896,7 +2896,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     $scope.UpdateStaff = function () {
         var isUpdate = confirm("คุณต้องการแก้ไขรายการ พนักงาน " + $scope.ViewStaffData.Firstname + " ใช่หรือไม่ ?");
         if (isUpdate) {
-            var url = "http://localhost:3000/customers/UpdateCustomer/";
+            var url = ENV.apiEndpoint + "/customers/UpdateCustomer/";
             $scope.ViewStaffData.UpdateBy = $scope.User.Username;
             $http.post(url, $scope.ViewStaffData)
                 .success(function (data) {
@@ -2921,8 +2921,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
     // Start Function for Role Module
     $scope.SearchRole = function () {
-        
-        var url = "http://localhost:3000/roles/LoadRole";
+        var url = ENV.apiEndpoint + "/roles/LoadRole";
         $http.get(url)
         .success(function (data) {
             //    $scope.SearchRoles = data;
@@ -2957,7 +2956,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-role-detail").show("slow");
     }
     $scope.ViewRole = function (id) {
-        var url = "http://localhost:3000/roles/LoadRoleByObjId/" + id;
+        var url = ENV.apiEndpoint + "/roles/LoadRoleByObjId/" + id;
         console.log(id);
         $http.get(url)
             .success(function (data) {
@@ -3013,7 +3012,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
             function(isConfirm){
             if (isConfirm) {
-                var url = "http://localhost:3000/roles/DeleteRole/" + RoleData._id;
+                var url = ENV.apiEndpoint + "/roles/DeleteRole/" + RoleData._id;
                 $http.get(url)
                 .success(function (data) {
                     swal("Deleted !!!","ลบรายการบทบาท " + RoleData.RoleNameEn + "สำเร็จ !!!", "success");
@@ -3058,7 +3057,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         function(isConfirm){
           if (isConfirm) {
             var NewRoleCode = "";
-            var GenCodeURL = "http://localhost:3000/appconfig/GetNewCode/RL";
+            var GenCodeURL = ENV.apiEndpoint + "/appconfig/GetNewCode/RL";
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewRoleCode = data;
@@ -3066,7 +3065,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     $scope.ViewRoleData.RoleCode = NewRoleCode;
                     $scope.ViewRoleData.CreateBy = $scope.User.Username;
                     $scope.ViewRoleData.UpdateBy = $scope.User.Username;
-                    var url = "http://localhost:3000/roles/CreateRole/";
+                    var url = ENV.apiEndpoint + "/roles/CreateRole/";
                     $http.post(url, $scope.ViewRoleData)
                         .success(function (data) {
                             swal("Created !", "สร้างรายการบทบาท " + $scope.ViewRoleData.RoleCode + " สำเร็จ !!!", "success");
@@ -3099,7 +3098,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         },
         function(isConfirm){
           if (isConfirm) {
-            var url = "http://localhost:3000/roles/UpdateRole/";
+            var url = ENV.apiEndpoint + "/roles/UpdateRole/";
             $scope.ViewRoleData.UpdateBy = $scope.User.Username;
             $http.post(url, $scope.ViewRoleData)
             .success(function (data) {
@@ -3125,7 +3124,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
 
     // Start Function for Receipt Module
     $scope.SearchReceipt = function () {
-        var url = "http://localhost:3000/receipts/LoadReceipt";
+        var url = ENV.apiEndpoint + "/receipts/LoadReceipt";
         $http.get(url)
 
         .success(function (data) {
@@ -3154,7 +3153,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $("#div-receipt-detail").show("slow");
     }
     $scope.ViewReceipt = function (id) {
-        var url = "http://localhost:3000/receipts/LoadROHeadROLineByObjId/" + id;
+        var url = ENV.apiEndpoint + "/receipts/LoadROHeadROLineByObjId/" + id;
         console.log(id);
         $http.get(url)
             .success(function (data) {
@@ -3188,7 +3187,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     $scope.CreateReceipt = function () {
         var isCreate = confirm("คุณต้องการสร้างรายการ ใบสั่งซ้อสินค้า " + $scope.ViewReceiptData.RONo + " ใช่ หรือ ไม่?");
         if (isCreate) {
-            var url = "http://localhost:3000/receipts/CreateReceipt/";
+            var url = ENV.apiEndpoint + "/receipts/CreateReceipt/";
             console.log('create receipts ' + $scope.ViewReceiptData);
             $http.post(url, $scope.ViewReceiptData)
                 .success(function (data) {
@@ -3207,7 +3206,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     $scope.UpdateReceipt = function () {
         var isUpdate = confirm("คุณต้องการแก้ไขรายการ ใบสั่งซื้อสินค้า " + $scope.ViewReceiptData.RONo + " ใช่หรือไม่ ?");
         if (isUpdate) {
-            var url = "http://localhost:3000/roles/UpdateReceipt/";
+            var url = ENV.apiEndpoint + "/roles/UpdateReceipt/";
             console.log('update receipt ' + $scope.ViewReceiptData);
       //      $scope.ViewCustomerTypeData.ProductTypeCode = $scope.SelectedProductTypeCodeValue.ProductTypeCode;
             $http.post(url, $scope.ViewReceiptData)
@@ -3230,7 +3229,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     }
     // End Function for Receipt Module
     $scope.InitShipment = function() {
-        var url = $location.host() + ':3000' + '/provinces/LoadProvince/';
+        var url = ENV.apiEndpoint + '/provinces/LoadProvince/';
         $http.get(url)
             .success(function (provinces) {
                 $scope.SelectBillingProvinceList = provinces;
@@ -3250,7 +3249,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     }
     $scope.UpdateBillingProvince = function() {
         console.log("ProvinceId " + $scope.ROHead.BillingProvinceId);
-        var url = "http://localhost:3000/districts/LoadDistrictByProvinceId/"+  $scope.ROHead.BillingProvinceId;
+        var url = ENV.apiEndpoint + "/districts/LoadDistrictByProvinceId/"+  $scope.ROHead.BillingProvinceId;
         $http.get(url)
             .success(function (districts) {
                 $scope.SelectBillingDistrictList = districts;
@@ -3261,7 +3260,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     }
     $scope.UpdateReceiptProvince = function() {
         console.log("ProvinceId " + $scope.ROHead.ReceiptProvinceId);
-        var url = "http://localhost:3000/districts/LoadDistrictByProvinceId/"+  $scope.ROHead.ReceiptProvinceId;
+        var url = ENV.apiEndpoint + "/districts/LoadDistrictByProvinceId/"+  $scope.ROHead.ReceiptProvinceId;
         $http.get(url)
             .success(function (districts) {
                 $scope.SelectReceiptDistrictList = districts;
@@ -3271,7 +3270,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
             });
     }
     $scope.UpdateBillingDistrict = function() {
-        var url = "http://localhost:3000/subdistricts/LoadSubDistrictByDistrictId/"+ $scope.ROHead.BillingDistrictId;
+        var url = ENV.apiEndpoint + "/subdistricts/LoadSubDistrictByDistrictId/"+ $scope.ROHead.BillingDistrictId;
         $http.get(url)
             .success(function (subdistricts) {
                 $scope.SelectBillingSubDistrictList = subdistricts;
@@ -3281,7 +3280,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         });
     }
     $scope.UpdateReceiptDistrict = function() {
-        var url = "http://localhost:3000/subdistricts/LoadSubDistrictByDistrictId/"+ $scope.ROHead.ReceiptDistrictId;
+        var url = ENV.apiEndpoint + "/subdistricts/LoadSubDistrictByDistrictId/"+ $scope.ROHead.ReceiptDistrictId;
         $http.get(url)
             .success(function (subdistricts) {
                 $scope.SelectReceiptSubDistrictList = subdistricts;
@@ -3291,7 +3290,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         });
     }
     $scope.UpdateBillingSubDistrict = function() {
-        var url = "http://localhost:3000/subdistricts/LoadSubDistrictBySubDistrictId/"+ $scope.ROHead.BillingSubDistrictId;
+        var url = ENV.apiEndpoint + "/subdistricts/LoadSubDistrictBySubDistrictId/"+ $scope.ROHead.BillingSubDistrictId;
         $http.get(url)
             .success(function (zipcode) {
                 console.log('Bill ' + zipcode);
@@ -3306,7 +3305,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     }
 
     $scope.UpdateReceiptSubDistrict = function() {
-        var url = "http://localhost:3000/subdistricts/LoadSubDistrictBySubDistrictId/"+ $scope.ROHead.ReceiptSubDistrictId;
+        var url = ENV.apiEndpoint + "/subdistricts/LoadSubDistrictBySubDistrictId/"+ $scope.ROHead.ReceiptSubDistrictId;
         $http.get(url)
             .success(function (zipcode) {
                 console.log('Receipt' + zipcode);
@@ -3424,16 +3423,16 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     $scope.ValidateFinish = function() {
         console.log('ValidateFinish');
         blockUI.start("Processing ...");
-        var newCodeUrl = BASE_URL.PATH + "/appconfig/GetNewCode/RO";
+        var newCodeUrl = ENV.apiEndpoint + "/appconfig/GetNewCode/RO";
         $http.get(newCodeUrl)
         .success(function(data, status, headers, config) {
             var newRONo = data;
             if (!newRONo) {
             } else if (newRONo) {
                   blockUI.message("25%");
-                  var sendEmailStaffUrl = BASE_URL.PATH + "/mails/SendEmailStaffNewOrder/" + newRONo;
-                  var sendEmailCustomerUrl = BASE_URL.PATH + "/mails/SendEmailCustomerNewOrder/" + $scope.User.Email + "/" + newRONo;
-                  var createReceiptUrl = BASE_URL.PATH + '/receipts/CreateReceipt';
+                  var sendEmailStaffUrl = ENV.apiEndpoint + "/mails/SendEmailStaffNewOrder/" + newRONo;
+                  var sendEmailCustomerUrl = ENV.apiEndpoint + "/mails/SendEmailCustomerNewOrder/" + $scope.User.Email + "/" + newRONo;
+                  var createReceiptUrl = ENV.apiEndpoint + '/receipts/CreateReceipt';
                   $scope.ROHead.RODate = new Date(); //(new Date()).toISOString();
                   $scope.ROHead.RONo = newRONo;
                   $scope.ROHead.ROLineList = $scope.ROLineList;
@@ -3479,7 +3478,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     }
 
     $scope.SearchHistoryReceipt = function() {
-        var historyReceiptUrl = BASE_URL.PATH + "/receipts/LoadROHeadByUserIdAndStatus/"+$scope.User.Id+"/"+$scope.SearchPaymentStatus
+        var historyReceiptUrl = ENV.apiEndpoint + "/receipts/LoadROHeadByUserIdAndStatus/"+$scope.User.Id+"/"+$scope.SearchPaymentStatus
         +"/"+$scope.SearchShippingStatus+"/"+$scope.StartDate+"/"+$scope.EndDate;
         console.log(historyReceiptUrl);
         $http.get(historyReceiptUrl)
@@ -3514,7 +3513,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         } else {
             $scope.SearchCustomerName = $('#SelectCustomerList').val();
         }
-        var customerOrderUrl = BASE_URL.PATH + "/receipts/LoadROHeadByStaff/"+ $scope.SearchCustomerRONo+"/"+ $scope.SearchCustomerName
+        var customerOrderUrl = ENV.apiEndpoint + "/receipts/LoadROHeadByStaff/"+ $scope.SearchCustomerRONo+"/"+ $scope.SearchCustomerName
         +"/"+$scope.SearchCustomerOrderPaymentStatus+"/"+$scope.SearchCustomerOrderShippingStatus
         +"/"+$scope.SearchCustomerOrderStartDate+"/"+$scope.SearchCustomerOrderEndDate;
         console.log(customerOrderUrl);
@@ -3553,7 +3552,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     }
 
     $scope.InitCustomerOrder = function () {
-        var load_customer_url = BASE_URL.PATH + "/users/LoadAppUser";
+        var load_customer_url = ENV.apiEndpoint + "/users/LoadAppUser";
         $('#SelectCustomerList').select2({ 
             ajax: {
                 dataType : "json",
@@ -3590,13 +3589,13 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     }
 
     $scope.ViewRO = function (roHeadId, mode) {
-        var loadROHeadLineUrl = BASE_URL.PATH + "/receipts/LoadROHeadROLineByObjId/" + roHeadId;
+        var loadROHeadLineUrl = ENV.apiEndpoint + "/receipts/LoadROHeadROLineByObjId/" + roHeadId;
         $http.get(loadROHeadLineUrl)
         .success(function (data, status, headers, config) {
             console.log(data);
             if (mode === 'History') {
                 $scope.ViewHistoryRO = data;
-                var downloadPaymentUrl = BASE_URL.PATH + '/aws/downloadReceiptPaymentThumbnail/'+$scope.ViewHistoryRO.RONo;
+                var downloadPaymentUrl = ENV.apiEndpoint + '/aws/downloadReceiptPaymentThumbnail/'+$scope.ViewHistoryRO.RONo;
                 $http.get(downloadPaymentUrl)
                 .success(function (data, status, headers, config) {
                     var img = $('#ThumbnailReceiptPayment').closest('div').find('img').first();
@@ -3608,7 +3607,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 });
             } else if (mode === 'Customer') {
                 $scope.ViewStaffRO = data;
-                var downloadPaymentUrl = BASE_URL.PATH + '/aws/downloadReceiptPaymentThumbnail/'+$scope.ViewStaffRO.RONo;
+                var downloadPaymentUrl = ENV.apiEndpoint + '/aws/downloadReceiptPaymentThumbnail/'+$scope.ViewStaffRO.RONo;
                 $http.get(downloadPaymentUrl)
                 .success(function (data, status, headers, config) {
                     var img = $('#ThumbnailStaffViewReceiptPayment').closest('div').find('img').first();
@@ -3630,10 +3629,10 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         console.log($scope.ViewStaffRO.UserId);
         var UserId = $scope.ViewStaffRO.UserId;
         if (IsApprove === 'Y') {
-            var approveMailUrl = BASE_URL.PATH + '/mails/ApprovePaymentDocument/' + UserId;
+            var approveMailUrl = ENV.apiEndpoint + '/mails/ApprovePaymentDocument/' + UserId;
             $http.get(approveMailUrl)
             .success(function (data, status, headers, config) {
-                var approvePaymentUrl = BASE_URL.PATH + '/receipts/ApprovePayment/' + $scope.ViewStaffRO.RONo;
+                var approvePaymentUrl = ENV.apiEndpoint + '/receipts/ApprovePayment/' + $scope.ViewStaffRO.RONo;
                 $http.get(approvePaymentUrl)
                 .success(function (data, status, headers, config){
                     swal("สำเร็จ", "อนุมัติเอกสารการจ่ายเงินเรียบร้อย", "success"); 
@@ -3668,7 +3667,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                     };
                     $scope.ValidateForm.UserId = UserId;
                     $scope.ValidateForm.RejectReason = inputValue;
-                    var rejectMailUrl = BASE_URL.PATH + '/mails/RejectPaymentDocument';
+                    var rejectMailUrl = ENV.apiEndpoint + '/mails/RejectPaymentDocument';
                     $http.post(rejectMailUrl, $scope.ValidateForm)
                     .success(function (data, status, headers, config) {
                         console.log('reject success');

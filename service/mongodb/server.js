@@ -1,8 +1,6 @@
 var express = require('express');
 var app = express();
 
-
-
 var bodyParser = require('body-parser');
 
 global.mongodbConfig = require('../mongodb_config.json');
@@ -97,9 +95,9 @@ app.listen(port, function () {
 });
 
 app.on('close', function() {
-	console.log('gonna close leaw!!!');
-  // app.listen(port);
+	
 });
+
 // For localhost use
 /*
 mongodb.MongoClient.connect(mongodbConfig.connection_url + mongodbConfig.collection_name, function (err, database) {
@@ -111,7 +109,7 @@ mongodb.MongoClient.connect(mongodbConfig.connection_url + mongodbConfig.collect
 
 mongodb.MongoClient.connect(mongolab_uri, function (err, database) {
     if (err) console.log(err, err.stack.split("\n"));
-    console.log(database);
+ //   console.log(database);
     db = database;
 });
 
@@ -135,8 +133,8 @@ app.use(function(err, req, res, next){
   console.error(appRoot +'/app/');
 // viewed at http://localhost:8080
 app.get('/', function(req, res) {
-  console.log(__dirname);
-  console.log(appRoot);
+//  console.log(__dirname);
+//  console.log(appRoot);
     res.sendFile(appRoot + '/app/index.html');
 });
 

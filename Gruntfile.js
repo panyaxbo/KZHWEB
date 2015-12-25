@@ -476,7 +476,40 @@ module.exports = function (grunt) {
         branch: 'build'
       }
     }
-  }
+  },
+
+  ngconstant: {
+      options: {
+        space: '  ',
+        wrap: '"use strict";\n\n {%= __ngModule %}',
+        name : 'CONFIG'
+      },
+      // Environment targets
+      development: {
+        options :{
+          dest: '<%= yeoman.app %>/constants/constants.js'
+        },
+        constants: {
+          ENV: {
+            name: 'development',
+            apiEndpoint: 'http://localhost:3000'
+          }
+        }
+      },
+      production: {
+        options: {
+          dest: '<%= yeoman.app %>/constants/constants.js'
+        },
+        constants: {
+          ENV: {
+            name: 'production',
+            apiEndpoint: 'https://kzh-parts.herokuapp.com'
+          }
+        }
+      }
+    }
+
+
   });
 
 
@@ -487,6 +520,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'ngconstant:development',
       'wiredep',
       'concurrent:server',
    //   'less:dev',
@@ -513,6 +547,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'ngconstant:production',
     'wiredep',
     'useminPrepare',
 //    'concurrent:dist',
