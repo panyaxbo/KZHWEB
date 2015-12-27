@@ -595,7 +595,7 @@ module.exports = function (grunt) {
 //        'imagemin',
         'svgmin',
     'autoprefixer',
-    'concat',
+ //   'concat',
     'ngAnnotate',
     'copy:dist',
     'cssmin',
