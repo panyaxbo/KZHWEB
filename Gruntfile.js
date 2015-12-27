@@ -242,10 +242,10 @@ module.exports = function (grunt) {
       dist: {
         src: [
           '<%= yeoman.dist %>/scripts/{,*/}*.js',
-          '<%= yeoman.dist %>/controllers/{,*/}*.js',
-          '<%= yeoman.dist %>/constants/{,*/}*.js',
-          '<%= yeoman.dist %>/directives/{,*/}*.js',
-          '<%= yeoman.dist %>/services/{,*/}*.js',
+    //      '<%= yeoman.dist %>/controllers/{,*/}*.js',
+    //      '<%= yeoman.dist %>/constants/{,*/}*.js',
+   //       '<%= yeoman.dist %>/directives/{,*/}*.js',
+   //       '<%= yeoman.dist %>/services/{,*/}*.js',
           '<%= yeoman.dist %>/styles/{,*/}*.css',
           '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= yeoman.dist %>/styles/fonts/*'
@@ -274,14 +274,29 @@ module.exports = function (grunt) {
 
     // Performs rewrites based on filerev and the useminPrepare configuration
     usemin: {
-      html: ['<%= yeoman.dist %>/{,*/}*.html'],
+      html: ['<%= yeoman.dist %>/index.html'],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
+      js: ['<%= yeoman.dist %>/scripts/{,*/}*.js' 
+  //    '<%= yeoman.dist %>/controllers/{,*/}*.js',
+  //    '<%= yeoman.dist %>/constants/{,*/}*.js',
+  //    '<%= yeoman.dist %>/directives/{,*/}*.js',
+  //    '<%= yeoman.dist %>/services/{,*/}*.js'
+      ],
       options: {
         assetsDirs: [
           '<%= yeoman.dist %>',
           '<%= yeoman.dist %>/images',
-          '<%= yeoman.dist %>/styles'
-        ]
+          '<%= yeoman.dist %>/styles',
+          '<%= yeoman.dist %>/scripts'
+       //   ,
+       //   '<%= yeoman.dist %>/controllers',
+        //  '<%= yeoman.dist %>/constants',
+       //   '<%= yeoman.dist %>/directives', 
+       //   '<%= yeoman.dist %>/services'
+        ],
+        patterns: {
+          js: [[/(images\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg))/g, 'Replacing references to images']]
+        }
       }
     },
 
@@ -359,39 +374,50 @@ module.exports = function (grunt) {
     // By default, your `index.html`'s <!-- Usemin block --> will take care
     // of minification. These next options are pre-configured if you do not
     // wish to use the Usemin blocks.
-     cssmin: {
-       dist: {
-         files: {
-           '<%= yeoman.dist %>/styles/{,*/}*.css': [
-             '.tmp/styles/{,*/}*.css',
-             '<%= yeoman.app %>/styles/{,*/}*.css'
-           ]
-         }
-       }
-     },
+   //  cssmin: {
+    //   dist: {
+    //     files: {
+    //       '<%= yeoman.dist %>/styles/styles.css': [
+    //         '.tmp/styles/{,*/}*.css',
+   //          '<%= yeoman.app %>/styles/{,*/}*.css'
+   //        ]
+   //      }
+   //    }
+   //  },
      uglify: {
-       dist: {
-         files: {
-           '<%= yeoman.dist %>/scripts/scripts.js': ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-           '<%= yeoman.dist %>/controllers/controllers.js': ['<%= yeoman.app %>/controllers/{,*/}*.js'],
-           '<%= yeoman.dist %>/constants/constants.js': ['<%= yeoman.app %>/constants/{,*/}*.js'],
-           '<%= yeoman.dist %>/directives/directives.js': ['<%= yeoman.app %>/directives/{,*/}*.js'],
-           '<%= yeoman.dist %>/services/services.js': ['<%= yeoman.app %>/services/{,*/}*.js']
-         }
-       }
-     },
-     concat: {
-        options: {
-          // define a string to put between each file in the concatenated output
-          separator: ';'
-        },
-        dist: {
-          // the files to concatenate
-          src: ['<%= yeoman.dist %>/scripts/scripts.js'],
-          // the location of the resulting JS file
-          dest: '<%= yeoman.dist %>/scripts/scripts.js'
+    //   dist: {
+      //   files: {
+    //       '<%= yeoman.dist %>/scripts/scripts.js': ['<%= yeoman.app %>/scripts/{,*/}*.js'],
+      //     '<%= yeoman.dist %>/controllers/controllers.js': ['<%= yeoman.app %>/controllers/{,*/}*.js'],
+      //     '<%= yeoman.dist %>/constants/constants.js': ['<%= yeoman.app %>/constants/{,*/}*.js'],
+      //     '<%= yeoman.dist %>/directives/directives.js': ['<%= yeoman.app %>/directives/{,*/}*.js'],
+     //      '<%= yeoman.dist %>/services/services.js': ['<%= yeoman.app %>/services/{,*/}*.js']
+     //    }
+    //   },
+       build: {
+            src: ['<%= yeoman.app %>/scripts/{,*/}*.js' ,
+            '<%= yeoman.app %>/controllers/{,*/}*.js',
+            '<%= yeoman.app %>/constants/{,*/}*.js',
+            '<%= yeoman.app %>/directives/{,*/}*.js',
+            '<%= yeoman.app %>/services/{,*/}*.js'
+            ],
+            dest: '<%= yeoman.dist %>/scripts/build.js'
         }
-      },
+     },
+  //   concat: {
+  //      options: {
+          // define a string to put between each file in the concatenated output
+ //         separator: ';'
+ //       },
+ //       dist: {
+          // the files to concatenate
+//          src: ['<%= yeoman.dist %>/scripts/scripts.js', '<%= yeoman.dist %>/controllers/controllers.js',
+ //         '<%= yeoman.dist %>/constants/constants.js', '<%= yeoman.dist %>/directives/directives.js',
+//          '<%= yeoman.dist %>/services/services.js'],
+          // the location of the resulting JS file
+ //         dest: '<%= yeoman.dist %>/scripts/scripts.js'
+  //      }
+  //    },
     // Copies remaining files to places other tasks can use
     copy: {
       dist: {
@@ -463,32 +489,32 @@ module.exports = function (grunt) {
       }
     },
     buildcontrol: {
-    options: {
-      dir: 'dist',
-      commit: true,
-      push: true,
-      message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
-    },
-    pages: {
       options: {
-        remote: 'git@github.com:panyaxbo/KZHWEB.git',
-        branch: 'gh-pages'
+        dir: 'dist',
+        commit: true,
+        push: true,
+        message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
+      },
+      pages: {
+        options: {
+          remote: 'git@github.com:panyaxbo/KZHWEB.git',
+          branch: 'gh-pages'
+        }
+      },
+      heroku: {
+        options: {
+          remote: 'git@heroku.com:tranquil-plateau-5184.git',
+          branch: 'master',
+          tag: pkg.version
+        }
+      },
+      local: {
+        options: {
+          remote: '../',
+          branch: 'build'
+        }
       }
     },
-    heroku: {
-      options: {
-        remote: 'git@heroku.com:tranquil-plateau-5184.git',
-        branch: 'master',
-        tag: pkg.version
-      }
-    },
-    local: {
-      options: {
-        remote: '../',
-        branch: 'build'
-      }
-    }
-  },
 
   ngconstant: {
       options: {
@@ -566,7 +592,7 @@ module.exports = function (grunt) {
     'copy:styles',
     'copy:nodejs',
     'copy:configfile',
-        'imagemin',
+//        'imagemin',
         'svgmin',
     'autoprefixer',
     'concat',
