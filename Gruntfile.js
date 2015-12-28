@@ -592,7 +592,7 @@ module.exports = function (grunt) {
     'copy:styles',
     'copy:nodejs',
     'copy:configfile',
-//        'imagemin',
+        'imagemin',
         'svgmin',
     'autoprefixer',
  //   'concat',
