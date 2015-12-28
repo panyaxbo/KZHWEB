@@ -22,6 +22,9 @@
 		"appconfig" : {
 			"name" : "AppConfig"
 		},
+		"company" : {
+			"name" : "Company"
+		},
 		"customer" : {
 			"name" : "Customer"
 		},

@@ -1,5 +1,5 @@
 app.controller("HeaderController", function ($scope, $location, $window, $filter, $anchorScroll, Upload,$rootScope, $http, $translate,$timeout, 
-  blockUI, ngDialog, MenuService, LocaleService, ReceiptOrderService, CurrencyService, ENV , $cookies, vcRecaptchaService) {
+  blockUI, ngDialog, MenuService, LocaleService, ReceiptOrderService, CompanyService, CurrencyService, ENV , $cookies, vcRecaptchaService) {
 
     $scope.Locale = "th";
     $scope.Currency = "thb";
@@ -119,9 +119,22 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
         OAuth.initialize(data);
     })
     .error(function(data, status, headers, config) {
-    //  console.log("Oops!! error for loading profile pic from facebook ");
-    });
     
+    });
+    // Load Company
+    $scope.Company = {};
+    var compnyaURL = ENV.apiEndpoint + "/companies/LoadCompany";
+    $http.get(compnyaURL)
+    .success(function (data, status, headers, config) {
+      $scope.Company = data;
+      console.log($scope.Company);
+      $scope.$emit('handleCompanyEmit', {
+          Company: CompanyService.Company
+      });
+    })
+    .error(function (data, status, headers, config) {
+      console.log('cannot load company');
+    });
 
     $scope.PopulateValue = function(provider, response) {
     //    $scope.user = response;
@@ -344,13 +357,11 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
 
     $scope.$on('handleBodyMenuBroadcast', function (event, args) {
         $scope.SelectedMenu = args.SelectedMenu;
-        console.log('head ctrl from body braodcast $scope.SelectedMenu ' + $scope.SelectedMenu);
     });
 
     $scope.$on('handleReceiptOrderBroadcast', function (event, args) {
         $scope.ROHead = args.ROHead;
         $scope.ROLineList = args.ROHead.ROLineList;
-        console.log('$scope.ROHead.SumAmount ' + $scope.ROHead.SumAmount);
     });
 
     $scope.SelectedHeadMenu = function (menu) {

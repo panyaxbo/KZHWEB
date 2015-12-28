@@ -43,7 +43,7 @@ var sms = require('../sms/sms');
 var stripe = require('../stripe/stripe');
 var promotions = require('./route/promotions');
 var suppliers = require('./route/suppliers');
-
+var companies = require('./route/companies');
 var aws = require('../aws-s3/aws');
 var bcrypts = require('../bcrypt/bcrypts');
 var oauths = require('../oauth/oauths');
@@ -77,6 +77,7 @@ app.use('/sms', sms);
 app.use('/stripe', stripe);
 app.use('/promotions', promotions);
 app.use('/suppliers', suppliers);
+app.use('/companies', companies);
 
 app.use('/aws', aws);
 app.use('/bcrypts', bcrypts);

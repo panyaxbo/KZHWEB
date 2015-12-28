@@ -24,15 +24,11 @@
     <link rel="stylesheet" href="/bower_components/sweetalert/dist/sweetalert.css" />
     <link rel="stylesheet" href="/bower_components/angular-block-ui/dist/angular-block-ui.min.css" />
     <link rel="stylesheet" href="/bower_components/ng-table/dist/ng-table.min.css">
+    <link rel="import" href="/bower_components/number-format/src/number-format.html">
     <link rel="stylesheet" href="/styles/bootstrap-magnify.css">
     <link rel="stylesheet" href="/styles/search.css">
     <link rel="stylesheet" href="/styles/step.css">
-    <link rel="import" href="/bower_components/number-format/src/number-format.html">
-    <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet/less" type="text/css" href="styles/main.less" />
-    <!-- endbuild -->
-    
 </head>
 
 <body onselectstart="return false;" ondragstart="return false;">
@@ -41,7 +37,7 @@
 
         <div class="header container-fluid" id="div-header" ng-controller="HeaderController" style="top: 0px;padding-bottom:10px;margin-bottom: 10px; margin-top:15px">
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <a class="navbar-brand" href="#/">
+                <a href="#/">
                     <img src="/images/KZHLogo.png" width="150px" height="50px">
                 </a>
                 <!-- div seach -->
@@ -3828,6 +3824,7 @@
         <script src="/services/receipt-order-service.js"></script>
         <script src="/services/user-service.js"></script>
         <script src="/services/currency-service.js"></script>
+        <script src="/services/company-service.js"></script>
         <script src="/controllers/side-controller.js"></script>
         <script src="/controllers/header-controller.js"></script>
         <script src="/controllers/body-controller.js"></script>

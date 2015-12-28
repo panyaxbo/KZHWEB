@@ -1679,6 +1679,10 @@ app.run(function ($rootScope) {
         $rootScope.$broadcast('handleUserBroadcast', args);
     });
     
+    $rootScope.$on('handleCompanyEmit', function (event, args) {
+        $rootScope.$broadcast('handleCompanyBroadcast', args);
+    });
+    
     document.addEventListener("keyup", function(e) {
         if (e.keyCode === 27)
             $rootScope.$broadcast("escapePressed", e.target);

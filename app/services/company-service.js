@@ -1,10 +1,8 @@
-app.service("ReceiptOrderService", function () {
-    this.ROHead = {};
-
-    this.ROLineList = [];
+app.service("CompanyService", function () {
+    this.Company = {};
 
     return {
-        ROHead: {
+        Company: {
             Id: 0,
             RONo: "",
             RODate: new Date(),

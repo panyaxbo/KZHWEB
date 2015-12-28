@@ -1,5 +1,5 @@
 app.controller("BodyController", function ($scope, $location, $anchorScroll, $filter, ngTableParams, Upload, $rootScope, blockUI, 
-    $http, $filter, MenuService, ReceiptOrderService, UserService, ENV) {
+    $http, $filter, MenuService, ReceiptOrderService, UserService, CompanyService, ENV) {
     $scope.Product = [];
   
     $scope.ROHead = {
@@ -31,6 +31,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     $scope.CurrencySymbol = "฿";
     $scope.Multiplier = 1;
     $scope.SelectedLocale = "th";
+    $scope.Company = {};
     //    $scope.ROLineList = $rootScope.ROLineList;
 
     // Initialize General Setting Module
@@ -112,6 +113,11 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         $scope.ViewAppUserData = args.User;
     });
 
+    $scope.$on('handleCompanyBroadcast', function (event, args) {
+        $scope.Company = args.Company;
+        console.log('f head 2 line ' + args.Company);
+    });
+
     $scope.$on('handleCurrencyBroadcast', function (event, args) {
         $scope.SelectedCurrency = args.SelectedCurrency;
         console.log('body ctrl from head $scope.SelectedCurrency ' + $scope.SelectedCurrency);
@@ -182,10 +188,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         var url = ENV.apiEndpoint + '/products/LoadProduct';
         $http.get(url)
             .success(function (data) {
-                console.log(data);
                 $scope.Product = data;
-
-
             })
             .error(function () {
                 //    alert("Cannot get Product data from Server..");
@@ -215,8 +218,7 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
                 ROLine.Price = SelectedProduct.RetailPrice;
                 ROLine.DiscountAmount = 0;
                 ROLine.Amount = (ROLine.Price * BuyQty) - ROLine.DiscountAmount;
-                ROLine.VatAmount = (7 / 100) * ROLine.Amount;
-                console.log('SelectedProduct.Uom ' + SelectedProduct.Uom);
+                ROLine.VatAmount = ($scope.Company.VatRate / 100) * ROLine.Amount;
                 ROLine.Uoms = SelectedProduct.Uom;
                 ROLine.UomCode = SelectedProduct.UomCode;
 
