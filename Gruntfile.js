@@ -520,7 +520,7 @@ module.exports = function (grunt) {
       },
       heroku: {
         options: {
-          remote: 'git@heroku.com:tranquil-plateau-5184.git',
+          remote: 'git@heroku.com:kzh-parts.git',
           branch: 'master',
           tag: pkg.version
         }
