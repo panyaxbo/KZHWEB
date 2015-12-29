@@ -25,7 +25,6 @@ app.directive('ngHasfocus', function() {
 //Config translate
 app.config(function ($translateProvider) {
     $translateProvider.translations('th', {
-        TITLE: 'โค้ว ซุ่น เฮง - ศูนย์รวมอะไหล่มอเตอร์ไซค์ ยาง น้ำมันเครื่อง',
         TITLE: {
             NAME: 'โค้ว ซุ่น เฮง - ศูนย์รวมอะไหล่มอเตอร์ไซค์, ยาง และ น้ำมันเครื่อง',
             DESCRIPTION: ''
@@ -657,7 +656,6 @@ app.config(function ($translateProvider) {
         },
     });
     $translateProvider.translations('us', {
-        TITLE: 'Koh Zhun Heng - Center of Motorcycle Parts Tyre and Lubricant',
         TITLE: {
             NAME: 'Koh Zhun Heng - Center of Motorcycle Parts Tyre and Lubricant',
             DESCRIPTION: ''
@@ -1187,7 +1185,6 @@ app.config(function ($translateProvider) {
         }
     });
     $translateProvider.translations('cn', {
-        TITLE: '興 順 許 - 實施方案 摩托车配件 橡膠 和 润滑剂',
         TITLE: {
             NAME: '興 順 許 - 實施方案 摩托车配件 橡膠 和 润滑剂',
             DESCRIPTION: ''
