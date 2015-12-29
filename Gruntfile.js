@@ -242,12 +242,13 @@ module.exports = function (grunt) {
       dist: {
         src: [
           '<%= yeoman.dist %>/scripts/{,*/}*.js',
-    //      '<%= yeoman.dist %>/controllers/{,*/}*.js',
-    //      '<%= yeoman.dist %>/constants/{,*/}*.js',
-   //       '<%= yeoman.dist %>/directives/{,*/}*.js',
-   //       '<%= yeoman.dist %>/services/{,*/}*.js',
+          '<%= yeoman.dist %>/controllers/{,*/}*.js',
+          '<%= yeoman.dist %>/constants/{,*/}*.js',
+          '<%= yeoman.dist %>/directives/{,*/}*.js',
+          '<%= yeoman.dist %>/services/{,*/}*.js',
           '<%= yeoman.dist %>/styles/{,*/}*.css',
           '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          '<%= yeoman.dist %>/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= yeoman.dist %>/styles/fonts/*'
         ]
       }
@@ -374,16 +375,16 @@ module.exports = function (grunt) {
     // By default, your `index.html`'s <!-- Usemin block --> will take care
     // of minification. These next options are pre-configured if you do not
     // wish to use the Usemin blocks.
-   //  cssmin: {
-    //   dist: {
-    //     files: {
-    //       '<%= yeoman.dist %>/styles/styles.css': [
-    //         '.tmp/styles/{,*/}*.css',
-   //          '<%= yeoman.app %>/styles/{,*/}*.css'
-   //        ]
-   //      }
-   //    }
-   //  },
+     cssmin: {
+       dist: {
+         files: {
+           '<%= yeoman.dist %>/styles/styles.css': [
+             '.tmp/styles/{,*/}*.css',
+             '<%= yeoman.app %>/styles/{,*/}*.css'
+           ]
+        }
+       }
+     },
      uglify: {
     //   dist: {
       //   files: {
@@ -395,13 +396,29 @@ module.exports = function (grunt) {
      //    }
     //   },
        build: {
-            src: ['<%= yeoman.app %>/scripts/{,*/}*.js' ,
-            '<%= yeoman.app %>/controllers/{,*/}*.js',
-            '<%= yeoman.app %>/constants/{,*/}*.js',
-            '<%= yeoman.app %>/directives/{,*/}*.js',
-            '<%= yeoman.app %>/services/{,*/}*.js'
+            src: ['<%= yeoman.app %>/scripts/{,*/}*.js'
             ],
-            dest: '<%= yeoman.dist %>/scripts/build.js'
+            dest: '<%= yeoman.dist %>/scripts/script.min.js'
+        },
+        build2: {
+            src: ['<%= yeoman.app %>/controllers/{,*/}*.js'
+            ],
+            dest: '<%= yeoman.dist %>/controllers/controller.min.js'
+        },
+        build3: {
+            src: ['<%= yeoman.app %>/constants/{,*/}*.js'
+            ],
+            dest: '<%= yeoman.dist %>/constants/constant.min.js'
+        },
+        build4: {
+            src: ['<%= yeoman.app %>/directives/{,*/}*.js'
+            ],
+            dest: '<%= yeoman.dist %>/directives/directive.min.js'
+        },
+        build5: {
+            src: ['<%= yeoman.app %>/services/{,*/}*.js'
+            ],
+            dest: '<%= yeoman.dist %>/services/service.min.js'
         }
      },
   //   concat: {

@@ -160,24 +160,24 @@ app.config(function ($translateProvider) {
                     TEXT : 'ทั้งยี่ห้อที่มีคุณภาพและปานกลาง GS 3K หรือ GMAX',
                 },
                 THREE : {
-                    TITLE : 'สีสเปรย์ COMPAC ราคาสมเหตุสมผล',
+                    TITLE : 'สีสเปรย์',
                     TEXT : 'สีสเปรย์ที่ราคาสมเหตุสมผล แต่คุณภาพเกินราคา',
                 },
                 FOUR : {
                     TITLE : 'ยางนอกจักรยาน ยางไทยแท้',
-                    TEXT : 'ด้วยคุณภาพของเนื้อยาง',
+                    TEXT : 'ด้วยคุณภาพของเนื้อยางและมีความยืดหยุ่นสูง',
                 },
                 FIVE : {
-                    TITLE : '',
-                    TEXT : '',
+                    TITLE : 'ยางนอกมอเตอร์ไซค์ยี่ห้อ CAMEL และ VERUBBER',
+                    TEXT : 'ยี่ห้อที่อยู่คู่ชาวไทยมานาน ยอดขายติดอันดับยอดนิยม',
                 },
                 SIX : {
-                    TITLE : '',
-                    TEXT : '',
+                    TITLE : 'ยางนอกมอเตอร์ไซค์ยี่ห้อ CAMEL และ VERUBBER',
+                    TEXT : 'ยี่ห้อที่อยู่คู่ชาวไทยมานาน ยอดขายติดอันดับยอดนิยม',
                 },
                 SEVEN : {
-                    TITLE : '',
-                    TEXT : '',
+                    TITLE : 'ซีลวด YAGUSO',
+                    TEXT : 'ทำให้การขับขี่ไม่สะดุด วงล้อมอเตอร์ไซค์มีเสถียรภาพ',
                 }
             },
             SECTION: {
@@ -789,6 +789,36 @@ app.config(function ($translateProvider) {
         },
         BODY: {
             NAV: {},
+            CAROUSEL : {
+                ONE : {
+                    TITLE : 'BEELOX - Great Quality of Color Spray',
+                    TEXT : 'Suitable with every work',
+                },
+                TWO : {
+                    TITLE : 'Motorcycle Battery',
+                    TEXT : 'All quality and normal brand GS 3K GMAX and etc.',
+                },
+                THREE : {
+                    TITLE : 'COMPAC Color Spray',
+                    TEXT : 'The reasonble price but high qualtity color spray.',
+                },
+                FOUR : {
+                    TITLE : 'Thai brand outter bicycle tyre',
+                    TEXT : 'Rubber quality and high flexibility',
+                },
+                FIVE : {
+                    TITLE : 'With popular brand of outter motorcycle tyre CAMEL and VERUBBER',
+                    TEXT : 'Best price and high quality outter tyre for motorcycle',
+                },
+                SIX : {
+                    TITLE : 'With popular brand of outter motorcycle tyre CAMEL and VERUBBER',
+                    TEXT : 'Best price and high quality outter tyre for motorcycle',
+                },
+                SEVEN : {
+                    TITLE : 'Sprocket YAGUSO',
+                    TEXT : 'Make every drive the best',
+                }
+            },
             SECTION: {
                 PRODUCT: {
                     QTY: 'Qty',
@@ -1287,6 +1317,36 @@ app.config(function ($translateProvider) {
         },
         BODY: {
             NAV: {},
+            CAROUSEL : {
+                ONE : {
+                    TITLE : 'BEELOX - 彩色噴塑偉大的品質',
+                    TEXT : '適合與每一個工作',
+                },
+                TWO : {
+                    TITLE : '摩托車電池',
+                    TEXT : '所有的質量和正常的品牌GS 3K GMAX等',
+                },
+                THREE : {
+                    TITLE : 'COMPAC彩色噴塗',
+                    TEXT : '講理的價格，但高品質的彩色噴塗',
+                },
+                FOUR : {
+                    TITLE : '泰品牌外自行車輪胎',
+                    TEXT : '橡膠的品質和高度的靈活性',
+                },
+                FIVE : {
+                    TITLE : '隨著外摩托車輪胎 CAMEL 和 VERUBBER 大眾品牌',
+                    TEXT : '最好的價格和高品質的外胎摩托車',
+                },
+                SIX : {
+                    TITLE : '隨著外摩托車輪胎 CAMEL 和 VERUBBER 大眾品牌',
+                    TEXT : '最好的價格和高品質的外胎摩托車',
+                },
+                SEVEN : {
+                    TITLE : '鏈輪YAGUSO',
+                    TEXT : '使每個驅動器的最佳',
+                }
+            },
             SECTION: {
                 PRODUCT: {
                     QTY: '音量',
