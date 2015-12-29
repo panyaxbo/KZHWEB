@@ -295,7 +295,12 @@ module.exports = function (grunt) {
           '<%= yeoman.dist %>/services'
         ],
         patterns: {
-          js: [[/(images\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg))/g, 'Replacing references to images']]
+          js: [[/(images\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg))/g, 'Replacing references to images']],
+          css: [
+            [/(\/bower_components\/bootstrap\/dist\/fonts)/g, 'god help me', function(match) {
+              return match.replace('/bower_components/bootstrap/dist/fonts', '../fonts');
+            }]
+          ]
         }
       }
     },
@@ -371,6 +376,20 @@ module.exports = function (grunt) {
       }
     },
 
+    ngmin: {
+      controllers: {
+        src: ['<%= yeoman.app %>/controllers/app.js', '<%= yeoman.app %>/controllers/header-controller.js',
+        '<%= yeoman.app %>/controllers/body-controller.js', '<%= yeoman.app %>/controllers/footer-controller.js'],
+        dest: '<%= yeoman.dist %>/preparecontrollers/controller.js'
+      }
+    //  ,
+    //  directives: {
+    //    expand: true,
+    //    cwd: 'test/src',
+    //    src: ['directives/**/*.js'],
+    //    dest: 'test/generated'
+    //  }
+    },
     // By default, your `index.html`'s <!-- Usemin block --> will take care
     // of minification. These next options are pre-configured if you do not
     // wish to use the Usemin blocks.
@@ -400,25 +419,9 @@ module.exports = function (grunt) {
             dest: '<%= yeoman.dist %>/scripts/script.min.js'
         },
         build2: {
-            src: ['<%= yeoman.app %>/controllers/app.js'
+            src: ['<%= yeoman.dist %>/preparecontrollers/controller.js'
             ],
             dest: '<%= yeoman.dist %>/controllers/app.min.js'
-        },
-        build22: {
-            src: ['<%= yeoman.app %>/controllers/header-controller.js'
-            ],
-            dest: '<%= yeoman.dist %>/controllers/header-controller.min.js'
-        },
-        build23: {
-            src: ['<%= yeoman.app %>/controllers/body-controller.js'
-            ],
-            dest: '<%= yeoman.dist %>/controllers/body-controller.min.js'
-        },
-        build24: {
-            src: [
-            '<%= yeoman.app %>/controllers/footer-controller.js'
-            ],
-            dest: '<%= yeoman.dist %>/controllers/footer-controller.min.js'
         },
         build3: {
             src: ['<%= yeoman.app %>/constants/{,*/}*.js'
@@ -618,6 +621,7 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'ngconstant:production',
+    'ngmin',
     'wiredep',
     'useminPrepare',
 //    'concurrent:dist',

@@ -12,6 +12,7 @@
   "devDependencies": {
     "grunt-build-control": "^0.6.2",
     "grunt-ng-constant": "^1.1.0",
+    "grunt-ngmin": "0.0.3",
     "grunt-postcss": "^0.7.1"
   },
   "engines": {
