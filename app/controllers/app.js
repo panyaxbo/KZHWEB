@@ -22,34 +22,6 @@ app.directive('ngHasfocus', function() {
     }
 });
 
-//Config Route 
-/**app.config(["$routeProvider", function ($routeProvider) {
-    $routeProvider.when("/", {
-        templateUrl: "views/content.html",
-        controller: "BodyController"
-    }).when("/Setting", {
-        templateUrl: "views/partial/account-setting.html",
-        controller: "BodyController"
-    }).when("/ProductSection", {
-        templateUrl: "views/content.html#product-section",
-        controller: "BodyController"
-    }).when("/WebboardSection", {
-        templateUrl: "views/content.html#webboard-section",
-        controller: "BodyController"
-    }).when("/PaymentSection", {
-        templateUrl: "views/content.html#payment-section",
-        controller: "BodyController"
-    }).when("/AboutSection", {
-        templateUrl: "views/content.html#about-section",
-        controller: "BodyController"
-    }).when("/PurchaseHistory", {
-        templateUrl: "views/partial/purchase-history.html",
-        controller: "BodyController"
-    }).otherwise({
-        redirectTo: "/"
-    });
-}]);**/
-
 //Config translate
 app.config(function ($translateProvider) {
     $translateProvider.translations('th', {
