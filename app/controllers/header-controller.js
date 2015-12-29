@@ -63,9 +63,15 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
       
         $scope.Firstname = $cookies.getObject('User').Firstname;
         $scope.Lastname = $cookies.getObject('User').Lastname;
-        $scope.IsLogin = true;
-        $scope.IsAdmin = true;
-        $scope.IsGuest = false;
+        if ($cookies.getObject('User').UserType === 'admin') {
+          $scope.IsLogin = true;
+          $scope.IsAdmin =true;
+          $scope.IsGuest = false;
+        } else {
+          $scope.IsLogin = true;
+          $scope.IsAdmin = false;
+          $scope.IsGuest = false;
+        }
     }
     $scope.ShowSearch = function() {
       $('#SearchCriteria').addClass("open");      
@@ -479,8 +485,6 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
     if (UserBackFromEmailUrl.indexOf("confirm=") > -1 ) {
         blockUI.start("Please wait ...");
         var url = UserBackFromEmailUrl.substr(UserBackFromEmailUrl.indexOf("confirm=") + 8);
-    //    var decodeUrl = Base64.decode(url);
-    //    var updateActivateUrl = BASE_URL.PATH + "/users/ActivateAppUser/" + user + "/" + password;
         var updateActivateUrl = ENV.apiEndpoint + "/users/ActivateAppUser/" + url;
         blockUI.message("40%");
         $http.get(updateActivateUrl)
@@ -496,18 +500,18 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
     // 
     } else if (UserBackFromEmailUrl.indexOf("forget=") > -1 ) {
         
-     //   blockUI.start("Please wait ...");
         var url = UserBackFromEmailUrl.substr(UserBackFromEmailUrl.indexOf("forget=") + 7);
-  //      console.log(UserBackFromEmailUrl);
- //       console.log(url);
-        var decodeUrl = Base64.decode(url);
-        var res = decodeUrl.split('|');
-        var email = res[0];
-        console.log(decodeUrl);
-        console.log(email);
-        $scope.ForgetPasswordEmail = email;
-       // blockUI.stop();
-        $('#InputPasswordModal').modal('show');
+
+        var getemailfromencode = ENV.apiEndpoint + '/base64/GetForgetEncodeUrl/' + url;
+        $http.get(getemailfromencode)
+        .success(function(data, status, headers, config ) {
+          
+          $scope.ForgetPasswordEmail = data;
+          $('#InputPasswordModal').modal('show');
+        })
+        .error(function(data, status, headers, config) {
+
+        });
     }
 
     $scope.ChangePassword = function() {
@@ -538,7 +542,6 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
         .success(function(data, status, headers, config) {
           blockUI.message("25%");
           var hostPort = $location.host() + ':' +$location.port();
-    //      var encryptUrlActivate = Base64.encode($scope.Username +"|" + $scope.Password +'|' + $scope.Email +"|" + "KZH");
             var linkHashUrl = ENV.apiEndpoint + "/base64/GenerateHashLink/"+ $scope.Username +"/" + $scope.Password +'/' + email;
             $http.get(linkHashUrl)
             .success(function(data, status, headers, config) {
@@ -904,29 +907,6 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
         $scope.ROHead.SumVatAmount = sumVatAmt;
         $scope.ROHead.SumDiscountAmount = sumDiscAmt;
         $scope.ROHead.NetAmount = netAmt;
-   /*     
-        ROLine.ProductCode = SelectedProduct.ProductCode;
-        ROLine.ProductNameTh = SelectedProduct.ProductNameTh;
-        ROLine.Quantity = BuyQty;
-        ROLine.Price = SelectedProduct.RetailPrice;
-        ROLine.DiscountAmount = 0;
-        ROLine.Amount = (ROLine.Price * BuyQty) - ROLine.DiscountAmount;
-        ROLine.VatAmount = (7 / 100) * ROLine.Amount;
-        console.log('SelectedProduct.Uom ' + SelectedProduct.Uom);
-        ROLine.Uoms = SelectedProduct.Uom;
-        console.log('ROLine.Uoms ' + ROLine.Uoms);
-        console.log(ROLine.Amount);
-        $scope.ROHead.SumAmount += ROLine.Amount;
-        $scope.ROHead.SumVatAmount += ROLine.VatAmount;
-        $scope.ROHead.SumDiscountAmount += ROLine.DiscountAmount;
-        $scope.ROHead.NetAmount = $scope.ROHead.SumAmount + $scope.ROHead.SumVatAmount - $scope.ROHead.SumDiscountAmount;
-        
-        $scope.ROLineList.push(ROLine);
-        console.log($scope.ROHead.SumAmount);
-        ReceiptOrderService.ROHead.SumAmount = $scope.ROHead.SumAmount;
-        ReceiptOrderService.ROHead.SumVatAmount = $scope.ROHead.SumVatAmount;
-        ReceiptOrderService.ROHead.SumDiscountAmount = $scope.ROHead.SumDiscountAmount;
-        ReceiptOrderService.ROHead.NetAmount = $scope.ROHead.NetAmount;*/
     }
     function getBase64Image(img) {
       var canvas = document.createElement("canvas");
@@ -1002,7 +982,6 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
               SelectedMenu: 'shipment'
           });
         } else {
-          console.log('user NOT lod in ');
           swal({
           title: "Are you sure?",
           text: "คุณต้องเข้าสู่ระบบก่อนดำเนินการต่อ",
@@ -1053,12 +1032,6 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
     //  console.log("Oops!! error for loading profile pic from facebook ");
     });
 
-
- //   $scope.response = null;
- //   $scope.widgetId = null;
- //   $scope.model = {
- //       key: '6LeVN-ESAAAAAGFk4yeban3O4yjwoa7S-b2mVRWt'
- //   };
     $scope.setResponse = function (response) {
         console.info('Response available');
         $scope.response = response;
@@ -1118,23 +1091,30 @@ app.controller("HeaderController", function ($scope, $location, $window, $filter
           // exist email ,then send email
             blockUI.message("25%");
             if(data) {
-              var hostWithPort = $location.host() + ':' +$location.port();
-              var encryptUrlForgetPassword = Base64.encode($scope.ForgetPasswordEmail +"|" + "KZH");
-              var forgetPasswordEmailUrl = ENV.apiEndpoint + "/mails/SendEmailForgetPassword/"+ $scope.ForgetPasswordEmail +"/" + hostWithPort+ "/"+ encryptUrlForgetPassword;
-              blockUI.message("75%");
-              $http.get(forgetPasswordEmailUrl)
-              .success(function(data, status, headers, config) {
-                blockUI.stop();
-                var type = $filter('translate')('MESSAGE.TYPE_SUCCESS');
-                var title = $filter('translate')('MESSAGE.TITLE_SUCCESS_DEFAULT');
-                swal(title, "Please check your email", type);
+              var genforgetLink = ENV.apiEndpoint + '/base64/GenerateForgetPasswordHashLink/' + $scope.ForgetPasswordEmail;
+              $http.get(genforgetLink)
+              .success(function(data, status, headers, config) { 
+                  var hostWithPort = $location.host() + ':' +$location.port();
+                  var forgetPasswordEmailUrl = ENV.apiEndpoint + "/mails/SendEmailForgetPassword/"+ $scope.ForgetPasswordEmail 
+                  +"/" + hostWithPort+ "/"+ data;
+                  blockUI.message("75%");
+                  $http.get(forgetPasswordEmailUrl)
+                  .success(function(data, status, headers, config) {
+                    blockUI.stop();
+                    var type = $filter('translate')('MESSAGE.TYPE_SUCCESS');
+                    var title = $filter('translate')('MESSAGE.TITLE_SUCCESS_DEFAULT');
+                    swal(title, "Please check your email", type);
 
-                $('#ForgetPasswordModal').modal('toggle');
+                    $('#ForgetPasswordModal').modal('toggle');
+                  })
+                  .error(function(data, status, headers, config) {
+                      swal("Error", "Cannot sign up this time", "error");
+                  });
               })
-              .error(function(data, status, headers, config) {
-                  swal("Error", "Cannot sign up this time", "error");
+              .error(function (data, status, headers, config) {
+
               });
-          
+              
             } else {
               swal("Error", "Cannot find your account.", "error");
             }

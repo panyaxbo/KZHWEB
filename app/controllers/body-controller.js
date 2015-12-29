@@ -166,14 +166,10 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         var url = ENV.apiEndpoint + '/product_types/LoadProductType';
         $http.get(url)
             .success(function (data) {
-                //        console.log(data);
-                //         console.log(data[0]);
-                //         console.log(data[0].ProductTypeCode);
                 $scope.ProductType = data;
                 //       $scope.CurrentIndex = index;
             })
             .error(function () {
-                //   alert("Cannot get Product Type data from Server..");
             });
     }
     $scope.LoadProductCategory = function () {
@@ -525,9 +521,6 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
     }
     $scope.UpdateProductType = function () {
      
-//#55dd6b : green
-//#dd6b55: red
-//#5583dd : blue
         swal({
           title: "Are you sure?",
           text: "คุณต้องการแก้ไขรายการ ชนิดสินค้า " + $scope.ViewProductTypeData.ProductTypeNameTh + " ใช่ หรือ ไม่?",
@@ -3353,6 +3346,16 @@ app.controller("BodyController", function ($scope, $location, $anchorScroll, $fi
         }
         if (!$scope.ROHead.BillingZipCode || 0 === $scope.ROHead.BillingZipCode.length) {
             swal("เตือน", "คุณต้องเลือก รหัสไปรษณีร์", "warning");
+            return;
+        }
+
+        if (!$scope.ROHead.TelNo || 0 === $scope.ROHead.TelNo.length) {
+            swal("เตือน", "คุณต้องเลือกใส่หมายเลขโทรศัพท์", "warning");
+            return;
+        }
+
+        if (!$scope.ROHead.MobileNo || 0 === $scope.ROHead.MobileNo.length) {
+            swal("เตือน", "คุณต้องใส่เบอร์มือถือ", "warning");
             return;
         }
 

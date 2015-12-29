@@ -31,4 +31,23 @@ router.get('/GenerateHashLink/:Username/:Password/:Email', function(req, res) {
 	res.json(base64String);
 
 });
+
+router.get('/GenerateForgetPasswordHashLink/:Email', function(req, res) {
+  var email = req.params.Email;
+  var concatString = email + '|' + serverConfig.app.checksum;
+  var base64String = Base64.encode(concatString, serverConfig.app.passphrase);
+
+  res.json(base64String);
+
+});
+
+router.get('/GetForgetEncodeUrl/:EncodeUrl', function (req, res) {
+  var url = req.params.EncodeUrl;
+
+  var decodeString = Base64.decode(url , serverConfig.app.passphrase);
+  
+  var txtString = decodeString.split('|');
+  res.json(txtString[0]);
+});
+
 module.exports = router;

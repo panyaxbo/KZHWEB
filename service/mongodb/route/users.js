@@ -53,7 +53,12 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
     var Password = req.params.Password;
     
     db.collection(mongodbConfig.mongodb.user.name).findOne({$or: [ { Username: Username }, { Email : Username } ]}, function (err, doc) {
-        if (doc) {
+        if (err) {
+            console.log(err);
+        } else if (!doc) {
+            res.sendStatus(500);
+            return;
+        } else if (doc) {
             console.log(doc);
             var compare = bcrypt.compare(Password, doc.Password, function(err, result) {
                 console.log('compare ' + result);
@@ -101,12 +106,7 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
                     res.sendStatus(500);
                 }  
             });
-        } if (!doc) {
-            res.sendStatus(500);
-            return;
-        } else {
-            console.log(err);
-        }
+        } 
     });
 
     var findOneAppUser = function (query, callback) {
@@ -291,8 +291,6 @@ router.post(mongodbConfig.url.user.createAppUserByUsernameAndPasswordAndEmail, f
 
 // Update AppUser Activate from EMail
 router.get("/ActivateAppUser/:EncodeUrl", function (req, res) {
- //   var Username = req.params.Username;
-//    var Password = req.params.Password;
     var encodeUrl = req.params.EncodeUrl;
     var decodeString = Base64.decode(encodeUrl , serverConfig.app.passphrase);
     var txtString = decodeString.split('|');

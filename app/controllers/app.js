@@ -152,20 +152,20 @@ app.config(function ($translateProvider) {
             NAV: {},
             CAROUSEL : {
                 ONE : {
-                    TITLE : '',
-                    TEXT : '',
+                    TITLE : 'สีสเปรย์คุณภาพดีเยี่ยม',
+                    TEXT : 'สีเปรย์ที่เหมาะกับชิ้นงานที่ต้องการ',
                 },
                 TWO : {
-                    TITLE : '',
-                    TEXT : '',
+                    TITLE : 'แบตเตอรี่มอเตอร์ไซค์',
+                    TEXT : 'ทั้งยี่ห้อที่มีคุณภาพและปานกลาง GS 3K หรือ GMAX',
                 },
                 THREE : {
-                    TITLE : '',
-                    TEXT : '',
+                    TITLE : 'สีสเปรย์ COMPAC ราคาสมเหตุสมผล',
+                    TEXT : 'สีสเปรย์ที่ราคาสมเหตุสมผล แต่คุณภาพเกินราคา',
                 },
                 FOUR : {
-                    TITLE : '',
-                    TEXT : '',
+                    TITLE : 'ยางนอกจักรยาน ยางไทยแท้',
+                    TEXT : 'ด้วยคุณภาพของเนื้อยาง',
                 },
                 FIVE : {
                     TITLE : '',
@@ -1682,7 +1682,7 @@ app.run(function ($rootScope) {
     $rootScope.$on('handleCompanyEmit', function (event, args) {
         $rootScope.$broadcast('handleCompanyBroadcast', args);
     });
-    
+
     document.addEventListener("keyup", function(e) {
         if (e.keyCode === 27)
             $rootScope.$broadcast("escapePressed", e.target);
