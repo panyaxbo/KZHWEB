@@ -278,22 +278,21 @@ module.exports = function (grunt) {
       html: ['<%= yeoman.dist %>/index.html'],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
       js: ['<%= yeoman.dist %>/scripts/{,*/}*.js' 
-  //    '<%= yeoman.dist %>/controllers/{,*/}*.js',
-  //    '<%= yeoman.dist %>/constants/{,*/}*.js',
-  //    '<%= yeoman.dist %>/directives/{,*/}*.js',
-  //    '<%= yeoman.dist %>/services/{,*/}*.js'
+      '<%= yeoman.dist %>/controllers/{,*/}*.js',
+      '<%= yeoman.dist %>/constants/{,*/}*.js',
+      '<%= yeoman.dist %>/directives/{,*/}*.js',
+      '<%= yeoman.dist %>/services/{,*/}*.js'
       ],
       options: {
         assetsDirs: [
           '<%= yeoman.dist %>',
           '<%= yeoman.dist %>/images',
           '<%= yeoman.dist %>/styles',
-          '<%= yeoman.dist %>/scripts'
-       //   ,
-       //   '<%= yeoman.dist %>/controllers',
-        //  '<%= yeoman.dist %>/constants',
-       //   '<%= yeoman.dist %>/directives', 
-       //   '<%= yeoman.dist %>/services'
+          '<%= yeoman.dist %>/scripts',
+          '<%= yeoman.dist %>/controllers',
+          '<%= yeoman.dist %>/constants',
+          '<%= yeoman.dist %>/directives', 
+          '<%= yeoman.dist %>/services'
         ],
         patterns: {
           js: [[/(images\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg))/g, 'Replacing references to images']]
