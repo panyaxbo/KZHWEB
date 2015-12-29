@@ -277,7 +277,7 @@ module.exports = function (grunt) {
     usemin: {
       html: ['<%= yeoman.dist %>/index.html'],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
-      js: ['<%= yeoman.dist %>/scripts/{,*/}*.js' 
+      js: ['<%= yeoman.dist %>/scripts/{,*/}*.js', 
       '<%= yeoman.dist %>/controllers/{,*/}*.js',
       '<%= yeoman.dist %>/constants/{,*/}*.js',
       '<%= yeoman.dist %>/directives/{,*/}*.js',
