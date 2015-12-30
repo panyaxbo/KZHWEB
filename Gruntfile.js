@@ -404,7 +404,7 @@ module.exports = function (grunt) {
             dest: '<%= yeoman.dist %>/scripts/script.min.js'
         },
         build2: {
-            src: ['<%= yeoman.dist %>/preparecontrollers/controller.js'
+            src: ['<%= yeoman.app %>/controllers/*.js'
             ],
             dest: '<%= yeoman.dist %>/controllers/app.min.js'
         },
