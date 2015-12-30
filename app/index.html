@@ -491,15 +491,14 @@
                     </li>
                 
                     <li class="dropdown" class="head-menu" style="margin-top:5px">
-                        <div>
+                    
                            <div id="UserProfileImage">
                                <img src="/images/noProfileImg.png"  class="img-circle" width="40" height="40" ng-show="!IsLogin || User.ProfileImage === undefined" style="margin-top:-5px">
                            </div>
-                        <!--   <img src="User.ProfileImage" ng-binding="User.ProfileImage" class="img-circle" width="40" height="40" ng-show="IsLogin && User.ProfileImage.length > 0" style="margin-top:-5px">-->
-                        </div>
+                        
                     </li>
                     <li class="dropdown" class="head-menu" style="margin-top:5px">
-                        <div>
+                  
                             <div ng-show="IsAdmin && !IsGuest">
                                 <!-- code to render a large video block-->
                                 <a href="#" class="dropdown-toggle head-menu" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
@@ -537,7 +536,7 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
                                  {{User.Firstname}}<b class="caret"></b></a>
                             </div>
-                        </div>
+                        
                     </li>
             </div>
         </div>
