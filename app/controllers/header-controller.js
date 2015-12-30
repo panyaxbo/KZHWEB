@@ -1,4 +1,6 @@
-app.controller('HeaderController', function ($scope, $location, $window, $filter, $anchorScroll, Upload,$rootScope, $http, $translate,$timeout, 
+app.controller('HeaderController', ["$scope", "$location", "$window", "$filter", "$anchorScroll", "Upload", "$rootScope", "$http", "$translate", 
+  "$timeout", "blockUI", "ngDialog", "MenuService", "LocaleService", "ReceiptOrderService", "CompanyService", "CurrencyService", "ENV", "$cookies", 
+  "vcRecaptchaService", function ($scope, $location, $window, $filter, $anchorScroll, Upload,$rootScope, $http, $translate,$timeout, 
   blockUI, ngDialog, MenuService, LocaleService, ReceiptOrderService, CompanyService, CurrencyService, ENV , $cookies, vcRecaptchaService) {
 
     $scope.Locale = "th";
@@ -1153,4 +1155,4 @@ app.controller('HeaderController', function ($scope, $location, $window, $filter
          console.log('not valid');
       })
     }
-});
+}]);

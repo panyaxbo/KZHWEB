@@ -369,7 +369,7 @@ module.exports = function (grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: '<%= yeoman.dist %>/preparecontrollers/',
+          cwd: '<%= yeoman.app %>/controllers/',
           src: '*.js',
           dest: '<%= yeoman.dist %>/controllers/'
         }]
@@ -616,7 +616,7 @@ module.exports = function (grunt) {
         'svgmin',
     'autoprefixer',
  //   'concat',
-    'ngAnnotate',
+ //   'ngAnnotate',
     'copy:dist',
     'cssmin',
     'uglify',
