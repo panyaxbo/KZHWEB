@@ -398,6 +398,9 @@ module.exports = function (grunt) {
      //      '<%= yeoman.dist %>/services/services.js': ['<%= yeoman.app %>/services/{,*/}*.js']
      //    }
     //   },
+       options : {
+        mangle: false
+        },
        build: {
             src: ['<%= yeoman.app %>/scripts/{,*/}*.js'
             ],
