@@ -225,7 +225,7 @@ body {
     color: #FFF;
     font-family: verdana;
     font-size: 11px;
-    background-image: url("../images/to-top.png");
+    background-image: url("/images/to-top.png");
     background-position: left center;
     background-repeat: no-repeat;
     opacity: 0.7;
@@ -239,7 +239,7 @@ body {
     right: 50px;
     display: none;
     text-indent: -9999px;
-    background: url('../images/to-top.png') no-repeat;
+    background: url('/images/to-top.png') no-repeat;
     background-color: #000;
     opacity: 0.7;
 }
