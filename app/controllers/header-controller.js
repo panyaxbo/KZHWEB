@@ -58,7 +58,6 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     var message_title_error = $filter('translate')('MESSAGE.TITLE_ERROR');
 
     if ($cookies.getObject('User') !== undefined) {
-      console.log('wanna eat cookie');
         $scope.User = $cookies.getObject('User');
         $scope.User.Firstname = $cookies.getObject('User').Firstname;
         $scope.User.Lastname = $cookies.getObject('User').Lastname;
@@ -1043,7 +1042,6 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
         }
     };
     $scope.setWidgetId = function (widgetId) {
-        console.info('Created widget ID: %s', widgetId);
         $scope.widgetId = widgetId;
     };
     $scope.cbExpiration = function() {
