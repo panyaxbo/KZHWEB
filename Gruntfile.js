@@ -369,26 +369,11 @@ module.exports = function (grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: '.tmp/concat/scripts',
+          cwd: '<%= yeoman.dist %>/preparecontrollers/',
           src: '*.js',
-          dest: '.tmp/concat/scripts'
+          dest: '<%= yeoman.dist %>/controllers/'
         }]
       }
-    },
-
-    ngmin: {
-      controllers: {
-        src: ['<%= yeoman.app %>/controllers/app.js', '<%= yeoman.app %>/controllers/header-controller.js',
-        '<%= yeoman.app %>/controllers/body-controller.js', '<%= yeoman.app %>/controllers/footer-controller.js'],
-        dest: '<%= yeoman.dist %>/preparecontrollers/controller.js'
-      }
-    //  ,
-    //  directives: {
-    //    expand: true,
-    //    cwd: 'test/src',
-    //    src: ['directives/**/*.js'],
-    //    dest: 'test/generated'
-    //  }
     },
     // By default, your `index.html`'s <!-- Usemin block --> will take care
     // of minification. These next options are pre-configured if you do not
@@ -621,7 +606,6 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'ngconstant:production',
-    'ngmin',
     'wiredep',
     'useminPrepare',
 //    'concurrent:dist',

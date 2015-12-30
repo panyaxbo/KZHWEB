@@ -1,4 +1,4 @@
-app.controller("HeaderController", function ($scope, $location, $window, $filter, $anchorScroll, Upload,$rootScope, $http, $translate,$timeout, 
+app.controller('HeaderController', function ($scope, $location, $window, $filter, $anchorScroll, Upload,$rootScope, $http, $translate,$timeout, 
   blockUI, ngDialog, MenuService, LocaleService, ReceiptOrderService, CompanyService, CurrencyService, ENV , $cookies, vcRecaptchaService) {
 
     $scope.Locale = "th";

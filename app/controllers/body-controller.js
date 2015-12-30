@@ -1,4 +1,4 @@
-app.controller("BodyController", function ($scope, $location, $anchorScroll, $filter, ngTableParams, Upload, $rootScope, blockUI, 
+app.controller('BodyController', function ($scope, $location, $anchorScroll, $filter, ngTableParams, Upload, $rootScope, blockUI, 
     $http, $filter, MenuService, ReceiptOrderService, UserService, CompanyService, ENV) {
     $scope.Product = [];
   
