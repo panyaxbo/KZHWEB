@@ -118,7 +118,7 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
 
     $scope.$on('handleCompanyBroadcast', function (event, args) {
         $scope.Company = args.Company;
-        console.log('f head 2 line ' + args.Company);
+    //    console.log('f head 2 line ' + args.Company);
     });
 
     $scope.$on('handleCurrencyBroadcast', function (event, args) {

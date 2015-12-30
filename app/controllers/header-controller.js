@@ -145,7 +145,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
 
     $scope.PopulateValue = function(provider, response) {
     //    $scope.user = response;
-        
+        console.log(response);
         if (provider === 'facebook') {
           $scope.User.Firstname = response.firstname;
           $scope.User.Lastname = response.lastname;
@@ -1034,9 +1034,9 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     });
 
     $scope.setResponse = function (response) {
-        console.info('Response available');
+    //    console.info('Response available');
         $scope.response = response;
-        console.log($scope.response);
+    //    console.log($scope.response);
         if ($scope.response) {
           $scope.IsHuman = true;
         }

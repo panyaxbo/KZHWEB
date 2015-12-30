@@ -39,7 +39,8 @@
     "aws-sdk": "aws-sdk-js#~2.2.0",
     "card": "~1.1.0",
     "select2-bootstrap-css": "~1.4.6",
-    "angular-route": "~1.4.8"
+    "angular-route": "~1.4.8",
+    "lodash": "~3.10.1"
   },
   "devDependencies": {},
   "resolutions": {
