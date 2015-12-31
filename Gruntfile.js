@@ -557,6 +557,7 @@ module.exports = function (grunt) {
   ngconstant: {
       options: {
         space: '  ',
+        deps: ['ngLocale'],
         wrap: '"use strict";\n\n {%= __ngModule %}',
         name : 'CONFIG'
       },
