@@ -990,8 +990,8 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
                 console.log(data);
 
                 // Download Image for User Thumbnail
-        /*        var downloadThumbnailUrl = BASE_URL.PATH + '/images/downloadProductImageThumbnail/' + data._id + '/' + data.ProductCode;
-                $http.get(downloadThumbnailUrl)
+                var downloadUrl = ENV.apiEndpoint + '/aws/downloadProductImageThumbnail/' + data._id + '/' + data.ProductCode;
+                $http.get(downloadUrl)
                 .success(function (data, status, headers, config) {
                 //    $scope.User.ProfileImage = data;
                     $('#ThumbnailProductImage').children("img").remove();
@@ -1000,7 +1000,7 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
                 .error(function (data, status, headers, config) {
                     console.log(data);
 
-                });*/
+                });
             })
             .error(function (data) {
                 console.log(data);
@@ -1152,6 +1152,20 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
         }
     }
 
+    $scope.LoadProductImageByProductCode = function(refId, id, code) {
+        // Download Image for User Thumbnail
+        var downloadUrl = ENV.apiEndpoint + '/aws/downloadProductImageShop/' + id + '/' + code;
+        $http.get(downloadUrl)
+        .success(function (data, status, headers, config) {
+        //    $scope.User.ProfileImage = data;
+            $('#ThumbnailProductImage_'+code).children("img").remove();
+            $('#ThumbnailProductImage_'+code).append(data);
+        })
+        .error(function (data, status, headers, config) {
+            console.log(data);
+
+        });
+    }
     $scope.CheckPromotionIsExpire = function(expireDate) {
         if (Date.parse(expireDate) > new Date()) {
          //   console.log("Date.parse(expireDate) > new Date() " + Date.parse(expireDate) > new Date());
@@ -3579,7 +3593,7 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
     function formatCustomer (data) {
         return data.Firstname + '-' + data.Lastname;
     };
-    
+
     $scope.PerformSameBillAndReceiptAddress = function() {
         console.log('PerformSameBillAndReceiptAddress ' + $scope.IsSameAddress);
         if ($scope.IsSameAddress) {

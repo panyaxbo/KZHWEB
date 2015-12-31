@@ -74,7 +74,25 @@ router.post('/uploadProductImage/:ProductId/:ProductCode/:Username', function (r
                 res.sendStatus(500);
                 return;
               } else {
-                res.sendStatus(200);
+                var image_id = bson.BSONPure.ObjectID(result._id);
+                db.collection(mongodbConfig.mongodb.product.name)
+                    .update({
+                            'ProductCode' : ProductCode
+                        }, {
+                            $set: {
+                                'ProductImageRefId': image_id
+                            }
+                        },
+                        function (error, data) {
+                            if (error) {
+                              console.log(err, err.stack.split("\n"));
+                              res.sendStatus(500);
+                              return;
+                            } else {
+                              res.sendStatus(200);
+                            }
+                        });
+              //  res.sendStatus(200);
               }
             });
       }
@@ -102,8 +120,10 @@ router.get("/downloadProductImageShop/:ProductId/:ProductCode",  function (req, 
    , function(err, file) {
     if (err) {
       res.sendStatus(500);
-    }
-    if (file != null && file != undefined) {
+    } else if (!file) {
+      res.sendStatus(200);
+      return;
+    } else if (file != null && file != undefined) {
       console.log(file);
       console.log('downloadProductImageShop ' + file.originalFilename);
 

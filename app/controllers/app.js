@@ -338,7 +338,7 @@ app.config(function ($translateProvider) {
                     },
                     PRODUCT : {
                         TAB : "สินค้า",
-                        PRODUCT_CODE : "รหัสสินค้า :",
+                        PRODUCT_CODE : "รหัสสินค้า",
                         PRODUCT_NAME_TH : "ชื่อสินค้า (ไทย) :",
                         PRODUCT_NAME_EN : "ชื่อสินค้า (อังกฤษ) :",
                         PRODUCT_NAME_CN : "ชื่อสินค้า (จีน) :",
