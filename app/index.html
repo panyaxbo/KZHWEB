@@ -2,8 +2,10 @@
 <html class="no-js" ng-app="KZHWEB">
 <head >
     <meta charset="utf-8" http-equiv="imagetoolbar" content="no">
-    <title translate="TITLE.NAME"></title>
-    <meta name="description" content="" translate="TITLE.DESCRIPTION">
+    <title>{{'TITLE.NAME' | translate}}</title>
+    <meta name="description" content="{{'TITLE.DESCRIPTION' | translate}}">
+    <meta name="keywords" content="{{'TITLE.KEYWORD' | translate}}">
+    <meta name="author" content="{{'TITLE.AUTHOR' | translate}}">
     <meta name="viewport" content="width=device-width">
     <link rel="shortcut icon" href="/images/favicon.ico">
     <link rel="stylesheet" href="/bower_components/BrandButtons/dist/brand-buttons.min.css" />
@@ -35,8 +37,6 @@
                 <a href="#/">
                     <img src="/images/KZHLogo.png" width="150px" height="50px">
                 </a>
-                <!-- div seach -->
-                
                 <div id="SearchCriteria" class="kzhweb-search animate" style="left:142px;top:85px;z-index:9999;width:80%">             
                     <div class="input-group">
                       <input type="text" class="form-control" ng-model="SearchAllText" ng-enter="Search()" ng-keydown="expression" placeholder="{{'HEAD.MENU.SEARCH.PLACEHOLDER' | translate}}">
@@ -495,45 +495,44 @@
                         
                     </li>
                     <li class="dropdown" class="head-menu" style="margin-top:5px">
-                  
-                            <div ng-show="IsAdmin && !IsGuest">
-                                <!-- code to render a large video block-->
-                                <a href="#" class="dropdown-toggle head-menu" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
-                                 {{User.Firstname}}<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#account-section" ng-click="SelectedHeadMenu('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}} </a>
-                                    </li>
-                                    <li><a href="#customer-order-section" ng-click="SelectedHeadMenu('customer-order')"><span class="glyphicon glyphicon-tasks"></span> {{'HEAD.MENU.CUSTOMER' | translate}} </a>
-                                    </li>
-                                    <li><a href="#history-section" ng-click="SelectedHeadMenu('history')"><span class="glyphicon glyphicon-time"></span> {{'HEAD.MENU.HISTORY' | translate}}</a>
-                                    </li>
-                                    <li><a href="#setting-section" ng-click="SelectedHeadMenu('setting')"><span class="glyphicon glyphicon-cog"></span> {{'HEAD.MENU.GENERAL' | translate}}</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li><a href="#" ng-click="Logout()"><span class="glyphicon glyphicon-off"></span> {{'HEAD.MENU.LOGOUT' | translate}}</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div ng-show="!IsAdmin && !IsGuest">
-                                <!-- code to render the regular video block -->
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
-                                 {{User.Firstname}}<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#account-section" ng-click="SelectedHeadMenu('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}}</a>
-                                    </li>
-                                    <li> <a href="#history-section" ng-click="SelectedHeadMenu('history')"><span class="glyphicon glyphicon-time"></span> {{'HEAD.MENU.HISTORY' | translate}}</a>
-                                    <li class="divider"></li>
-                                    <li><a ng-href="#" ng-click="Logout()"><span class="glyphicon glyphicon-off"></span> {{'HEAD.MENU.LOGOUT' | translate}}</a>
-                                        </li>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div ng-show="!IsAdmin && IsGuest">
-                                <!-- code to render the regular video block -->
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
-                                 {{User.Firstname}}<b class="caret"></b></a>
-                            </div>
-                        
+                        <div ng-show="IsAdmin && !IsGuest">
+                            <!-- code to render a large video block-->
+                            <a href="#" class="dropdown-toggle head-menu" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
+                             {{User.Firstname}}<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#account-section" ng-click="SelectedHeadMenu('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}} </a>
+                                </li>
+                                <li><a href="#customer-order-section" ng-click="SelectedHeadMenu('customer-order')"><span class="glyphicon glyphicon-tasks"></span> {{'HEAD.MENU.CUSTOMER' | translate}} </a>
+                                </li>
+                                <li><a href="#history-section" ng-click="SelectedHeadMenu('history')"><span class="glyphicon glyphicon-time"></span> {{'HEAD.MENU.HISTORY' | translate}}</a>
+                                </li>
+                                <li><a href="#setting-section" ng-click="SelectedHeadMenu('setting')"><span class="glyphicon glyphicon-cog"></span> {{'HEAD.MENU.GENERAL' | translate}}</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li><a href="#" ng-click="Logout()"><span class="glyphicon glyphicon-off"></span> {{'HEAD.MENU.LOGOUT' | translate}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div ng-show="!IsAdmin && !IsGuest">
+                            <!-- code to render the regular video block -->
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
+                             {{User.Firstname}}<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#account-section" ng-click="SelectedHeadMenu('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}}</a>
+                                </li>
+                                <li> <a href="#history-section" ng-click="SelectedHeadMenu('history')"><span class="glyphicon glyphicon-time"></span> {{'HEAD.MENU.HISTORY' | translate}}</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li><a ng-href="#" ng-click="Logout()"><span class="glyphicon glyphicon-off"></span> {{'HEAD.MENU.LOGOUT' | translate}}</a>
+                                </li>
+                                
+                            </ul>
+                        </div>
+                        <div ng-show="!IsAdmin && IsGuest">
+                            <!-- code to render the regular video block -->
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
+                             {{User.Firstname}}<b class="caret"></b></a>
+                        </div>
                     </li>
             </div>
         </div>
@@ -1443,28 +1442,28 @@
                                                     <legend></legend>
                                                     <!-- Text input-->
                                                     <div class="form-group">
-                                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_CODE' | translate}}</label>
+                                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_CODE' | translate}} :</label>
                                                         <div class="col-sm-6">
                                                             <input type="text" background-color="#FFCBCBCB" readonly placeholder="{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_CODE' | translate}}" class="form-control" ng-model="ViewProductTypeData.ProductTypeCode"></input>
                                                         </div>
                                                     </div>
                                                     <!-- Text input-->
                                                     <div class="form-group">
-                                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_TH' | translate}}</label>
+                                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_TH' | translate}} :</label>
                                                         <div class="col-sm-6">
                                                             <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_TH' | translate}}" class="form-control" ng-model="ViewProductTypeData.ProductTypeNameTh"></input>
                                                         </div>
                                                     </div>
                                                     <!-- Text input-->
                                                     <div class="form-group">
-                                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_EN' | translate}}</label>
+                                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_EN' | translate}} :</label>
                                                         <div class="col-sm-6">
                                                             <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_EN' | translate}}" class="form-control" ng-model="ViewProductTypeData.ProductTypeNameEn"></input>
                                                         </div>
                                                     </div>
                                                     <!-- Text input-->
                                                     <div class="form-group">
-                                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_CN' | translate}}</label>
+                                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_CN' | translate}} :</label>
                                                         <div class="col-sm-6">
                                                             <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_CN' | translate}}" class="form-control" ng-model="ViewProductTypeData.ProductTypeNameCn"></input>
                                                         </div>
@@ -1502,14 +1501,14 @@
                                                     <form class="form-horizontal" role="form">
                                                         <legend class="search-table control-label" style="color:white" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.SEARCH_PRODUCT_TYPE_CRITERIA_LABEL' | translate}}</legend>
                                                         <div class="form-group">
-                                                            <label class="col-sm-2 control-label text-left" for="textinput">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_CODE_LABEL' | translate}}</label>
+                                                            <label class="col-sm-2 control-label text-left" for="textinput">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_CODE_LABEL' | translate}} :</label>
                                                             <div class="col-sm-3">
-                                                                <input type="text" placeholder="Product Type Code" class="form-control" ng-model="SearchProductTypeData.ProductTypeCode"> 
+                                                                <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_CODE_LABEL' | translate}}" class="form-control" ng-model="SearchProductTypeData.ProductTypeCode"> 
                                                             </div>
 
-                                                            <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_LABEL' | translate}}</label>
+                                                            <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_LABEL' | translate}} :</label>
                                                             <div class="col-sm-3">
-                                                                <input type="text" placeholder="Product Type Name" class="form-control" ng-model="SearchProductTypeData.ProductTypeName"> 
+                                                                <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_LABEL' | translate}}" class="form-control" ng-model="SearchProductTypeData.ProductTypeName"> 
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
@@ -1580,34 +1579,34 @@
                                                     <legend></legend>
                                                     <!-- Text input-->
                                                     <div class="form-group">
-                                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_CODE' | translate}}</label>
+                                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_CODE' | translate}} :</label>
                                                         <div class="col-sm-6">
-                                                            <input type="text" placeholder="Product Category Code" class="form-control" ng-model="ViewProductCategoryData.ProductCategoryCode" readonly> 
+                                                            <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_CODE' | translate}}" class="form-control" ng-model="ViewProductCategoryData.ProductCategoryCode" readonly> 
                                                         </div>
                                                     </div>
                                                     <!-- Text input-->
                                                     <div class="form-group">
-                                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_NAME_TH' | translate}}</label>
+                                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_NAME_TH' | translate}} :</label>
                                                         <div class="col-sm-6">
-                                                            <input type="text" placeholder="Product Category Name TH" class="form-control" ng-model="ViewProductCategoryData.ProductCategoryNameTh">
+                                                            <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_NAME_TH' | translate}}" class="form-control" ng-model="ViewProductCategoryData.ProductCategoryNameTh">
                                                         </div>
                                                     </div>
                                                     <!-- Text input-->
                                                     <div class="form-group">
-                                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_NAME_EN' | translate}}</label>
+                                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_NAME_EN' | translate}} :</label>
                                                         <div class="col-sm-6">
-                                                            <input type="text" placeholder="Product Category Name EN" class="form-control" ng-model="ViewProductCategoryData.ProductCategoryNameEn">
+                                                            <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_NAME_EN' | translate}}" class="form-control" ng-model="ViewProductCategoryData.ProductCategoryNameEn">
                                                         </div>
                                                     </div>
                                                     <!-- Text input-->
                                                     <div class="form-group">
-                                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_NAME_CN' | translate}}</label>
+                                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_NAME_CN' | translate}} :</label>
                                                         <div class="col-sm-6">
-                                                            <input type="text" placeholder="Product Category Name CN" class="form-control" ng-model="ViewProductCategoryData.ProductCategoryNameCn">
+                                                            <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_NAME_CN' | translate}}" class="form-control" ng-model="ViewProductCategoryData.ProductCategoryNameCn">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                      <label class="col-md-4 control-label" for="selectbasic" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_TYPE' | translate}}</label>
+                                                      <label class="col-md-4 control-label" for="selectbasic" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_TYPE' | translate}} :</label>
                                                         <div class="col-md-4">
                                                             <select id="SelectProductType" class="form-control"  
                                                                 ng-options="ProductType.ProductTypeCode as ProductType.ProductTypeNameTh for ProductType in SelectProductTypeList" ng-model="SelectedProductType" >
@@ -1651,18 +1650,18 @@
                                                     <form class="form-horizontal" role="form">
                                                         <legend class="search-table" style="color:white">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.SEARCH_PRODUCT_CATEGORY_CRITERIA_LABEL' | translate}}</legend>
                                                         <div class="form-group">
-                                                            <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_CODE_LABEL' | translate}}</label>
+                                                            <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_CODE_LABEL' | translate}} :</label>
                                                             <div class="col-sm-3">
-                                                                <input type="text" placeholder="Product Type Code" class="form-control" ng-model="SearchProductCategoryData.ProductCategoryCode"> 
+                                                                <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_CODE_LABEL' | translate}}" class="form-control" ng-model="SearchProductCategoryData.ProductCategoryCode"> 
                                                             </div>
 
-                                                            <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_NAME_LABEL' | translate}}</label>
+                                                            <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_NAME_LABEL' | translate}} :</label>
                                                             <div class="col-sm-3">
-                                                                <input type="text" placeholder="Product Type Name" class="form-control" ng-model="SearchProductCategoryData.ProductCategoryName"> 
+                                                                <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_CATEGORY_NAME_LABEL' | translate}}" class="form-control" ng-model="SearchProductCategoryData.ProductCategoryName"> 
                                                             </div>
                                                         </div>
                                                        <div class="form-group">
-                                                            <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_TYPE_LABEL' | translate}}</label>
+                                                            <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT_CATEGORY.PRODUCT_TYPE_LABEL' | translate}} :</label>
                                                             <div class="col-sm-3">
                                                                 <select id="SelectProductType" class="form-control"  ng-options="ProductType.ProductTypeCode as ProductType.ProductTypeNameTh for ProductType in SearchProductTypeList" ng-model="SearchProductType" >
                                                                 </select>
@@ -1737,35 +1736,35 @@
                                                 <legend></legend>
                                                 <!-- Text input-->
                                                 <div class="form-group">
-                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_CODE' | translate}}</label>
+                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_CODE' | translate}} :</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" placeholder="Product Code" class="form-control" ng-model="ViewProductData.ProductCode" readonly>
+                                                        <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_CODE' | translate}}" class="form-control" ng-model="ViewProductData.ProductCode" readonly>
                                                  </div>
                                                 </div>
                                                 <!-- Text input-->
                                                 <div class="form-group">
-                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_TH' | translate}}</label>
+                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_TH' | translate}} :</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" placeholder="Product Name TH" class="form-control" ng-model="ViewProductData.ProductNameTh" required>
+                                                        <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_TH' | translate}}" class="form-control" ng-model="ViewProductData.ProductNameTh" required>
                                                     </div>
 
                                                 </div>
                                                 <!-- Text input-->
                                                 <div class="form-group">
-                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_EN' | translate}}</label>
+                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_EN' | translate}} :</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" placeholder="Product Name EN" class="form-control" ng-model="ViewProductData.ProductNameEn">
+                                                        <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_EN' | translate}}" class="form-control" ng-model="ViewProductData.ProductNameEn">
                                                     </div>
                                                 </div>
                                                 <!-- Text input-->
                                                 <div class="form-group">
-                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_CN' | translate}}</label>
+                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_CN' | translate}} :</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" placeholder="Product Name CN" class="form-control" ng-model="ViewProductData.ProductNameCn">
+                                                        <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_CN' | translate}}" class="form-control" ng-model="ViewProductData.ProductNameCn">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                  <label class="col-md-4 control-label" for="selectbasic" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_CATEGORY' | translate}}</label>
+                                                  <label class="col-md-4 control-label" for="selectbasic" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_CATEGORY' | translate}} :</label>
                                                     <div class="col-md-4">
                                                         <select id="SelectProductCategory" class="form-control" ng-model="SelectedProductCategory" ng-options="ProductCategory.ProductCategoryCode as ProductCategory.ProductCategoryNameTh for ProductCategory in SelectProductCategoryList">
                                                         </select>
@@ -1773,21 +1772,21 @@
                                                 </div>
                                                 <!-- Input Cost Price -->
                                                 <div class="form-group">
-                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.COST_PRICE' | translate}}</label>
+                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.COST_PRICE' | translate}} :</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" placeholder="0.00" class="form-control" ng-model="ViewProductData.CostPrice">
                                                     </div>
                                                 </div>
                                                 <!-- Input Retail Price -->
                                                 <div class="form-group">
-                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.RETAIL_PRICE' | translate}}</label>
+                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.RETAIL_PRICE' | translate}} :</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" placeholder="0.00" class="form-control" ng-model="ViewProductData.RetailPrice">
                                                     </div>
                                                 </div>
                                                 <!-- Input Wholesale Price -->
                                                 <div class="form-group">
-                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.WHOLESALE_PRICE' | translate}}</label>
+                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.WHOLESALE_PRICE' | translate}} :</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" placeholder="0.00" class="form-control" ng-model="ViewProductData.WholesalePrice">
                                                     </div>
@@ -1843,7 +1842,7 @@
                                                 </div>
                                                 <!--Product Image Upload -->
                                                 <div class="form-group">
-                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.IMAGE' | translate}}</label>
+                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.IMAGE' | translate}} :</label>
                                                     <div class="col-sm-6">
                                                         <div>
                                                             <div class="button" ngf-select ngf-change="uploadProductImage($files, ViewProductData._id, ViewProductData.ProductCode)" style="color:black">
@@ -1905,24 +1904,23 @@
                                                     <form class="form-horizontal" role="form">
                                                         <legend class="search-table" style="color:white">{{'BODY.SECTION.SETTING.PRODUCT.SEARCH_PRODUCT_CRITERIA_LABEL' | translate}}</legend>
                                                         <div class="form-group">
-                                                            <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_CODE_LABEL' | translate}}</label>
+                                                            <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_CODE_LABEL' | translate}} :</label>
                                                             <div class="col-sm-3">
-                                                                <input type="text" placeholder="Product Code" class="form-control" ng-model="SearchProductData.ProductCode"> 
+                                                                <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_CODE_LABEL' | translate}}" class="form-control" ng-model="SearchProductData.ProductCode"> 
                                                             </div>
 
-                                                            <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_LABEL' | translate}}</label>
+                                                            <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_LABEL' | translate}} :</label>
                                                             <div class="col-sm-3">
-                                                                <input type="text" placeholder="Product Name" class="form-control" ng-model="SearchProductData.ProductName"> 
+                                                                <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_LABEL' | translate}}" class="form-control" ng-model="SearchProductData.ProductName"> 
                                                             </div>
                                                         </div>
                                                        <div class="form-group">
-                                                            <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_CATEGORY_LABEL' | translate}}</label>
+                                                            <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_CATEGORY_LABEL' | translate}} :</label>
                                                             <div class="col-sm-3">
                                                                 <select id="SelectProductCategory" class="form-control"  ng-options="ProductCategory.ProductCategoryCode as ProductCategory.ProductCategoryNameTh for ProductCategory in SearchProductCategoryList"
                                                                 ng-model="SearchProductCategory" >
                                                                 </select>
                                                             </div>
-
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="col-sm-14 text-center">
@@ -3758,7 +3756,6 @@
             <div>
             <a href="#" class="scrollup">Scroll</a>
         </div>
-        <!-- div FOOTER-->
     </div>
         <script src="/bower_components/jquery/dist/jquery.min.js"></script>
         <script src="/bower_components/angular/angular.js"></script>

@@ -389,12 +389,13 @@ router.post(mongodbConfig.url.receipt.createReceipt, function (req, res) {
                     console.log(error, error.stack.split("\n"));
                 }
                 console.log('ccreate rohead success ');
-                console.log(rohead);
+                console.log(rohead._id);
+                console.log(ROHead._id);
                 var rolineToCreate = ROLineList.length;
                 var CreateROLineList = [];
                 for (var i = 0; i < ROLineList.length; i++) {
                     var roline = ROLineList[i];
-                    roline.ROHeadId = bson.BSONPure.ObjectID(rohead._id);
+                    roline.ROHeadId = bson.BSONPure.ObjectID(ROHead._id);
                     CreateROLine(roline, function (err, created_roline) {
                         if (err) {
                             console.log(err, err.stack.split("\n"));

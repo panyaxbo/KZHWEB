@@ -306,63 +306,63 @@ app.config(function ($translateProvider) {
                     },
                     PRODUCT_TYPE :{
                         TAB : "ชนิดสินค้า",
-                        PRODUCT_TYPE_CODE : "รหัสชนิดสินค้า :",
-                        PRODUCT_TYPE_NAME_TH : "ชื่อชนิดสินค้า (ไทย) :",
-                        PRODUCT_TYPE_NAME_EN : "ชื่อชนิดสินค้า (อังกฤษ) :",
-                        PRODUCT_TYPE_NAME_CN : "ชื่อชนิดสินค้า (จีน) :",
-                        UPDATE_BY : "อัพเดทโดย :",
-                        UPDATE_DATE : "วันที่อัพเดท :",
-                        CREATE_BY : "สร้างโดย :",
-                        CREATE_DATE : "วันที่สร้าง :",
+                        PRODUCT_TYPE_CODE : "รหัสชนิดสินค้า",
+                        PRODUCT_TYPE_NAME_TH : "ชื่อชนิดสินค้า (ไทย)",
+                        PRODUCT_TYPE_NAME_EN : "ชื่อชนิดสินค้า (อังกฤษ)",
+                        PRODUCT_TYPE_NAME_CN : "ชื่อชนิดสินค้า (จีน)",
+                        UPDATE_BY : "อัพเดทโดย",
+                        UPDATE_DATE : "วันที่อัพเดท",
+                        CREATE_BY : "สร้างโดย",
+                        CREATE_DATE : "วันที่สร้าง",
 
                         SEARCH_PRODUCT_TYPE_CRITERIA_LABEL : "เงื่อนไขการค้นหาชนิดสินค้า",
-                        PRODUCT_TYPE_CODE_LABEL : "รหัสชนิดสินค้า :",
-                        PRODUCT_TYPE_NAME_LABEL : "ชื่อชนิดสินค้า :",
+                        PRODUCT_TYPE_CODE_LABEL : "รหัสชนิดสินค้า",
+                        PRODUCT_TYPE_NAME_LABEL : "ชื่อชนิดสินค้า",
                     },
                     PRODUCT_CATEGORY :{
                         TAB : "ประเภทสินค้า",
-                        PRODUCT_CATEGORY_CODE : "รหัสประเภทสินค้า :",
-                        PRODUCT_CATEGORY_NAME_TH : "ชื่อประเภทสินค้า (ไทย) :",
-                        PRODUCT_CATEGORY_NAME_EN : "ชื่อประเภทสินค้า (อังกฤษ) :",
-                        PRODUCT_CATEGORY_NAME_CN : "ชื่อประเภทสินค้า (จีน) :",
-                        PRODUCT_TYPE : "ชนิดสินค้า :",
-                        UPDATE_BY : "อัพเดทโดย :",
-                        UPDATE_DATE : "วันที่อัพเดท :",
-                        CREATE_BY : "สร้างโดย :",
-                        CREATE_DATE : "วันที่สร้าง :",
+                        PRODUCT_CATEGORY_CODE : "รหัสประเภทสินค้า",
+                        PRODUCT_CATEGORY_NAME_TH : "ชื่อประเภทสินค้า (ไทย)",
+                        PRODUCT_CATEGORY_NAME_EN : "ชื่อประเภทสินค้า (อังกฤษ)",
+                        PRODUCT_CATEGORY_NAME_CN : "ชื่อประเภทสินค้า (จีน)",
+                        PRODUCT_TYPE : "ชนิดสินค้า ",
+                        UPDATE_BY : "อัพเดทโดย ",
+                        UPDATE_DATE : "วันที่อัพเดท ",
+                        CREATE_BY : "สร้างโดย ",
+                        CREATE_DATE : "วันที่สร้าง",
 
                         SEARCH_PRODUCT_CATEGORY_CRITERIA_LABEL : "เงื่อนไขการค้นหาประเภทสินค้า",
-                        PRODUCT_CATEGORY_CODE_LABEL : "รหัสประเภทสินค้า :",
-                        PRODUCT_CATEGORY_NAME_LABEL : "ชื่อประเภทสินค้า :",
-                        PRODUCT_TYPE_LABEL : "ชนิดสินค้า :"
+                        PRODUCT_CATEGORY_CODE_LABEL : "รหัสประเภทสินค้า",
+                        PRODUCT_CATEGORY_NAME_LABEL : "ชื่อประเภทสินค้า",
+                        PRODUCT_TYPE_LABEL : "ชนิดสินค้า"
                     },
                     PRODUCT : {
                         TAB : "สินค้า",
                         PRODUCT_CODE : "รหัสสินค้า",
-                        PRODUCT_NAME_TH : "ชื่อสินค้า (ไทย) :",
-                        PRODUCT_NAME_EN : "ชื่อสินค้า (อังกฤษ) :",
-                        PRODUCT_NAME_CN : "ชื่อสินค้า (จีน) :",
-                        PRODUCT_CATEGORY : "ประเภทสินค้า :",
-                        COST_PRICE : "ราคา ต้นทุน :",
-                        RETAIL_PRICE : "ราคา ขายปลีก :",
-                        WHOLESALE_PRICE : "ราคา ขายส่ง :",
+                        PRODUCT_NAME_TH : "ชื่อสินค้า (ไทย)",
+                        PRODUCT_NAME_EN : "ชื่อสินค้า (อังกฤษ)",
+                        PRODUCT_NAME_CN : "ชื่อสินค้า (จีน)",
+                        PRODUCT_CATEGORY : "ประเภทสินค้า",
+                        COST_PRICE : "ราคา ต้นทุน",
+                        RETAIL_PRICE : "ราคา ขายปลีก",
+                        WHOLESALE_PRICE : "ราคา ขายส่ง",
                         UOM : "หน่วย :",
                         CONTAIN_UOM : "หน่วยบรรจุ :",
-                        CONTAIN_QUANTITY : "จำนวน/บรรจุ :",
-                        CONTAIN_COST_PRICE : "ราคาต้นทุน/บรรจุ :",
-                        CONTAIN_WHOLESALE_PRICE : "ราคาขายส่ง/บรรจุ :",
-                        IS_HOT : "ร้อนแรง ?!! :",
-                        IMAGE : "รูปภาพ :",
-                        IMAGE_THUMBNAIL : "แสดงรูปภาพ :",
-                        UPDATE_BY : "อัพเดทโดย :",
-                        UPDATE_DATE : "วันที่อัพเดท :",
-                        CREATE_BY : "สร้างโดย :",
-                        CREATE_DATE : "วันที่สร้าง :",
+                        CONTAIN_QUANTITY : "จำนวน/บรรจุ",
+                        CONTAIN_COST_PRICE : "ราคาต้นทุน/บรรจุ",
+                        CONTAIN_WHOLESALE_PRICE : "ราคาขายส่ง/บรรจุ",
+                        IS_HOT : "ร้อนแรง ?!!",
+                        IMAGE : "รูปภาพ",
+                        IMAGE_THUMBNAIL : "แสดงรูปภาพ",
+                        UPDATE_BY : "อัพเดทโดย",
+                        UPDATE_DATE : "วันที่อัพเดท",
+                        CREATE_BY : "สร้างโดย",
+                        CREATE_DATE : "วันที่สร้าง",
 
                         SEARCH_PRODUCT_CRITERIA_LABEL : "เงื่อนไขการค้นหาสินค้า",
-                        PRODUCT_CODE_LABEL : "รหัสสินค้า :",
-                        PRODUCT_NAME_LABEL : "ชื่อสินค้า :",
-                        PRODUCT_CATEGORY_LABEL : "ประเภทสินค้า :"
+                        PRODUCT_CODE_LABEL : "รหัสสินค้า",
+                        PRODUCT_NAME_LABEL : "ชื่อสินค้า",
+                        PRODUCT_CATEGORY_LABEL : "ประเภทสินค้า"
                     },
                     PROMOTION : {
                         TAB : "โปรโมชั่น",
@@ -609,7 +609,7 @@ app.config(function ($translateProvider) {
             },
             BATTERY : {
                 HEAD : 'แบตเตอรี่',
-                REMARK : ''
+                REMARK : 'ทั้งมอเตอร์ไซค์ และรถยนต์ ทำให้การขับขี่ไม่สะดุด'
             },
             BRAKE : {
                 HEAD : 'ระบบเบรค',
@@ -621,7 +621,7 @@ app.config(function ($translateProvider) {
             },
             WRENCH : {
                 HEAD : 'เครื่องมือ',
-                REMARK : ''
+                REMARK : 'ตอบโจทย์ปัญหาของช่างทุกคน'
             },
             COPY_RIGHT : "",
             CONTACT_US : ""
@@ -946,7 +946,11 @@ app.config(function ($translateProvider) {
                         PRODUCT_TYPE_CODE : "Product Type Code",
                         PRODUCT_TYPE_NAME_TH : "Product Type Name (TH)",
                         PRODUCT_TYPE_NAME_EN : "Product Type Name (EN)",
-                        PRODUCT_TYPE_NAME_CN : "Product Type Name (CN)"
+                        PRODUCT_TYPE_NAME_CN : "Product Type Name (CN)",
+
+                        SEARCH_PRODUCT_TYPE_CRITERIA_LABEL : "Search Product Type Criteria",
+                        PRODUCT_TYPE_CODE_LABEL : "Product Type Code",
+                        PRODUCT_TYPE_NAME_LABEL : "Product Type Name",
                     },
                     PRODUCT_CATEGORY :{
                         TAB : "Product Category",
@@ -954,7 +958,12 @@ app.config(function ($translateProvider) {
                         PRODUCT_CATEGORY_NAME_TH : "Product Category Name (TH)",
                         PRODUCT_CATEGORY_NAME_EN : "Product Category Name (EN)",
                         PRODUCT_CATEGORY_NAME_CN : "Product Category Name (CN)",
-                        PRODUCT_TYPE : "Product Type"
+                        PRODUCT_TYPE : "Product Type",
+
+                        SEARCH_PRODUCT_CATEGORY_CRITERIA_LABEL : "Search Product Category Criteria",
+                        PRODUCT_CATEGORY_CODE_LABEL : "Product Category Code",
+                        PRODUCT_CATEGORY_NAME_LABEL : "Product Category Name",
+                        PRODUCT_TYPE_LABEL : "Product Type"
                     },
                     PRODUCT : {
                         TAB : "Product",
@@ -973,7 +982,12 @@ app.config(function ($translateProvider) {
                         CONTAIN_WHOLESALE_PRICE : "Contain Wholesale Price",
                         IS_HOT : "Is Hot ?!!",
                         IMAGE : "Image",
-                        IMAGE_THUMBNAIL : "Image Thumbnail"
+                        IMAGE_THUMBNAIL : "Image Thumbnail",
+
+                        SEARCH_PRODUCT_CRITERIA_LABEL : "Search Product Criteria",
+                        PRODUCT_CODE_LABEL : "Product Code",
+                        PRODUCT_NAME_LABEL : "Product Name",
+                        PRODUCT_CATEGORY_LABEL : "Product Category"
                     },
                     PROMOTION : {
                         TAB : "Promotion",
@@ -1164,23 +1178,23 @@ app.config(function ($translateProvider) {
             },
             LUBRICANR : {
                 HEAD : 'Lubricant',
-                REMARK : 'น้ำมันหล่อลื่น'
+                REMARK : 'All high and normal quality brand.'
             },
             BATTERY : {
-                HEAD : 'Motorcycle -Car Battery',
-                REMARK : ''
+                HEAD : 'Battery',
+                REMARK : 'All Motorcycle, Car and Tractor  '
             },
             BRAKE : {
                 HEAD : 'Brake System',
-                REMARK : ''
+                REMARK : 'Make every drive with confident.'
             },
             SHOCK : {
                 HEAD : 'Shock Absorber',
-                REMARK : ''
+                REMARK : 'Feel soft and good'
             },
             WRENCH : {
                 HEAD : 'Tools',
-                REMARK : ''
+                REMARK : 'Worker trust with brand quality tools'
             }
         }
     });
@@ -1437,7 +1451,11 @@ app.config(function ($translateProvider) {
                         PRODUCT_TYPE_CODE : "產品類型代碼",
                         PRODUCT_TYPE_NAME_TH : "產品型號名稱 (泰國)",
                         PRODUCT_TYPE_NAME_EN : "產品型號名稱 (英語)",
-                        PRODUCT_TYPE_NAME_CN : "產品型號名稱 (中國)"
+                        PRODUCT_TYPE_NAME_CN : "產品型號名稱 (中國)",
+
+                        SEARCH_PRODUCT_TYPE_CRITERIA_LABEL : "搜索產品類別標準",
+                        PRODUCT_TYPE_CODE_LABEL : "產品類型代碼",
+                        PRODUCT_TYPE_NAME_LABEL : "產品型號名稱",
                     },
                     PRODUCT_CATEGORY :{
                         TAB : "產品分類",
@@ -1445,7 +1463,12 @@ app.config(function ($translateProvider) {
                         PRODUCT_CATEGORY_NAME_TH : "產品類別名稱 (泰國)",
                         PRODUCT_CATEGORY_NAME_EN : "產品類別名稱 (英語)",
                         PRODUCT_CATEGORY_NAME_CN : "產品類別名稱 (中國)",
-                        PRODUCT_TYPE : "產品類型"
+                        PRODUCT_TYPE : "產品類型", 
+
+                        SEARCH_PRODUCT_CATEGORY_CRITERIA_LABEL : "搜索產品標準",
+                        PRODUCT_CATEGORY_CODE_LABEL : "產品類別代碼",
+                        PRODUCT_CATEGORY_NAME_LABEL : "產品類別名稱",
+                        PRODUCT_TYPE_LABEL : "產品"
                     },
                     PRODUCT : {
                         TAB : "產品",
@@ -1464,7 +1487,12 @@ app.config(function ($translateProvider) {
                         CONTAIN_WHOLESALE_PRICE : "批發包裝",
                         IS_HOT : "熱 ?!!",
                         IMAGE : "圖片",
-                        IMAGE_THUMBNAIL : "圖片縮略圖"
+                        IMAGE_THUMBNAIL : "圖片縮略圖",
+
+                        SEARCH_PRODUCT_CRITERIA_LABEL : "เงื่อนไขการค้นหาสินค้า",
+                        PRODUCT_CODE_LABEL : "รหัสสินค้า",
+                        PRODUCT_NAME_LABEL : "ชื่อสินค้า",
+                        PRODUCT_CATEGORY_LABEL : "ประเภทสินค้า"
                     },
                     PROMOTION : {
                         TAB : "提升",

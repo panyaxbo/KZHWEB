@@ -138,8 +138,9 @@ router.get("/downloadProductImageShop/:ProductId/:ProductCode",  function (req, 
           var base64 = (data.toString('base64')); 
           res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive" style="max-height: 200px;max-width: 200px;margin: 0 auto;">');
         } else {
-          console.log('file IS NULL');
-          res.sendStatus(200);
+       //   console.log('file IS NULL');
+       //   res.sendStatus(200);
+          return;
         }
       });
     }
@@ -159,9 +160,11 @@ router.get('/downloadProductImageThumbnail/:ProductId/:ProductCode', function(re
    .findOne({ 'name' : ProductCode }
    , function(err, file) {
     if (err) {
-    //  res.sendStatus(500);
-    }
-    if (file) {
+      res.sendStatus(500);
+      return;
+    } else if (!file || file === undefined) {
+      return;
+    } else {
       console.log(file);
       console.log('downloadProductImageThumbnail ' + file.originalFilename);
       product_s3fsImpl.readFile(file.originalFilename, function (err, data) {
@@ -175,9 +178,10 @@ router.get('/downloadProductImageThumbnail/:ProductId/:ProductCode', function(re
           res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive">');
         } else {
           res.sendStatus(200);
+          return;
         }
       });
-    }
+    } 
   });
 });
 
@@ -256,9 +260,8 @@ router.get('/downloadUserImageProfile/:UserId/:Username', function(req, res) {
   var UserId = req.params.UserId;
   var Username = req.params.Username;
   user_s3fsImpl.readFile(home_bucket + user_bucket + Username + '.png', function (err, data) {
-    if (!data) {
+    if (err || !data) {
       console.log(err, err.stack.split("\n"));
-      res.sendStatus(500);
       return;
     }
     else { 

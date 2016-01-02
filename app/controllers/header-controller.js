@@ -134,7 +134,6 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     $http.get(compnyaURL)
     .success(function (data, status, headers, config) {
       $scope.Company = data;
-      console.log($scope.Company);
       $scope.$emit('handleCompanyEmit', {
           Company: CompanyService.Company
       });
@@ -1071,7 +1070,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     $scope.IsUserInSession = function()  {
       if (!$scope.User) {
         return false;
-      } else if ($scope.User.Id.length > 0) {
+      } else if ($scope.User.Id.length > 0 || $scope.User.FirstName.length > 0 ) {
         return true;
       }
     }

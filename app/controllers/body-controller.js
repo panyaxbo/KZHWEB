@@ -29,7 +29,7 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
     };
     
     $scope.ROLineList = [];
-    $scope.SelectedMenu = "";
+    $scope.SelectedMenu = "product";
     $scope.SelectedCurrency = "thb";
     $scope.CurrencySymbol = "฿";
     $scope.Multiplier = 1;
@@ -3345,6 +3345,10 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
             swal("เตือน", "คุณต้องใส่ชื่อที่อยู่", "warning");
             return;
         } 
+        if (!$scope.ROHead.BillingEmail || 0 === $scope.ROHead.BillingEmail.length) {
+            swal("เตือน", "คุณต้องใส่อีเมล", "warning");
+            return;
+        }
         if (!$scope.ROHead.BillingAddress || 0 === $scope.ROHead.BillingAddress.length) {
             swal("เตือน", "คุณต้องใส่ที่อยู่เพื่อรับสินค้า", "warning");
             return;
