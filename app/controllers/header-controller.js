@@ -502,7 +502,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
         
         var url = UserBackFromEmailUrl.substr(UserBackFromEmailUrl.indexOf("forget=") + 7);
 
-        var getemailfromencode = ENV.apiEndpoint + '/base64/GetForgetEncodeUrl/' + url;
+        var getemailfromencode = ENV.apiEndpoint + '/cryptojs/GetForgetEncodeUrl/' + url;
         $http.get(getemailfromencode)
         .success(function(data, status, headers, config ) {
           
@@ -542,13 +542,21 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
         .success(function(data, status, headers, config) {
           blockUI.message("25%");
           var hostPort = $location.host() + ':' +$location.port();
-            var linkHashUrl = ENV.apiEndpoint + "/base64/GenerateHashLink/"+ $scope.Username +"/" + $scope.Password +'/' + email;
+            var linkHashUrl = ENV.apiEndpoint + "/cryptojs/GenerateHashLink/"+ $scope.Username +"/" + $scope.Password +"/" + email;
+            
             $http.get(linkHashUrl)
             .success(function(data, status, headers, config) {
-                var encryptUrlActivate = data;
-                var emailConfirmURL = ENV.apiEndpoint + "/mails/SendEmailConfirmation/"+ email + "/"+hostPort +"/"+ encryptUrlActivate;
+               console.log(data);
+                var mailActivate = {
+                  Email : email,
+                  Host : hostPort,
+                  BacktoUrl : data
+                };
+          //      var encryptUrlActivate = data;
+                
+                var emailConfirmURL = ENV.apiEndpoint + "/mails/SendEmailConfirmation";
                   blockUI.message("75%");
-                  $http.get(emailConfirmURL)
+                  $http.post(emailConfirmURL, mailActivate)
                   .success(function (data, status, headers, config) {
                     blockUI.message("100%");
                       blockUI.stop();
@@ -733,7 +741,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
                   })
                   .error(function (data, status, headers, config) {
                       console.log(data);
-
+                        
                   });
 
                     //Clear value after login successfully
@@ -828,7 +836,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
       } else if (Uom.IsContainer == false) {
         ROLine.Price = ROLine.Quantity * ROLine.RetailPrice;
       }*/
-      var url = "http://localhost:3000/uoms/LoadUomByUomCode/" + UomCode;
+      var url = ENV.apiEndpoint + "/uoms/LoadUomByUomCode/" + UomCode;
       $http.get(url)
       .success(function (uom) {
         console.log('IsContainer ' + uom.IsContainer)
@@ -1090,14 +1098,18 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
           // exist email ,then send email
             blockUI.message("25%");
             if(data) {
-              var genforgetLink = ENV.apiEndpoint + '/base64/GenerateForgetPasswordHashLink/' + $scope.ForgetPasswordEmail;
+              var genforgetLink = ENV.apiEndpoint + '/cryptojs/GenerateForgetPasswordHashLink/' + $scope.ForgetPasswordEmail;
               $http.get(genforgetLink)
               .success(function(data, status, headers, config) { 
                   var hostWithPort = $location.host() + ':' +$location.port();
-                  var forgetPasswordEmailUrl = ENV.apiEndpoint + "/mails/SendEmailForgetPassword/"+ $scope.ForgetPasswordEmail 
-                  +"/" + hostWithPort+ "/"+ data;
+                  var forgetPasswordEmailUrl = ENV.apiEndpoint + "/mails/SendEmailForgetPassword";
                   blockUI.message("75%");
-                  $http.get(forgetPasswordEmailUrl)
+                  var mailForget = {
+                    Email : $scope.ForgetPasswordEmail,
+                    Host : hostWithPort,
+                    BacktoUrl : data
+                  };
+                  $http.post(forgetPasswordEmailUrl, mailForget)
                   .success(function(data, status, headers, config) {
                     blockUI.stop();
                     var type = $filter('translate')('MESSAGE.TYPE_SUCCESS');

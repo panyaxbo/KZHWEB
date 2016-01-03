@@ -78,29 +78,6 @@ router.post("/uploadUserImage/:UserId/:Username", multipartMiddleware,  function
 					     	console.log("error encountered "+err);//ENOENT,open error  
 					    })
 					    .pipe(writestream);
-					    // after the write is finished
-				/*	    writestream.on("close", function () {
-					        // read file, buffering data as we go
-					        var buffer = "";
-					        readStream = gfs.createReadStream({ 
-
-					        	filename: Username
-					        });
-
-					        readStream.on("data", function (chunk) {
-					            buffer += chunk;
-					        });
-							readStream.on("error", function (error) {
-					             console.log("erorr :\n\n", error);
-					        });
-
-					        // dump contents to console when complete
-					        readStream.on("end", function () {
-					        	console.log(" readstream 'end' - contents of file ");
-					        //    console.log("contents of file:\n\n", buffer);
-					        });
-					    });*/
-					    
 					  }
 					});
 				}
@@ -117,11 +94,13 @@ router.get("/downloadUserImageProfile/:UserId/:Username", multipartMiddleware,  
 	db.collection('fs.files')
    .find({ "metadata.refId" : o_id})
    .toArray(function(err, files) {
-	    
 		if (err) {
 			res.sendStatus(500);
-		}
-		if (files) {
+			return;
+		} else if (!files) {
+			res.sendStatus(200);
+			return;
+		} else if (files) {
 			files.forEach(function(file) {
 				var fileExt = getFileExtension(file.metadata.originalFilename);
 			    var readstream = fs.createReadStream('upload/user/' + Username + '.' + fileExt);
@@ -158,8 +137,11 @@ router.get("/downloadUserImageThumbnail/:UserId/:Username", multipartMiddleware,
    .toArray(function(err, files) {
 		if (err) {
 			res.sendStatus(500);
-		}
-		if (files) {
+			return;
+		} else if (!files) {
+			res.sendStatus(200);
+			return;
+		} else if (files) {
 			files.forEach(function(file) {
 
 				var fileExt = getFileExtension(file.metadata.originalFilename);
@@ -276,6 +258,7 @@ router.get("/downloadProductImageThumbnail/:ProductId/:ProductCode", multipartMi
    .toArray(function(err, files) {
 		if (err) {
 			res.sendStatus(500);
+			return;
 		}
 	//	console.log(files);
 		if (files) {
@@ -315,6 +298,7 @@ router.get("/downloadProductImageShop/:ProductId/:ProductCode", multipartMiddlew
    .toArray(function(err, files) {
 		if (err) {
 			res.sendStatus(500);
+			return;
 		}
 		if (files) {
 			files.forEach(function(file) {

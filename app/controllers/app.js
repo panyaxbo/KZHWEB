@@ -139,11 +139,11 @@ app.config(function ($translateProvider) {
                     TEXT : 'ด้วยคุณภาพของเนื้อยางและมีความยืดหยุ่นสูง',
                 },
                 FIVE : {
-                    TITLE : 'ยางนอกมอเตอร์ไซค์ยี่ห้อ CAMEL และ VERUBBER',
+                    TITLE : 'ยางนอกมอเตอร์ไซค์ยี่ห้อ CAMEL และ VEERUBBER',
                     TEXT : 'ยี่ห้อที่อยู่คู่ชาวไทยมานาน ยอดขายติดอันดับยอดนิยม',
                 },
                 SIX : {
-                    TITLE : 'ยางนอกมอเตอร์ไซค์ยี่ห้อ CAMEL และ VERUBBER',
+                    TITLE : 'ยางนอกมอเตอร์ไซค์ยี่ห้อ CAMEL และ VEERUBBER',
                     TEXT : 'ยี่ห้อที่อยู่คู่ชาวไทยมานาน ยอดขายติดอันดับยอดนิยม',
                 },
                 SEVEN : {
@@ -288,6 +288,7 @@ app.config(function ($translateProvider) {
                             ACCOUNT_TYPE : 'ออมทรัพย์',
                             ACCOUNT_BRANCH : 'เมืองสุรินทร์'
                         },
+                        PAYPAL : 'เพย์พอล',
                         CREDIT: 'เครดิตการ์ด',
                         BUTTON_NEXT: 'ขั้นตอนต่อไป'
                     },
@@ -777,11 +778,11 @@ app.config(function ($translateProvider) {
                     TEXT : 'Rubber quality and high flexibility',
                 },
                 FIVE : {
-                    TITLE : 'With popular brand of outter motorcycle tyre CAMEL and VERUBBER',
+                    TITLE : 'With popular brand of outter motorcycle tyre CAMEL and VEERUBBER',
                     TEXT : 'Best price and high quality outter tyre for motorcycle',
                 },
                 SIX : {
-                    TITLE : 'With popular brand of outter motorcycle tyre CAMEL and VERUBBER',
+                    TITLE : 'With popular brand of outter motorcycle tyre CAMEL and VEERUBBER',
                     TEXT : 'Best price and high quality outter tyre for motorcycle',
                 },
                 SEVEN : {
@@ -913,6 +914,7 @@ app.config(function ($translateProvider) {
                             ACCOUNT_TYPE : 'SAVING',
                             ACCOUNT_BRANCH : 'SURIN'
                         },
+                        PAYPAL : 'Paypal',
                         CREDIT: 'Credit Card',
                         BUTTON_NEXT : 'Next'
                     },
@@ -1318,11 +1320,11 @@ app.config(function ($translateProvider) {
                     TEXT : '橡膠的品質和高度的靈活性',
                 },
                 FIVE : {
-                    TITLE : '隨著外摩托車輪胎 CAMEL 和 VERUBBER 大眾品牌',
+                    TITLE : '隨著外摩托車輪胎 CAMEL 和 VEERUBBER 大眾品牌',
                     TEXT : '最好的價格和高品質的外胎摩托車',
                 },
                 SIX : {
-                    TITLE : '隨著外摩托車輪胎 CAMEL 和 VERUBBER 大眾品牌',
+                    TITLE : '隨著外摩托車輪胎 CAMEL 和 VEERUBBER 大眾品牌',
                     TEXT : '最好的價格和高品質的外胎摩托車',
                 },
                 SEVEN : {
@@ -1428,6 +1430,7 @@ app.config(function ($translateProvider) {
                         ACCOUNT_NO_TMB : '-',
                         ACCOUNT_BANK_UOB : 'UOB Bank',
                         ACCOUNT_NO_UOB : '-',
+                        PAYPAL : '貝寶',
                         CREDIT: '信用卡',
 
                         BUTTON_NEXT: '下一步'

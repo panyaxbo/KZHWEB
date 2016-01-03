@@ -196,17 +196,7 @@ router.post('/uploadUserImage/:UserId/:Username', function (req, res) {
   var gfs = grid(db, mongodb);
   var updateDate = new Date ();
     updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
-  /* Content file remove @param path
-  { fieldName: 'file',
-  originalFilename: 'price_2.png',
-  path: '/var/folders/sm/008z818n2r76vptq5qblj8fc0000gn/T/j-ch9iKz4u5iRYg8kbkhksag.png',
-  headers:
-   { 'content-disposition': 'form-data; name="file"; filename="price_2.png"',
-     'content-type': 'image/png' },
-  size: 39373,
-  name: 'price_2.png',
-  type: 'image/png' }
-   */
+
   // Remove old file first
   /*db.collection('fs.files')
           .remove({
@@ -260,14 +250,20 @@ router.get('/downloadUserImageProfile/:UserId/:Username', function(req, res) {
   var UserId = req.params.UserId;
   var Username = req.params.Username;
   user_s3fsImpl.readFile(home_bucket + user_bucket + Username + '.png', function (err, data) {
-    if (err || !data) {
+    if (err) {
       console.log(err, err.stack.split("\n"));
+      res.sendStatus(500);
       return;
-    }
-    else { 
+    } else if (!data) {
+        res.sendStatus(200);
+        return;
+    } else if (data){ 
       var base64 = (data.toString('base64')); 
       res.send('<img src="data:image/jpeg;base64,' + base64 
               + '" class="img-circle img-responsive" width="40" height="40" ng-show="IsLogin && User.ProfileImage.length > 0" style="margin-top:-5px">');
+    } else {
+      res.sendStatus(404);
+      return;
     }
   });
 });
@@ -283,16 +279,19 @@ router.get('/downloadUserImageThumbnail/:UserId/:Username', function(req, res) {
   var Username = req.params.Username;
 
   user_s3fsImpl.readFile(home_bucket + user_bucket + Username + '.png', function (err, data) {
-    if (data) {
-      var base64 = (data.toString('base64')); 
-      res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive" >');
-    } else if (!data) {
-        res.sendStatus(200);
-        return;
-    } else { 
+    if (err) {
         console.log(err, err.stack.split("\n"));
         res.sendStatus(500);
         return;
+    } else if (!data) {
+        res.sendStatus(200);
+        return;
+    } else if (data) {
+      var base64 = (data.toString('base64')); 
+      res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive" >');
+    } else {
+      res.sendStatus(404);
+      return;
     }
   });
 });

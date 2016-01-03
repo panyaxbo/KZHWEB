@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcrypt');
 //var serverConfig = require('../server-config.js');
+var cryptojs = require('crypto-js');
 
 var Base64 = require(appRoot + '/node_modules/js-base64/base64.min.js').Base64;
 
@@ -70,12 +71,11 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
                     findOneAppUser(query, function (err, doc) {
                         if (err) {
                             // something went wrong
-                            res.json(500).json(err);
+                            res.sendStatus(500);
                             return;
                         }
                         if (doc) {
                             console.log('account exists');
-                        //    console.dir(doc);
                             var qRole = {
                                 'RoleCode': doc.RoleCode
                             }
@@ -87,6 +87,7 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
                                 findOneRole(qRole, function (errRole, docRole) {
                                     if (errRole) {
                                         console.log(errRole);
+                                        res.sendStatus(500);
                                         return;
                                     }
                                     if (docRole) {
@@ -289,11 +290,32 @@ router.post(mongodbConfig.url.user.createAppUserByUsernameAndPasswordAndEmail, f
         });
 });
 
+function ReplaceASCIICharacter(encodeUrl) {
+    console.log(encodeUrl);
+    var asciiString = encodeUrl
+                        .replace("%2F", "/")
+                        .replace("%2B","+")
+                        .replace("%3D" ,"=")
+                        .replace("%24", "$")
+                        .replace("%26","&")
+                        .replace("%2C" ,",")
+                        .replace("%3A" ,":")
+                        .replace("%3B", ";")
+                        .replace("%3F","?")
+                        .replace("%40" ,"@");
+    console.log(asciiString);
+    return asciiString;
+}
 // Update AppUser Activate from EMail
 router.get("/ActivateAppUser/:EncodeUrl", function (req, res) {
     var encodeUrl = req.params.EncodeUrl;
-    var decodeString = Base64.decode(encodeUrl , serverConfig.app.passphrase);
-    var txtString = decodeString.split('|');
+
+    var asciiString = ReplaceASCIICharacter(encodeUrl.toString());
+
+    var de_ciphertext = cryptojs.AES.decrypt(asciiString, serverConfig.app.passphrase, 256);
+    
+    var txtString = de_ciphertext.toString(cryptojs.enc.Utf8).split('|');
+
     var user = txtString[0];
     db.collection(mongodbConfig.mongodb.user.name)
         .update({
@@ -319,7 +341,7 @@ router.get(mongodbConfig.url.user.isActivateUser, function (req, res) {
     db.collection(mongodbConfig.mongodb.user.name)
         .findOne(
         {
-            'Username' : Username,
+            $or: [ { 'Username': Username }, { 'Email' : Username } ],
             'Terminal' : 'web'
         }
         , function (err, user) {

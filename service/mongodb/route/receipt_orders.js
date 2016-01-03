@@ -389,8 +389,8 @@ router.post(mongodbConfig.url.receipt.createReceipt, function (req, res) {
                     console.log(error, error.stack.split("\n"));
                 }
                 console.log('ccreate rohead success ');
-                console.log(rohead._id);
-                console.log(ROHead._id);
+                console.log("roHead after " + rohead._id);
+                console.log("ROHead " + ROHead._id);
                 var rolineToCreate = ROLineList.length;
                 var CreateROLineList = [];
                 for (var i = 0; i < ROLineList.length; i++) {

@@ -4,13 +4,13 @@ var mailConfig = require(appRoot +'/service/mail/mail-config.js');
 
 var router = express.Router();
 
-router.get('/SendEmailConfirmation/:Email/:Host/:BacktoURL', function (req, res) {
-	console.log('yeahhh , in SendMail ' + appRoot );
-	
-	var host = req.params.Host;
-	var email = req.params.Email;
-	var back2Url = req.params.BacktoURL;
-	console.log(back2Url);
+router.post('/SendEmailConfirmation', function (req, res) {
+	console.log(req.body );
+	var mailObj = req.body;
+	var host = mailObj.Host;
+	var email = mailObj.Email;
+	var back2Url = mailObj.BacktoUrl;
+
 	var activateLink = "http://" + host + '/#/?confirm='+ back2Url;
 	
 	var smtpTransport = nodemailer.createTransport(mailConfig.MAIL_TRANSFER_PROTOCOL, {
@@ -189,10 +189,11 @@ attachments : mailConfig.MAIL_ATTACHMENTS_STAFF
 });
 
 // Send recovery link to input password
-router.get('/SendEmailForgetPassword/:CustomerEmail/:Host/:BacktoURL', function (req, res) {
-	var CustomerEmail = req.params.CustomerEmail;
-	var Host = req.params.Host;
-	var back2Url = req.params.BacktoURL;
+router.post('/SendEmailForgetPassword', function (req, res) {
+	var mailObj = req.body;
+	var CustomerEmail = mailObj.Email;
+	var Host = mailObj.Host;
+	var back2Url = mailObj.BacktoUrl;
 
 	var forgetPasswordLink = 'http://' + Host + '/#/?forget='+ back2Url;
 	
