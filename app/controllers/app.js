@@ -340,6 +340,7 @@ app.config(function ($translateProvider) {
                     PRODUCT : {
                         TAB : "สินค้า",
                         PRODUCT_CODE : "รหัสสินค้า",
+                        IS_GEN_CODE : "สร้างรหัสอัตโนมัติ",
                         PRODUCT_NAME_TH : "ชื่อสินค้า (ไทย)",
                         PRODUCT_NAME_EN : "ชื่อสินค้า (อังกฤษ)",
                         PRODUCT_NAME_CN : "ชื่อสินค้า (จีน)",
@@ -353,6 +354,7 @@ app.config(function ($translateProvider) {
                         CONTAIN_COST_PRICE : "ราคาต้นทุน/บรรจุ",
                         CONTAIN_WHOLESALE_PRICE : "ราคาขายส่ง/บรรจุ",
                         IS_HOT : "ร้อนแรง ?!!",
+                        IS_DEACTIVE : "เลิกใช้งาน",
                         IMAGE : "รูปภาพ",
                         IMAGE_THUMBNAIL : "แสดงรูปภาพ",
                         UPDATE_BY : "อัพเดทโดย",
@@ -970,6 +972,7 @@ app.config(function ($translateProvider) {
                     PRODUCT : {
                         TAB : "Product",
                         PRODUCT_CODE : "Product Code",
+                        IS_GEN_CODE : "Auto Gen. Code",
                         PRODUCT_NAME_TH : "Product Name (TH)",
                         PRODUCT_NAME_EN : "Product Name (EN)",
                         PRODUCT_NAME_CN : "Product Name (CN)",
@@ -983,6 +986,7 @@ app.config(function ($translateProvider) {
                         CONTAIN_COST_PRICE : "Contain Cost Price",
                         CONTAIN_WHOLESALE_PRICE : "Contain Wholesale Price",
                         IS_HOT : "Is Hot ?!!",
+                        IS_DEACTIVE : "Deactive",
                         IMAGE : "Image",
                         IMAGE_THUMBNAIL : "Image Thumbnail",
 
@@ -1476,6 +1480,7 @@ app.config(function ($translateProvider) {
                     PRODUCT : {
                         TAB : "產品",
                         PRODUCT_CODE : "產品代碼",
+                        IS_GEN_CODE : "自動生成代碼",
                         PRODUCT_NAME_TH : "產品名稱 (泰國)",
                         PRODUCT_NAME_EN : "產品名稱 (英語)",
                         PRODUCT_NAME_CN : "產品名稱 (中國)",
@@ -1489,6 +1494,7 @@ app.config(function ($translateProvider) {
                         CONTAIN_COST_PRICE : "成本控制",
                         CONTAIN_WHOLESALE_PRICE : "批發包裝",
                         IS_HOT : "熱 ?!!",
+                        IS_DEACTIVE : "未激活",
                         IMAGE : "圖片",
                         IMAGE_THUMBNAIL : "圖片縮略圖",
 
@@ -1741,6 +1747,11 @@ app.run(function ($rootScope) {
     
     $rootScope.$on('handleCompanyEmit', function (event, args) {
         $rootScope.$broadcast('handleCompanyBroadcast', args);
+    });
+
+    //For update User
+    $rootScope.$on('handlePaypalEmit', function (event, args) {
+        $rootScope.$broadcast('handlePaypalBroadcast', args);
     });
 
     document.addEventListener("keyup", function(e) {

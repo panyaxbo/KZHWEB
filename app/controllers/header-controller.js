@@ -64,6 +64,17 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
       
         $scope.Firstname = $cookies.getObject('User').Firstname;
         $scope.Lastname = $cookies.getObject('User').Lastname;
+        var downloadUrl = ENV.apiEndpoint + '/aws/downloadUserImageProfile/'+$scope.User.Id + '/'+ $scope.User.Username;
+        $http.get(downloadUrl)
+        .success(function (data, status, headers, config) {
+            $scope.User.ProfileImage = data;
+            $('#UserProfileImage').children("img").remove();
+            $('#UserProfileImage').append(data);
+        })
+        .error(function (data, status, headers, config) {
+            console.log(data);
+
+        });
         if ($cookies.getObject('User').UserType === 'admin') {
           $scope.IsLogin = true;
           $scope.IsAdmin =true;
@@ -141,6 +152,31 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     .error(function (data, status, headers, config) {
       console.log('cannot load company');
     });
+
+    // Load Paypal
+    $scope.Paypal = {};
+//    $scope.LoadPaypalInformation = function () {
+    var paypalUrl = ENV.apiEndpoint + "/paypal/GetPaypalInformation";
+    $http.get(paypalUrl)
+    .success(function(data, status, headers, config) {
+        $scope.Paypal.MerchantId = data.MerchantId;
+        $scope.Paypal.Name = data.Name;
+        $scope.Paypal.Quantity = data.Quantity;
+        $scope.Paypal.Amount = data.Amount;
+        $scope.Paypal.Currency = data.Currency;
+        $scope.Paypal.Shipping = data.Shipping;
+        $scope.Paypal.Tax = data.Tax;
+        $scope.Paypal.CallbackUrl = data.CallbackUrl;
+        $scope.Paypal.EnvironmentSandbox = data.EnvironmentSandbox;
+        $scope.$emit('handlePaypalEmit', {
+            Paypal: $scope.Paypal
+        });
+
+    })
+    .error(function (data, status, headers, config) {
+
+    });
+//    }
 
     $scope.PopulateValue = function(provider, response) {
     //    $scope.user = response;

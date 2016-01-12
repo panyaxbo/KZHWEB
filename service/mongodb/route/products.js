@@ -439,24 +439,32 @@ router.get(mongodbConfig.url.product.loadProductByObjId, function (req, res) {
         }, function (err, product) {
             if (err) {
                 console.log(err);
-                //       callback(err);
-            } else {
+                res.sendStatus(500);
+                return;
+            } else if (!product) {
+                res.sendStatus(404);
+                return;
+            } else if (product){
                 // call your callback with no error and the data
                 console.log(product);
                 var UomCode = product.UomCode;
                 var ContainUomCode = product.ContainUomCode;
                 FindUomByUomCode(UomCode, function (err, uom) {
-                    if (err) throw err;
+                    if (err) {
+                        console.log(err);
+                        res.sendStatus(500);
+                        return;
+                    } else {
+                        product.Uom = uom;
 
-                    product.Uom = uom;
+                        FindContainUomByUomCode(ContainUomCode, function (err, containUom) {
+                            if (err) throw err;
 
-                    FindContainUomByUomCode(ContainUomCode, function (err, containUom) {
-                        if (err) throw err;
+                            product.ContainUom = containUom;
 
-                        product.ContainUom = containUom;
-
-                        res.json(product);
-                    }); 
+                            res.json(product);
+                        }); 
+                    }
                 });
             }
         });
@@ -653,6 +661,8 @@ router.post(mongodbConfig.url.product.updateProduct, function (req, res) {
                     'WholesalePrice': Product.WholesalePrice,
                     'SpecialPrice': Product.SpecialPrice,
                     'ContainCostPrice': Product.ContainCostPrice,
+                    'IsHot' : Product.IsHot,
+                    'IsDeactive' : Product.IsDeactive,
                     'ContainWholesalePrice': Product.ContainWholesalePrice,
                     'ContainSpecialPrice': Product.ContainSpecialPrice,
                     'ContainQuantity': Product.ContainQuantity,

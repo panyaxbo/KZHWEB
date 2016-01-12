@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="styles/main.css">
 </head>
 
-<body onselectstart="return false;" ondragstart="return false;">
+<body onselectstart="return false;" ondragstart="return false;" oncontextmenu="return false;">
     <div class="container">
         <div class="header container-fluid" id="div-header" ng-controller="HeaderController" style="top: 0px;padding-bottom:10px;margin-bottom: 10px; margin-top:15px">
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -1004,7 +1004,7 @@
                                                     <select class="form-control" ng-model="PaymentType" required="required">
                                                         <option value="">{{'BODY.SECTION.SHIPMENT.PAYMENT.SELECT_PAYMENT_TYPE' | translate}}</option>
                                                         <option value="Transfer">{{'BODY.SECTION.SHIPMENT.PAYMENT.TRANSFER' | translate}}</option>
-                                                     <!--   <option value="Paypal">{{'BODY.SECTION.SHIPMENT.PAYMENT.PAYPAL' | translate}}</option> -->
+                                                    <!--    <option value="Paypal">{{'BODY.SECTION.SHIPMENT.PAYMENT.PAYPAL' | translate}}</option> -->
                                                         <option value="Credit" disabled="true" title="Credit Card is not support yet :(">{{'BODY.SECTION.SHIPMENT.PAYMENT.CREDIT' | translate}}</option>
                                                     </select>
                                                 </div>
@@ -1193,7 +1193,7 @@
                                                 <!-- TRANSFER FORM ENDS HERE -->
                                                  </div>  
                                             </div>  
-                                      <!--      <div class="col-xs-12"> 
+                                            <div class="col-xs-12"> 
                                                  <div class="col-xs-2">
                                                  </div>
                                                  <div class="col-xs-10" ng-show="PaymentType == 'Paypal'">
@@ -1201,22 +1201,56 @@
                                                     <div class="panel panel-default transfer-box">
                                                         <div class="panel-heading display-table">
                                                             <div class="row display-tr" >
-                                                                <h3 class="panel-title display-td">Payment Details</h3>
-                                                                <div class="display-td" >                            
+                                                                <h3 class="panel-title display-td">Payment with Paypal</h3>
+                                                                <div class="display-td text-center" >  
+                                                                    <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_74x46.jpg" border="0" alt="PayPal Logo"><br>
+                                                                    <img src="https://www.paypalobjects.com/webstatic/mktg/logo/PP_AcceptanceMarkTray-NoDiscover_243x40.png" alt="Buy now with PayPal" />    
                                                                 </div>
                                                             </div>                    
                                                         </div>
                                                         <div class="panel-body">
-                                                            <form role="form" id="transfer-form">
-                                                                <div class="row">
-                                                                   貝寶
+
+                                                            <form role="form" id="paypal-form-1" ng-show="Paypal.EnvironmentSandbox">
+                                                                <div class="row text-center">
+                                                                   <script async src="paypal-button.min.js?merchant=KPBPW2K85KMAJ"
+                                                                        data-button="buynow"
+                                                                        data-type="form"
+                                                                        data-name={{Paypal.Name}}
+                                                                        data-quantity={{Paypal.Quantity}}
+                                                                        data-amount={{Paypal.Amount}}
+                                                                        data-currency = {{Paypal.Currency}}
+                                                                        data-shipping = {{Paypal.Shipping}}
+                                                                        data-tax = {{Paypal.Tax}}
+                                                                        data-callback = {{Paypal.CallbackUrl}}
+                                                                        data-return = {{Paypal.CallbackUrl}}
+                                                                        data-return-url = {{Paypal.CallbackUrl}}
+                                                                        data-env="sandbox"
+                                                                    ></script>
+                                                                    
+                                                                </div>
+                                                            </form>
+                                                            <form role="form" id="paypal-form-2" ng-show="!Paypal.EnvironmentSandbox">
+                                                                <div class="row text-center">
+                                                                   <script async src="paypal-button.min.js?merchant=KPBPW2K85KMAJ"
+                                                                        data-button="buynow"
+                                                                        data-type="form"
+                                                                        data-name={{Paypal.Name}}
+                                                                        data-quantity={{Paypal.Quantity}}
+                                                                        data-amount={{Paypal.Amount}}
+                                                                        data-currency = {{Paypal.Currency}}
+                                                                        data-shipping = {{Paypal.Shipping}}
+                                                                        data-tax = {{Paypal.Tax}}
+                                                                        data-callback = {{Paypal.CallbackUrl}}
+                                                                        data-return = {{Paypal.CallbackUrl}}
+                                                                        data-return-url = {{Paypal.CallbackUrl}}
+                                                                    ></script>
                                                                 </div>
                                                             </form>
                                                         </div>
                                                     </div>            
-                                                <!-- PAYPAL FORM ENDS HERE 
+                                                <!-- PAYPAL FORM ENDS HERE -->
                                                  </div>  
-                                            </div>-->
+                                            </div>
                                             <div class="col-xs-12"> 
                                                  <div class="col-xs-4">
                                                  </div>        
@@ -1764,12 +1798,15 @@
                                                     <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_CODE' | translate}} :</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_CODE' | translate}}" class="form-control" ng-model="ViewProductData.ProductCode" readonly>
-                                                 </div>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <input type="checkbox" ng-model="IsAutoGenCode" checked> {{'BODY.SECTION.SETTING.PRODUCT.IS_GEN_CODE' | translate}}
+                                                    </div>
                                                 </div>
                                                 <!-- Text input-->
                                                 <div class="form-group">
                                                     <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_TH' | translate}} :</label>
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-8">
                                                         <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_TH' | translate}}" class="form-control" ng-model="ViewProductData.ProductNameTh" required>
                                                     </div>
 
@@ -1777,14 +1814,14 @@
                                                 <!-- Text input-->
                                                 <div class="form-group">
                                                     <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_EN' | translate}} :</label>
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-8">
                                                         <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_EN' | translate}}" class="form-control" ng-model="ViewProductData.ProductNameEn">
                                                     </div>
                                                 </div>
                                                 <!-- Text input-->
                                                 <div class="form-group">
                                                     <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_CN' | translate}} :</label>
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-8">
                                                         <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_CN' | translate}}" class="form-control" ng-model="ViewProductData.ProductNameCn">
                                                     </div>
                                                 </div>
@@ -1798,22 +1835,22 @@
                                                 <!-- Input Cost Price -->
                                                 <div class="form-group">
                                                     <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.COST_PRICE' | translate}} :</label>
-                                                    <div class="col-sm-6">
-                                                        <input type="text" placeholder="0.00" class="form-control" ng-model="ViewProductData.CostPrice">
+                                                    <div class="col-sm-4">
+                                                        <input type="text" placeholder="0.00" class="form-control text-right" ng-model="ViewProductData.CostPrice">
                                                     </div>
                                                 </div>
                                                 <!-- Input Retail Price -->
                                                 <div class="form-group">
                                                     <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.RETAIL_PRICE' | translate}} :</label>
-                                                    <div class="col-sm-6">
-                                                        <input type="text" placeholder="0.00" class="form-control" ng-model="ViewProductData.RetailPrice">
+                                                    <div class="col-sm-4">
+                                                        <input type="text" placeholder="0.00" class="form-control text-right" ng-model="ViewProductData.RetailPrice">
                                                     </div>
                                                 </div>
                                                 <!-- Input Wholesale Price -->
                                                 <div class="form-group">
                                                     <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.WHOLESALE_PRICE' | translate}} :</label>
-                                                    <div class="col-sm-6">
-                                                        <input type="text" placeholder="0.00" class="form-control" ng-model="ViewProductData.WholesalePrice">
+                                                    <div class="col-sm-4">
+                                                        <input type="text" placeholder="0.00" class="form-control text-right" ng-model="ViewProductData.WholesalePrice">
                                                     </div>
                                                 </div>
                                                 <!-- Input Uom -->
@@ -1835,22 +1872,22 @@
                                                 <!-- Input Contain Quantity -->
                                                 <div class="form-group">
                                                     <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.CONTAIN_QUANTITY' | translate}}</label>
-                                                    <div class="col-sm-6">
-                                                        <input type="text" placeholder="0.00" class="form-control" ng-model="ViewProductData.ContainQuantity">
+                                                    <div class="col-sm-4">
+                                                        <input type="text" placeholder="0.00" class="form-control text-right" ng-model="ViewProductData.ContainQuantity">
                                                     </div>
                                                 </div>
                                                 <!-- Input Contain Cost Price -->
                                                 <div class="form-group">
                                                     <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.CONTAIN_COST_PRICE' | translate}}</label>
-                                                    <div class="col-sm-6">
-                                                        <input type="text" placeholder="0.00" class="form-control" ng-model="ViewProductData.ContainCostPrice">
+                                                    <div class="col-sm-4">
+                                                        <input type="text" placeholder="0.00" class="form-control text-right" ng-model="ViewProductData.ContainCostPrice">
                                                     </div>
                                                 </div>
                                                 <!-- Input Contain Wholesale Price -->
                                                 <div class="form-group">
                                                     <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.CONTAIN_WHOLESALE_PRICE' | translate}}</label>
-                                                    <div class="col-sm-6">
-                                                        <input type="text" placeholder="0.00" class="form-control" ng-model="ViewProductData.ContainWholesalePrice">
+                                                    <div class="col-sm-4">
+                                                        <input type="text" placeholder="0.00" class="form-control text-right" ng-model="ViewProductData.ContainWholesalePrice">
                                                     </div>
                                                 </div>
                                                 <!-- Input Is Hot -->
@@ -1858,32 +1895,39 @@
                                                     <label class="col-sm-4 control-label" for="textinput" style="text-align: left"></label>
                                                     <div class="col-sm-6 checkbox">
                                                         <label>
-                                                          <input type="checkbox"> {{'BODY.SECTION.SETTING.PRODUCT.IS_HOT' | translate}}
-
+                                                          <input type="checkbox" ng-model="ViewProductData.IsHot"> {{'BODY.SECTION.SETTING.PRODUCT.IS_HOT' | translate}}
                                                         </label>
-                                                        
                                                     </div>
-
                                                 </div>
+                                                <!-- Input Is Active -->
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left"></label>
+                                                    <div class="col-sm-6 checkbox">
+                                                        <label>
+                                                          <input type="checkbox" ng-model="ViewProductData.IsDeactive"> {{'BODY.SECTION.SETTING.PRODUCT.IS_DEACTIVE' | translate}}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                
                                                 <!--Product Image Upload -->
                                                 <div class="form-group">
                                                     <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.IMAGE' | translate}} :</label>
                                                     <div class="col-sm-6">
                                                         <div>
-                                                            <div class="button" ngf-select ngf-change="uploadProductImage($files, ViewProductData._id, ViewProductData.ProductCode)" style="color:black">
+                                                            <div class="button" multiple="true" ngf-select ngf-change="uploadProductImage($files, ViewProductData._id, ViewProductData.ProductCode)" style="color:black">
                                                             Upload on file change</div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
+                                            <!--    <div class="form-group">
                                                     <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.DROP_FILE' | translate}}</label>
                                                     <div class="col-sm-6" >
-                                                        <div ngf-drop ng-model="files" class="drop-box" 
-                                                                ngf-drag-over-class="dragover" ngf-allow-dir="true"
+                                                        <div ngf-drop ng-model="files" class="drop-box"  
+                                                                ngf-drag-over-class="dragover" ngf-allow-dir="true" 
                                                                 ngf-accept="'image/*,application/pdf'">{{'BODY.SECTION.ACCOUNT.DROP_IMAGE_PDF' | translate}}</div>
                                                             <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
                                                     </div>
-                                                </div>
+                                                </div>-->
 
                                                 <div class="form-group">
                                                     <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.IMAGE_THUMBNAIL' | translate}} </label>
@@ -2800,7 +2844,7 @@
                                                                 <button type="submit" class="btn btn-primary" ng-click="SaveProductCategory()"> 
                                                                 <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.SAVE' | translate}}</button>
 
-                                                                <button type="submit" class="btn btn-danger" ng-click="DeleteProductCategory()">
+                                                                <button type="submit" class="btn btn-danger" ng-click="ConsiderDeleteProductCategory('edit', ViewProductCategoryData)">
                                                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.DELETE' | translate}}</button>
 
                                                                 <button type="submit" class="btn btn-default" ng-click="CancelProductCategory()">
@@ -2877,7 +2921,7 @@
                                                     </button>
                                                 </td>
                                                 <td data-title="''">
-                                                    <button ng-click="DeleteProductCategory()" class="btn btn-danger" alt="Delete">
+                                                    <button ng-click="ConsiderDeleteProductCategory('search', pc)" class="btn btn-danger" alt="Delete">
                                                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                                                 </td>
                                             </tr>
@@ -2979,7 +3023,6 @@
                                                                 <input type="text" placeholder="Product Type Name" class="form-control" ng-model="SearchProductTypeData.CustomerTypeName"> 
                                                             </div>
                                                         </div>
-                                                       
                                                         <div class="form-group">
                                                             <div class="col-sm-14 text-center">
                                                                 <button ng-click="SearchCustomerType()" class="btn btn-primary">
@@ -3809,6 +3852,7 @@
         <script src="/bower_components/ngAutocomplete/src/ngAutocomplete.js"></script>
         <script src="/bower_components/bootstrap3-typeahead/bootstrap3-typeahead.js" ></script>
         <script src="/bower_components/allmighty-autocomplete/script/autocomplete.js" ></script>
+        <script src="/bower_components/paypaljsbuttons/dist/paypal-button.min.js" ></script>
         <script src="/scripts/main.js"></script>
         <script src="/scripts/bootstrap-magnify.js"></script>
         <script src="/scripts/step.js"></script>

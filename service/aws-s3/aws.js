@@ -133,14 +133,13 @@ router.get("/downloadProductImageShop/:ProductId/:ProductCode",  function (req, 
           res.sendStatus(500);
           return;
         }
-        if (file && file !== undefined) { 
+        if (!file) { 
+          res.sendStatus(404);
+          return;
+        } else if (file) {
           console.log('file not null');
           var base64 = (data.toString('base64')); 
           res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive" style="max-height: 200px;max-width: 200px;margin: 0 auto;">');
-        } else {
-       //   console.log('file IS NULL');
-       //   res.sendStatus(200);
-          return;
         }
       });
     }
@@ -162,9 +161,10 @@ router.get('/downloadProductImageThumbnail/:ProductId/:ProductCode', function(re
     if (err) {
       res.sendStatus(500);
       return;
-    } else if (!file || file === undefined) {
+    } else if (!file) {
+      res.sendStatus(404);
       return;
-    } else {
+    } else if (file) {
       console.log(file);
       console.log('downloadProductImageThumbnail ' + file.originalFilename);
       product_s3fsImpl.readFile(file.originalFilename, function (err, data) {
@@ -173,12 +173,12 @@ router.get('/downloadProductImageThumbnail/:ProductId/:ProductCode', function(re
           res.sendStatus(500);
           return;
         }
-        if (file && file !== undefined) { 
-          var base64 = (data.toString('base64')); 
-          res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive">');
-        } else {
+        if (!file) { 
           res.sendStatus(200);
           return;
+        } else if (file){
+          var base64 = (data.toString('base64')); 
+          res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive">');
         }
       });
     } 
@@ -216,6 +216,7 @@ file.originalFilename = Username + '.' + fileExt;
     fs.unlink(file.path, function(err) {
       if (err) {
         console.log(err, err.stack.split("\n"));
+        return;
       }
       else {
         console.log("success");
@@ -233,6 +234,7 @@ file.originalFilename = Username + '.' + fileExt;
                 return;
               } else {
                 res.sendStatus(200);
+                return;
               }
             });
       }
@@ -261,6 +263,33 @@ router.get('/downloadUserImageProfile/:UserId/:Username', function(req, res) {
       var base64 = (data.toString('base64')); 
       res.send('<img src="data:image/jpeg;base64,' + base64 
               + '" class="img-circle img-responsive" width="40" height="40" ng-show="IsLogin && User.ProfileImage.length > 0" style="margin-top:-5px">');
+    } else {
+      res.sendStatus(404);
+      return;
+    }
+  });
+});
+
+/*
+ * @desc - Download user image from Amazon S3 to User Login.
+ * @param - User Id and User Code.
+ * @return - Status.
+ */
+
+router.get('/downloadUserImageProfileMobile/:UserId/:Username', function(req, res) {
+  var UserId = req.params.UserId;
+  var Username = req.params.Username;
+  user_s3fsImpl.readFile(home_bucket + user_bucket + Username + '.png', function (err, data) {
+    if (err) {
+      console.log(err, err.stack.split("\n"));
+      res.sendStatus(500);
+      return;
+    } else if (!data) {
+        res.sendStatus(200);
+        return;
+    } else if (data){ 
+      var base64 = (data.toString('base64')); 
+      res.send('data:image/jpeg;base64,' + base64);
     } else {
       res.sendStatus(404);
       return;
@@ -352,7 +381,15 @@ router.get('/downloadReceiptPaymentThumbnail/:RONo', function(req, res) {
         .findOne({
             'name': RONo
         }, function (err, file) {
-             if (file){
+            if (err) {
+              console.log(err, err.stack.split("\n"));
+              res.sendStatus(500);
+              return;
+            } else if (!file) {
+             //   console.log(err, err.stack.split("\n"));
+                res.sendStatus(200);
+                return;
+            } else if (file){
                 receipt_s3fsImpl.readFile(home_bucket + receipt_bucket + file.originalFilename , function (err, data) {
                   if (!data) {
                     console.log(err, err.stack.split("\n"));
@@ -364,15 +401,7 @@ router.get('/downloadReceiptPaymentThumbnail/:RONo', function(req, res) {
                     res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive" >');
                   }
                 });
-            } else if (!file) {
-             //   console.log(err, err.stack.split("\n"));
-                res.sendStatus(200);
-                return;
-            } else {
-                console.log(err, err.stack.split("\n"));
-                res.sendStatus(500);
-                return;
-            }
+            } 
         });
 
   

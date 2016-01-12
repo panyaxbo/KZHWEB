@@ -82,6 +82,11 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
     $scope.PaymentBank = false;
     $scope.PaymentType= "";
 
+    $scope.Paypal = {};
+    $scope.$on('handlePaypalBroadcast', function (event, args) {
+        $scope.Paypal = args.Paypal;
+        console.log($scope.Paypal);
+    });
     $scope.$on('handleHeadMenuBroadcast', function (event, args) {
     //    console.log('broadcast from head to body '+args.SelectedMenu);
    
@@ -877,6 +882,8 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
             ProductNameTh: '',
             ProductNameCn: '',
             ProductCategoryCode: '',
+            IsHot: false,
+            IsDeactive: false,
             CreateBy: $scope.User.Username,
             CreateDate: new Date(),
             UpdateBy: $scope.User.Username,
@@ -960,6 +967,12 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
                 } else {
                     $scope.ViewProductData.UpdateDate = data.UpdateDate;
                 }
+                if (isEmpty(data.IsHot)) {
+                    $scope.ViewProductData.IsHot = false;
+                }
+                if (isEmpty(data.IsDeactive)) {
+                    $scope.ViewProductData.IsDeactive = false;
+                }
                 //Load Product Category
                 var category_url = ENV.apiEndpoint + "/product_categories/LoadProductCategory";
                 $http.get(category_url)
@@ -988,7 +1001,8 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
 
                 });
                 console.log(data);
-
+                $('#ThumbnailProductImage').children("img").remove();
+                
                 // Download Image for User Thumbnail
                 var downloadUrl = ENV.apiEndpoint + '/aws/downloadProductImageThumbnail/' + data._id + '/' + data.ProductCode;
                 $http.get(downloadUrl)
@@ -3320,8 +3334,8 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
         var url = ENV.apiEndpoint + "/subdistricts/LoadSubDistrictBySubDistrictId/"+ $scope.ROHead.ReceiptSubDistrictId;
         $http.get(url)
             .success(function (zipcode) {
-                console.log('Receipt' + zipcode);
-                console.log(zipcode.ZipCode);
+                console.log(zipcode);
+                console.log(zipcode[0].ZipCode);
                 $scope.SelectReceiptZipCodeList = zipcode;
                 $scope.ROHead.ReceiptZipCode = zipcode.ZipCode;
             })
@@ -3406,12 +3420,34 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
         }
 
         $scope.step = 2;
+    //    $scope.LoadPaypalInformation();
         $("#nav-step2").removeAttr("disabled");
         $("#nav-step2").addClass("btn-primary");
         $("#nav-step1").addClass("btn-default");
         $("#nav-step3").addClass("btn-default");
     }
-    
+    /*
+    $scope.Paypal = {};
+    $scope.LoadPaypalInformation = function () {
+        var paypalUrl = ENV.apiEndpoint + "/paypal/GetPaypalInformation";
+        $http.get(paypalUrl)
+        .success(function(data, status, headers, config) {
+            
+            $scope.Paypal.MerchantId = data.MerchantId;
+            $scope.Paypal.Name = data.Name;
+            $scope.Paypal.Quantity = data.Quantity;
+            $scope.Paypal.Amount = data.Amount;
+            $scope.Paypal.Currency = data.Currency;
+            $scope.Paypal.Shipping = data.Shipping;
+            $scope.Paypal.Tax = data.Tax;
+            $scope.Paypal.CallbackUrl = data.CallbackUrl;
+            
+            console.log($scope.Paypal);
+        })
+        .error(function (data, status, headers, config) {
+
+        });
+    }*/
     $scope.ValidatePayment =  function() {
         if ($scope.PaymentType == '') {
             swal("เตือน", "คุณต้องเลือกประเภทการชำระเงิน", "warning");
@@ -3422,6 +3458,8 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
                 swal("เตือน", "คุณต้องเลือกธนาคาร", "warning");
                 return;
             } 
+        } else if ($scope.PaymentType == 'Paypal') {
+            
         } else if ($scope.PaymentType == 'Credit') {
             if (!$scope.cardNumber || 0 === $scope.cardNumber) {
                 swal("เตือน", "คุณต้องใส่หมายเลขบัตร", "warning");
@@ -3529,6 +3567,7 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
         });
     }
 
+
     $scope.SearchCustomerOrder = function() {
         if($scope.SearchCustomerRONo === undefined || $scope.SearchCustomerRONo.length <= 0) {
             $scope.SearchCustomerRONo = 'RO';
@@ -3609,6 +3648,7 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
             $scope.UpdateReceiptDistrict();
             $scope.ROHead.ReceiptSubDistrictId = $scope.ROHead.BillingSubDistrictId;
             $scope.UpdateReceiptSubDistrict();
+            console.log($scope.ROHead.BillingZipCode);
             $scope.ROHead.ReceiptZipCode = $scope.ROHead.BillingZipCode;
             
         }

@@ -50,6 +50,7 @@ var oauths = require('../oauth/oauths');
 var recaptchas = require('../recaptcha/recaptcha');
 var cryptojs = require('../cryptojs/cryptojs');
 var base64 = require('../base64/base64');
+var paypal = require('../paypal/paypal');
 //app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -85,6 +86,7 @@ app.use('/oauths', oauths);
 app.use('/recaptchas', recaptchas);
 app.use('/cryptojs', cryptojs);
 app.use('/base64', base64);
+app.use('/paypal', paypal);
 
 
 var environment = process.env.NODE_ENV || '';
