@@ -146,6 +146,47 @@ router.get("/downloadProductImageShop/:ProductId/:ProductCode",  function (req, 
   });
 });
 
+
+
+router.get("/downloadProductImageShopMobile/:ProductId/:ProductCode",  function (req, res) {
+  var ProductId = req.params.ProductId;
+  var ProductCode = req.params.ProductCode;
+  var gfs = grid(db, mongodb);
+  var o_id = bson.BSONPure.ObjectID(ProductId);
+
+  var ProductId = req.params.ProductId;
+  var ProductCode = req.params.ProductCode;
+
+  db.collection('fs.files')
+   .findOne({ 'name' : ProductCode }
+   , function(err, file) {
+    if (err) {
+      res.sendStatus(500);
+    } else if (!file) {
+      res.sendStatus(200);
+      return;
+    } else if (file != null && file != undefined) {
+   //   console.log(file);
+   //   console.log('downloadProductImageShop ' + file.originalFilename);
+
+      product_s3fsImpl.readFile(file.originalFilename, function (err, data) {
+        if (err) {
+          console.log(err, err.stack.split("\n"));
+          res.sendStatus(500);
+          return;
+        }
+        if (!file) { 
+          res.sendStatus(404);
+          return;
+        } else if (file) {
+       //   console.log('file not null');
+          var base64 = (data.toString('base64')); 
+          res.send('data:image/jpeg;base64,' + base64 );
+        }
+      });
+    }
+  });
+});
 /*
  * @desc - Download image from Amazon S3 to Product Config Page.
  * @param - Product Id and Product Code.
