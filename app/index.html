@@ -536,6 +536,7 @@
                     </li>
             </div>
         </div>
+        <div>search <input type="text"></div>
         <div id="div-body" ng-controller="BodyController">
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
@@ -3824,6 +3825,46 @@
             <div>
             <a href="#" class="scrollup">Scroll</a>
         </div>
+        <hr class="footer-hr">
+        <div id="div-sub-footer" class="sub-footer">
+            
+            <div class="container" style="color:white;">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <blockquote>
+                            {{'FOOTER.AVAILABLE_ON_APPSTORE_PLAYSTORE' | translate}}...
+                            <br>
+                            <footer style="color:white;">KZH Parts</footer>
+                        </blockquote>
+                    </div>
+                     <div class="col-sm-4">
+                        <center>
+                          <img src="/images/kzhapp.png" width="150" height="150"  alt="KZHParts" class="img-responsive">
+                        </center>
+                    </div>
+                    <div class="col-sm-4">
+                    
+                        <center>
+                          <a href="" target="_blank">
+                            <img src="/images/appstore.png" width="180" height="75"  alt="KZHParts on AppStore" class="img-responsive">
+                          </a>
+                        </center>
+                        <br>
+                    </div>
+                     <div class="col-sm-4">
+                        <center>
+                          <a href="https://play.google.com/store/apps/details?id=com.kzhparts.kzhapp" target="_blank">
+                            <img src="/images/playstore.png" width="180" height="75"  alt="KZHParts on PlayStore" class="img-responsive">
+                          </a>
+                        </center>
+                    </div>
+                     <div class="col-sm-2">
+                        <center>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
         <script src="/bower_components/jquery/dist/jquery.min.js"></script>
         <script src="/bower_components/angular/angular.js"></script>
@@ -3870,7 +3911,11 @@
         <script src="/services/user-service.js"></script>
         <script src="/services/currency-service.js"></script>
         <script src="/services/company-service.js"></script>
-        
+        <script src="/services/product-service.js"></script>
+        <script src="/services/credential-service.js"></script>
+        <script src="/services/social-service.js"></script>
+        <script src="/services/email-service.js"></script>
+        <script src="/services/crypto-service.js"></script>
 </body>
 
 </html>

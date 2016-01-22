@@ -210,6 +210,11 @@ body {
     padding-left: 15px;
     padding-right: 15px;
 }
+
+.sub-footer {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
 /* Custom page header */
 
 #toTop {
@@ -584,3 +589,4 @@ body {
     background: inherit;
     left: 20px;
 }
+

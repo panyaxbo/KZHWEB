@@ -627,7 +627,8 @@ app.config(function ($translateProvider) {
                 REMARK : 'ตอบโจทย์ปัญหาของช่างทุกคน'
             },
             COPY_RIGHT : "",
-            CONTACT_US : ""
+            CONTACT_US : "",
+            AVAILABLE_ON_APPSTORE_PLAYSTORE : "สามารถโหลดแอพพลิเคชั่นผ่านมือถือที่ แอพสโตร์ และ เพลสโตร์"
         },
         MESSAGE : {
             TYPE_SUCCESS : "success",
@@ -1182,7 +1183,7 @@ app.config(function ($translateProvider) {
                 HEAD : 'Inner - Outer Tyre',
                 REMARK : 'The great and general quality of tyre with top brand.'
             },
-            LUBRICANR : {
+            LUBRICANT : {
                 HEAD : 'Lubricant',
                 REMARK : 'All high and normal quality brand.'
             },
@@ -1201,7 +1202,8 @@ app.config(function ($translateProvider) {
             WRENCH : {
                 HEAD : 'Tools',
                 REMARK : 'Worker trust with brand quality tools'
-            }
+            },
+            AVAILABLE_ON_APPSTORE_PLAYSTORE : "We are also available on AppStore and PlayStore"
         }
     });
     $translateProvider.translations('cn', {
@@ -1710,7 +1712,8 @@ app.config(function ($translateProvider) {
                 REMARK : ''
             },
             COPY_RIGHT : "",
-            CONTACT_US : ""
+            CONTACT_US : "",
+            AVAILABLE_ON_APPSTORE_PLAYSTORE : "我們也可在 AppStore 上和 PlayStore"
         }
     });
     $translateProvider.preferredLanguage('th');

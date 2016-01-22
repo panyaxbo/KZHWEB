@@ -6,7 +6,6 @@ router.get(mongodbConfig.url.product_category.home, function (req, res, next) {
     res.send('ProductCategories');
 });
 
-
 router.get(mongodbConfig.url.product_category.loadAllProductCategory, function (req, res) {
     db.collection(mongodbConfig.mongodb.product_category.name)
         .find({})

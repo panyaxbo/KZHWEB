@@ -41,7 +41,9 @@
     "select2-bootstrap-css": "~1.4.6",
     "angular-route": "~1.4.8",
     "lodash": "~3.10.1",
-    "paypaljsbuttons": "~1.0.4"
+    "paypaljsbuttons": "~1.0.4",
+    "magnifier": "*",
+    "angular-spinners": "~3.0.4"
   },
   "devDependencies": {},
   "resolutions": {

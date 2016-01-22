@@ -1,7 +1,10 @@
-app.controller('HeaderController', ["$scope", "$location", "$window", "$filter", "$anchorScroll", "Upload", "$rootScope", "$http", "$translate", 
-  "$timeout", "blockUI", "ngDialog", "MenuService", "LocaleService", "ReceiptOrderService", "CompanyService", "CurrencyService", "ENV", "$cookies", 
-  "vcRecaptchaService", function ($scope, $location, $window, $filter, $anchorScroll, Upload,$rootScope, $http, $translate,$timeout, 
-  blockUI, ngDialog, MenuService, LocaleService, ReceiptOrderService, CompanyService, CurrencyService, ENV , $cookies, vcRecaptchaService) {
+app.controller('HeaderController', ["$scope", "$location", "$window", "$filter", "$anchorScroll", 
+  "Upload", "$rootScope", "$http", "$translate", "$timeout", "blockUI", "ngDialog", "MenuService", 
+  "LocaleService", "ReceiptOrderService", "CompanyService", "CurrencyService", "ENV", "$cookies", 
+  "vcRecaptchaService", "UserService", "ProductService", "CredentialService", "SocialService", "CryptoService",
+  function ($scope, $location, $window, $filter, $anchorScroll, Upload,$rootScope, $http, $translate,$timeout, blockUI, ngDialog, 
+  MenuService, LocaleService, ReceiptOrderService, CompanyService, CurrencyService, ENV , $cookies, vcRecaptchaService, UserService, 
+  ProductService, CredentialService, SocialService, CryptoService) {
 
     $scope.Locale = "th";
     $scope.Currency = "thb";
@@ -64,6 +67,16 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
       
         $scope.Firstname = $cookies.getObject('User').Firstname;
         $scope.Lastname = $cookies.getObject('User').Lastname;
+
+        UserService.DownloadUserProfileImage($scope.User.Id, $scope.User.Username)
+        .then(function(data, status) {
+            $scope.User.ProfileImage = data;
+            $('#UserProfileImage').children("img").remove();
+            $('#UserProfileImage').append(data);
+        }, function(error, status) {
+            console.log('error ', error);
+        });
+        /*
         var downloadUrl = ENV.apiEndpoint + '/aws/downloadUserImageProfile/'+$scope.User.Id + '/'+ $scope.User.Username;
         $http.get(downloadUrl)
         .success(function (data, status, headers, config) {
@@ -75,6 +88,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
             console.log(data);
 
         });
+        */
         if ($cookies.getObject('User').UserType === 'admin') {
           $scope.IsLogin = true;
           $scope.IsAdmin =true;
@@ -95,15 +109,23 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
 
     $scope.Search = function() {
       console.log($scope.SearchAllText);
+      ProductService.SearchProductWithCondition($scope.SearchAllText)
+      .then(function(data, status) {
+          $scope.Product = data;
+          $scope.SelectedHeadMenu("product");
+      }, function(error, status) {
+          console.log('error', error);
+      });
+      /*
       var searchProductURL = ENV.apiEndpoint + "/products/SearchProductWithCondition/" + $scope.SearchAllText;
       $http.get(searchProductURL)
       .success(function(data, status, headers, config) {
           $scope.Product = data;
           $scope.SelectedHeadMenu("product");
       })
-      .error(function(data, status, headers, config) {
+      .error(function(error, status, headers, config) {
 
-      });
+      });*/
     }
 
     $scope.LoginWithSocial = function (provider) {
@@ -131,17 +153,33 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
         blockUI.stop();
     }
 
-    var oauthURL = ENV.apiEndpoint + "/oauths/GetPublicKey";
+    CredentialService.LoadOAuth()
+    .then(function(data, status) {
+        OAuth.initialize(data);
+    }, function(error, status) {
+        console.log('oauth err ', error);
+    });
+  /*  var oauthURL = ENV.apiEndpoint + "/oauths/GetPublicKey";
     $http.get(oauthURL)
     .success(function(data, status, headers, config) {
         OAuth.initialize(data);
     })
     .error(function(data, status, headers, config) {
     
-    });
+    });*/
+
     // Load Company
     $scope.Company = {};
-    var compnyaURL = ENV.apiEndpoint + "/companies/LoadCompany";
+    CredentialService.LoadCompany()
+    .then(function(data, status) {
+      $scope.Company = data;
+      $scope.$emit('handleCompanyEmit', {
+          Company: data
+      });
+    }, function (error, status) {
+        console.log('company err ', error);
+    });
+  /*  var compnyaURL = ENV.apiEndpoint + "/companies/LoadCompany";
     $http.get(compnyaURL)
     .success(function (data, status, headers, config) {
       $scope.Company = data;
@@ -151,14 +189,12 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     })
     .error(function (data, status, headers, config) {
       console.log('cannot load company');
-    });
+    });*/
 
     // Load Paypal
     $scope.Paypal = {};
-//    $scope.LoadPaypalInformation = function () {
-    var paypalUrl = ENV.apiEndpoint + "/paypal/GetPaypalInformation";
-    $http.get(paypalUrl)
-    .success(function(data, status, headers, config) {
+    CredentialService.LoadPaypal()
+    .then(function(data, status) {
         $scope.Paypal.MerchantId = data.MerchantId;
         $scope.Paypal.Name = data.Name;
         $scope.Paypal.Quantity = data.Quantity;
@@ -171,16 +207,12 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
         $scope.$emit('handlePaypalEmit', {
             Paypal: $scope.Paypal
         });
-
-    })
-    .error(function (data, status, headers, config) {
-
+    }, function(error, status) {
+        console.log('paypal error ', error);
     });
-//    }
-
+    
     $scope.PopulateValue = function(provider, response) {
-    //    $scope.user = response;
-        console.log(response);
+      //  console.log(response);
         if (provider === 'facebook') {
           $scope.User.Firstname = response.firstname;
           $scope.User.Lastname = response.lastname;
@@ -379,7 +411,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
         }
         response.provider = provider;
         console.log(response);
-        // 
+        
         var createAndCheckLofinSocialUrl = ENV.apiEndpoint + '/users/CreateAndUpdateWithSocial';
         
         $http.post(createAndCheckLofinSocialUrl, response)
@@ -520,8 +552,16 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     var UserBackFromEmailUrl = $location.url();
     if (UserBackFromEmailUrl.indexOf("confirm=") > -1 ) {
         blockUI.start("Please wait ...");
-        var url = UserBackFromEmailUrl.substr(UserBackFromEmailUrl.indexOf("confirm=") + 8);
-        var updateActivateUrl = ENV.apiEndpoint + "/users/ActivateAppUser/" + url;
+        UserService.ActivateAppUser(UserBackFromEmailUrl)
+        then(function(data, status) {
+            blockUI.message("100%");
+            blockUI.stop();
+            swal("Sign up Success", "Your account is now activated.", "success");
+        }, function(error, status) {
+            blockUI.stop();
+            swal("Error", "Cannot find your account.", "error");
+        });
+     /*   var updateActivateUrl = ENV.apiEndpoint + "/users/ActivateAppUser/" + url;
         blockUI.message("40%");
         $http.get(updateActivateUrl)
         .success(function(data, status, headers, config) {
@@ -532,11 +572,17 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
         .error(function(data, status, headers, config) {
            blockUI.stop();
            swal("Error", "Cannot find your account.", "error");
-        })
+        })*/
     // 
     } else if (UserBackFromEmailUrl.indexOf("forget=") > -1 ) {
-        
-        var url = UserBackFromEmailUrl.substr(UserBackFromEmailUrl.indexOf("forget=") + 7);
+        UserService.UpdateEmailForgetPassword()
+        .then(function(data, status) {
+            $scope.ForgetPasswordEmail = data;
+            $('#InputPasswordModal').modal('show');
+        }, function(error, status) {
+            console.log('error ', error);
+        });
+    /*    var url = UserBackFromEmailUrl.substr(UserBackFromEmailUrl.indexOf("forget=") + 7);
 
         var getemailfromencode = ENV.apiEndpoint + '/cryptojs/GetForgetEncodeUrl/' + url;
         $http.get(getemailfromencode)
@@ -547,13 +593,22 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
         })
         .error(function(data, status, headers, config) {
 
-        });
+        });*/
     }
 
     $scope.ChangePassword = function() {
       if ($scope.ChangeForgetPassword === $scope.ConfirmChangeForgetPassword) {
 
-        var changePasswordUrl = ENV.apiEndpoint + "/users/PerformChangePassword/" + $scope.ForgetPasswordEmail + "/" + $scope.ChangeForgetPassword;
+        UserService.PerformChangePassword($scope.ForgetPasswordEmail, $scope.ChangeForgetPassword)
+        .then(function(data, status) {
+            swal("Change Password Success", "Your password has changed successfully.", "success");
+            $('#InputPasswordModal').modal('toggle');
+        }, function(error, status) {
+            swal("Error", "Cannot find your account.", "error");
+        });
+        /*
+        var changePasswordUrl = ENV.apiEndpoint + "/users/PerformChangePassword/" + $scope.ForgetPasswordEmail 
+        + "/" + $scope.ChangeForgetPassword;
         
         $http.get(changePasswordUrl)
         .success(function(data, status, headers, config) {
@@ -562,7 +617,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
         })
         .error(function(data, status, headers, config) {
            swal("Error", "Cannot find your account.", "error");
-        })
+        })*/
       } else {
         swal("Warning", "Password and Confirm Password must be the same.", "warning");
       }
@@ -571,9 +626,41 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     $scope.Signup = function () {
       blockUI.start("Please wait while system sending email...");
       var email = $scope.Email;
-      var createUserURL = ENV.apiEndpoint + "/users/CreateAppUser/" +$scope.Username+ "/" + $scope.Password + "/"+ email;
       $scope.User.Firstname = $scope.Firstname;
       $scope.User.Lastname = $scope.Lastname;
+
+      UserService.CreateUserEmailActivate($scope.Username, $scope.Password, email)
+      .then(function(data, status) {
+          blockUI.message("25%");
+          return CryptoService.GenerateHashLink($scope.Username, $scope.Password, email)
+      })
+      .then(function (data, status) {
+          console.log(data);
+          var hostPort = $location.host() + ':' +$location.port();
+          var mailActivate = {
+            Email : email,
+            Host : hostPort,
+            BacktoUrl : data
+          };
+          return EmailService.SendEmailConfirmation(mailActivate)
+      })
+      .then(function(data, status){
+          blockUI.message("100%");
+          blockUI.stop();
+          swal("Sign up almost Success", "Please check your email to activate your account", "success");
+          $("#LoginModal").modal("toggle");
+      }, function(error, status) {
+          swal("Error", "Cannot sign up this time", "error");
+      },finally(function() {
+          //Clear Fields after sign up successfully
+          $scope.Firstname = "";
+          $scope.Lastname = "";
+          $scope.Email = "";
+          $scope.Username = "";
+          $scope.Password = "";
+      });
+
+/*
       $http.post(createUserURL, $scope.User)
         .success(function(data, status, headers, config) {
           blockUI.message("25%");
@@ -588,8 +675,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
                   Host : hostPort,
                   BacktoUrl : data
                 };
-          //      var encryptUrlActivate = data;
-                
+          
                 var emailConfirmURL = ENV.apiEndpoint + "/mails/SendEmailConfirmation";
                   blockUI.message("75%");
                   $http.post(emailConfirmURL, mailActivate)
@@ -616,6 +702,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
         .error(function(data, status, headers, config) {
             swal("Error", "Cannot sign up this time", "error");
         });
+*/
     };
 
     $scope.CheckSigninEmail = function () {
@@ -629,8 +716,27 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
       console.log('CheckSignupUsername ' + $scope.Username);
     }
     $scope.ValidateExistUsername = function () {
-
         if ($scope.Username.length > 0) {
+          UserService.IsExistUsername($scope.Username)
+          .then(function(data, status) {
+              if (!data) {
+                  $scope.ExistUsername = false;
+                  $scope.UsernameValidateMessage = "Success! This Username is usable.";
+                  $('#UsernameAlert').removeClass("alert-warning");
+                  $('#UsernameAlert').addClass("alert-success");
+                  $('#UsernameAlert').show();
+                           
+              } else {
+                  $scope.ExistUsername = true;
+                  $scope.UsernameValidateMessage = "Warning! This Username is reserved.";
+                  $('#UsernameAlert').removeClass("alert-success");
+                  $('#UsernameAlert').addClass("alert-warning");
+                  $('#UsernameAlert').show();
+              }
+          }, function(error, status) {
+
+          });
+          /*
           var url = ENV.apiEndpoint + "/users/IsExistUsername/" + $scope.Username;
           $http.get(url)
             .success(function(data) {
@@ -650,7 +756,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
               }
             })
             .error(function(data) {
-            });
+            });*/
         }
     }
     
@@ -673,14 +779,18 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
             $('#EmailAlert').show();
         }
         if($scope.ValidEmail == true) {
-      //    console.log('exist ' + $scope.ValidEmail);
           $scope.ValidateExistEmail();
         }
     }
 
     $scope.ValidateExistEmail = function () {
       if ($scope.Email.length > 0) {
-    //    console.log('ValidateExistEmail ');
+        UserService.IsExistEmail($scope.Email)
+        .then(function (data, status) {
+
+        }, function(error, function){
+
+        });
         var url = ENV.apiEndpoint + "/users/IsExistEmail/" + $scope.Email;
         $http.get(url)
           .success(function(data) {

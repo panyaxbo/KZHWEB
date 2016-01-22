@@ -85,7 +85,7 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
     $scope.Paypal = {};
     $scope.$on('handlePaypalBroadcast', function (event, args) {
         $scope.Paypal = args.Paypal;
-        console.log($scope.Paypal);
+    //    console.log($scope.Paypal);
     });
     $scope.$on('handleHeadMenuBroadcast', function (event, args) {
     //    console.log('broadcast from head to body '+args.SelectedMenu);
@@ -3353,6 +3353,14 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
             $scope.step = 3;
         }
     }
+    function validateEmail(email) {
+        var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    }
+    function validateTelNo(telNo) {
+        var re =/\d\-/g;
+        return re.test(telNo);
+    }
     $scope.ValidateBilling =  function() {
         //!str || 0 === str.length
         if (!$scope.ROHead.BillingName || 0 === $scope.ROHead.BillingName.length) {
@@ -3361,6 +3369,10 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
         } 
         if (!$scope.ROHead.BillingEmail || 0 === $scope.ROHead.BillingEmail.length) {
             swal("เตือน", "คุณต้องใส่อีเมล", "warning");
+            return;
+        }
+        if (!validateEmail($scope.ROHead.BillingEmail)) {
+            swal("เตือน", "อีเมลไม่ถูกต้อง", "warning");
             return;
         }
         if (!$scope.ROHead.BillingAddress || 0 === $scope.ROHead.BillingAddress.length) {
@@ -3390,10 +3402,17 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
         }
 
         if (!$scope.ROHead.MobileNo || 0 === $scope.ROHead.MobileNo.length) {
-            swal("เตือน", "คุณต้องใส่เบอร์มือถือ", "warning");
+            swal("เตือน", "คุณต้องใส่หมายเลขมือถือ", "warning");
             return;
         }
-
+        if (!validateTelNo($scope.ROHead.TelNo)) {
+            swal("เตือน", "หมายเลขโทรศัพท์ไม่ถูกต้อง", "warning");
+            return;
+        }
+        if (!validateTelNo($scope.ROHead.MobileNo)) {
+            swal("เตือน", "่หมายเลขไม่ถูกต้อง", "warning");
+            return;
+        }
         if (!$scope.ROHead.ReceiptName || 0 === $scope.ROHead.ReceiptName.length) {
             swal("เตือน", "คุณต้องใส่ชื่อที่อยู่ที่แสดงในใบเสร็จ", "warning");
             return;

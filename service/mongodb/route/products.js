@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var Q = require('q');
 
 /* GET users listing. */
 router.get(mongodbConfig.url.product.home, function (req, res, next) {
@@ -82,6 +83,16 @@ router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
         .find({})
         .limit(40)
         .toArray(function (err, items) {
+            findUomPromise({
+                $or: [{
+                    UomCode: 'UO0001'
+                    }, {
+                    UomCode: 'UO0001'
+                    }]
+            })
+    .then(function(data) {
+        console.log('findUomPromise', data);
+    });
             if (items) {
                 var productsToFind = items.length;
                 var products = [];
@@ -106,21 +117,6 @@ router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
                         } else {
                             product.IsNew = false;
                         }
-
-                    /*    findPromotion(product, function (err, promotion) {
-                            if (err) console.log(err, err.stack.split("\n"));
-                            
-                            if (promotion) {
-                                product.Promotion = promotion;
-                            }
-                            // End find product has new arrival
-                            products.push(product);
-                            productsToFind -= 1;
-                            console.log(productsToFind);
-                            if (productsToFind === 0) {
-                                res.json(products);
-                            }
-                        });*/
 
                         var promisePromotion = new Promise(function(resolve, reject) {
                             // do a thing, possibly async, then…
@@ -173,17 +169,7 @@ router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
                                 res.json(products);
                             }
                         });
-                        
                         // End find product has new arrival
-                   /*     
-                   products.push(product);
-                        productsToFind -= 1;
-
-                        if (productsToFind === 0) {
-                            res.json(products);
-                        }
-                        */
-                        
                     });
                 }
             } else if (!items) {
@@ -206,7 +192,6 @@ router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
     }
 
     var processing = function (item, callback) {
-        //    console.log(item.ProductCode + " each document " + item.UomCode + " " + item.ContainUomCode);
         var qUom = {
                 $or: [{
                     UomCode: item.UomCode
@@ -220,14 +205,9 @@ router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
             if (docUom) {
                 item.Uom = docUom;
                 if (item.hasOwnProperty('Uom')) {
-                //    console.log("item YESSSS !!");
-                //    console.dir(item);
-                } else {
-                    //        console.log("item NOOOOOOOOOOO !!");
-                }
+                } else {                }
                 callback(null, item);
             } else {
-                //      console.log('This is a worng');
             }
         });
     }　
@@ -253,7 +233,7 @@ router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
                 callback(err);
             } 
             var filterPromotion = {};
-            for (i=0; i < promotions.length; i++) {
+            for (var i=0; i < promotions.length; i++) {
                 filterPromotion = promotions[i].ProductPromotionList.filter(function (p) { 
                     return p.ProductCode == product.ProductCode;
                 });
@@ -264,6 +244,76 @@ router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
             } 
         });           
     }
+
+    var findUomPromise = function (queryUom) {
+        var defer =  Q.defer();
+        db.collection(mongodbConfig.mongodb.uom.name).find(queryUom)
+        .toArray(function (err, doc) {
+            if (err) {
+                defer.reject(err);
+            } else {
+                defer.resolve(doc);
+            }
+        });
+        return defer.promise;
+    };
+
+    var findPromotionPromise = function (product) {
+        // Start find product has new arrival
+        var defer = Q.defer();
+        var currentDate = new Date().toISOString().split('T')[0].split('-');
+        db.collection(mongodbConfig.mongodb.promotion.name)
+        .find({
+            'ProductPromotionList.ProductCode' : product.ProductCode,
+            'StartDate': {
+                //currentDate[0] = year 
+               $lte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
+            },
+            'EndDate' : {
+               $gte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
+            },
+            'IsActive' : true
+        })
+        .toArray(function (err, promotions) {
+            if (err) { 
+                defer.reject(err);
+            } else {
+                var filterPromotion = {};
+                for (var i=0; i < promotions.length; i++) {
+                    filterPromotion = promotions[i].ProductPromotionList.filter(function (p) { 
+                        return p.ProductCode == product.ProductCode;
+                    });
+                }
+                if (!isEmpty(filterPromotion)) {
+                    defer.resolve(filterPromotion);
+                } 
+            }
+        });     
+        return defer.promise;      
+    };
+
+    var processingPromise = function (product) {
+        var qUom = {
+                $or: [{
+                    UomCode: item.UomCode
+                    }, {
+                    UomCode: item.ContainUomCode
+                    }]
+            }
+            // Find uom
+        findUom(qUom, function (errUom, docUom) {
+            if (errUom) throw errUom;
+            if (docUom) {
+                item.Uom = docUom;
+                if (item.hasOwnProperty('Uom')) {
+                } else {                }
+                callback(null, item);
+            } else {
+            }
+        });
+    }　
+
+
 });
 
 function GenerateTextStringQuery (searchArray) {
@@ -289,78 +339,83 @@ router.get('/SearchProductWithCondition/:SearchConditionString', function (req, 
             "$text": { "$search": query } 
         })
         .toArray(function (err, items) {
-            if (err) throw err;
-            var productsToFind = items.length;
-            var products = [];
-            for (var i = 0; i < items.length; i++) {
-                var product = items[i];
-                processing(product, function (err, product) {
-                    if (err) console.log(err, err.stack.split("\n"));
-                    // Found Item is New Arrival ?
-                    if (typeof(product.CreateDate) != 'undefined' && product.CreateDate != null)
-                    {
-                        // Do something with some_variable
-                        var curDate = new Date();
-                        var diff = curDate - product.CreateDate(); // to millisecond
-                        var monthDiff = diff/(1000*60*60*24*30); // make dif of month
-                        if (monthDiff < 1) { // New Arrival must less than a month
-                            product.IsNew = true;
+            if (err) {
+                console.log(err, err.stack.split("\n"));
+                res.sendStatus(500);
+                return;
+            } else {
+                var productsToFind = items.length;
+                var products = [];
+                for (var i = 0; i < items.length; i++) {
+                    var product = items[i];
+                    processing(product, function (err, product) {
+                        if (err) console.log(err, err.stack.split("\n"));
+                        // Found Item is New Arrival ?
+                        if (typeof(product.CreateDate) != 'undefined' && product.CreateDate != null)
+                        {
+                            // Do something with some_variable
+                            var curDate = new Date();
+                            var diff = curDate - product.CreateDate(); // to millisecond
+                            var monthDiff = diff/(1000*60*60*24*30); // make dif of month
+                            if (monthDiff < 1) { // New Arrival must less than a month
+                                product.IsNew = true;
+                            } else {
+                                product.IsNew = false;
+                            }
                         } else {
                             product.IsNew = false;
                         }
-                    } else {
-                        product.IsNew = false;
-                    }
-                    var promisePromotion = new Promise(function(resolve, reject) {
-                        // do a thing, possibly async, then…
-                        var currentDate = new Date().toISOString().split('T')[0].split('-');
-                        db.collection(mongodbConfig.mongodb.promotion.name)
-                        .find({
-                            'ProductPromotionList.ProductCode' : product.ProductCode,
-                            'StartDate': {
-                               $lte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
-                            },
-                            'EndDate' : {
-                               $gte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
-                            },
-                            'IsActive' : true
-                        })
-                        .toArray(function (err, promotions) {
-                            var filterPromotion = {};
-                            for (i=0; i < promotions.length; i++) {
-                                filterPromotion = promotions[i].ProductPromotionList.filter(function (p) { 
-                                    return p.ProductCode == product.ProductCode;
-                                });
+                        var promisePromotion = new Promise(function(resolve, reject) {
+                            // do a thing, possibly async, then…
+                            var currentDate = new Date().toISOString().split('T')[0].split('-');
+                            db.collection(mongodbConfig.mongodb.promotion.name)
+                            .find({
+                                'ProductPromotionList.ProductCode' : product.ProductCode,
+                                'StartDate': {
+                                   $lte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
+                                },
+                                'EndDate' : {
+                                   $gte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
+                                },
+                                'IsActive' : true
+                            })
+                            .toArray(function (err, promotions) {
+                                var filterPromotion = {};
+                                for (i=0; i < promotions.length; i++) {
+                                    filterPromotion = promotions[i].ProductPromotionList.filter(function (p) { 
+                                        return p.ProductCode == product.ProductCode;
+                                    });
+                                }
+                                if (!isEmpty(filterPromotion)) {
+                                    resolve(filterPromotion);
+                                }
+                                else {
+                                    reject(Error(err));
+                                }
+                            });
+                          
+                        });
+
+                        promisePromotion.then(function( promotion ) {
+                        //   console.log( productsToFind );
+                            product.Promotion = promotion;
+                            products.push(product);
+                            productsToFind -= 1;
+
+                            if (productsToFind === 0) {
+                                res.json(products);
                             }
-                            if (!isEmpty(filterPromotion)) {
-                                resolve(filterPromotion);
-                            }
-                            else {
-                                reject(Error(err));
+                        },
+                        function( err ) {
+                        //  console.log( err );
+                          products.push(product);
+                          productsToFind -= 1;
+                            if (productsToFind === 0) {
+                                res.json(products);
                             }
                         });
-                      
                     });
-
-                    promisePromotion.then(function( promotion ) {
-                    //   console.log( productsToFind );
-                        product.Promotion = promotion;
-                        products.push(product);
-                        productsToFind -= 1;
-
-                        if (productsToFind === 0) {
-                            res.json(products);
-                        }
-                    },
-                    function( err ) {
-                    //  console.log( err );
-                      products.push(product);
-                      productsToFind -= 1;
-                        if (productsToFind === 0) {
-                            res.json(products);
-                        }
-                    });
-                });
+                }
             }
         });
 
@@ -538,8 +593,10 @@ router.get(mongodbConfig.url.product.loadProductByProductCode, function (req, re
 });
 
 router.get(mongodbConfig.url.product.loadProductByProductCategoryCode, function (req, res) {
-    console.log('user.js -> /users ');
+    
     var ProductCategoryCode = req.params.ProductCategoryCode;
+    console.log('cat cade ' + ProductCategoryCode);
+
     var query = {
         'ProductCategoryCode': ProductCategoryCode
     }
@@ -554,6 +611,7 @@ router.get(mongodbConfig.url.product.loadProductByProductCategoryCode, function 
             }
         });
     }
+    
     var findUom = function (db, queryUom, callback) {
         db.collection(mongodbConfig.mongodb.uom.name).find(queryUom).toArray(function (err, doc) {
             if (err) {
@@ -582,26 +640,65 @@ router.get(mongodbConfig.url.product.loadProductByProductCategoryCode, function 
                     console.log("item YESSSS !!");
                     console.dir(item);
                 } else {
-                    //        console.log("item NOOOOOOOOOOO !!");
                 }
                 callback(null, item);
             } else {
-                //      console.log('This is a worng');
             }
         });
     }　
+    var findProductPromise = new Promise(function (resolve, reject) {
+        db.collection(mongodbConfig.mongodb.product.name)
+            .find(query).toArray(function (err, doc) {
+                console.log('findProductPromise ', doc);
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(doc);
+                }
+        });
+    });
 
-    findProduct(db, query, function (err, doc) {
+    var findUomPromise = new Promise( function (queryUom, resolve, reject) {
+        db.collection(mongodbConfig.mongodb.uom.name)
+            .find(queryUom).toArray(function (err, doc) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(doc);
+                }
+        });
+    });
+    var processingPromise = new Promise(function (item, resolve, reject) {
+        console.log(item.ProductCode + " each document " + item.UomCode + " " + item.ContainUomCode);
+        var qUom = {
+            $or: [{
+                UomCode: item.UomCode
+                }, {
+                UomCode: item.ContainUomCode
+                }]
+        }
+            // Find uom
+        findUom(db, qUom, function (errUom, docUom) {
+            if (errUom) throw errUom;
+            if (docUom) {
+                item.Uom = docUom;
+                if (item.hasOwnProperty('Uom')) {
+                    console.dir(item);
+                } else {
+                }
+                callback(null, item);
+            } else {
+            }
+        });
+    });
+ /*   findProduct(db, query, function (err, doc) {
         if (err) {
-            // something went wrong
             console.log(err);
             return;
         }
         if (doc) {
             var productsToFind = doc.length;
             var products = [];
-        //    console.log("Found Products..." + productsToFind);
-        //    console.log("doc size " + doc.length);
             for (var i = 0; i < doc.length; i++) {
                 var product = doc[i];
                 processing(product, function (err, product) {
@@ -612,13 +709,33 @@ router.get(mongodbConfig.url.product.loadProductByProductCategoryCode, function 
                         res.json(products);
                     }
                 });
-
             }
         } else {
             console.log('something happen');
         }
+    });*/
 
+    findProductPromise()
+    .then(function (doc) {
+        console.log('promise '+ doc);
+        var productsToFind = doc.length;
+        var products = [];
+        for (var i = 0; i < doc.length; i++) {
+            var product = doc[i];
+            processing(product, function (err, product) {
+                console.log(product);
+                products.push(product);
+                productsToFind -= 1;
+                if (productsToFind === 0) {
+                    res.json(products);
+                }
+            });
+        }
+    }, function (error) {
+        console.log('error '+ error);
     });
+    
+
 });
 
 // Create Product

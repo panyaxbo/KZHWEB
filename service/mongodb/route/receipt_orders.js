@@ -139,37 +139,37 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
                 });
                 LoadROLineListPromise
                 .then(function( data ) {
-                    console.log('Roline list promise' +data);
+                //    console.log('Roline list promise' +data);
                     ROHead.ROLineList = data;
                     return LoadBillingProvincePromise;
                 })
                 .then(function( data ) {
-                    console.log('bill province promise');
+                 //   console.log('bill province promise');
                     ROHead.BillingProvince = data;
                     return LoadReceiptProvincePromise;
                 })
                 .then(function( data ) {
-                    console.log('receipt province promise');
+                //    console.log('receipt province promise');
                     ROHead.ReceiptProvince = data;
                     return LoadBillingDistrictPromise;
                 })
                 .then(function( data ) {
-                    console.log('bill district promise');
+                //    console.log('bill district promise');
                     ROHead.BillingDistrict = data;
                     return LoadReceiptDistrictPromise;
                 })
                 .then(function( data ) {
-                    console.log('receipt district promise');
+                //    console.log('receipt district promise');
                     ROHead.ReceiptDistrict = data;
                     return LoadBillingSubDistrictPromise;
                 })
                 .then(function( data ) {
-                    console.log('bill subdistrict promise');
+                //    console.log('bill subdistrict promise');
                     ROHead.BillingSubDistrict = data;
                     return LoadReceiptSubDistrictPromise;
                 })
                 .then(function( data ) {
-                    console.log('receipt subdistrict promise');
+                //    console.log('receipt subdistrict promise');
                     ROHead.ReceiptSubDistrict = data;
                     
                     res.send(ROHead);
