@@ -4,6 +4,7 @@ var AWS = require('aws-sdk');
 var s3_config = require('./s3-config.json');
 var fs = require('fs');
 var S3FS = require('s3fs');
+var Q = require('q');
 var multer = require('multer');
 var grid = require('gridfs-stream');
 var multiparty = require('connect-multiparty'),
@@ -92,7 +93,6 @@ router.post('/uploadProductImage/:ProductId/:ProductCode/:Username', function (r
                               res.sendStatus(200);
                             }
                         });
-              //  res.sendStatus(200);
               }
             });
       }
@@ -144,6 +144,8 @@ router.get("/downloadProductImageShop/:ProductId/:ProductCode",  function (req, 
       });
     }
   });
+
+
 });
 
 
@@ -156,7 +158,7 @@ router.get("/downloadProductImageShopMobile/:ProductId/:ProductCode",  function 
 
   var ProductId = req.params.ProductId;
   var ProductCode = req.params.ProductCode;
-
+/*
   db.collection('fs.files')
    .findOne({ 'name' : ProductCode }
    , function(err, file) {
@@ -166,9 +168,6 @@ router.get("/downloadProductImageShopMobile/:ProductId/:ProductCode",  function 
       res.sendStatus(200);
       return;
     } else if (file != null && file != undefined) {
-   //   console.log(file);
-   //   console.log('downloadProductImageShop ' + file.originalFilename);
-
       product_s3fsImpl.readFile(file.originalFilename, function (err, data) {
         if (err) {
           console.log(err, err.stack.split("\n"));
@@ -179,12 +178,51 @@ router.get("/downloadProductImageShopMobile/:ProductId/:ProductCode",  function 
           res.sendStatus(404);
           return;
         } else if (file) {
-       //   console.log('file not null');
           var base64 = (data.toString('base64')); 
           res.send('data:image/jpeg;base64,' + base64 );
         }
       });
     }
+  });
+*/
+  var findProductByProductCodePromise = function() {
+    var defer = Q.defer();
+    db.collection('fs.files')
+       .findOne({ 'name' : ProductCode }
+       , function(err, file) {
+        if (err) {
+            defer.reject(err);
+        } else {
+            defer.resolve(file);
+        }
+    });
+    return defer.promise;
+  }
+
+  findProductByProductCodePromise().then(function(data, status) {
+      if (!data) {
+        res.sendStatus(200);
+        return;
+      } else {
+        return product_s3fsImpl.readFile(file.originalFilename)
+            .then(function(data, status) {
+              if (!data) { 
+                res.sendStatus(404);
+                return;
+              } else if (data) {
+                var base64 = (data.toString('base64')); 
+                res.send('data:image/jpeg;base64,' + base64 );
+              }
+            }, function (err, status) {
+              console.log(err, err.stack.split("\n"));
+              res.sendStatus(500);
+              return;
+            });
+      }
+  }, function(err, status) {
+      console.log(err, err.stack.split("\n"));
+      res.sendStatus(500);
+      return;
   });
 });
 /*

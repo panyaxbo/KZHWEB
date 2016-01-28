@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+var Q = require('q');
 /* GET users listing. */
 router.get(mongodbConfig.url.customer_type.home, function (req, res, next) {
     res.send('respond with a resource');
@@ -8,19 +8,38 @@ router.get(mongodbConfig.url.customer_type.home, function (req, res, next) {
 
 router.get(mongodbConfig.url.customer_type.loadAllCustomerType, function (req, res) {
     console.log('customertypes.js');
-    db.collection(mongodbConfig.mongodb.customer_type.name)
-        .find()
-        .toArray(function (err, items) {
-            if (err) console.log(err, err.stack.split("\n"));
-            res.json(items);
-        });
+    var loadCustomerTypePromise = function() {
+        var defer = Q.defer();
+        db.collection(mongodbConfig.mongodb.customer_type.name)
+            .find()
+            .toArray(function (err, items) {
+                if (err) {
+                    defer.reject(err);
+                } else {
+                    defer.resolve(items);
+                }
+            });
+        return defer.promise;
+    }
+    loadCustomerTypePromise().then(function(data, status) {
+        if(!data) {
+            res.sendStatus(404);
+            return;
+        } else {
+            res.json(data); 
+        }
+    }, function(err, status) {
+        console.log(err, err.stack.split("\n"));
+        res.sendStatus(500);
+        return;
+    });
 });
 
 router.get(mongodbConfig.url.customer_type.loadCustomerTypeByObjId, function (req, res) {
     console.log("type id " + req.params.CustomerTypeId);
     var TypeId = req.params.CustomerTypeId;
     var o_id = bson.BSONPure.ObjectID(TypeId.toString());
-    db.collection(mongodbConfig.mongodb.customer_type.name)
+ /*   db.collection(mongodbConfig.mongodb.customer_type.name)
         .findOne({
             '_id': o_id
         }, function (err, doc) {
@@ -31,6 +50,33 @@ router.get(mongodbConfig.url.customer_type.loadCustomerTypeByObjId, function (re
             res.json(doc);
             
         });
+        */
+    var loadCustomerTypeByObjIdPromise = function() {
+        var defer = Q.defer();
+        db.collection(mongodbConfig.mongodb.customer_type.name)
+            .findOne({
+                '_id': o_id
+            }, function (err, doc) {
+                if (err) {
+                    defer.reject(err);
+                } else {
+                    defer.resolve(dic);
+                }
+            });
+        return defer.promise;
+    }
+    loadCustomerTypeByObjIdPromise().then(function(data, status) {
+        if(!data) {
+            res.sendStatus(404);
+            return;
+        } else {
+            res.json(data); 
+        }
+    }, function(err, status) {
+        console.log(err, err.stack.split("\n"));
+        res.sendStatus(500);
+        return;
+    });
 });
 
 router.get(mongodbConfig.url.customer_type.loadCustomerTypeyById, function (req, res) {

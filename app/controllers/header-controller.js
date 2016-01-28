@@ -651,7 +651,8 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
           $("#LoginModal").modal("toggle");
       }, function(error, status) {
           swal("Error", "Cannot sign up this time", "error");
-      },finally(function() {
+      })
+      .finally(function() {
           //Clear Fields after sign up successfully
           $scope.Firstname = "";
           $scope.Lastname = "";
@@ -787,11 +788,24 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
       if ($scope.Email.length > 0) {
         UserService.IsExistEmail($scope.Email)
         .then(function (data, status) {
+            if (!data) {
+                  $scope.EmailValidateMessage = "Success! This Email is usable";
+                  $scope.ExistEmail = false;
+                  $('#EmailAlert').removeClass("alert-warning");
+                  $('#EmailAlert').addClass("alert-success");
+                  $('#EmailAlert').show();
 
-        }, function(error, function){
+              } else {
+                  $scope.EmailValidateMessage = "Warning! This Email is reseved";
+                  $scope.ExistEmail = true;
+                  $('#EmailAlert').removeClass("alert-success");
+                  $('#EmailAlert').addClass("alert-warning");
+                  $('#EmailAlert').show();
+              }
+        }, function(error, status){
 
         });
-        var url = ENV.apiEndpoint + "/users/IsExistEmail/" + $scope.Email;
+    /*    var url = ENV.apiEndpoint + "/users/IsExistEmail/" + $scope.Email;
         $http.get(url)
           .success(function(data) {
             console.log('email exist ' + data);
@@ -812,12 +826,82 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
           })
           .error(function(data) {
 
-          });
+          });*/
       }
     }
 
     $scope.Login = function () {
-      
+      UserService.LoginWithUsernameAndPassword($scope.username, $scope.password)
+      .then(function(data, status) {
+          console.log('data ' + data);
+          if (!data || data === undefined) {
+              swal("Error", "Cannot login maybe username or password incorrect", "error");
+              $scope.User = [];
+              $scope.IsAdmin = false;
+              $scope.IsGuest = false;
+              return;
+          }
+          return UserService.CheckIsUserActivate($scope.username, $scope.password);
+      })
+      .then(function (data, status) {
+          console.log(activateUser);
+          if (!activateUser || activateUser === undefined) {
+            swal("Error", "Sorry, your account is not activated yet, please check your email.", "error");
+          } else {
+            $scope.User = data;
+            $scope.User.Id = data._id;
+            $scope.User.Username = data.Username;
+            $scope.User.Password = data.Password;
+            $scope.User.Role.RoleCode = data.Role.RoleCode;
+            $scope.User.Role.RoleNameEn = data.Role.RoleNameEn;
+            $scope.User.Role.RoleNameTh = data.Role.RoleNameTh;
+            $scope.Firstname = data.Firstname;
+            $scope.Lastname = data.Lastname;
+            $scope.User.Email = data.Email;
+            if ($scope.User.Role.RoleNameEn == 'Admin') {
+                $scope.IsAdmin = true;
+                $scope.IsGuest = false;
+            } else {
+              $scope.IsAdmin = false;
+              $scope.IsGuest = false;
+            }
+            $scope.IsLogin = true;
+            $("#LoginModal").modal("toggle");
+
+            if ($scope.RememberMe) {
+              var now = new Date();
+              now.setDate(now.getDate() + 1);
+              $cookies.putObject('User', $scope.User);
+            }
+          }
+          return UserService.DownloadUserProfileImage($scope.User.Id, $scope.User.Username);
+      })
+      .then(function(data, status) {
+        $scope.User.ProfileImage = data;
+          $('#UserProfileImage').children("img").remove();
+          $('#UserProfileImage').append(data);
+          return UserService.DownloadUserThumbnailImage($scope.User.Id, $scope.User.Username);
+      })
+      .then(function(data, status) {
+          $('#ThumbnailProfileImage').children("img").remove();
+          $('#ThumbnailProfileImage').append(data);
+
+          //Clear value after login successfully
+          $scope.username = "";
+          $scope.password = "";
+          $scope.$emit('handleUserEmit', {
+              User: $scope.User
+          });
+      }, function(error, status) {
+          console.log('error', error);
+          console.log("Log in Not found");
+          $scope.LoginErrorMessage = "Error! Wrong Username or Password";
+          $('#LoginErrorAlert').show();
+          $scope.IsAdmin = false;
+          $scope.IsGuest = true;
+          $scope.IsLogin = false; 
+      });
+      /*
       var url = ENV.apiEndpoint + "/users/FindByUsernameAndPassword/" + $scope.username + "/" +  $scope.password;
       $http.get(url)
           .success(function (data, status, headers, config) {
@@ -911,7 +995,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
               $scope.IsGuest = true;
               $scope.IsLogin = false; 
           });
-
+      */
     }
 
     $scope.Logout = function () {
@@ -937,7 +1021,6 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
                 $scope.IsLogin = false;
                 $scope.IsAdmin = false;
                 $scope.IsGuest = true;
-             //   $('#UserProfileImage').children("img").remove();
                 $scope.AddNoProfileUserImage();
                 $cookies.remove('User');
               } else {
@@ -977,12 +1060,23 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
 
     $scope.UpdateCartUom = function (ROLine,UomCode, index) {
       console.log("UpdateCartUom ..ROLINE " + ROLine + ' uom ' + UomCode);
-    /*  if (Uom.IsContainer == true) {
-        ROLine.Price = ROLine.Quantity * ROLine.DrContainWholesalePrice;
-      } else if (Uom.IsContainer == false) {
-        ROLine.Price = ROLine.Quantity * ROLine.RetailPrice;
-      }*/
-      var url = ENV.apiEndpoint + "/uoms/LoadUomByUomCode/" + UomCode;
+      UomService.LoadUomByUomCode(UomCode)
+      .then(function(uom, status) {
+          console.log('IsContainer ' + uom.IsContainer)
+          if (uom.IsContainer == true) {
+            ROLine.Price = ROLine.DrContainWholesalePrice;
+            ROLine.Amount = ROLine.Quantity * ROLine.DrContainWholesalePrice;
+          } else if (uom.IsContainer == false) {
+            ROLine.Price = ROLine.DrRetailPrice;
+            ROLine.Amount = ROLine.Quantity * ROLine.DrRetailPrice;
+          }
+          $scope.ROHead.ROLineList.splice(index, 1);
+          $scope.ROHead.ROLineList.splice(index, 0, ROLine);
+          $scope.UpdateCartSummary();
+      }, function(error, status) {
+          console.log('error ', error);
+      })
+    /*  var url = ENV.apiEndpoint + "/uoms/LoadUomByUomCode/" + UomCode;
       $http.get(url)
       .success(function (uom) {
         console.log('IsContainer ' + uom.IsContainer)
@@ -1001,7 +1095,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
       .error(function (uom) {
 
       });
-
+*/
     }
     $scope.DeleteCartProduct = function (Row, ROLine, index) {
         swal({
@@ -1173,7 +1267,17 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     }
 
     // Re-capcha
-    var recaptchaURL = ENV.apiEndpoint + "/recaptchas/GetRecaptchaKey";
+    CredentialService.LoadRecaptcha()
+    .then(function(data, status) {
+        $scope.response = null;
+        $scope.widgetId = null;
+        $scope.model = {
+            key: data
+        };  
+    }, function(error, status){
+
+    });
+  /*  var recaptchaURL = ENV.apiEndpoint + "/recaptchas/GetRecaptchaKey";
     $http.get(recaptchaURL)
     .success(function(data, status, headers, config) {
       $scope.response = null;
@@ -1184,7 +1288,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     })
     .error(function(data, status, headers, config) {
     //  console.log("Oops!! error for loading profile pic from facebook ");
-    });
+    });*/
 
     $scope.setResponse = function (response) {
     //    console.info('Response available');
@@ -1238,6 +1342,32 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
       if (filter.test($scope.ForgetPasswordEmail) && $scope.ForgetPasswordEmail.length > 0) {
         console.log('valid');
         //check is email exist in system
+        UserService.IsExistEmail($scope.ForgetPasswordEmail)
+        .then(function(data, status) {
+            blockUI.message("25%");
+            if(data) {
+              return CryptoService.GenerateForgetPasswordHashLink($scope.ForgetPasswordEmail)
+            } else {
+              swal("Error", "Cannot find your account.", "error");
+            }
+        },function (error, status) {
+            swal("Error", "The error has occur please contact admin", "error");
+        })
+        .then(function(data, status){
+            var hostWithPort = $location.host() + ':' +$location.port();
+            var forgetPasswordEmailUrl = ENV.apiEndpoint + "/mails/SendEmailForgetPassword";
+            blockUI.message("75%");
+            var mailForget = {
+              Email : $scope.ForgetPasswordEmail,
+              Host : hostWithPort,
+              BacktoUrl : data
+            };
+            EmailService.SendEmailForgetPassword(mailForget)
+        })
+
+
+
+
         var IsExistEmail = ENV.apiEndpoint + "/users/IsExistEmail/" + $scope.ForgetPasswordEmail;
         $http.get(IsExistEmail)
         .success(function(data, status, headers, config) {

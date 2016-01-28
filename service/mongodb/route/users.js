@@ -1,23 +1,50 @@
 var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcrypt');
+var bcrypt_then = require('bcrypt-then');
 //var serverConfig = require('../server-config.js');
 var cryptojs = require('crypto-js');
+var Q = require('q');
 
 var Base64 = require(appRoot + '/node_modules/js-base64/base64.min.js').Base64;
 
 /* GET users listing. */
 router.get(mongodbConfig.url.user.loadAllUser, function (req, res) {
-    db.collection(mongodbConfig.mongodb.user.name)
+  /*  db.collection(mongodbConfig.mongodb.user.name)
         .find({})
         .toArray(function (err, items) {
             console.log(items);
             res.json(items);
+        });*/
+    var loadAllUserPromise = function() {
+        var defer = Q.defer();
+        db.collection(mongodbConfig.mongodb.user.name)
+        .find({})
+        .toArray(function (err, items) {
+            if (err) {
+                defer.reject(err);
+            } else {
+                defer.resolve(items);
+            }
         });
+        return defer.promise;
+    }
+    loadAllUserPromise().then(function(data, status) {
+        if(!data) {
+            res.sendStatus(404);
+            return;
+        } else {
+            res.json(data); 
+        }
+    }, function(err, status) {
+        console.log(err, err.stack.split("\n"));
+        res.sendStatus(500);
+        return;
+    });
 });
 
 router.get(mongodbConfig.url.user.loadAppUserById, function (req, res) {
-    console.log('user.js -> /users ');
+ /*   console.log('user.js -> /users ');
     var AppUserId = req.params.AppUserId;
     db.collection(mongodbConfig.mongodb.user.name)
         .find({
@@ -26,7 +53,37 @@ router.get(mongodbConfig.url.user.loadAppUserById, function (req, res) {
         .toArray(function (err, items) {
             console.log(items);
             res.json(items);
-        });
+        });*/
+    var loadAppUserByIdPromise = function() {
+        var defer = Q.defer();
+        console.log('user.js -> /users ');
+        var AppUserId = req.params.AppUserId;
+        db.collection(mongodbConfig.mongodb.user.name)
+            .find({
+                'Id': AppUserId
+            })
+            .toArray(function (err, items) {
+                if (err) {
+                    defer.reject(err);
+                } else {
+                    console.log(items);
+                    defer.resolve(items);
+                }
+            });
+        return defer.promise;
+    }
+    loadAppUserByIdPromise().then(function (data, status) {
+        if(!data) {
+            res.sendStatus(404);
+            return;
+        } else {
+            res.json(data); 
+        }
+    }, function(err, status) {
+        console.log(err, err.stack.split("\n"));
+        res.sendStatus(500);
+        return;
+    });
 });
 
 router.get(mongodbConfig.url.user.loadAppUserByObjId, function (req, res) {
@@ -48,12 +105,129 @@ router.get(mongodbConfig.url.user.loadAppUserByObjId, function (req, res) {
         });
 });
 
-router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (req, res) {
+router.get('/FindByUsernameAndPassword/:Email/:Password', function (req, res) {
     console.log('user.js -> /users ');
+    var findOneAppUserPromise = function (query) {
+        var defer = Q.defer();
+        db.collection(mongodbConfig.mongodb.user.name)
+            .findOne(query, function (err, doc) {
+            if (err) {
+            //    console.log(err);
+                defer.reject(err);
+            } else {
+                console.log('oneuser ', doc);
+                defer.resolve(doc);
+            }
+        });
+        return defer.promise;
+    }
+    var findOneRolePromise = function (queryRole) {
+        var defer = Q.defer();
+        db.collection(mongodbConfig.mongodb.role.name)
+            .findOne(queryRole, function (err, doc) {
+            if (err) {
+                defer.reject(err);
+            } else {
+                defer.resolve(doc);
+            }
+        });
+        return defer.promise;
+    }
+    var findOneStaffPromise = function (queryStaff) {
+        var defer = Q.defer();
+        db.collection(mongodbConfig.mongodb.staff.name)
+            .findOne(queryStaff, function (err, doc) {
+            if (err) {
+                defer.reject(err);
+            } else {
+                defer.resolve(doc);
+            }
+        });
+        return defer.promise;
+    }
+    var findFirstAppUserFromUI = function (queryFindUserFirst) {
+        var defer = Q.defer();
+        db.collection(mongodbConfig.mongodb.user.name)
+            .findOne(queryFindUserFirst , function (err, doc) {
+            if( err ) {
+                defer.reject(err);
+            } else {
+                defer.resolve(doc);
+            }
+        });
+        return defer.promise;
+    }
+
     var Username = req.params.Email;
     var Password = req.params.Password;
-    
-    db.collection(mongodbConfig.mongodb.user.name).findOne({$or: [ { Username: Username }, { Email : Username } ]}, function (err, doc) {
+    var queryFindUserFirst = {$or: [ { Username: Username }, { Email : Username } ]};
+    var AppUser = {};
+    // First Call , check is exist Username/Email and Password exist ?
+    findFirstAppUserFromUI(queryFindUserFirst)
+    .then(function(data, status) {
+        if(!data) {
+            res.sendStatus(404);
+            return;
+        } else {
+        /*    var compare = bcrypt.compare(Password, data.Password, function(err, result) {
+                console.log('compare ' + result);
+                if (result) {
+                    var queryOneAppUser = {
+                       $or: [ { Username: Username }, { Email : Username } ],
+                       Terminal : 'web'
+                    };
+                    return findOneAppUserPromise(queryOneAppUser);
+                }
+            });*/
+
+        return  bcrypt_then.compare(Password, data.Password).then(function (valid) {
+                if (valid) {
+                    var queryOneAppUser = {
+                       $or: [ { Username: Username }, { Email : Username } ],
+                       Terminal : 'web'
+                    };
+                    return findOneAppUserPromise(queryOneAppUser);
+                }
+            });
+        }
+    }, function(err, status) {
+        console.log(err, err.stack.split("\n"));
+        res.sendStatus(500);
+        return;
+    })
+    .then(function(data, status) {
+        console.log('after one user', data);
+        if(!data) {
+            res.sendStatus(404);
+            return;
+        } else {
+            AppUser = data;
+            var qRole = { 'RoleCode': data.RoleCode };
+            if (data.RoleCode !== undefined && data.RoleCode.length > 0) {
+                return findOneRolePromise(qRole);
+            } 
+        }
+    }, function(err, status) {
+        console.log(err, err.stack.split("\n"));
+        res.sendStatus(500);
+        return;
+    })
+    .then(function(data, status) {
+        if(!data) {
+            res.sendStatus(404);
+            return;
+        } else {
+            AppUser.Role = data;
+            res.json(AppUser); 
+        }
+    }, function(err, status) {
+        console.log(err, err.stack.split("\n"));
+        res.sendStatus(500);
+        return;
+    });
+/*
+    db.collection(mongodbConfig.mongodb.user.name)
+    .findOne({$or: [ { Username: Username }, { Email : Username } ]}, function (err, doc) {
         if (err) {
             console.log(err);
         } else if (!doc) {
@@ -109,7 +283,7 @@ router.get(mongodbConfig.url.user.loadAppUserByUsernameAndPassword, function (re
             });
         } 
     });
-
+*/
     var findOneAppUser = function (query, callback) {
         db.collection(mongodbConfig.mongodb.user.name).findOne(query, function (err, doc) {
             if (err) {
@@ -165,6 +339,7 @@ router.post(mongodbConfig.url.user.createAppUser, function (req, res) {
                 if (error) throw error
                 res.json(appuser);
             });
+
 });
 
 // Update AppUser
@@ -202,14 +377,37 @@ router.post(mongodbConfig.url.user.updateAppUser, function (req, res) {
 router.get(mongodbConfig.url.user.deleteAppUserByAppUserId, function (req, res) {
     var AppUserId = req.params.AppUserId;
     var o_id = bson.BSONPure.ObjectID(AppUserId.toString());
-    db.collection(mongodbConfig.mongodb.user.name)
+ /*   db.collection(mongodbConfig.mongodb.user.name)
         .remove({
             _id: o_id
         }, function (error, result) {
             if (error) throw error
 
             res.json(result);
-        });
+        });*/
+    var deleteAppUserByIdPromise = function() {
+        var defer = Q.defer();
+        db.collection(mongodbConfig.mongodb.user.name)
+            .remove({
+                _id: o_id
+            }, function (err, result) {
+                if (err) {
+                    defer.reject(err);
+                } else {
+                    defer.resolve(result);
+                }
+            });
+        return defer.promise;
+    }
+    deleteAppUserByIdPromise().then(function(data, status) {
+        if(data) {
+            res.json(data);
+        }
+    }, function(err, status) {
+        console.log(err, err.stack.split("\n"));
+        res.sendStatus(500);
+        return;
+    });
 });
 
 router.get(mongodbConfig.url.user.isExistUsername, function(req, res) {
@@ -275,7 +473,7 @@ router.post(mongodbConfig.url.user.createAppUserByUsernameAndPasswordAndEmail, f
         'UserType' : 'user',
         'Terminal' : 'web'
     };
-    db.collection(mongodbConfig.mongodb.user.name)
+/*    db.collection(mongodbConfig.mongodb.user.name)
         .insert(appuser, function (error, result) {
             if (error) {
                 console.log('error ' + error);
@@ -288,6 +486,29 @@ router.post(mongodbConfig.url.user.createAppUserByUsernameAndPasswordAndEmail, f
                 } 
             }
         });
+  */  
+    var createAppUserPromise = function() {
+        var defer = Q.defer();
+        db.collection(mongodbConfig.mongodb.user.name)
+            .insert(appuser, function (err, result) {
+                if (err) {
+                    defer.reject(err);
+                } else {
+                    defer.resolve(result);
+                }
+            });
+        return defer.promise;
+    }
+
+    createAppUserPromise().then(function(data, status) {
+        if (data) {
+            res.json(result);
+        } 
+    }, function(err, status) {
+        console.log(err, err.stack.split("\n"));
+        res.sendStatus(500);
+        return;
+    });
 });
 
 function ReplaceASCIICharacter(encodeUrl) {
@@ -389,6 +610,7 @@ router.get('/PerformChangePassword/:Email/:Password', function (req, res) {
 router.post('/CreateAndUpdateWithSocial', function (req, res) {
     console.log('into create social');
     var Social = req.body;
+    /*
     db.collection(mongodbConfig.mongodb.user.name)
         .findOne(
             {
@@ -431,6 +653,72 @@ router.post('/CreateAndUpdateWithSocial', function (req, res) {
                     });
                 }
             }
+    });
+    */
+    var checkIsExistSocialAccount = function() {
+        var defer = Q.defer();
+        db.collection(mongodbConfig.mongodb.user.name)
+            .findOne(
+                {
+                    'SocialId' : Social.id,
+                    'Terminal' : Social.provider
+                }
+                , function (err, isexist) {
+                    if (err) {
+                        defer.reject(err);
+                    } else {
+                        defer.resolve(isexist);
+                    }
+                });
+        return defer.promise;
+    }
+    var createSocialAccount = function() {
+        var defer = Q.defer();
+        var appuser = {
+                'Username' : '',
+                'Password' : '',
+                'Email' : Social.email,
+                'Firstname' : Social.firstname,
+                'Lastname' : Social.lastname,
+                'Name' : Social.name,
+                'IsActivate': true,
+                'RoleCode' : 'RL0005',
+                'UserType' : 'user',
+                'Terminal' : Social.provider,
+                'SocialId' : Social.id
+            };
+            db.collection(mongodbConfig.mongodb.user.name)
+                .insert(appuser, function (err, result) {
+                    if (err) {
+                        defer.reject(err);
+                    //    console.log(err, err.stack.split("\n"));
+                    //    res.json(500, err);
+                    //    return;
+                    } else {
+                        defer.resolve(result);
+                    }
+            });
+        return defer.promise;
+    }
+
+    checkIsExistSocialAccount()
+    .then(function(data, status) {
+        if (data) {
+            res.sendStatus(200);
+        } else if (!data) {
+            return createSocialAccount();
+        }
+    },function (err, status) {
+        console.log(err, err.stack.split("\n"));
+        res.json(500, err);
+        return;
+    })
+    .then(function(data, status) {
+        res.sendStatus(200);
+    }, function(err, status) {
+        console.log(err, err.stack.split("\n"));
+        res.json(500, err);
+        return;
     });
 });
 module.exports = router;

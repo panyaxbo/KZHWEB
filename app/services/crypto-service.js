@@ -11,6 +11,19 @@ app.service("CryptoService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
 		    	defer.reject(error);
 		    });
 	        return defer.promise;
+    	},
+    	GenerateForgetPasswordHashLink: function(ForgetPasswordEmail) {
+    		var defer = $q.defer();
+    		var genforgetLink = ENV.apiEndpoint + '/cryptojs/GenerateForgetPasswordHashLink/' + ForgetPasswordEmail;
+            $http.get(genforgetLink)
+            .success(function(data, status) { 
+              
+            })
+            .error(function(error, status) {
+
+            });
+
+            return defer.promise;
     	}
     };
 }]);

@@ -53,6 +53,23 @@ app.service("CredentialService", ["$q", "$http", "ENV", function ($q, $http, ENV
 		    	defer.reject(error);
 		    });
 		    return defer.promise;
+    	},
+    	LoadRecaptcha:function() {
+    		var defer = $q.defer();
+    		var recaptchaURL = ENV.apiEndpoint + "/recaptchas/GetRecaptchaKey";
+		    $http.get(recaptchaURL)
+		    .success(function(data, status) {
+		    /*  $scope.response = null;
+		      $scope.widgetId = null;
+		      $scope.model = {
+		          key: data
+		      };*/
+		      	defer.resolve(data);
+		    })
+		    .error(function(error, status) {
+		    	defer.reject(error);
+		    });
+    		return defer.promise;
     	}
     };
 }]);
