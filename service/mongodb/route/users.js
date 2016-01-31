@@ -196,7 +196,7 @@ router.get('/FindByUsernameAndPassword/:Email/:Password', function (req, res) {
         return;
     })
     .then(function(data, status) {
-        console.log('after one user', data);
+        
         if(!data) {
             res.sendStatus(404);
             return;
@@ -218,6 +218,7 @@ router.get('/FindByUsernameAndPassword/:Email/:Password', function (req, res) {
             return;
         } else {
             AppUser.Role = data;
+            console.log('after one user', AppUser);
             res.json(AppUser); 
         }
     }, function(err, status) {

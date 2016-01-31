@@ -7,6 +7,7 @@ global.mongodbConfig = require('../mongodb_config.json');
 global.serverConfig = require('../server-config.js');
 global.appRoot = require('app-root-path');
 global.mongodb = require('mongodb');
+global.mongodb_promise = require('mongodb-promise');
 global.bson = require('bson');
 global.http = require('http');
 global.url = require('url');
@@ -128,6 +129,17 @@ mongodb.MongoClient.connect(mongolab_uri, function (err, database) {
     db = database;
 });
 
+
+//Using Mongodb-Promise
+/*
+mongodb_promise.MongoClient.connect(mongolab_uri).then(function(database){
+ //   database.close().then(console.log('success'));
+    db = database;
+    console.log('using mongo promise ', database);
+}, function(err) {
+    console.log('using moong promise err ', err, err.stack.split("\n"));
+});
+ */
 
 /*
 mongodb.MongoClient.connect(heroku_mongolab_uri, function (err, database) {

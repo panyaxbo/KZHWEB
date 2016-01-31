@@ -1,7 +1,9 @@
 app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$filter", "ngTableParams", "Upload", "$rootScope", "blockUI", "$http", 
-    "$filter", "MenuService", "ReceiptOrderService", "UserService", "CompanyService", "ENV" 
-    ,function ($scope, $location, $anchorScroll, $filter, ngTableParams, Upload, $rootScope, blockUI, 
-    $http, $filter, MenuService, ReceiptOrderService, UserService, CompanyService, ENV) {
+    "$filter", "MenuService", "ReceiptOrderService", "UserService", "CompanyService", "ENV", "ProductService", "ProductTypeService",
+    "ProductCategoryService", "ProvinceService", "DistrictService", "SubDistrictService", "AppConfigService",
+    function ($scope, $location, $anchorScroll, $filter, ngTableParams, Upload, $rootScope, blockUI, $http, $filter, MenuService, 
+        ReceiptOrderService, UserService, CompanyService, ENV, ProductService, ProductTypeService, ProductCategoryService,
+        ProvinceService, DistrictService, SubDistrictService, AppConfigService) {
 
     $scope.Product = [];
   
@@ -162,34 +164,42 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
             MenuService.Menu.SelectedMenu = "thai-post";
             $scope.SelectedMenu = "thai-post";
         } 
-    //    else {
-    //        MenuService.Menu.SelectedMenu = "product";
-    //        $scope.SelectedMenu = "product";
-    //    }
         $scope.$emit('handleBodyMenuEmit', {
             SelectedMenu: menu
         });
     }
     $scope.LoadProductType = function () {
-        var url = ENV.apiEndpoint + '/product_types/LoadProductType';
+        ProductService.LoadProductType().then(function(data, status) {
+            $scope.ProductType = data;
+        }, function(err, status) {
+
+        });
+    /*  var url = ENV.apiEndpoint + '/product_types/LoadProductType';
         $http.get(url)
             .success(function (data) {
                 $scope.ProductType = data;
                 //       $scope.CurrentIndex = index;
             })
             .error(function () {
-            });
+            });*/
     }
     $scope.LoadProductCategory = function () {
-        var url = ENV.apiEndpoint  + '/product_categories/LoadProductCategory';
+    /*    var url = ENV.apiEndpoint  + '/product_categories/LoadProductCategory';
         $http.get(url)
             .success(function (data) {
                 $scope.ProductCategory = data;
             })
-            .error(function () {});
+            .error(function () {});*/
+
+        ProductCategoryService.LoadProductCategory()
+        .then(function(data, status) {
+            $scope.ProductCategory = data;
+        }, function(err, status) {
+
+        });
     }
     $scope.LoadProduct = function () {
-        var url = ENV.apiEndpoint + '/products/LoadProduct';
+    /*    var url = ENV.apiEndpoint + '/products/LoadProduct';
         $http.get(url)
             .success(function (data) {
                 $scope.Product = data;
@@ -197,6 +207,13 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
             .error(function () {
                 //    alert("Cannot get Product data from Server..");
             });
+            */
+        ProductService.LoadProduct()
+        .then(function(data, status) {
+            $scope.Product = data;
+        }, function (err, status) {
+
+        });
     }
     $scope.AddCart = function (SelectedProduct, BuyQty, Index) {
             if (BuyQty > 0) {
@@ -316,7 +333,7 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
         // Load Product by ProductCategoryCode
     $scope.LoadProductByProductCategoryCode = function (ProductCategoryCode) {
         $('html, body').animate({ scrollTop: $('#product-section').offset().top }, 'slow');
-
+/*
         var url = ENV.apiEndpoint + "/products/LoadProductByProductCategoryCode/" + ProductCategoryCode;
         $http.get(url)
             .success(function (data) {
@@ -331,7 +348,18 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
             .error(function (err) {
                 //    alert("Cannot get Product data from Server..");
                 sweetAlert("Error !!", "Cannot get Product data from Server..", "error");
+            });*/
+        ProductService.LoadProductByProductCategoryCode(ProductCategoryCode)
+        .then(function(data, status) {
+            $scope.Product = data;
+
+            $scope.SelectedMenu = "product";
+            $scope.$emit('handleBodyMenuEmit', {
+                SelectedMenu: "product"
             });
+        }, function(err, status) {
+            sweetAlert("Error !!", "Cannot get Product data from Server..", "error");
+        });
     }
 
     // Function for Product Type Module
@@ -3255,7 +3283,7 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
     }
     // End Function for Receipt Module
     $scope.InitShipment = function() {
-        var url = ENV.apiEndpoint + '/provinces/LoadProvince/';
+    /*    var url = ENV.apiEndpoint + '/provinces/LoadProvince/';
         $http.get(url)
             .success(function (provinces) {
                 $scope.SelectBillingProvinceList = provinces;
@@ -3271,42 +3299,75 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
             })
             .error(function (provinces) {
                 console.log(provinces);
-            });
+            });*/
+        ProvinceService.LoadProvince()
+        .then(function(provinces, status) {
+            $scope.SelectBillingProvinceList = provinces;
+            $scope.SelectReceiptProvinceList = provinces;
+            $scope.ROHead.BillingProvinceId = "";
+            $scope.ROHead.BillingDistrictId = "";
+            $scope.ROHead.BillingSubDistrictId = "";
+            $scope.ROHead.BillingZipCode = "";
+            $scope.ROHead.ReceiptProvinceId = "";
+            $scope.ROHead.ReceiptDistrictId = "";
+            $scope.ROHead.ReceiptSubDistrictId = "";
+            $scope.ROHead.ReceiptZipCode = "";
+        }, function(err, status) {
+            console.log(err);
+        });
     }
     $scope.UpdateBillingProvince = function() {
         console.log("ProvinceId " + $scope.ROHead.BillingProvinceId);
-        var url = ENV.apiEndpoint + "/districts/LoadDistrictByProvinceId/"+  $scope.ROHead.BillingProvinceId;
+/*        var url = ENV.apiEndpoint + "/districts/LoadDistrictByProvinceId/"+  $scope.ROHead.BillingProvinceId;
         $http.get(url)
             .success(function (districts) {
                 $scope.SelectBillingDistrictList = districts;
             })
             .error(function (districts) {
                 console.log(districts);
-            });
+            });*/
+        DistrictService.LoadDistrictByProvince($scope.ROHead.BillingProvinceId)
+        .then(function(districts, status) {
+            $scope.SelectBillingDistrictList = districts;
+        }, function(err, status) {
+            console.log(err);
+        });
     }
     $scope.UpdateReceiptProvince = function() {
         console.log("ProvinceId " + $scope.ROHead.ReceiptProvinceId);
-        var url = ENV.apiEndpoint + "/districts/LoadDistrictByProvinceId/"+  $scope.ROHead.ReceiptProvinceId;
+    /*    var url = ENV.apiEndpoint + "/districts/LoadDistrictByProvinceId/"+  $scope.ROHead.ReceiptProvinceId;
         $http.get(url)
             .success(function (districts) {
                 $scope.SelectReceiptDistrictList = districts;
             })
             .error(function (districts) {
                 console.log(districts);
-            });
+            });*/
+        DistrictService.LoadDistrictByProvince($scope.ROHead.ReceiptProvinceId)
+        .then(function(districts, status) {
+            $scope.SelectReceiptDistrictList = districts;
+        }, function(err, status) {
+            console.log(err);
+        });
     }
     $scope.UpdateBillingDistrict = function() {
-        var url = ENV.apiEndpoint + "/subdistricts/LoadSubDistrictByDistrictId/"+ $scope.ROHead.BillingDistrictId;
+    /*    var url = ENV.apiEndpoint + "/subdistricts/LoadSubDistrictByDistrictId/"+ $scope.ROHead.BillingDistrictId;
         $http.get(url)
             .success(function (subdistricts) {
                 $scope.SelectBillingSubDistrictList = subdistricts;
             })
             .error(function (subdistricts) {
                 console.log(subdistricts);
+        });*/
+        SubDistrictService.LoadSubDistrictByDistrict($scope.ROHead.BillingDistrictId)
+        .then(function(data, status) {
+            $scope.SelectBillingSubDistrictList = subdistricts;
+        }, function(err, status) {
+            console.log(err);
         });
     }
     $scope.UpdateReceiptDistrict = function() {
-        var url = ENV.apiEndpoint + "/subdistricts/LoadSubDistrictByDistrictId/"+ $scope.ROHead.ReceiptDistrictId;
+    /*    var url = ENV.apiEndpoint + "/subdistricts/LoadSubDistrictByDistrictId/"+ $scope.ROHead.ReceiptDistrictId;
         $http.get(url)
             .success(function (subdistricts) {
                 $scope.SelectReceiptSubDistrictList = subdistricts;
@@ -3314,9 +3375,16 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
             .error(function (subdistricts) {
                 console.log(subdistricts);
         });
+            */
+        SubDistrictService.LoadSubDistrictByDistrict($scope.ROHead.BillingDistrictId)
+        .then(function(data, status) {
+            $scope.SelectReceiptSubDistrictList = subdistricts;
+        }, function(err, status) {
+            console.log(err);
+        });
     }
     $scope.UpdateBillingSubDistrict = function() {
-        var url = ENV.apiEndpoint + "/subdistricts/LoadSubDistrictBySubDistrictId/"+ $scope.ROHead.BillingSubDistrictId;
+    /*    var url = ENV.apiEndpoint + "/subdistricts/LoadSubDistrictBySubDistrictId/"+ $scope.ROHead.BillingSubDistrictId;
         $http.get(url)
             .success(function (zipcode) {
                 console.log('Bill ' + zipcode);
@@ -3327,11 +3395,21 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
             })
             .error(function (zipcode) {
                 console.log(zipcode);
+        });*/
+        SubDistrictService.LoadSubDistrictBySubDistrict($scope.ROHead.BillingSubDistrictId)
+        .then(function(zipcode, status) {
+            console.log('Bill ' + zipcode);
+            console.log(zipcode);
+            console.log(zipcode.ZipCode);
+            $scope.SelectBillingZipCodeList = zipcode;
+            $scope.ROHead.BillingZipCode = zipcode.ZipCode;
+        }, function(err, status) {
+            console.log(err);
         });
     }
 
     $scope.UpdateReceiptSubDistrict = function() {
-        var url = ENV.apiEndpoint + "/subdistricts/LoadSubDistrictBySubDistrictId/"+ $scope.ROHead.ReceiptSubDistrictId;
+    /*    var url = ENV.apiEndpoint + "/subdistricts/LoadSubDistrictBySubDistrictId/"+ $scope.ROHead.ReceiptSubDistrictId;
         $http.get(url)
             .success(function (zipcode) {
                 console.log(zipcode);
@@ -3341,6 +3419,15 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
             })
             .error(function (zipcode) {
                 console.log(zipcode);
+        });*/
+        SubDistrictService.LoadSubDistrictBySubDistrict($scope.ROHead.ReceiptSubDistrictId)
+        .then(function(zipcode, status) {
+            console.log(zipcode);
+            console.log(zipcode[0].ZipCode);
+            $scope.SelectReceiptZipCodeList = zipcode;
+            $scope.ROHead.ReceiptZipCode = zipcode.ZipCode;
+        }, function(err, status) {
+            console.log(err);
         });
     }
 
@@ -3506,7 +3593,7 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
     $scope.ValidateFinish = function() {
         console.log('ValidateFinish');
         blockUI.start("Processing ...");
-        var newCodeUrl = ENV.apiEndpoint + "/appconfig/GetNewCode/RO";
+   /*     var newCodeUrl = ENV.apiEndpoint + "/appconfig/GetNewCode/RO";
         $http.get(newCodeUrl)
         .success(function(data, status, headers, config) {
             var newRONo = data;
@@ -3558,10 +3645,50 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
         }).error(function(data, status, headers, config) {
             blockUI.stop();
         });
+*/
+        AppConfigService.GetNewCode("RO")
+        .then(function(newcode, status) {
+            blockUI.message("25%");
+            $scope.ROHead.RODate = new Date(); //(new Date()).toISOString();
+            $scope.ROHead.RONo = newcode;
+            $scope.ROHead.ROLineList = $scope.ROLineList;
+            $scope.ROHead.PaymentType = $scope.PaymentType;
+            $scope.ROHead.PaymentBank = $scope.PaymentBank;
+            $scope.ROHead.UserId = $scope.User.Id;
+            $scope.ROHead.PaymentStatus = "N";
+            $scope.ROHead.ShippingStatus = "N";
+            $scope.ROHead.StaffApprovePaymentStatus = "N";
+            return ReceiptOrderService.CreateReceiptOrder($scope.ROHead);
+        }, function(err, status) {
+            blockUI.stop();
+            console.log('err create receipt ', err);
+        })
+        .then(function(data, status) {
+            blockUI.message("53%");
+            return EmailService.SendEmailStaffNewOrder(newcode);
+        }, function(err, status) {
+            blockUI.stop();
+            console.log('create ro head ', err);
+        })
+        .then(function(data, status) {
+            blockUI.message("74%");
+            return EmailService.SendEmailCustomerNewOrder($scope.User.Email, newcode);
+        }, function(err, status) {
+            blockUI.stop();
+            console.log('error sending email staff ', err);
+        })
+        .then(function(data, status) {
+            blockUI.message("98%");
+            blockUI.stop();
+            swal("Thank you for your order", "You can check and track your order in history.", "success");
+        }, function(err, status) {
+            blockUI.stop();
+            console.log('error sending email customer ', err);
+        });
     }
 
     $scope.SearchHistoryReceipt = function() {
-        var historyReceiptUrl = ENV.apiEndpoint + "/receipts/LoadROHeadByUserIdAndStatus/"+$scope.User.Id+"/"+$scope.SearchPaymentStatus
+    /*    var historyReceiptUrl = ENV.apiEndpoint + "/receipts/LoadROHeadByUserIdAndStatus/"+$scope.User.Id+"/"+$scope.SearchPaymentStatus
         +"/"+$scope.SearchShippingStatus+"/"+$scope.StartDate+"/"+$scope.EndDate;
         console.log(historyReceiptUrl);
         $http.get(historyReceiptUrl)
@@ -3584,6 +3711,27 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
         .error(function (data) {
             console.log(data);
         });
+*/
+        ReceiptOrderService.LoadROHeadByUserIdAndStatus($scope.User.Id, $scope.SearchPaymentStatus, $scope.SearchShippingStatus, 
+            $scope.StartDate, $scope.EndDate)
+        .then(function(data, status) {
+            if (data.length > 0 ) {
+                $scope.SearchHistoryReceipts = data;
+                $scope.HistoryReceiptTableParams = new ngTableParams({
+                    page: 1,            // show first page
+                    count: 10           // count per page
+                }, {
+                    total: data.length, // length of data
+                    getData: function($defer, params) {
+                        $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    }
+                });
+            } else {
+                swal("Your data not found", "Cannot find your purchase order data.", "warning");
+            }
+        }, function(err, status) {
+            console.log(err);
+        });
     }
 
 
@@ -3597,6 +3745,7 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
         } else {
             $scope.SearchCustomerName = $('#SelectCustomerList').val();
         }
+/*
         var customerOrderUrl = ENV.apiEndpoint + "/receipts/LoadROHeadByStaff/"+ $scope.SearchCustomerRONo+"/"+ $scope.SearchCustomerName
         +"/"+$scope.SearchCustomerOrderPaymentStatus+"/"+$scope.SearchCustomerOrderShippingStatus
         +"/"+$scope.SearchCustomerOrderStartDate+"/"+$scope.SearchCustomerOrderEndDate;
@@ -3620,6 +3769,27 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
         })
         .error(function (data) {
             console.log(data);
+        });*/
+
+        ReceiptOrderService.LoadROHeadByStaff($scope.SearchCustomerRONo, $scope.SearchCustomerName, $scope.SearchCustomerOrderPaymentStatus, 
+            $scope.SearchCustomerOrderShippingStatus, $scope.SearchCustomerOrderStartDate, $scope.SearchCustomerOrderEndDate)
+        .then(function(data, status) {
+            if (data.length > 0 ) {
+                $scope.SearchCustomerOrders = data;
+                $scope.CustomerOrderTableParams = new ngTableParams({
+                    page: 1,            // show first page
+                    count: 10           // count per page
+                }, {
+                    total: data.length, // length of data
+                    getData: function($defer, params) {
+                        $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    }
+                });
+            } else {
+                swal("Your data not found", "Cannot find customer order data.", "warning");
+            }
+        }, function (err, status) {
+            console.log(err);
         });
     }
 
@@ -3674,8 +3844,9 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
     }
 
     $scope.ViewRO = function (roHeadId, mode) {
-        var loadROHeadLineUrl = ENV.apiEndpoint + "/receipts/LoadROHeadROLineByObjId/" + roHeadId;
-        $http.get(loadROHeadLineUrl)
+     /*    
+     var loadROHeadLineUrl = ENV.apiEndpoint + "/receipts/LoadROHeadROLineByObjId/" + roHeadId;
+       $http.get(loadROHeadLineUrl)
         .success(function (data, status, headers, config) {
             console.log(data);
             if (mode === 'History') {
@@ -3708,12 +3879,38 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
         .error(function (data, status, headers, config) {
 
         });
+*/
+        ReceiptOrderService.LoadROHeadROLineByROHeadId(roHeadId)
+        .then(function(data, status) {
+            console.log(data);
+            if (mode === 'History') {
+                return AWSService.DownloadReceiptPaymentThumbnail($scope.ViewHistoryRO.RONo);
+            } else if (mode === 'Customer') {
+                return AWSService.DownloadReceiptPaymentThumbnail($scope.ViewStaffRO.RONo);
+            }
+        }, function(err, status) {
+            console.log(err);
+        })
+        .then(function(data, status) {
+            if (mode === 'History') {
+                var img = $('#ThumbnailReceiptPayment').closest('div').find('img').first();
+                img.remove();
+                $('#ThumbnailReceiptPayment').append(data);
+            } else if (mode === 'Customer') {
+                var img = $('#ThumbnailStaffViewReceiptPayment').closest('div').find('img').first();
+                img.remove();
+                $('#ThumbnailStaffViewReceiptPayment').append(data);
+            }
+        }, function(err, status) {
+            console.log(err);
+        })
     }
 
      $scope.PerformValidatePaymentDocument = function (IsApprove) {
         console.log($scope.ViewStaffRO.UserId);
         var UserId = $scope.ViewStaffRO.UserId;
-        if (IsApprove === 'Y') {
+        
+/*        if (IsApprove === 'Y') {
             var approveMailUrl = ENV.apiEndpoint + '/mails/ApprovePaymentDocument/' + UserId;
             $http.get(approveMailUrl)
             .success(function (data, status, headers, config) {
@@ -3763,6 +3960,51 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
                     });
             });
             
+        }
+*/
+        if (IsApprove === 'Y') {
+            EmailService.SendEmailApprovePayment(UserId)
+            .then(function(data, status) {
+                return ReceiptOrderService.PerformApprovePayment($scope.ViewStaffRO.RONo);
+            }, function(err, status) {
+                console.log(err);
+            })
+            .then(function(data, status) {
+                swal("สำเร็จ", "อนุมัติเอกสารการจ่ายเงินเรียบร้อย", "success"); 
+            }, function(err, status) {
+                swal("เกิดข้อผิดพลาด", data, "error");
+            })
+        } else if (IsApprove === 'N') {
+            console.log($scope.ViewStaffRO.UserId);
+            swal({   
+                title: "Reject Payment Document",   
+                text: "Reason",   
+                type: "input",   
+                showCancelButton: true,   
+                closeOnConfirm: false,   
+                animation: "slide-from-top",   
+                inputPlaceholder: "Reject reason" }
+                , function(inputValue) {   
+                    if (inputValue === false) return false;      
+                    if (inputValue === "") {     
+                        swal.showInputError("You need to write something!");     
+                        return false   
+                    }      
+                    $scope.ValidateForm = {
+                        UserId : '',
+                        RejectReason : ''
+                    };
+                    $scope.ValidateForm.UserId = UserId;
+                    $scope.ValidateForm.RejectReason = inputValue;
+
+                    EmailService.SendEmailRejectPayment($scope.ValidateForm)
+                    .then(function(data, status) {
+                        console.log('reject success');
+                        $('#ThumbnailReceiptPayment').modal('toggle');
+                    }, function(err, status) {
+                        swal("เกิดข้อผิดพลาด", data, "error");
+                    });
+            });
         }
     }
 }]);

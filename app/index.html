@@ -536,7 +536,12 @@
                     </li>
             </div>
         </div>
-        <div>search <input type="text"></div>
+        <div class="input-group search-form">
+          <input type="text" class="form-control" ng-model="SearchAllText" ng-enter="Search()" ng-keydown="expression" placeholder="{{'HEAD.MENU.SEARCH.PLACEHOLDER' | translate}}">
+          <span class="input-group-btn">
+            <button class="btn btn-danger search-button-spacer" type="reset" ng-click="Search()"><span class="glyphicon glyphicon-search"></span></button>
+          </span>
+        </div>
         <div id="div-body" ng-controller="BodyController">
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
@@ -3916,6 +3921,13 @@
         <script src="/services/social-service.js"></script>
         <script src="/services/email-service.js"></script>
         <script src="/services/crypto-service.js"></script>
+        <script src="/services/product-category-service.js"></script>
+        <script src="/services/product-type-service.js"></script>
+        <script src="/services/province-service.js"></script>
+        <script src="/services/district-service.js"></script>
+        <script src="/services/sub-district-service.js"></script>
+        <script src="/services/app-config-service.js"></script>
+        <script src="/services/aws-service.js"></script>
 </body>
 
 </html>

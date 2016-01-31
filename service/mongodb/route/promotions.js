@@ -1,9 +1,7 @@
 var express = require('express');
-//var jsdom = require('jsdom');
-//var window = jsdom.jsdom().createWindow();
-//var $ = require('jquery')(window);
 var $ = require('jquery')(require("jsdom").jsdom().parentWindow);
 var router = express.Router();
+var Q = require('q');
 
 /* GET users listing. */
 router.get(mongodbConfig.url.promotion.home, function (req, res, next) {
@@ -82,19 +80,45 @@ router.get('/array', function (req, res) {
 
 
 router.get('/LoadAllPromotion', function(req, res, next) {
-	db.collection(mongodbConfig.mongodb.promotion.name)
+/*	db.collection(mongodbConfig.mongodb.promotion.name)
         .find({})
         .toArray(function (err, promotions) {
         //    console.log(promotions);
             res.json(promotions);
-        });
+        });*/
+    var loadPromotionPromise = function() {
+        var defer = Q.defer();
+        db.collection(mongodbConfig.mongodb.promotion.name)
+            .find({})
+            .toArray(function (err, promotions) {
+            //    console.log(promotions);
+                if (err) {
+                    defer.reject(err);
+                } else {
+                    defer.resolve(promotions);
+                }
+            });
+        return defer.promise;
+    }
+    loadPromotionPromise().then(function(data, status) {
+        if (data) {
+            res.json(data);
+        } else if (!data) {
+            res.sendStatus(404);
+            return;
+        }
+    }, function(err, status) {
+        console.log(error, error.stack.split("\n"));
+        res.sendStatus(500);
+        return;
+    });
 });
 
 router.get('/LoadPromotionByObjId/:PromotionId', function (req, res, next) {
 	console.log('Product id ' + req.params.PromotionId);
     var PromotionId = req.params.PromotionId;
     var o_id = bson.BSONPure.ObjectID(PromotionId.toString());
-    db.collection(mongodbConfig.mongodb.promotion.name)
+  /*  db.collection(mongodbConfig.mongodb.promotion.name)
         .findOne({
             '_id': o_id
         }, function (err, promotion) {
@@ -106,6 +130,35 @@ router.get('/LoadPromotionByObjId/:PromotionId', function (req, res, next) {
                 res.json(promotion);
             }
         });
+*/
+    var loadPromotionByObjIdPromise = function() {
+        var defer = Q.defer();
+        db.collection(mongodbConfig.mongodb.promotion.name)
+            .findOne({
+                '_id': o_id
+            }, function (err, promotion) {
+                if (err) {
+                    defer.reject(err);
+                } else {
+                    // call your callback with no error and the data
+                  //  res.json(promotion);
+                    defer.resolve(promotion);
+                }
+            });
+        return defer.promise;
+    }
+    loadPromotionByObjIdPromise().then(function(data, status) {
+        if (data) {
+            res.json(data);
+        } else if (!data) {
+            res.sendStatus(404);
+            return;
+        }
+    }, function(err, status) {
+        console.log(error, error.stack.split("\n"));
+        res.sendStatus(500);
+        return;
+    });
 });
 
 router.post('/CreatePromotion', function (req, res) {

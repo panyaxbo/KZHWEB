@@ -105,6 +105,34 @@ router.get(mongodbConfig.url.customer_type.loadCustomerTypeByCustomerTypeCode, f
             console.log(items);
             res.json(items);
         });
+    var loadCustomerTypeByCustomerTypeCodePromise = function() {
+        var defer = Q.defer();
+        db.collection(config.mongodb.customer_type.name)
+        .find({
+            'CustomerTypeCode': CustomerTypeCode
+        })
+        .toArray(function (err, items) {
+            if (err) {
+                defer.reject(err);
+            } else {
+                defer.resolve(items);
+            }
+        });
+        return defer.promise;
+    }
+
+    loadCustomerTypeByCustomerTypeCodePromise().then(function(data, status) {
+        if(!data) {
+            res.sendStatus(404);
+            return;
+        } else {
+            res.json(data); 
+        }
+    }, function(err,  status) {
+        console.log(err, err.stack.split("\n"));
+        res.sendStatus(500);
+        return;
+    });
 });
 
 // Create Customer Type
@@ -115,12 +143,34 @@ router.post(mongodbConfig.url.customer_type.createCustomerType, function (req, r
     createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
     CustomerType.CreateDate = createDate;
     CustomerType.UpDateDate = createDate;
-    db.collection(mongodbConfig.mongodb.customer_type.name)
+    
+  /*  db.collection(mongodbConfig.mongodb.customer_type.name)
         .insert(CustomerType,
             function (err, result) {
                 if (err) console.log(err, err.stack.split("\n"));
                 res.json(result);
             });
+*/
+    var createCustomerTypePromise = function() {
+        var defer = Q.defer();
+        db.collection(mongodbConfig.mongodb.customer_type.name)
+        .insert(CustomerType,
+            function (err, result) {
+                if (err) {
+                    defer.reject(err);
+                } else {
+                    defer.resolve(result);
+                }
+            });
+        return defer.promise;
+    }
+    createCustomerTypePromise().then(function(data, status) {
+        res.json(data);
+    }, function (err, status) {
+        console.log(err, err.stack.split("\n"));
+        res.sendStatus(500);
+        return;
+    })
 });
 
 // Update Customer Type
@@ -130,6 +180,7 @@ router.post(mongodbConfig.url.customer_type.updateCustomerType, function (req, r
     var o_id = bson.BSONPure.ObjectID(CustomerType._id.toString());
     var updateDate = new Date ();
     updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
+    
     db.collection(mongodbConfig.mongodb.customer_type.name)
         .update({
                 _id: o_id
@@ -148,6 +199,37 @@ router.post(mongodbConfig.url.customer_type.updateCustomerType, function (req, r
                 console.log(result.CustomerTypeNameEn);
                 res.json(result);
             });
+    var updateCustomerTypePromise = function() {
+        var defer = Q.defer();
+        db.collection(mongodbConfig.mongodb.customer_type.name)
+        .update({
+                _id: o_id
+            }, {
+                $set: {
+                    'CustomerTypeNameTh': CustomerType.CustomerTypeNameTh,
+                    'CustomerTypeNameEn': CustomerType.CustomerTypeNameEn,
+                    'CustomerTypeNameCn': CustomerType.CustomerTypeNameCn,
+                    'PriceType': CustomerType.PriceType,
+                    'UpdateBy' : CustomerType.UpdateBy,
+                    'UpdateDate' : updateDate
+                }
+            },
+            function (err, result) {
+                if (err) {
+                    defer.reject(err);
+                } else {
+                    defer.resolve(result);
+                }
+            });
+        return defer.promise;
+    }
+    updateCustomerTypePromise().then(function(data, status) {
+        res.json(data);
+    }, function(err, status) {
+        console.log(err, err.stack.split("\n"));
+        res.sendStatus(500);
+        return;
+    })
 });
 
 // Delete Customer Type

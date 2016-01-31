@@ -629,7 +629,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
       $scope.User.Firstname = $scope.Firstname;
       $scope.User.Lastname = $scope.Lastname;
 
-      UserService.CreateUserEmailActivate($scope.Username, $scope.Password, email)
+      UserService.CreateUserEmailActivate($scope.Username, $scope.Password, email, $scope.User)
       .then(function(data, status) {
           blockUI.message("25%");
           return CryptoService.GenerateHashLink($scope.Username, $scope.Password, email)
@@ -831,33 +831,36 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     }
 
     $scope.Login = function () {
+      var appuser = {};
       UserService.LoginWithUsernameAndPassword($scope.username, $scope.password)
       .then(function(data, status) {
-          console.log('data ' + data);
+          console.log('data ' , data);
           if (!data || data === undefined) {
               swal("Error", "Cannot login maybe username or password incorrect", "error");
               $scope.User = [];
               $scope.IsAdmin = false;
               $scope.IsGuest = false;
               return;
+          } else {
+            appuser = data;
           }
           return UserService.CheckIsUserActivate($scope.username, $scope.password);
       })
       .then(function (data, status) {
-          console.log(activateUser);
-          if (!activateUser || activateUser === undefined) {
+          console.log(appuser, appuser.Role.RoleCode);
+          if (!data || data === undefined) {
             swal("Error", "Sorry, your account is not activated yet, please check your email.", "error");
           } else {
-            $scope.User = data;
-            $scope.User.Id = data._id;
-            $scope.User.Username = data.Username;
-            $scope.User.Password = data.Password;
-            $scope.User.Role.RoleCode = data.Role.RoleCode;
-            $scope.User.Role.RoleNameEn = data.Role.RoleNameEn;
-            $scope.User.Role.RoleNameTh = data.Role.RoleNameTh;
-            $scope.Firstname = data.Firstname;
-            $scope.Lastname = data.Lastname;
-            $scope.User.Email = data.Email;
+            $scope.User = appuser;
+            $scope.User.Id = appuser._id;
+            $scope.User.Username = appuser.Username;
+            $scope.User.Password = appuser.Password;
+            $scope.User.Role.RoleCode = appuser.Role.RoleCode;
+            $scope.User.Role.RoleNameEn = appuser.Role.RoleNameEn;
+            $scope.User.Role.RoleNameTh = appuser.Role.RoleNameTh;
+            $scope.Firstname = appuser.Firstname;
+            $scope.Lastname = appuser.Lastname;
+            $scope.User.Email = appuser.Email;
             if ($scope.User.Role.RoleNameEn == 'Admin') {
                 $scope.IsAdmin = true;
                 $scope.IsGuest = false;
@@ -876,15 +879,17 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
           }
           return UserService.DownloadUserProfileImage($scope.User.Id, $scope.User.Username);
       })
-      .then(function(data, status) {
-        $scope.User.ProfileImage = data;
+      .then(function(profile_image, status) {
+   //     console.log(profile_image);
+        $scope.User.ProfileImage = profile_image;
           $('#UserProfileImage').children("img").remove();
-          $('#UserProfileImage').append(data);
+          $('#UserProfileImage').append(profile_image);
           return UserService.DownloadUserThumbnailImage($scope.User.Id, $scope.User.Username);
       })
-      .then(function(data, status) {
+      .then(function(thumbnail_image, status) {
+   //     console.log(thumbnail_image);
           $('#ThumbnailProfileImage').children("img").remove();
-          $('#ThumbnailProfileImage').append(data);
+          $('#ThumbnailProfileImage').append(thumbnail_image);
 
           //Clear value after login successfully
           $scope.username = "";
@@ -1355,7 +1360,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
         })
         .then(function(data, status){
             var hostWithPort = $location.host() + ':' +$location.port();
-            var forgetPasswordEmailUrl = ENV.apiEndpoint + "/mails/SendEmailForgetPassword";
+       //     var forgetPasswordEmailUrl = ENV.apiEndpoint + "/mails/SendEmailForgetPassword";
             blockUI.message("75%");
             var mailForget = {
               Email : $scope.ForgetPasswordEmail,
@@ -1364,9 +1369,6 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
             };
             EmailService.SendEmailForgetPassword(mailForget)
         })
-
-
-
 
         var IsExistEmail = ENV.apiEndpoint + "/users/IsExistEmail/" + $scope.ForgetPasswordEmail;
         $http.get(IsExistEmail)

@@ -6,15 +6,14 @@ router.get(mongodbConfig.url.role.loadAllRole, function (req, res) {
     var RoleCode = req.params.RoleId;
     var RoleName = req.params.RoleName;
     db.collection(mongodbConfig.mongodb.role.name)
-        .find({
-         //   if (RoleCode !== undefined && RoleCode.length > 0) {
-         //       "RoleCode" : RoleCode
-        //    }
-        })
+        .find({})
         .toArray(function (err, items) {
             console.log(items);
             res.json(items);
         });
+    var LoadAllRolePromise = function() {
+     //   var 
+    }
 });
 
 router.get(mongodbConfig.url.role.loadRoleByObjId, function (req, res) {

@@ -3,6 +3,7 @@ var router = express.Router();
 var AWS = require('aws-sdk'); 
 var s3_config = require('./s3-config.json');
 var fs = require('fs');
+var fsp = require('fs-promise');
 var S3FS = require('s3fs');
 var Q = require('q');
 var multer = require('multer');
@@ -98,6 +99,55 @@ router.post('/uploadProductImage/:ProductId/:ProductCode/:Username', function (r
       }
     });
   });
+
+  var InsertFilePromise = function() {
+    var defer = Q.defer();
+    db.collection('fs.files')
+      .insert(file,
+        function (err, result) {
+          if (err) {
+            defer.reject(err);
+          } else {
+            defer.resolve(result);
+          }
+      });
+    return defer.promise;
+  }
+  var UpdateFSFileByProductCodePromise = function(fs_id) {
+    var defer = Q.defer();
+    var image_id = bson.BSONPure.ObjectID(fs_id);
+    db.collection(mongodbConfig.mongodb.product.name)
+        .update({
+                'ProductCode' : ProductCode
+            }, {
+                $set: {
+                    'ProductImageRefId': image_id
+                }
+            },
+            function (err, data) {
+                if (err) {
+                  defer.reject(err);
+                } else {
+                  defer.resolve(data);
+                }
+              });
+    return defer.promise;
+  }
+  product_s3fsImpl.writeFile(file.originalFilename, stream)
+  .then(function() {
+    fsp.unlink(file.path).then(function (data) {
+        console.log("success");
+        delete file.path;
+        file.fileName = ProductCode;
+        file.uploadBy = Username;
+        file.uploadDate = updateDate;
+
+
+    }, function(err) {
+
+    })
+  });
+
 });
 
 /*
@@ -144,8 +194,44 @@ router.get("/downloadProductImageShop/:ProductId/:ProductCode",  function (req, 
       });
     }
   });
-
-
+/*
+   var findFileByProductCodePromise = function() {
+    var defer = Q.defer();
+    db.collection('fs.files')
+     .findOne({ 'name' : ProductCode }
+     , function(err, file) {
+      if (err) {
+        defer.reject(err);
+      } else {
+        defer.resolve(file);
+      }
+    });
+    return defer.promise;
+   }
+   findFileByProductCodePromise().then(function(file, status) {
+      return 
+      product_s3fsImpl.readFile(file.originalFilename).then(function(data, status) {
+          if (!file) { 
+            res.sendStatus(404);
+            return;
+          } else if (file) {
+            console.log('file not null');
+            var base64 = (data.toString('base64')); 
+            res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive" style="max-height: 200px;max-width: 200px;margin: 0 auto;">');
+          } else {
+            res.sendStatus(404);
+            return;
+          }
+      }, function(err, status) {
+          console.log(err, err.stack.split("\n"));
+          res.sendStatus(500);
+          return;
+      });
+   }, function(err, status) {
+          console.log(err, err.stack.split("\n"));
+          res.sendStatus(500);
+          return;
+   });*/
 });
 
 
@@ -234,6 +320,7 @@ router.get("/downloadProductImageShopMobile/:ProductId/:ProductCode",  function 
 router.get('/downloadProductImageThumbnail/:ProductId/:ProductCode', function(req, res) {
   var ProductId = req.params.ProductId;
   var ProductCode = req.params.ProductCode;
+  /*
  db.collection('fs.files')
    .findOne({ 'name' : ProductCode }
    , function(err, file) {
@@ -262,6 +349,38 @@ router.get('/downloadProductImageThumbnail/:ProductId/:ProductCode', function(re
       });
     } 
   });
+*/
+   var findFileByProductCodePromise = function() {
+      var defer = Q.defer();
+      db.collection('fs.files')
+       .findOne({ 'name' : ProductCode }
+       , function(err, file) {
+        if (err) {
+          defer.reject(err);
+        } else {
+          defer.resolve(file);
+        }
+      });
+      return defer.promise;
+   }
+   findFileByProductCodePromise().then(function(file, status) {
+      return product_s3fsImpl.readFile(file.originalFilename).then(function(data, status) {
+          if (!data) { 
+          res.sendStatus(200);
+          return;
+        } else if (data){
+          var base64 = (data.toString('base64')); 
+          res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive">');
+        }
+      }, function(err, status) {
+          console.log(err, err.stack.split("\n"));
+          res.sendStatus(500);
+          return;
+      })
+   }, function(err, status) {
+      res.sendStatus(500);
+      return;
+   })
 });
 
 router.post('/uploadUserImage/:UserId/:Username', function (req, res) {
@@ -330,7 +449,7 @@ file.originalFilename = Username + '.' + fileExt;
 router.get('/downloadUserImageProfile/:UserId/:Username', function(req, res) {
   var UserId = req.params.UserId;
   var Username = req.params.Username;
-  user_s3fsImpl.readFile(home_bucket + user_bucket + Username + '.png', function (err, data) {
+ /* user_s3fsImpl.readFile(home_bucket + user_bucket + Username + '.png', function (err, data) {
     if (err) {
       console.log(err, err.stack.split("\n"));
       res.sendStatus(500);
@@ -347,6 +466,24 @@ router.get('/downloadUserImageProfile/:UserId/:Username', function(req, res) {
       return;
     }
   });
+*/
+  user_s3fsImpl.readFile(home_bucket + user_bucket + Username + '.png').then(function(data, status) {
+    if (!data) {
+        res.sendStatus(200);
+        return;
+    } else if (data){ 
+      console.log(data);
+      var base64 = (data.Body.toString('base64')); 
+      console.log(base64);
+      res.send('<img src="data:image/jpeg;base64,' + base64
+              + '" class="img-circle img-responsive" width="40" height="40" ng-show="IsLogin && User.ProfileImage.length > 0" style="margin-top:-5px">');
+    }
+  }, function(err, status) {
+      console.log(err, err.stack.split("\n"));
+      res.sendStatus(500);
+      return;
+  });
+
 });
 
 /*
@@ -358,7 +495,7 @@ router.get('/downloadUserImageProfile/:UserId/:Username', function(req, res) {
 router.get('/downloadUserImageProfileMobile/:UserId/:Username', function(req, res) {
   var UserId = req.params.UserId;
   var Username = req.params.Username;
-  user_s3fsImpl.readFile(home_bucket + user_bucket + Username + '.png', function (err, data) {
+ /* user_s3fsImpl.readFile(home_bucket + user_bucket + Username + '.png', function (err, data) {
     if (err) {
       console.log(err, err.stack.split("\n"));
       res.sendStatus(500);
@@ -374,6 +511,21 @@ router.get('/downloadUserImageProfileMobile/:UserId/:Username', function(req, re
       return;
     }
   });
+*/
+  user_s3fsImpl.readFile(home_bucket + user_bucket + Username + '.png').then(function(data, status) {
+    if (!data) {
+        res.sendStatus(200);
+        return;
+    } else if (data){ 
+      var base64 = (data.Body.toString('base64')); 
+      console.log(base64);
+      res.send('data:image/jpeg;base64,' + base64);
+    }
+  }, function(err, status) {
+      console.log(err, err.stack.split("\n"));
+      res.sendStatus(500);
+      return;
+  });
 });
 
 /*
@@ -385,7 +537,7 @@ router.get('/downloadUserImageProfileMobile/:UserId/:Username', function(req, re
 router.get('/downloadUserImageThumbnail/:UserId/:Username', function(req, res) {
   var UserId = req.params.UserId;
   var Username = req.params.Username;
-
+/*
   user_s3fsImpl.readFile(home_bucket + user_bucket + Username + '.png', function (err, data) {
     if (err) {
         console.log(err, err.stack.split("\n"));
@@ -395,13 +547,30 @@ router.get('/downloadUserImageThumbnail/:UserId/:Username', function(req, res) {
         res.sendStatus(200);
         return;
     } else if (data) {
+      console.log('thumb ', data);
       var base64 = (data.toString('base64')); 
-      res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive" >');
+   //   console.log(base64);
+      res.send('<img src="data:image/jpeg;base64,' + base64.toString() + '" class="img-responsive" >');
     } else {
       res.sendStatus(404);
       return;
     }
   });
+*/
+  user_s3fsImpl.readFile(home_bucket + user_bucket + Username + '.png').then(function(data , status) {
+    if (!data) {
+        res.sendStatus(200);
+        return;
+    } else if (data){ 
+      var base64 = (data.Body.toString('base64')); 
+      console.log(base64);
+      res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive" >');
+    }
+  }, function(err, status) {
+      console.log(err, err.stack.split("\n"));
+      res.sendStatus(500);
+      return;
+  })
 });
 
 
@@ -414,12 +583,13 @@ router.post('/uploadReceiptPayment/:UserId/:Username/:RONo', function (req, res)
   var o_id = bson.BSONPure.ObjectID(UserId);
   var gfs = grid(db, mongodb);
   var updateDate = new Date ();
-    updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
+  updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
 
   file.name = RONo;
   var fileExt = file.originalFilename.split('.').pop();
   file.originalFilename = RONo + '.' + fileExt;
-    receipt_s3fsImpl.writeFile(file.originalFilename, stream).then(function() {
+  
+  receipt_s3fsImpl.writeFile(file.originalFilename, stream).then(function() {
       fs.unlink(file.path, function(err) {
         if (err) {
           console.log(err, err.stack.split("\n"));
@@ -445,6 +615,7 @@ router.post('/uploadReceiptPayment/:UserId/:Username/:RONo', function (req, res)
         }
       });
     });
+
 });
 
 /*
@@ -482,8 +653,42 @@ router.get('/downloadReceiptPaymentThumbnail/:RONo', function(req, res) {
                 });
             } 
         });
+  var findFileByRONoPromise = function() {
+    var defer = Q.defer();
+    db.collection('fs.files')
+      .findOne({
+          'name': RONo
+      }, function (err, file) {
+          if (err) {
+            defer.reject(err);
+          } else {
+            defer.resolve(file);
+          }
+        });
+    return defer.promise;
+  }
+  findFileByRONoPromise().then(function(file, status) {
+      if (!file) {
+          res.sendStatus(200);
+          return;
+      } else if (file){
+          return 
+          receipt_s3fsImpl.readFile(home_bucket + receipt_bucket + file.originalFilename).then(function(data, status) {
+              var base64 = (data.Body.toString('base64')); 
+              res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive" >');
+          }, function(err, status) {
+              console.log(err, err.stack.split("\n"));
+              res.sendStatus(500);
+              return;
+          });
+      } 
 
-  
+  }, function(err, status) {  
+      console.log(err, err.stack.split("\n"));
+      res.sendStatus(500);
+      return;
+
+  });
 });
 
 module.exports = router;
