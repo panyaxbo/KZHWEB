@@ -19,12 +19,18 @@ AWS.config.secretAccessKey = s3_config.AWS_SECRET_ACCESS_KEY;
 
 var home_bucket = s3_config.HOME_BUCKET;
 var product_bucket = s3_config.PRODUCT_BUCKET;
+var product_category_bucket = s3_config.PRODUCT_CATEGORY_BUCKET;
 var user_bucket = s3_config.USER_BUCKET;
 var receipt_bucket = s3_config.RECEIPT_BUCKET;
 
 var product_s3fsImpl = new S3FS(home_bucket + product_bucket, {
 	accessKeyId: s3_config.AWS_ACCESS_KEY_ID,
  	secretAccessKey: s3_config.AWS_SECRET_ACCESS_KEY
+});
+
+var product_category_s3fsImpl = new S3FS(home_bucket + product_category_bucket, {
+  accessKeyId: s3_config.AWS_ACCESS_KEY_ID,
+  secretAccessKey: s3_config.AWS_SECRET_ACCESS_KEY
 });
 
 var user_s3fsImpl = new S3FS(home_bucket + user_bucket, {
@@ -38,6 +44,117 @@ var receipt_s3fsImpl = new S3FS(home_bucket + receipt_bucket, {
 });
 
 router.use(multipartyMiddleware);
+
+router.post('/uploadProductCategoryImage/:ProductCategoryId/:ProductCategoryCode/:Username', function (req, res) {
+  var file = req.files.file;
+  console.log("/uploadProductCategoryImage");
+  console.log(file);
+  var stream = fs.createReadStream(file.path);
+  var ProductCategoryId = req.params.ProductCategoryId;
+  var ProductCategoryCode = req.params.ProductCategoryCode;
+  var Username = req.params.Username;
+  var o_id = bson.BSONPure.ObjectID(ProductCategoryId);
+  var gfs = grid(db, mongodb);
+
+  var updateDate = new Date ();
+    updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
+
+  file.name = ProductCategoryCode;
+  var fileExt = file.originalFilename.split('.').pop();
+  file.originalFilename = ProductCategoryCode + '.' + fileExt;
+  product_category_s3fsImpl.writeFile(file.originalFilename, stream).then(function() {
+    fs.unlink(file.path, function(err) {
+      if (err) {
+        console.log(err, err.stack.split("\n"));
+      }
+      else {
+        console.log("success");
+        delete file.path;
+        file.fileName = ProductCategoryCode;
+        file.uploadBy = Username;
+        file.uploadDate = updateDate;
+        //Remove exist image first
+        db.collection('fs.files')
+          .insert(file,
+            function (err, result) {
+              if (err) {
+                console.log(err, err.stack.split("\n"));
+                res.sendStatus(500);
+                return;
+              } else {
+                var image_id = bson.BSONPure.ObjectID(result._id);
+                db.collection(mongodbConfig.mongodb.product_category.name)
+                    .update({
+                            'ProductCategoryCode' : ProductCategoryCode
+                        }, {
+                            $set: {
+                                'ProductCategoryImageRefId': image_id
+                            }
+                        },
+                        function (error, data) {
+                            if (error) {
+                              console.log(err, err.stack.split("\n"));
+                              res.sendStatus(500);
+                              return;
+                            } else {
+                              res.sendStatus(200);
+                            }
+                        });
+              }
+            });
+      }
+    });
+  });
+
+  var InsertFilePromise = function() {
+    var defer = Q.defer();
+    db.collection('fs.files')
+      .insert(file,
+        function (err, result) {
+          if (err) {
+            defer.reject(err);
+          } else {
+            defer.resolve(result);
+          }
+      });
+    return defer.promise;
+  }
+  var UpdateFSFileByProductCategoryCodePromise = function(fs_id) {
+    var defer = Q.defer();
+    var image_id = bson.BSONPure.ObjectID(fs_id);
+    db.collection(mongodbConfig.mongodb.product_category.name)
+        .update({
+                'ProductCategoryCode' : ProductCode
+            }, {
+                $set: {
+                    'ProductCategoryImageRefId': image_id
+                }
+            },
+            function (err, data) {
+                if (err) {
+                  defer.reject(err);
+                } else {
+                  defer.resolve(data);
+                }
+              });
+    return defer.promise;
+  }
+  product_category_s3fsImpl.writeFile(file.originalFilename, stream)
+  .then(function() {
+    fsp.unlink(file.path).then(function (data) {
+        console.log("success");
+        delete file.path;
+        file.fileName = ProductCategoryCode;
+        file.uploadBy = Username;
+        file.uploadDate = updateDate;
+
+
+    }, function(err) {
+
+    })
+  });
+
+});
 
 router.post('/uploadProductImage/:ProductId/:ProductCode/:Username', function (req, res) {
 	var file = req.files.file;
@@ -174,9 +291,7 @@ router.get("/downloadProductImageShop/:ProductId/:ProductCode",  function (req, 
       res.sendStatus(200);
       return;
     } else if (file != null && file != undefined) {
-      console.log(file);
-      console.log('downloadProductImageShop ' + file.originalFilename);
-
+   
       product_s3fsImpl.readFile(file.originalFilename, function (err, data) {
         if (err) {
           console.log(err, err.stack.split("\n"));
@@ -187,7 +302,7 @@ router.get("/downloadProductImageShop/:ProductId/:ProductCode",  function (req, 
           res.sendStatus(404);
           return;
         } else if (file) {
-          console.log('file not null');
+     //     console.log('file not null');
           var base64 = (data.toString('base64')); 
           res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive" style="max-height: 200px;max-width: 200px;margin: 0 auto;">');
         }
@@ -239,7 +354,7 @@ router.get("/downloadProductImageShop/:ProductId/:ProductCode",  function (req, 
 router.get("/downloadProductImageShopMobile/:ProductId/:ProductCode",  function (req, res) {
   var ProductId = req.params.ProductId;
   var ProductCode = req.params.ProductCode;
-  var gfs = grid(db, mongodb);
+//  var gfs = grid(db, mongodb);
   var o_id = bson.BSONPure.ObjectID(ProductId);
 
   var ProductId = req.params.ProductId;
@@ -285,18 +400,19 @@ router.get("/downloadProductImageShopMobile/:ProductId/:ProductCode",  function 
     return defer.promise;
   }
 
-  findProductByProductCodePromise().then(function(data, status) {
-      if (!data) {
+  findProductByProductCodePromise().then(function(file, status) {
+      if (!file) {
         res.sendStatus(200);
         return;
       } else {
         return product_s3fsImpl.readFile(file.originalFilename)
             .then(function(data, status) {
+              console.log(data);
               if (!data) { 
                 res.sendStatus(404);
                 return;
               } else if (data) {
-                var base64 = (data.toString('base64')); 
+                var base64 = (data.Body.toString('base64')); 
                 res.send('data:image/jpeg;base64,' + base64 );
               }
             }, function (err, status) {
@@ -310,6 +426,159 @@ router.get("/downloadProductImageShopMobile/:ProductId/:ProductCode",  function 
       res.sendStatus(500);
       return;
   });
+});
+
+/*
+ * @desc - Download image from Amazon S3 to Product Category Config Page.
+ * @param - Product Category Id and Product Category Code.
+ * @return - Status.
+ */
+
+router.get('/downloadProductCategoryImageThumbnail/:ProductCategoryId/:ProductCategoryCode', function(req, res) {
+  var ProductCategoryId = req.params.ProductCategoryId;
+  var ProductCategoryCode = req.params.ProductCategoryCode;
+  /*
+ db.collection('fs.files')
+   .findOne({ 'name' : ProductCode }
+   , function(err, file) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    } else if (!file) {
+      res.sendStatus(404);
+      return;
+    } else if (file) {
+      console.log(file);
+      console.log('downloadProductImageThumbnail ' + file.originalFilename);
+      product_s3fsImpl.readFile(file.originalFilename, function (err, data) {
+        if (err) {
+          console.log(err, err.stack.split("\n"));
+          res.sendStatus(500);
+          return;
+        }
+        if (!file) { 
+          res.sendStatus(200);
+          return;
+        } else if (file){
+          var base64 = (data.toString('base64')); 
+          res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive">');
+        }
+      });
+    } 
+  });
+*/
+   var findFileByProductCategoryCodePromise = function() {
+      var defer = Q.defer();
+      db.collection('fs.files')
+       .findOne({ 'name' : ProductCategoryCode }
+       , function(err, file) {
+        console.log('1 ', file);
+        if (err) {
+          defer.reject(err);
+        } else {
+          defer.resolve(file);
+        }
+      });
+      return defer.promise;
+   }
+   findFileByProductCategoryCodePromise().then(function(file, status) {
+      if (file) { 
+          return product_category_s3fsImpl.readFile(file.originalFilename).then(function(data, status) {
+              if (!data) { 
+              res.sendStatus(200);
+              return;
+            } else if (data){
+              var base64 = (data.Body.toString('base64')); 
+              res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive">');
+            }
+          }, function(err, status) {
+              console.log(err, err.stack.split("\n"));
+              res.sendStatus(500);
+              return;
+          });
+      } else if (!file){
+        res.sendStatus(404);
+        return;
+      }
+   }, function(err, status) {
+      res.sendStatus(500);
+      return;
+   })
+});
+
+router.get('/downloadProductCategoryImageThumbnailMobile/:ProductCategoryId/:ProductCategoryCode', function(req, res) {
+  var ProductCategoryId = req.params.ProductCategoryId;
+  var ProductCategoryCode = req.params.ProductCategoryCode;
+  /*
+ db.collection('fs.files')
+   .findOne({ 'name' : ProductCode }
+   , function(err, file) {
+    if (err) {
+      res.sendStatus(500);
+      return;
+    } else if (!file) {
+      res.sendStatus(404);
+      return;
+    } else if (file) {
+      console.log(file);
+      console.log('downloadProductImageThumbnail ' + file.originalFilename);
+      product_s3fsImpl.readFile(file.originalFilename, function (err, data) {
+        if (err) {
+          console.log(err, err.stack.split("\n"));
+          res.sendStatus(500);
+          return;
+        }
+        if (!file) { 
+          res.sendStatus(200);
+          return;
+        } else if (file){
+          var base64 = (data.toString('base64')); 
+          res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive">');
+        }
+      });
+    } 
+  });
+*/
+   var findFileByProductCategoryCodePromise = function() {
+      var defer = Q.defer();
+      db.collection('fs.files')
+       .findOne({ 'name' : ProductCategoryCode }
+       , function(err, file) {
+        if (err) {
+          defer.reject(err);
+        } else {
+          defer.resolve(file);
+        }
+      });
+      return defer.promise;
+   }
+   findFileByProductCategoryCodePromise().then(function(file, status) {
+    console.log('findFileByProductCategoryCodePromise');
+      if (file) {
+        console.log('file 1', file);
+        return product_category_s3fsImpl.readFile(file.originalFilename).then(function(data, status) {
+            console.log('data', data, 'status', status);
+            if (!data) { 
+              res.sendStatus(404);
+              return;
+            } else if (data){
+              var base64 = (data.Body.toString('base64')); 
+              res.send('data:image/jpeg;base64,' + base64);
+            }
+        }, function(err, status) {
+            console.log(err, err.stack.split("\n"));
+            res.sendStatus(500);
+            return;
+        });
+      } else if (!file) {
+        console.log('file 2', file);
+        res.sendStatus(404);
+            return;
+      }
+   }, function(err, status) {
+      res.sendStatus(500);
+      return;
+   })
 });
 /*
  * @desc - Download image from Amazon S3 to Product Config Page.
@@ -364,19 +633,24 @@ router.get('/downloadProductImageThumbnail/:ProductId/:ProductCode', function(re
       return defer.promise;
    }
    findFileByProductCodePromise().then(function(file, status) {
-      return product_s3fsImpl.readFile(file.originalFilename).then(function(data, status) {
-          if (!data) { 
-          res.sendStatus(200);
-          return;
-        } else if (data){
-          var base64 = (data.toString('base64')); 
-          res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive">');
-        }
-      }, function(err, status) {
-          console.log(err, err.stack.split("\n"));
-          res.sendStatus(500);
-          return;
-      })
+      if (file) {
+        return product_s3fsImpl.readFile(file.originalFilename).then(function(data, status) {
+            if (!data) { 
+            res.sendStatus(200);
+            return;
+          } else if (data){
+            var base64 = (data.toString('base64')); 
+            res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive">');
+          }
+        }, function(err, status) {
+            console.log(err, err.stack.split("\n"));
+            res.sendStatus(500);
+            return;
+        });
+      } else if (!file) {
+        res.sendStatus(404);
+        return;
+      }
    }, function(err, status) {
       res.sendStatus(500);
       return;
@@ -522,8 +796,9 @@ router.get('/downloadUserImageProfileMobile/:UserId/:Username', function(req, re
       res.send('data:image/jpeg;base64,' + base64);
     }
   }, function(err, status) {
-      console.log(err, err.stack.split("\n"));
-      res.sendStatus(500);
+      console.log('err ' , err);
+       console.log('err 2 ', err.stack.split("\n"));
+      res.sendStatus(err.statusCode);
       return;
   });
 });

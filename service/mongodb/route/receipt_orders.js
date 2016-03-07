@@ -47,7 +47,7 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
     var ROHeadId = req.params.ROHeadId;
     var BSON = mongodb.BSONPure;
     var o_id = bson.BSONPure.ObjectID(ROHeadId);
-
+    var ROHead = {};
     var loadROHeadROLineByROHeadIdPromise = function() {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.rohead.name)
@@ -55,12 +55,13 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
             '_id': o_id
         }, function (err, ROHead) {
             if (err) {
+                console.log(err, err.stack.split("\n"));
                 defer.reject(err);
             } else {
                 defer.resolve(ROHead);
             }
-            return defer.promise;
         });
+        return defer.promise;
     }
     var LoadROLineListPromise = function(ROHeadId) {
         var defer = Q.defer();
@@ -70,13 +71,13 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
                 'ROHeadId': obj_id
             })
             .toArray(function (err, ROLineList) {
-            //    console.log(ROLineList);
               if (err) {
-                reject(err);
+                console.log(err, err.stack.split("\n"));
+                defer.reject(err);
               } else if (ROLineList) {
-                resolve(ROLineList);
+                defer.resolve(ROLineList);
               } else if (!ROLineList) {
-                reject(err);
+                defer.reject(err);
               }
         });
         return defer.promise;
@@ -88,21 +89,159 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
             .findOne({
                 '_id': province_id
             }, function (err, Province) {
-              if ( !err) {
+              if (err) {
+                console.log(err, err.stack.split("\n"));
+                defer.reject(err);
+              } else if (Province) {
                 defer.resolve(Province);
-              }
-              else {
+              } else if (!Province) {
                 defer.reject(err);
               }
         });
         return defer.promise;
     }
-    loadROHeadROLineByROHeadIdPromise().then(function(ROHead, status) {
+    var LoadBillingDistrictPromise = function(BillingDistrictId) {
+        var defer = Q.defer();
+        var district_id = bson.BSONPure.ObjectID(BillingDistrictId);
+        db.collection(mongodbConfig.mongodb.district.name)
+            .findOne({
+                '_id': district_id
+            }, function (err, District) {
+              if (err) {
+                console.log(err, err.stack.split("\n"));
+                defer.reject(err);
+              } else if (District) {
+                defer.resolve(District);
+              } else if (!District) {
+                defer.reject(err);
+              }
+        });
+        return defer.promise;
+    }
+    var LoadBillingSubDistrictPromise = function(BillingSubDistrictId) {
+        var defer = Q.defer();
+        var subdistrict_id = bson.BSONPure.ObjectID(BillingSubDistrictId);
+        db.collection(mongodbConfig.mongodb.subdistrict.name)
+            .findOne({
+                '_id': subdistrict_id
+            }, function (err, SubDistrict) {
+              if (err) {
+                console.log(err, err.stack.split("\n"));
+                defer.reject(err);
+              } else if (SubDistrict) {
+                defer.resolve(SubDistrict);
+              } else if (!SubDistrict) {
+                defer.reject(err);
+              }
+        });
+        return defer.promise;
+    }
+    var LoadReceiptProvincePromise = function(ReceiptProvinceId) {
+        var defer = Q.defer();
+        var province_id = bson.BSONPure.ObjectID(ReceiptProvinceId);
+        db.collection(mongodbConfig.mongodb.province.name)
+            .findOne({
+                '_id': province_id
+            }, function (err, Province) {
+              if ( !err) {
+                defer.resolve(Province);
+              }
+              else {
+                console.log(err, err.stack.split("\n"));
+                defer.reject(err);
+              }
+        });
+        return defer.promise;
+    }
+    var LoadReceiptDistrictPromise = function(ReceiptDistrictId) {
+        var defer = Q.defer();
+        var district_id = bson.BSONPure.ObjectID(ReceiptDistrictId);
+        db.collection(mongodbConfig.mongodb.district.name)
+            .findOne({
+                '_id': district_id
+            }, function (err, District) {
+              if (!err) {
+                defer.resolve(District);
+            }
+            else {
+                console.log(err, err.stack.split("\n"));
+                defer.reject(err);
+            }
+        });
+        return defer.promise;
+    }
+    var LoadReceiptSubDistrictPromise = function(ReceiptSubDistrictId) {
+        var defer = Q.defer();
+        var subdistrict_id = bson.BSONPure.ObjectID(ReceiptSubDistrictId);
+        db.collection(mongodbConfig.mongodb.subdistrict.name)
+            .findOne({
+                '_id': subdistrict_id
+            }, function (err, SubDistrict) {
+            if (!err) {
+                defer.resolve(SubDistrict);
+            }
+            else {
+                console.log(err, err.stack.split("\n"));
+                defer.reject(err);
+            }
+        });
+        return defer.promise;
+    }
+    loadROHeadROLineByROHeadIdPromise()
+    .then(function(Receipt, status) {
+        ROHead = Receipt;
         return LoadROLineListPromise(ROHead._id);
     }, function(err, status) {
 
     })
- //   .then()
+    .then(function(ROLineList, status) {
+        ROHead.ROLineList = ROLineList;
+        return LoadBillingProvincePromise(ROHead.BillingProvinceId);
+    }, function(err, status) {
+        console.log('err bill rolinelist');
+    })
+    .then(function(BillingProvince, status) {
+        ROHead.BillingProvince = BillingProvince;
+        return LoadBillingDistrictPromise(ROHead.BillingDistrictId);
+    }, function(err, status) {
+        console.log(err, err.stack.split("\n"));
+
+    })
+    .then(function(BillingDistrict, status) {
+        ROHead.BillingDistrict = BillingDistrict;
+        return LoadBillingSubDistrictPromise(ROHead.BillingSubDistrictId);
+    }, function(err, status) {
+        console.log(err, err.stack.split("\n"));
+        console.log('err bill district');
+    })
+    .then(function(BillingSubDistrict, status) {
+        ROHead.BillingSubDistrict = BillingSubDistrict;
+        return LoadReceiptProvincePromise(ROHead.ReceiptProvinceId);
+    },function(err, status) {
+        console.log(err, err.stack.split("\n"));
+        console.log('err bill sub district');
+    })
+    .then(function(ReceiptProvince, status) {
+        ROHead.ReceiptProvince = ReceiptProvince;
+        return LoadReceiptDistrictPromise(ROHead.ReceiptDistrictId);
+    }, function(err, status) {
+        console.log('err receipt province');
+    })
+    .then(function(ReceiptDistrict, status) {
+        ROHead.ReceiptDistrict = ReceiptDistrict;
+        return LoadReceiptSubDistrictPromise(ROHead.ReceiptSubDistrictId);
+    }, function(err, status) {
+        console.log(err, err.stack.split("\n"));
+        console.log('err receipt district');
+    })
+    .then(function(ReceiptSubDistrict, status) {
+        ROHead.ReceiptSubDistrict = ReceiptSubDistrict;
+        res.json(ROHead);
+    }, function(err, status) {
+        console.log('err receipt sub-district');
+    });
+
+/*
     db.collection(mongodbConfig.mongodb.rohead.name)
         .findOne({
             '_id': o_id
@@ -427,9 +566,9 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
                 function ( err ) {
                     console.log(err, err.stack.split("\n"));
                 });
-                */
+                
             }
-        });
+        });*/
 });
 
 // Create ROHead & ROLine
@@ -695,7 +834,7 @@ router.get(mongodbConfig.url.receipt.loadROHeadByStaff, function (req, res) {
             UserId: userId
         }
     }
-
+/*
     db.collection(mongodbConfig.mongodb.rohead.name)
             .find(query)
             .toArray(function (err, roheads) {
@@ -705,6 +844,27 @@ router.get(mongodbConfig.url.receipt.loadROHeadByStaff, function (req, res) {
                 console.log(roheads);
                 res.json(roheads);
             });
+            */
+    var LoadROHeadByStaffPromise = function() {
+        var defer = Q.defer();
+        db.collection(mongodbConfig.mongodb.rohead.name)
+            .find(query)
+            .toArray(function (err, roheads) {
+                if (err) {
+                    defer.reject(err);
+                } else {
+                    defer.resolve(roheads);
+                }
+            //    console.log(roheads);
+            //    res.json(roheads);
+            });
+        return defer.promise;
+    }
+    LoadROHeadByStaffPromise().then(function(roheads, status) {
+        res.json(roheads);
+    }, function(err, status) {
+        console.log(err, err.stack.split("\n"));
+    })
 });
 
 router.get('/ApprovePayment/:RONo', function(req, res) {

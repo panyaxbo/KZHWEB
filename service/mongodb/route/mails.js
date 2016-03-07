@@ -332,7 +332,6 @@ router.get('/ApprovePaymentDocument/:UserId', function (req, res) {
 
 // Reject Payment Document
 router.post('/RejectPaymentDocument', function (req, res) {
-	console.log( 'UserId' + UserId );
 	var ValidateForm = req.body;
 	var UserId = ValidateForm.UserId;
 	var RejectReason = ValidateForm.RejectReason;
@@ -382,10 +381,11 @@ router.post('/RejectPaymentDocument', function (req, res) {
 			'		<tr>'+
 			'			<td style="border-top:#e41f28 solid 6px;font:normal 13px/18px Arial,Helvetica,sans-serif;padding:45px 17px 30px 17px" valign="top">'+
 			'			<h2 style="font:normal"><img height="24" src="cid:reject@kzh.parts.co.th" style="margin-right:10px" width="24" >&nbsp;&nbsp;'+
-			'เรียน ท่านลูกค้าที่มีค่า</h2>'+
+			'เรียน ท่านลูกค้า</h2>'+
 			
-			'			<p>การชำระเงินของท่านไม่ได้รับการอนุมัติ เนื่องจาก <br>'+ RejectReason +
+			'			<p>การชำระเงินของท่านไม่ได้รับการอนุมัติ เนื่องจาก <br>'+ 
 			'			<br>'+
+			RejectReason +
 			'			<br>'+
 			'			</p>'+
 			'			<p>&nbsp;</p>'+

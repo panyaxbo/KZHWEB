@@ -60,6 +60,7 @@ app.service("UserService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
 		    return defer.promise;
     	},
     	CreateUserEmailActivate: function(Username, Password, Email, UserObject) {
+        console.log('sinn up ');
     		var defer = $q.defer();
     		var createUserURL = ENV.apiEndpoint + "/users/CreateAppUser/" + Username + "/" + Password + "/"+ Email;
     		$http.post(createUserURL, UserObject)

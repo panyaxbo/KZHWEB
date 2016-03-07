@@ -1,26 +1,8 @@
 'use strict';
 
-var app = angular.module('KZHWEB', ['ngRoute', 'ngAnimate', 'ngFileUpload', '720kb.datepicker','blockUI'
+var app = angular.module('KZHWEB', ['ngRoute','ngAnimate', 'ui.bootstrap', 'ngFileUpload', '720kb.datepicker','blockUI'
     ,'ngDialog', 'ngPasswordStrength', 'ngTable','pascalprecht.translate', 'vcRecaptcha','autocomplete', 
     'ngCookies', 'CONFIG']);
-
-app.directive('ngHasfocus', function() {
-    return function(scope, element, attrs) {
-        scope.$watch(attrs.ngHasfocus, function (nVal, oVal) {
-            if (nVal)
-                element[0].focus();
-        });
-        
-        element.bind('blur', function() {
-            scope.$apply(attrs.ngHasfocus + " = false");
-        });
-        
-        element.bind('keydown', function (e) {
-            if (e.which == 13)
-                scope.$apply(attrs.ngHasfocus + " = false");
-        });
-    }
-});
 
 //Config translate
 app.config(function ($translateProvider) {
@@ -98,6 +80,15 @@ app.config(function ($translateProvider) {
                 SUMAMT: 'ยอดเงิน',
                 SUMDISCAMT: 'รวมส่วนลด',
                 SUMVATAMT: 'ภาษี',
+                SUMWEIGHT:'รวมน้ำหนัก',
+                WEIGHT_UOM:'กรัม',
+                SUMWEIGHTAMT:'รวมน้ำหนัก',
+                POST_TYPE: {
+                    SELECT_POST_TYPE:'--- เลือกชนิดการส่งไปรษณีย์ ---',
+                    NORMAL: 'ไปรษณีย์ธรรมดา',
+                    EMS: 'ไปรษณีย์ด่วนพิเศษ'
+                },
+
                 NETAMT: 'ยอดสุทธิ',
                 SHOP_BUTTON: 'ดูสินค้า',
                 SAVE_BUTTON: 'บันทึกตะกร้า',
@@ -155,6 +146,8 @@ app.config(function ($translateProvider) {
                 PRODUCT: {
                     QTY: 'จำนวน',
                     PRICE: 'ราคา',
+                    WEIGHT: 'น้ำหนัก',
+                    WEIGHT_UOM: 'กรัม',
                     LIKE: 'ชอบ',
                     BUY: 'ซื้อ',
                     DETAIL: 'รายละเอียด',
@@ -234,38 +227,38 @@ app.config(function ($translateProvider) {
                         TRANSFER: 'โอนเงิน',
                         BBL : {
                             NAME : 'ธ. กรุงเทพ',
-                            ACCOUNT_NO : '-',
+                            ACCOUNT_NO : '406-0-74796-3',
                             ACCOUNT_NAME : 'นาย ปัญญา บุญยกุลศรีรุ่ง',
                             ACCOUNT_TYPE : 'ออมทรัพย์',
-                            ACCOUNT_BRANCH : 'ศีขรภูมิ'
+                            ACCOUNT_BRANCH : 'สาขา ศีขรภูมิ'
                         },
                         KBANK : {
                             NAME : 'ธ. กสิกรไทย',
                             ACCOUNT_NO : '003-1-71056-1',
                             ACCOUNT_NAME : 'นาย ปัญญา บุญยกุลศรีรุ่ง',
                             ACCOUNT_TYPE : 'ออมทรัพย์',
-                            ACCOUNT_BRANCH : 'ศีขรภูมิ'
+                            ACCOUNT_BRANCH : 'สำนักงานย่อย ศีขรภูมิ'
                         },
                         KTB : {
                             NAME : 'ธ. กรุงไทย',
                             ACCOUNT_NO : '331-0-38978-2',
                             ACCOUNT_NAME : 'นาย ปัญญา บุญยกุลศรีรุ่ง',
                             ACCOUNT_TYPE : 'ออมทรัพย์',
-                            ACCOUNT_BRANCH : 'ศีขรภูมิ'
+                            ACCOUNT_BRANCH : 'สาขา ศีขรภูมิ'
                         },
                         SCB : {
                             NAME : 'ธ. ไทยพาณิชย์',
-                            ACCOUNT_NO : '-',
+                            ACCOUNT_NO : '406-749912-1',
                             ACCOUNT_NAME : 'นาย ปัญญา บุญยกุลศรีรุ่ง',
                             ACCOUNT_TYPE : 'ออมทรัพย์',
-                            ACCOUNT_BRANCH : 'เมืองสุรินทร์'
+                            ACCOUNT_BRANCH : 'โรบินสัน สุรินทร์'
                         },
                         KCC : {
                             NAME : 'ธ. กรุงศรี',
-                            ACCOUNT_NO : '-',
+                            ACCOUNT_NO : '721-1-02954-1',
                             ACCOUNT_NAME : 'นาย ปัญญา บุญยกุลศรีรุ่ง',
                             ACCOUNT_TYPE : 'ออมทรัพย์',
-                            ACCOUNT_BRANCH : 'เมืองสุรินทร์'
+                            ACCOUNT_BRANCH : 'โรบินสัน สุรินทร์'
                         },
                         TMB : {
                             NAME : 'ธ. ทีเอ็มบี',
@@ -747,6 +740,12 @@ app.config(function ($translateProvider) {
                 SUMAMT: 'Sum Amount',
                 SUMDISCAMT: 'Sum Discount Amount',
                 SUMVATAMT: 'VAT Amount',
+                SUMWEIGHTAMT:'Weight Rate Amount',
+                POST_TYPE: {
+                    SELECT_POST_TYPE:'--- Select Mail Delivery ---',
+                    NORMAL: 'Normal',
+                    EMS: 'EMS'
+                },
                 NETAMT: 'Net Amount',
                 SHOP_BUTTON: 'Continue Shopping',
                 SAVE_BUTTON: 'Save Cart',
@@ -797,6 +796,8 @@ app.config(function ($translateProvider) {
                 PRODUCT: {
                     QTY: 'Qty',
                     PRICE: 'Price',
+                    WEIGHT: 'Weight',
+                    WEIGHT_UOM: 'g',
                     LIKE: 'Like',
                     BUY: 'Buy',
                     DETAIL: 'Detail',
@@ -1292,6 +1293,12 @@ app.config(function ($translateProvider) {
                 SUMAMT: '量總和',
                 SUMDISCAMT: '總之折扣金額',
                 SUMVATAMT: '總之增值稅金額',
+                SUMWEIGHTAMT:'總重量金額',
+                POST_TYPE: {
+                    SELECT_POST_TYPE:'--- 選擇郵件傳遞的類型 ---',
+                    NORMAL: '正常',
+                    EMS: 'EMS'
+                },
                 NETAMT: '淨額',
                 SHOP_BUTTON: '繼續購物',
                 SAVE_BUTTON: '救車',
@@ -1342,6 +1349,8 @@ app.config(function ($translateProvider) {
                 PRODUCT: {
                     QTY: '音量',
                     PRICE: '價格',
+                    WEIGHT: '重量',
+                    WEIGHT_UOM: '公克',
                     LIKE: '如',
                     BUY: '購買',
                     DETAIL: '細節',
@@ -1766,55 +1775,3 @@ app.run(function ($rootScope) {
         $rootScope.$broadcast("documentClicked", e.target);
     });
 });
-/**
-
-For using UI-Router
-
-app.config(function ($stateProvider, $urlRouterProvider) {
-    // For any unmatch url, redirect to state1
-    $urlRouterProvider.otherwise("./pages/partial/product.html");
-
-    $stateProvider
-        .state("state2", {
-            url: "/state2",
-            templateUrl: "./pages/partial/article.html"
-        })
-        .state("state3", {
-            url: "/state3",
-            templateUrl: "./pages/partial/webboard.html"
-        })
-        .state("state4", {
-            url: "/state4",
-            templateUrl: "./pages/partial/payment.html"
-        })
-        .state("state5", {
-            url: "/state5",
-            templateUrl: "./pages/partial/about.html"
-        })
-});
-
-**/
-/**
-
-For using ngRoute
-
-app.config(function ($routeProvider) {
-    $routeProvider.when("/", {
-        controller: "",
-        templateUrl: "/index.html"
-    }).when("/article", {
-        controller: "",
-        templateUrl: "/pages/partial/article.html"
-    }).when("/webboard", {
-        controller: "",
-        templateUrl: "/pages/partial/webboard.html"
-    }).when("/payment", {
-        controller: "",
-        templateUrl: "/pages/partial/payment.html"
-    }).when("/about", {
-        controller: "",
-        templateUrl: "/pages/partial/about.html"
-    }).otherwise({
-        redirectTo: "/index.html"
-    });
-});**/

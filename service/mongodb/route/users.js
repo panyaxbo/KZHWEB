@@ -196,7 +196,6 @@ router.get('/FindByUsernameAndPassword/:Email/:Password', function (req, res) {
         return;
     })
     .then(function(data, status) {
-        
         if(!data) {
             res.sendStatus(404);
             return;
@@ -334,13 +333,33 @@ router.post(mongodbConfig.url.user.createAppUser, function (req, res) {
     var hash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
     AppUser.Password = hash;
-    db.collection(mongodbConfig.mongodb.user.name)
+/*    db.collection(mongodbConfig.mongodb.user.name)
         .insert(AppUser,
             function (error, appuser) {
                 if (error) throw error
                 res.json(appuser);
+            });*/
+    var CreateAppUserPromise = function() {
+        var defer = Q.defer();
+        db.collection(mongodbConfig.mongodb.user.name)
+        .insert(AppUser,
+            function (error, appuser) {
+                if (error) {
+                    defer.reject(error);
+                } else {
+                    defer.resolve(appuser);
+                }
             });
-
+        return defer.promise;
+    }
+    CreateAppUserPromise().then(function(appuser, status) {
+        console.log('success ', appuser);
+        res.json(appuser);
+    }, function(err, status) {
+        console.log(err, err.stack.split("\n"));
+        res.sendStatus(500);
+        return;
+    })
 });
 
 // Update AppUser
@@ -462,7 +481,8 @@ router.post(mongodbConfig.url.user.createAppUserByUsernameAndPasswordAndEmail, f
     var email = req.params.Email;
     var password = req.params.EncPassword;
     var hash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-
+    console.log(password);
+    console.log(hash);
     var appuser = {
         'Username' : username,
         'Password' : hash,
@@ -474,7 +494,7 @@ router.post(mongodbConfig.url.user.createAppUserByUsernameAndPasswordAndEmail, f
         'UserType' : 'user',
         'Terminal' : 'web'
     };
-/*    db.collection(mongodbConfig.mongodb.user.name)
+    db.collection(mongodbConfig.mongodb.user.name)
         .insert(appuser, function (error, result) {
             if (error) {
                 console.log('error ' + error);
@@ -487,14 +507,14 @@ router.post(mongodbConfig.url.user.createAppUserByUsernameAndPasswordAndEmail, f
                 } 
             }
         });
-  */  
+/*
     var createAppUserPromise = function() {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.user.name)
             .insert(appuser, function (err, result) {
                 if (err) {
                     defer.reject(err);
-                } else {
+                } else if (result){
                     defer.resolve(result);
                 }
             });
@@ -502,7 +522,10 @@ router.post(mongodbConfig.url.user.createAppUserByUsernameAndPasswordAndEmail, f
     }
 
     createAppUserPromise().then(function(data, status) {
-        if (data) {
+        if (!data) {
+            res.sendStatus(200);
+            return;
+        } else if (data) {
             res.json(result);
         } 
     }, function(err, status) {
@@ -510,10 +533,11 @@ router.post(mongodbConfig.url.user.createAppUserByUsernameAndPasswordAndEmail, f
         res.sendStatus(500);
         return;
     });
+     */ 
 });
 
 function ReplaceASCIICharacter(encodeUrl) {
-    console.log(encodeUrl);
+ //   console.log(encodeUrl);
     var asciiString = encodeUrl
                         .replace("%2F", "/")
                         .replace("%2B","+")
@@ -524,20 +548,21 @@ function ReplaceASCIICharacter(encodeUrl) {
                         .replace("%3A" ,":")
                         .replace("%3B", ";")
                         .replace("%3F","?")
+                        .replace("%20","+")
                         .replace("%40" ,"@");
-    console.log(asciiString);
+ //   console.log(asciiString);
     return asciiString;
 }
 // Update AppUser Activate from EMail
 router.get("/ActivateAppUser/:EncodeUrl", function (req, res) {
     var encodeUrl = req.params.EncodeUrl;
-
+    console.log(encodeUrl);
     var asciiString = ReplaceASCIICharacter(encodeUrl.toString());
 
     var de_ciphertext = cryptojs.AES.decrypt(asciiString, serverConfig.app.passphrase, 256);
     
     var txtString = de_ciphertext.toString(cryptojs.enc.Utf8).split('|');
-
+    console.log(txtString);
     var user = txtString[0];
     db.collection(mongodbConfig.mongodb.user.name)
         .update({

@@ -9,7 +9,7 @@ app.service("CredentialService", ["$q", "$http", "ENV", function ($q, $http, ENV
 		    	  defer.resolve(data);
 		    })
 		    .error(function(error, status) {
-		    	  defer.reject(data);
+		    	  defer.reject(error);
 		    });
 	        return defer.promise;
     	},

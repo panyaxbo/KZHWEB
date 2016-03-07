@@ -33,7 +33,7 @@ app.service("ReceiptOrderService", ["$q","$http", "ENV", function ($q, $http, EN
             var defer = $q.defer();
             var CustomerOrderUrl = ENV.apiEndpoint + "/receipts/LoadROHeadByStaff/"+ CustomerRONo +"/"+ CustomerName
         +"/"+CustomerOrderPaymentStatus+"/"+ CustomerOrderShippingStatus +"/"+CustomerOrderStartDate+"/"+CustomerOrderEndDate;
-            console.log(customerOrderUrl);
+            console.log(CustomerOrderUrl);
             $http.get(CustomerOrderUrl)
             .success(function (data, status) {
                 defer.resolve(data);

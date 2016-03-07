@@ -3,6 +3,7 @@
 	"AWS_SECRET_ACCESS_KEY" : "7xX51Y5KrR1yQNgOllNQEMjCIMOFo7+ixObc/znD",
 	"HOME_BUCKET" : "kzhweb",
 	"PRODUCT_BUCKET" : "/product/",
+	"PRODUCT_CATEGORY_BUCKET" : "/product_category/",
 	"RECEIPT_BUCKET" : "/ro/",
 	"USER_BUCKET" : "/user/",
 	"REGION" : ""

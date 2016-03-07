@@ -1,10 +1,11 @@
 app.controller('HeaderController', ["$scope", "$location", "$window", "$filter", "$anchorScroll", 
   "Upload", "$rootScope", "$http", "$translate", "$timeout", "blockUI", "ngDialog", "MenuService", 
   "LocaleService", "ReceiptOrderService", "CompanyService", "CurrencyService", "ENV", "$cookies", 
-  "vcRecaptchaService", "UserService", "ProductService", "CredentialService", "SocialService", "CryptoService",
+  "vcRecaptchaService", "UserService", "ProductService", "CredentialService", "SocialService", "CryptoService", 
+  "EmailService", "WeightRateService", "AWSService", 
   function ($scope, $location, $window, $filter, $anchorScroll, Upload,$rootScope, $http, $translate,$timeout, blockUI, ngDialog, 
   MenuService, LocaleService, ReceiptOrderService, CompanyService, CurrencyService, ENV , $cookies, vcRecaptchaService, UserService, 
-  ProductService, CredentialService, SocialService, CryptoService) {
+  ProductService, CredentialService, SocialService, CryptoService, EmailService, WeightRateService, AWSService) {
 
     $scope.Locale = "th";
     $scope.Currency = "thb";
@@ -191,6 +192,28 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
       console.log('cannot load company');
     });*/
 
+
+    $scope.ChangePostType = function() {
+      console.log($scope.ROHead.PostType);
+      console.log($scope.ROHead.SumWeight);
+      WeightRateService.GetWeightRateByPostTypeAndWeight($scope.ROHead.PostType, $scope.ROHead.SumWeight)
+      .then(function(weightRate, status) {
+        $scope.ROHead.SumWeightAmount = parseInt(weightRate.Rate);
+        $scope.ROHead.NetAmount = $scope.ROHead.SumAmount + $scope.ROHead.SumVatAmount + $scope.ROHead.SumWeightAmount - $scope.ROHead.SumDiscountAmount;
+        console.log('sum amt ', $scope.ROHead.SumAmount);
+        console.log('sum disc ',$scope.ROHead.SumDiscountAmount);
+        console.log('sum vat ',$scope.ROHead.SumVatAmount);
+        console.log('sum wt ',$scope.ROHead.SumWeightAmount);
+        console.log('net amt ',$scope.ROHead.NetAmount);
+        
+        $scope.$emit('UpdateROHeadROLine', $scope.ROHead );
+     
+      }, function(error, status) {
+
+      });
+        
+    }
+
     // Load Paypal
     $scope.Paypal = {};
     CredentialService.LoadPaypal()
@@ -214,6 +237,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     $scope.PopulateValue = function(provider, response) {
       //  console.log(response);
         if (provider === 'facebook') {
+          $scope.User.Id = response.raw.id;
           $scope.User.Firstname = response.firstname;
           $scope.User.Lastname = response.lastname;
           $scope.User.Gender = response.gender;
@@ -239,6 +263,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
           });
         } 
         else if (provider === 'google_plus') {
+          $scope.User.Id = response.raw.id;
           $scope.User.Firstname = response.firstname;
           $scope.User.Lastname = response.lastname;
           $scope.User.Gender = response.gender;
@@ -264,7 +289,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
           });
         }
         else if (provider === 'twitter') {
-          
+          $scope.User.Id = response.id;
           $scope.User.Firstname = response.alias;
           $scope.User.Lastname = response.last_name;
           $scope.User.Gender = response.gender;
@@ -290,6 +315,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
           });
         } 
         else if (provider === 'linkedin') {
+          $scope.User.Id = response.raw.id;
           $scope.User.Firstname = response.firstname;
           $scope.User.Lastname = response.lastname;
           $scope.User.Gender = response.gender;
@@ -309,6 +335,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
             $("#LoginModal").modal("toggle");
         }
         else if (provider === 'instagram') {
+          $scope.User.Id = response.id;
           $scope.User.Firstname = response.alias;
           $scope.User.Lastname = response.lastname;
           $scope.User.Gender = response.gender;
@@ -334,6 +361,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
           });
         }
         else if (provider === 'github') {
+          $scope.User.Id = response.id;
           $scope.User.Firstname = response.alias;
           $scope.User.Lastname = response.lastname;
           $scope.User.Gender = response.gender;
@@ -359,6 +387,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
           });
         }
         else if (provider === 'dropbox') {
+          $scope.User.Id = response.id;
           $scope.User.Firstname = response.name;
           $scope.User.Lastname = response.lastname;
           $scope.User.Gender = response.gender;
@@ -373,6 +402,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
           $("#LoginModal").modal("toggle");
         }
         else if (provider === 'foursquare') {
+          $scope.User.Id = response.id;
           $scope.User.Firstname = response.name;
           $scope.User.Lastname = response.lastname;
           $scope.User.Gender = response.gender;
@@ -391,6 +421,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
             $("#LoginModal").modal("toggle");
         }
         else if (provider === 'soundcloud') {
+          $scope.User.Id = response.raw.id;
           $scope.User.Firstname = response.alias;
           $scope.User.Lastname = response.lastname;
           $scope.User.Gender = response.gender;
@@ -552,8 +583,11 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     var UserBackFromEmailUrl = $location.url();
     if (UserBackFromEmailUrl.indexOf("confirm=") > -1 ) {
         blockUI.start("Please wait ...");
-        UserService.ActivateAppUser(UserBackFromEmailUrl)
-        then(function(data, status) {
+        console.log('UserBackFromEmailUrl ', UserBackFromEmailUrl);
+        var asciiString = ReplaceASCIICharacter(UserBackFromEmailUrl);
+        console.log('after  ', asciiString);
+        UserService.ActivateAppUser(asciiString)
+        .then(function(data, status) {
             blockUI.message("100%");
             blockUI.stop();
             swal("Sign up Success", "Your account is now activated.", "success");
@@ -595,7 +629,23 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
 
         });*/
     }
-
+    function ReplaceASCIICharacter(encodeUrl) {
+     //   console.log(encodeUrl);
+        var asciiString = encodeUrl
+                            .replace(/%2F/g, "/")
+                            .replace(/%2B/g,"+")
+                            .replace(/%3D/g ,"=")
+                            .replace(/%24/g, "$")
+                            .replace(/%26/g,"&")
+                            .replace(/%2C/g ,",")
+                            .replace(/%3A/g ,":")
+                            .replace(/%3B/g, ";")
+                            .replace(/%3F/g,"?")
+                            .replace(/%20/g,"+")
+                            .replace(/%40/g ,"@");
+     //   console.log(asciiString);
+        return asciiString;
+    }
     $scope.ChangePassword = function() {
       if ($scope.ChangeForgetPassword === $scope.ConfirmChangeForgetPassword) {
 
@@ -625,22 +675,27 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
 
     $scope.Signup = function () {
       blockUI.start("Please wait while system sending email...");
+      console.log('sinn up ');
       var email = $scope.Email;
       $scope.User.Firstname = $scope.Firstname;
       $scope.User.Lastname = $scope.Lastname;
-
+      var hashLink = '';
       UserService.CreateUserEmailActivate($scope.Username, $scope.Password, email, $scope.User)
       .then(function(data, status) {
           blockUI.message("25%");
           return CryptoService.GenerateHashLink($scope.Username, $scope.Password, email)
+      }, function(err, status) {
+          blockUI.stop();
+          console.log('err create app user ', err);
       })
       .then(function (data, status) {
           console.log(data);
+          hashLink = data;
           var hostPort = $location.host() + ':' +$location.port();
           var mailActivate = {
             Email : email,
             Host : hostPort,
-            BacktoUrl : data
+            BacktoUrl : hashLink
           };
           return EmailService.SendEmailConfirmation(mailActivate)
       })
@@ -880,11 +935,12 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
           return UserService.DownloadUserProfileImage($scope.User.Id, $scope.User.Username);
       })
       .then(function(profile_image, status) {
-   //     console.log(profile_image);
         $scope.User.ProfileImage = profile_image;
           $('#UserProfileImage').children("img").remove();
           $('#UserProfileImage').append(profile_image);
           return UserService.DownloadUserThumbnailImage($scope.User.Id, $scope.User.Username);
+      }, function(err, status) {
+         console.log('download user image fail no problem goes on ');
       })
       .then(function(thumbnail_image, status) {
    //     console.log(thumbnail_image);
@@ -1226,11 +1282,12 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
         if ($scope.IsUserInSession()) {
           console.log('user lod in ');
           $("#CartModal").modal("toggle");
+          MenuService.Menu.SelectedMenu = "shipment";
 
           $scope.SelectedMenu = "shipment";
+         
           
-          MenuService.Menu.SelectedMenu = "shipment";
-          $('html, body').animate({ scrollTop: $('#shipment-section').offset().top }, 'slow');
+  //        $('html, body').animate({ scrollTop: $('#shipment-section').offset().top }, 'slow');
           $scope.$emit('handleHeadMenuEmit', {
               SelectedMenu: 'shipment'
           });
@@ -1331,9 +1388,10 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     };
 
     $scope.IsUserInSession = function()  {
+      console.log($scope.User);
       if (!$scope.User) {
         return false;
-      } else if ($scope.User.Id.length > 0 || $scope.User.FirstName.length > 0 ) {
+      } else if ($scope.User.Id.length > 0) {
         return true;
       }
     }

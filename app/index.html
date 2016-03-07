@@ -8,11 +8,11 @@
     <meta name="author" content="{{'TITLE.AUTHOR' | translate}}">
     <meta name="viewport" content="width=device-width">
     <link rel="shortcut icon" href="/images/favicon.ico">
-    <link rel="stylesheet" href="/bower_components/BrandButtons/dist/brand-buttons.min.css" />
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/bower_components/allmighty-autocomplete/style/autocomplete.css" />
     <link rel="stylesheet" href="/bower_components/angularjs-datepicker/dist/angular-datepicker.min.css" />
-    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/bower_components/fontawesome/css/font-awesome.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/bower_components/angular-bootstrap/ui-bootstrap-csp.css" />
     <link rel="stylesheet" href="/bower_components/bootstrap-social/bootstrap-social.css" />
     <link rel="stylesheet" href="/bower_components/ng-table/dist/ng-table.min.css" />
     <link rel="stylesheet" href="/bower_components/ngDialog/css/ngDialog.min.css" />
@@ -24,33 +24,21 @@
     <link rel="stylesheet" href="/bower_components/sweetalert/dist/sweetalert.css" />
     <link rel="stylesheet" href="/bower_components/angular-block-ui/dist/angular-block-ui.min.css" />
     <link rel="stylesheet" href="/bower_components/ng-table/dist/ng-table.min.css">
+    <link rel="stylesheet" href="/bower_components/magnifier/magnifier.css">
     <link rel="stylesheet" href="styles/bootstrap-magnify.css">
     <link rel="stylesheet" href="styles/search.css">
     <link rel="stylesheet" href="styles/step.css">
     <link rel="stylesheet" href="styles/main.css">
 </head>
 
-<body onselectstart="return false;" ondragstart="return false;" oncontextmenu="return false;">
+<body >
     <div class="container">
         <div class="header container-fluid" id="div-header" ng-controller="HeaderController" style="top: 0px;padding-bottom:10px;margin-bottom: 10px; margin-top:15px">
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <a href="#/">
                     <img src="/images/KZHLogo.png" width="150px" height="50px">
-                </a>
-                <div id="SearchCriteria" class="kzhweb-search animate" style="left:142px;top:85px;z-index:9999;width:80%">             
-                    <div class="input-group">
-                      <input type="text" class="form-control" ng-model="SearchAllText" ng-enter="Search()" ng-keydown="expression" placeholder="{{'HEAD.MENU.SEARCH.PLACEHOLDER' | translate}}">
-                      <span class="input-group-btn">
-                        <button class="btn btn-danger" type="reset" ng-click="HideSearch()"><span class="glyphicon glyphicon-remove"></span></button>
-                      </span>
-                    </div>
-                  </div>
-                <ul class="nav nav-pills pull-right">
-                    <li>
-                        <a href="" class="head-menu animate" ng-click="ShowSearch()">
-                            <span class="glyphicon glyphicon-search"></span>
-                        </a>
-                    </li>
+                </a>               
+                <ul class="nav nav-pills pull-right">                   
                     <li>
                         <a href="#product-section" ng-click="SelectedHeadMenu('product')" class="head-menu">{{'HEAD.MENU.PRODUCT' | translate}}</a>
                     </li>
@@ -74,13 +62,11 @@
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                                             </button>
-                                            <h4 class="modal-title">{{'HEAD.MODAL_CART.PRODUCT_CART' | translate}}</h4>
+                                            <h4 class="modal-title"><i class="fa fa-shopping-basket fa-2x"></i> {{'HEAD.MODAL_CART.PRODUCT_CART' | translate}}</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <div class="container">
-                        
+                                            <div class="container">                        
                                             </div>
-
                                             <div class="row">
                                                 <div class="col-sm-12 col-md-12 col-md-offset-0">
                                                     <div id="HideCartTable" ng-show="ROHead.ROLineList.length <= 0 || ROHead.ROLineList === undefined">
@@ -169,6 +155,32 @@
                                                                     <td>   </td>
                                                                 </tr>
                                                                 <tr>
+                                                                    <td colspan="2"> </td>
+                                                                    <td colspan="1"> 
+                                                                        <select class="form-control" ng-model="ROHead.PostType" required="required" ng-change="ChangePostType()">
+                                                                            <option value="">{{'HEAD.MODAL_CART.POST_TYPE.SELECT_POST_TYPE' | translate}}</option>
+                                                                            <option value="Normal">{{'HEAD.MODAL_CART.POST_TYPE.NORMAL' | translate}}</option>
+                                                                            <option value="EMS" >{{'HEAD.MODAL_CART.POST_TYPE.EMS' | translate}}</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td colspan="2">  
+                                                                        <h5>{{'HEAD.MODAL_CART.SUMWEIGHTAMT' | translate}}</h5>
+                                                                    </td>
+                                                                    <td colspan="1" class="text-right">  
+                                                                        <h5><strong></strong></h5>
+                                                                    </td>
+                                                                    <td colspan="1" class="text-right">  
+                                                                        <h5>
+                                                                        <strong ng-if="ROHead.SumWeight < 1000">{{ROHead.SumWeight | currency:''}} g</strong>
+                                                                        <strong ng-if="ROHead.SumWeight >= 1000">{{ROHead.SumWeight/1000 | currency:''}} kg</strong>
+                                                                        </h5>
+                                                                    </td>
+                                                                    <td colspan="1" class="text-right">  
+                                                                        <h5><strong>{{CurrencySymbol}} {{ROHead.SumWeightAmount}}</strong></h5>
+                                                                    </td>
+                                                                    <td>   </td>
+                                                                </tr>
+                                                                <tr>
                                                                     <td colspan="3"> </td>
                                                                     <td colspan="2">  
                                                                         <h4>{{'HEAD.MODAL_CART.NETAMT' | translate}}</h4>
@@ -190,9 +202,9 @@
                                                                                 <span class="glyphicon glyphicon-trash"></span> {{'HEAD.MODAL_CART.CLEAR_BUTTON' | translate}}
                                                                             </button>
 
-                                                                                <button type="button" class="btn btn-success" ng-click="ShipmentProcess()">
+                                                                                <a type="button" class="btn btn-success" ng-click="ShipmentProcess()" scroll-on-click href="#shipment-section">
                                                                                 {{'HEAD.MODAL_CART.CHECKOUT_BUTTON' | translate}} <span class="glyphicon glyphicon-play"></span>
-                                                                            </button>
+                                                                            </a>
                                                                             </div>
                                                                         </div>
                                                                     </td>
@@ -304,7 +316,7 @@
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                                         </button>
-                                        <h4 class="modal-title">{{'HEAD.MODAL_SIGNIN.HEAD' | translate}}</h4>
+                                        <h4 class="modal-title"><i class="fa fa-sign-in fa-2x"></i> {{'HEAD.MODAL_SIGNIN.HEAD' | translate}}</h4>
                                     </div>
                                     <div class="modal-body">
                                         <div class="row">
@@ -312,6 +324,7 @@
                                                 <div class="well">
                                                     <form id="loginForm" role="form">
                                                         <div class="form-group">
+
                                                             <label for="username" class="control-label">{{'HEAD.MODAL_SIGNIN.LABEL_USERNAME' | translate}}</label>
                                                             <input type="text" class="form-control" id="username" name="username" value="" required title="Please enter you username" placeholder="example@gmail.com" ng-model="username" data-error="Bruh, that email address is invalid">
                                                             <span class="help-block"></span>
@@ -377,6 +390,7 @@
                                             <div class="col-xs-6">
                                                 <div class="well">
                                                 <form id="SignupForm" ng-submit="Signup()" role="form" type="multipart/form-data">
+                                                <!--
                                                         <div class="form-group">
                                                             <label class="control-label" for="inputFirst">{{'HEAD.MODAL_SIGNIN.FIRST_NAME' | translate}}</label>
                                                             <div class="controls">
@@ -390,7 +404,7 @@
                                                                 <input id="Lastname" ng-model="Lastname" placeholder="E.g. Hegde" type="text" 
                                                                 class="form-control">
                                                             </div>
-                                                        </div>
+                                                        </div>-->
                                                         <div class="form-group">
                                                             <label class="control-label" for="inputEmail">{{'HEAD.MODAL_SIGNIN.EMAIL' | translate}}</label>
                                                             <div class="controls">
@@ -405,6 +419,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                       
                                                         <div class="form-group">
                                                             <label class="control-label" for="inputUser">{{'HEAD.MODAL_SIGNIN.USERNAME' | translate}}</label>
                                                             <div class="controls">
@@ -418,7 +433,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
+       
                                                         <div class="form-group">
                                                             <label class="control-label" for="inputPassword">{{'HEAD.MODAL_SIGNIN.PASSWORD' | translate}}</label>
                                                             <div class="controls">
@@ -486,9 +501,8 @@
                             </li>
                           </ul>
                     </li>
-                
-                    <li class="dropdown" class="head-menu" style="margin-top:5px">
                     
+                    <li class="dropdown" class="head-menu" style="margin-top:5px">
                            <div id="UserProfileImage">
                                <img src="/images/noProfileImg.png"  class="img-circle" width="40" height="40" ng-show="!IsLogin || User.ProfileImage === undefined" style="margin-top:-5px">
                            </div>
@@ -536,13 +550,14 @@
                     </li>
             </div>
         </div>
-        <div class="input-group search-form">
-          <input type="text" class="form-control" ng-model="SearchAllText" ng-enter="Search()" ng-keydown="expression" placeholder="{{'HEAD.MENU.SEARCH.PLACEHOLDER' | translate}}">
-          <span class="input-group-btn">
-            <button class="btn btn-danger search-button-spacer" type="reset" ng-click="Search()"><span class="glyphicon glyphicon-search"></span></button>
-          </span>
-        </div>
+        
         <div id="div-body" ng-controller="BodyController">
+            <div class="input-group search-form">
+              <input type="text" class="form-control" ng-model="SearchAllText" ng-enter="Search()" ng-keydown="expression" placeholder="{{'HEAD.MENU.SEARCH.PLACEHOLDER' | translate}}">
+              <span class="input-group-btn">
+                <button class="btn btn-danger search-button-spacer" type="reset" ng-click="Search()"><span class="glyphicon glyphicon-search"></span></button>
+              </span>
+            </div>
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
                     <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
@@ -615,17 +630,47 @@
             <!-- End Carousel -->
             
             <hr>
-            <div id="nav">
-                <!-- Display Product type-->
-                <table id="ProductTypeTable" ng-init="LoadProductCategory()">
-                    <tr ng-repeat="pc in ProductCategory" ng-animate="animate">
+            <div id="nav" style="word-wrap: break-word;">
+            <!--    <table id="ProductTypeTable" ng-init="LoadProductCategory()">
+                    <tr ng-repeat="pc in ProductCategory" ng-animate="animate" >
                         <td>
                             <a href="#" ng-click="LoadProductByProductCategoryCode(pc.ProductCategoryCode)" ng-show="SelectedLocale=='th'">{{pc.ProductCategoryNameTh}}</a>
-                            <a href="#" ng-click="LoadProductByProductCategoryCode(pc.ProductCategoryCode)" ng-show="SelectedLocale=='en'">{{pc.ProductCategoryNameEn}}</a>
+                            <a href="#" ng-click="LoadProductByProductCategoryCode(pc.ProductCategoryCode)" ng-show="SelectedLocale=='us'">{{pc.ProductCategoryNameEn}}</a>
                             <a href="#" ng-click="LoadProductByProductCategoryCode(pc.ProductCategoryCode)" ng-show="SelectedLocale=='cn'">{{pc.ProductCategoryNameCn}}</a>
                         </td>
                     </tr>
-                </table>
+                </table>-->
+                <div id="ProductType" >
+                    <div class="list-group panel">
+                        <div ng-repeat="ProductType in ProductTypes">
+                            <a href="#{{ProductType.ProductTypeCode}}" class="list-group-item list-group-item-success" 
+                            data-toggle="collapse" data-parent="#ProductType" ng-show="SelectedLocale=='th'">
+                            {{ProductType.ProductTypeNameTh}}
+                            <span class="badge badge-info">{{ProductType.ProductCategories.length}}</span>
+                            </a>
+                            <a href="#{{ProductType.ProductTypeCode}}" class="list-group-item list-group-item-success" 
+                            data-toggle="collapse" data-parent="#ProductType" ng-show="SelectedLocale=='us'">
+                            {{ProductType.ProductTypeNameEn}}
+                            <span class="badge badge-info">{{ProductType.ProductCategories.length}}</span>
+                            </a>
+                            <a href="#{{ProductType.ProductTypeCode}}" class="list-group-item list-group-item-success" 
+                            data-toggle="collapse" data-parent="#ProductType" ng-show="SelectedLocale=='cn'" >
+                            {{ProductType.ProductTypeNameCn}} 
+                            <span class="badge badge-info">{{ProductType.ProductCategories.length}}</span>
+                            </a>
+                            <div class="collapse" id="{{ProductType.ProductTypeCode}}" >
+                                <div ng-repeat="ProductCategory in ProductType.ProductCategories">
+                                    <a href="" class="list-group-item" ng-show="SelectedLocale=='th'" 
+                                    ng-click="LoadProductByProductCategoryCode(ProductCategory.ProductCategoryCode)">{{ProductCategory.ProductCategoryNameTh}}</a>
+                                    <a href="" class="list-group-item" ng-show="SelectedLocale=='us'" 
+                                    ng-click="LoadProductByProductCategoryCode(ProductCategory.ProductCategoryCode)">{{ProductCategory.ProductCategoryNameEn}}</a>
+                                    <a href="" class="list-group-item" ng-show="SelectedLocale=='cn'" 
+                                    ng-click="LoadProductByProductCategoryCode(ProductCategory.ProductCategoryCode)">{{ProductCategory.ProductCategoryNameCn}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Google Map & Thai-Post Image-->
                 <table>
                     <tr>
@@ -659,106 +704,127 @@
             <!-- div-nav-->
             
             <div id="div-change-view">
-                <!-- <div> product to cart-->
                 <div id="product-section" name="product-section" ng-init="LoadProduct()" class="section animated fadeIn" 
                 ng-show="SelectedMenu === 'product'" style="padding-top:0px">
+                    <div class="row text-center" >
+                        <uib-pagination boundary-links="true" total-items="totalItems" page="currentPage" on-select-page="SelectPage(page)" ng-model="currentPage" class="pagination" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+                    </div>
                     <div class="row">
-                        <div class="col-md-3 col-sm-4 col-xs-6 product-gallery-footer" ng-repeat="p in Product">
-                            <div class="mag thumbnailProductImage" style="height:200px">
-                                <img src="/images/no-image.png" class="img-responsive" ng-show="p.ProductImageRefId.length <= 0 || p.ProductImageRefId === undefined">
-                                
-                                <div id="ThumbnailProductImage_{{p.ProductCode}}" ng-init="LoadProductImageByProductCode(p.ProductImageRefId, p._id, p.ProductCode)" >
-                                    <div class="label_product_new" ng-show="p.IsNew">{{'BODY.SECTION.PRODUCT.LABEL_NEW' | translate}}</div>
-                                    <div style="position:absolute;" ng-show="p.IsNew">
-                                        <img src="/images/stripe-new.png" class="product_status product_new" 
-                                        width="100px" height="100px" ng-show="p.ProductImageRefId.length > 0 || p.ProductImageRefId !== undefined">
-                                    </div>
-                                    <div ng-show="(p.Promotion !== undefined && p.Promotion !== null) || p.Promotion.length > 0">
-                                        <img src="/images/stripe-sale.png" class="product_status product_sale" 
-                                        width="100px" height="40px" >
-                                    </div>
-                                    <div ng-show="(p.Promotion !== undefined && p.Promotion !== null) || p.Promotion.length > 0">
-                                        <label class="label_sale">{{'BODY.SECTION.PRODUCT.LABEL_SALE' | translate}}</label>
-                                    </div> 
-                                    <div ng-show="(p.Promotion !== undefined && p.Promotion !== null) || p.Promotion.length > 0">
-                                        <label class="percent_sale">- {{p.Promotion[0].DiscountPercent}} %</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="caption">
-                                <div class="product-gallery-name">
-                                    <h5 style="color:white;" ng-show="SelectedLocale=='th'">{{p.ProductNameTh}}</h5>
-                                    <h5 style="color:white;" ng-show="SelectedLocale=='en'">{{p.ProductNameEn}}</h5>
-                                    <h5 style="color:white;" ng-show="SelectedLocale=='cn'">{{p.ProductNameCn}}</h5>
-                                </div>
-                                <p style="color:white;">
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            {{'BODY.SECTION.PRODUCT.PRICE' | translate}} 
-                                        </div>
-                                        <div class="col-sm-4">
-                                        </div>
-                                        <div id="ProductPriceLabel" class="col-sm-5 text-right" >
-                                            <div>
-                                                <strike ng-show="(p.Promotion !== undefined && p.Promotion !== null) || p.Promotion.length > 0">{{CurrencySymbol}} {{(p.RetailPrice * Multiplier) | currency:''}}
-                                                </strike>
-                                                <div ng-show="p.Promotion === undefined">{{CurrencySymbol}} {{(p.RetailPrice * Multiplier) | currency:''}}</div>
+                        <div class="col-md-3 col-sm-4 col-xs-6" ng-repeat="p in Products">
+                            <div class="product-detail">
+                                <div class="product-gallery-footer">
+                                    <div class="mag thumbnailProductImage" style="height:200px">
+                                        <img src="/images/no-image.png" class="img-responsive" ng-show="p.ProductImageRefId.length <= 0 || p.ProductImageRefId === undefined">
+                                        
+                                        <div id="ThumbnailProductImage_{{p.ProductCode}}" ng-init="LoadProductImageByProductCode(p.ProductImageRefId, p._id, p.ProductCode)" >
+                                            <div class="label_product_new" ng-show="p.IsNew">{{'BODY.SECTION.PRODUCT.LABEL_NEW' | translate}}</div>
+                                            <div style="position:absolute;" ng-show="p.IsNew">
+                                                <img src="/images/stripe-new.png" class="product_status product_new" 
+                                                width="100px" height="100px" ng-show="p.ProductImageRefId.length > 0 || p.ProductImageRefId !== undefined">
                                             </div>
-                                           
-                                        </div>
-                                        <div ng-show="(p.Promotion !== undefined && p.Promotion !== null) || p.Promotion.length > 0" 
-                                            class="label_discount_price"> 
-                                            {{CurrencySymbol}} {{(p.RetailPrice * ((100 - p.Promotion[0].DiscountPercent)/100)* Multiplier) | currency:''}}
-                                        </div>
-                                    </div>
-                                </p>
-                                <p style="color:white;">
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            {{'BODY.SECTION.PRODUCT.QTY' | translate}}
-                                        </div>
-                                        <div class="col-sm-4">
-                                        </div>
-                                        <div class="col-sm-5">
-                                            <input type="number" class="form-control text-right" placeholder="0" ng-model="BuyQty">
+                                            <div ng-show="(p.Promotion !== undefined && p.Promotion !== null) || p.Promotion.length > 0">
+                                                <img src="/images/stripe-sale.png" class="product_status product_sale" 
+                                                width="100px" height="40px" >
+                                            </div>
+                                            <div ng-show="(p.Promotion !== undefined && p.Promotion !== null) || p.Promotion.length > 0">
+                                                <label class="label_sale">{{'BODY.SECTION.PRODUCT.LABEL_SALE' | translate}}</label>
+                                            </div> 
+                                            <div ng-show="(p.Promotion !== undefined && p.Promotion !== null) || p.Promotion.length > 0">
+                                                <label class="percent_sale">- {{p.Promotion[0].DiscountPercent}} %</label>
+                                            </div>
                                         </div>
                                     </div>
-                                </p>
-                                <p>
-                                    <div class="col-md-4">
-                                        <a href="#" class="btn btn-success btn-product" ng-click="AddCart(p, BuyQty, $index)">
-                                        <span class="glyphicon glyphicon-shopping-cart"></span> 
-                                        {{'BODY.SECTION.PRODUCT.BUY' | translate}}</a>
-                                    </div>
-                                    <div class="col-md-4 ">
-                                        <a class="btn btn-primary btn-product" data-toggle="modal" data-target="#DetailModal">
-                                        <span class="glyphicon glyphicon-exclamation-sign"></span>  {{'BODY.SECTION.PRODUCT.DETAIL' | translate}}</a>
-                                    </div>
-                                    <div class="modal fade" id="DetailModal">
-                                        <div class="modal-dialog modal-lg">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                    <h4 class="modal-title">{{'HEAD.MODAL_CART.PRODUCT_CART' | translate}}</h4>
+                                    <div class="caption">
+                                        <div class="product-gallery-name">
+                                            <h5 style="color:white;" ng-show="SelectedLocale=='th'">{{p.ProductNameTh}}</h5>
+                                            <h5 style="color:white;" ng-show="SelectedLocale=='en'">{{p.ProductNameEn}}</h5>
+                                            <h5 style="color:white;" ng-show="SelectedLocale=='cn'">{{p.ProductNameCn}}</h5>
+                                        </div>
+                                        <p style="color:white;">
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    {{'BODY.SECTION.PRODUCT.PRICE' | translate}} 
                                                 </div>
-                                                <div class="modal-body">
-                                                    <div class="container">
+                                                <div class="col-sm-4">
+                                                </div>
+                                                <div id="ProductPriceLabel" class="col-sm-5 text-right" >
+                                                    <div>
+                                                        <strike ng-show="(p.Promotion !== undefined && p.Promotion !== null) || p.Promotion.length > 0">{{CurrencySymbol}} {{(p.RetailPrice * Multiplier) | currency:''}}
+                                                        </strike>
+                                                        <div ng-show="p.Promotion === undefined">{{CurrencySymbol}} {{(p.RetailPrice * Multiplier) | currency:''}}</div>
                                                     </div>
+                                                   
+                                                </div>
+                                                <div ng-show="(p.Promotion !== undefined && p.Promotion !== null) || p.Promotion.length > 0" 
+                                                    class="label_discount_price"> 
+                                                    {{CurrencySymbol}} {{(p.RetailPrice * ((100 - p.Promotion[0].DiscountPercent)/100)* Multiplier) | currency:''}}
+                                                </div>
 
-                                                    <div class="row">
-                                                        <div class="col-sm-12 col-md-12 col-md-offset-0">
-                                                            
+                                            </div>
+                                        </p>
+                                        <p style="color:white;">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    {{'BODY.SECTION.PRODUCT.WEIGHT' | translate}}
+                                                </div>
+                                                
+                                                <div class="col-sm-8 text-right">
+                                                    {{p.Weight | currency:''}} {{'BODY.SECTION.PRODUCT.WEIGHT_UOM' | translate}}
+                                                </div>
+                                            </div>
+                                        </p>
+                                        <p style="color:white;">
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    {{'BODY.SECTION.PRODUCT.QTY' | translate}}
+                                                </div>
+                                                <div class="col-sm-4">
+                                                </div>
+                                                <div class="col-sm-5">
+                                                    <input type="number" class="form-control text-right" placeholder="0" ng-model="BuyQty">
+                                                </div>
+                                            </div>
+                                        </p>
+                                        <p>
+                                            <div class="col-md-4">
+                                                <a href="#" class="btn btn-success btn-product" ng-click="AddCart(p, BuyQty, $index)">
+                                                <span class="glyphicon glyphicon-shopping-cart"></span> 
+                                                {{'BODY.SECTION.PRODUCT.BUY' | translate}}</a>
+                                            </div>
+                                            <div class="col-md-4 ">
+                                                <a class="btn btn-primary btn-product" data-toggle="modal" data-target="#DetailModal">
+                                                <span class="glyphicon glyphicon-exclamation-sign"></span> {{'BODY.SECTION.PRODUCT.DETAIL' | translate}}</a>
+                                            </div>
+                                            <div class="modal fade" id="DetailModal">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                            <h4 class="modal-title">{{'HEAD.MODAL_CART.PRODUCT_CART' | translate}}</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="container">
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12 col-md-offset-0">
+                                                                    
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </p>
                                     </div>
-                                </p>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row text-center" >
+                        <uib-pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" page="currentPage" on-select-page="SelectPage(page)" class="pagination" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
                     </div>
                 </div>
               
@@ -773,7 +839,84 @@
                 <!-- <div> payment method -->
                 <div id="payment-section"  name="payment-section" class="section" ng-show="SelectedMenu === 'payment'">
                     <h3>{{'BODY.SECTION.PAYMENT.HEAD' | translate}}</h3>
-                    <img src="/images/How-To-Purchase.png" width="950" height="1350" class="img-respinsive">
+                    <div class="col-sm-12 col-md-12">
+                      <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                          <div class="panel-heading">
+                            <h4 class="panel-title">
+                              <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><i class="fa fa-shopping-bag"></i> การสั่งซื้อ</a>
+                            </h4>
+                          </div>
+                          <div id="collapseOne" class="panel-collapse collapse in">
+                            <div class="list-group">
+                              <a href="" class="list-group-item">
+                                <h4 class="list-group-item-heading">List group item heading</h4>
+                                <p class="list-group-item-text">
+                                    <img src="/images/How-To-Purchase.png" width="950" height="1350" class="img-respinsive">
+                                </p>
+                              </a>
+                            </div>                            
+                          </div>
+                        </div>
+                        <div class="panel panel-default">
+                          <div class="panel-heading">
+                            <h4 class="panel-title">
+                              <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><span class="glyphicon glyphicon-file">
+                                </span> Reports</a>
+                            </h4>
+                          </div>
+                          <div id="collapseFour" class="panel-collapse collapse">
+                            <div class="list-group">
+                              <a href="#" class="list-group-item">
+                                Cras justo odio
+                              </a>
+                              <div class="list-group">
+                                <a href="#" class="list-group-item">
+                                  Cras justo odio
+                                </a>
+                                <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
+                                <a href="#" class="list-group-item">Morbi leo risus</a>
+                                <a href="#" class="list-group-item">Porta ac consectetur ac</a>
+                                <a href="#" class="list-group-item">Vestibulum at eros</a>
+                              </div>
+                              <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
+                              <a href="#" class="list-group-item">Morbi leo risus</a>
+                              <a href="#" class="list-group-item">Porta ac consectetur ac</a>
+                              <a href="#" class="list-group-item">Vestibulum at eros</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="panel panel-default">
+                          <div class="panel-heading">
+                            <h4 class="panel-title">
+                              <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive"><span class="glyphicon glyphicon-heart">
+                                </span> Reports</a>
+                            </h4>
+                          </div>
+                          <div id="collapseFive" class="panel-collapse collapse">
+                            <div class="list-group">
+                              <a href="#" class="list-group-item">
+                                <h4 class="list-group-item-heading">List group item heading</h4>
+                                <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                              </a>
+                            </div>
+                            <div class="list-group">
+                              <a href="#" class="list-group-item active">
+                                <h4 class="list-group-item-heading">List group item heading</h4>
+                                <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                              </a>
+                            </div>
+                            <div class="list-group">
+                              <a href="#" class="list-group-item">
+                                <h4 class="list-group-item-heading">List group item heading</h4>
+                                <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
                 </div>
                 <!-- <div> about us -->
                 <div id="about-section" name="about-section" class="section" ng-show="SelectedMenu === 'about'">
@@ -917,9 +1060,9 @@
                                                   </div>
                                                   <div class="form-group"></div>
                                               </form>
-                                            </div><!-- /.col-lg-12 -->
-                                        </div><!-- /.row -->
-                                        
+                                            </div>
+                                        </div>
+                                        <!--
                                         <h3>{{'BODY.SECTION.SHIPMENT.BILLING.STEP' | translate}}</h3> 
                                         <div class="row form-group">
                                             <input type="checkbox" ng-model="IsSameAddress" ng-click="PerformSameBillAndReceiptAddress()"> {{'BODY.SECTION.SHIPMENT.BILLING.SAME_ADDRESS' | translate}}
@@ -985,7 +1128,7 @@
                                                   </div>
                                               </form>
                                             </div><!-- /.col-lg-12 -->
-                                        </div><!-- /.row -->
+                                        </div> -->
                                     </div>
 
                                     <div>
@@ -1007,7 +1150,7 @@
                                                      <label style="color:white">{{'BODY.SECTION.SHIPMENT.PAYMENT.PAYMENT_TYPE' | translate}}</label>
                                                 </div>
                                                 <div class="col-xs-8">
-                                                    <select class="form-control" ng-model="PaymentType" required="required">
+                                                    <select class="form-control" ng-model="PaymentType" required="required" ng-change="ChangePaymentType()">
                                                         <option value="">{{'BODY.SECTION.SHIPMENT.PAYMENT.SELECT_PAYMENT_TYPE' | translate}}</option>
                                                         <option value="Transfer">{{'BODY.SECTION.SHIPMENT.PAYMENT.TRANSFER' | translate}}</option>
                                                     <!--    <option value="Paypal">{{'BODY.SECTION.SHIPMENT.PAYMENT.PAYPAL' | translate}}</option> -->
@@ -1022,7 +1165,7 @@
                                             <div class="col-xs-12"> 
                                                  <div class="col-xs-2">
                                                  </div>
-                                                 <div class="col-xs-10" ng-show="PaymentType == 'Transfer'">
+                                                 <div class="col-xs-12" ng-show="PaymentType == 'Transfer'">
                                                 <!-- TRANSFER FORM STARTS HERE -->
                                                 <div class="panel panel-default transfer-box">
                                                     <div class="panel-heading display-table">
@@ -1055,16 +1198,16 @@
                                                                                 <img src="/images/bbl.png" width="40" height="40">
                                                                             </td>
                                                                             <td>
-                                                                                <label style="color:black">111-2345-123</label>
+                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.BBL.NAME' | translate}}</label>
                                                                             </td>
                                                                             <td>
-                                                                               <label style="color:black">Saving</label>
+                                                                               <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.BBL.ACCOUNT_TYPE' | translate}}</label>
                                                                             </td>
                                                                             <td>
-                                                                               <label style="color:black">Surin</label>
+                                                                               <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.BBL.ACCOUNT_BRANCH' | translate}}</label>
                                                                             </td>
                                                                             <td>
-                                                                                <label style="color:black">นายปัญญา บุญยกุลศรีรุ่ง</label>
+                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.BBL.ACCOUNT_NAME' | translate}}</label>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
@@ -1075,16 +1218,16 @@
                                                                                 <img src="/images/kbank.png" width="40" height="40">
                                                                             </td>
                                                                             <td>
-                                                                               <label style="color:black">111-2345-123</label>
+                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KBANK.NAME' | translate}}</label>
                                                                             </td>
                                                                             <td>
-                                                                               <label style="color:black">Saving</label>
+                                                                               <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KBANK.ACCOUNT_TYPE' | translate}}</label>
                                                                             </td>
                                                                             <td>
-                                                                               <label style="color:black">Surin</label>
+                                                                               <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KBANK.ACCOUNT_BRANCH' | translate}}</label>
                                                                             </td>
                                                                             <td>
-                                                                                <label style="color:black">นายปัญญา บุญยกุลศรีรุ่ง</label>
+                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KBANK.ACCOUNT_NAME' | translate}}</label>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
@@ -1096,16 +1239,16 @@
                                                                                 <img src="/images/scb.png" width="40" height="40">
                                                                             </td>
                                                                             <td>
-                                                                                <label style="color:black">111-2345-123 </label>
+                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.SCB.NAME' | translate}}</label>
                                                                             </td>
                                                                             <td>
-                                                                               <label style="color:black">Saving</label>
+                                                                               <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.SCB.ACCOUNT_TYPE' | translate}}</label>
                                                                             </td>
                                                                             <td>
-                                                                               <label style="color:black">Surin</label>
+                                                                               <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.SCB.ACCOUNT_BRANCH' | translate}}</label>
                                                                             </td>
                                                                             <td>
-                                                                                <label style="color:black">นายปัญญา บุญยกุลศรีรุ่ง</label>
+                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.SCB.ACCOUNT_NAME' | translate}}</label>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
@@ -1116,16 +1259,16 @@
                                                                                 <img src="/images/ktb.png" width="40" height="40">
                                                                             </td>
                                                                             <td>
-                                                                                <label style="color:black">111-2345-123 </label>
+                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KTB.NAME' | translate}}</label>
                                                                             </td>
                                                                             <td>
-                                                                               <label style="color:black">Saving</label>
+                                                                               <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KTB.ACCOUNT_TYPE' | translate}}</label>
                                                                             </td>
                                                                             <td>
-                                                                               <label style="color:black">Surin</label>
+                                                                               <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KTB.ACCOUNT_BRANCH' | translate}}</label>
                                                                             </td>
                                                                             <td>
-                                                                               <label style="color:black"> นายปัญญา บุญยกุลศรีรุ่ง</label>
+                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KTB.ACCOUNT_NAME' | translate}}</label>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
@@ -1136,38 +1279,37 @@
                                                                                 <img src="/images/kcc.png" width="40" height="40">
                                                                             </td>
                                                                             <td>
-                                                                                <label style="color:black">111-2345-123 </label>
+                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KCC.NAME' | translate}}</label>
                                                                             </td>
                                                                             <td>
-                                                                               <label style="color:black">Saving</label>
+                                                                               <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KCC.ACCOUNT_TYPE' | translate}}</label>
                                                                             </td>
                                                                             <td>
-                                                                               <label style="color:black">Surin</label>
+                                                                               <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KCC.ACCOUNT_BRANCH' | translate}}</label>
                                                                             </td>
                                                                             <td>
-                                                                               <label style="color:black"> นายปัญญา บุญยกุลศรีรุ่ง</label>
+                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KCC.ACCOUNT_NAME' | translate}}</label>
                                                                             </td>
                                                                         </tr>
+                                                                        <!--
                                                                         <tr>
                                                                             <td class="text-center">
-                                                                               
                                                                                 <input type="radio" name="bank" ng-model="PaymentBank" value="tmb" required="required"/>
-                                                                             
                                                                             </td class="text-center">
                                                                             <td>
                                                                                 <img src="/images/tmb.png" width="60" height="35">
                                                                             </td>
                                                                             <td>
-                                                                                <label style="color:black">111-2345-123</label>
+                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.TMB.NAME'}}</label>
                                                                             </td>
                                                                             <td>
-                                                                               <label style="color:black">Saving</label>
+                                                                               <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.TMB.ACCOUNT_TYPE'}}</label>
                                                                             </td>
                                                                             <td>
-                                                                               <label style="color:black">Surin</label>
+                                                                               <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.TMB.ACCOUNT_ฺBRANCH'}}</label>
                                                                             </td>
                                                                             <td>
-                                                                               <label style="color:black">นายปัญญา บุญยกุลศรีรุ่ง</label>
+                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.TMB.ACCOUNT_NAME'}}</label>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
@@ -1178,18 +1320,18 @@
                                                                                 <img src="/images/uob.png" width="60" height="30">
                                                                             </td>
                                                                             <td>
-                                                                                <label style="color:black">111-2345-123</label>
+                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.UOB.NAME'}}</label>
                                                                             </td>
                                                                             <td>
-                                                                               <label style="color:black">Saving</label>
+                                                                               <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.UOB.ACCOUNT_TYPE'}}</label>
                                                                             </td>
                                                                             <td>
-                                                                               <label style="color:black">Surin</label>
+                                                                               <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.UOB.ACCOUNT_ฺBRANCH'}}</label>
                                                                             </td>
                                                                             <td>
-                                                                               <label style="color:black"> นายปัญญา บุญยกุลศรีรุ่ง </label>
+                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.UOB.ACCOUNT_NAME'}}</label>
                                                                             </td>
-                                                                        </tr>
+                                                                        </tr>-->
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -1202,7 +1344,7 @@
                                             <div class="col-xs-12"> 
                                                  <div class="col-xs-2">
                                                  </div>
-                                                 <div class="col-xs-10" ng-show="PaymentType == 'Paypal'">
+                                                 <div class="col-xs-12" ng-show="PaymentType == 'Paypal'">
                                                     <!-- PAYPAL FORM STARTS HERE -->
                                                     <div class="panel panel-default transfer-box">
                                                         <div class="panel-heading display-table">
@@ -1218,7 +1360,7 @@
 
                                                             <form role="form" id="paypal-form-1" ng-show="Paypal.EnvironmentSandbox">
                                                                 <div class="row text-center">
-                                                                   <script async src="paypal-button.min.js?merchant=KPBPW2K85KMAJ"
+                                                                   <script async src="scripts/paypal-button.min.js?merchant=KPBPW2K85KMAJ"
                                                                         data-button="buynow"
                                                                         data-type="form"
                                                                         data-name={{Paypal.Name}}
@@ -1237,7 +1379,7 @@
                                                             </form>
                                                             <form role="form" id="paypal-form-2" ng-show="!Paypal.EnvironmentSandbox">
                                                                 <div class="row text-center">
-                                                                   <script async src="paypal-button.min.js?merchant=KPBPW2K85KMAJ"
+                                                                   <script async src="scripts/paypal-button.min.js?merchant=KPBPW2K85KMAJ"
                                                                         data-button="buynow"
                                                                         data-type="form"
                                                                         data-name={{Paypal.Name}}
@@ -1678,6 +1820,24 @@
                                                             </select>
                                                         </div>
                                                     </div>
+                                                    <!--Product Category Image Upload -->
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.IMAGE' | translate}} :</label>
+                                                        <div class="col-sm-6">
+                                                            <div>
+                                                                <div ng-disabled="ViewProductCategoryData._id.length <= 0 || ViewProductCategoryData._id === undefined" class="button" multiple="true" ngf-select ngf-change="uploadProductCategoryImage($files, ViewProductCategoryData._id, ViewProductCategoryData.ProductCategoryCode)" style="color:black">
+                                                                Upload on file change </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                              
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.IMAGE_THUMBNAIL' | translate}} </label>
+                                                        <div class="col-sm-6" id="ThumbnailProductCategoryImage">
+                                                        
+                                                        </div>
+                                                    </div>
                                                     <div class="form-group">
                                                         <div class="col-sm-offset-2 col-sm-10">
                                                             <div class="pull-right">
@@ -1838,6 +1998,21 @@
                                                         </select>
                                                     </div>
                                                 </div>
+                                                
+                                                <!-- Input Weight -->
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.COST_PRICE' | translate}} :</label>
+                                                    <div class="col-sm-4">
+                                                        <input type="text" placeholder="0.00" class="form-control text-right" ng-model="ViewProductData.CostPrice">
+                                                    </div>
+                                                </div>
+                                                <!-- Input Contain Weight -->
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.COST_PRICE' | translate}} :</label>
+                                                    <div class="col-sm-4">
+                                                        <input type="text" placeholder="0.00" class="form-control text-right" ng-model="ViewProductData.CostPrice">
+                                                    </div>
+                                                </div>
                                                 <!-- Input Cost Price -->
                                                 <div class="form-group">
                                                     <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.COST_PRICE' | translate}} :</label>
@@ -1920,21 +2095,12 @@
                                                     <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.IMAGE' | translate}} :</label>
                                                     <div class="col-sm-6">
                                                         <div>
-                                                            <div class="button" multiple="true" ngf-select ngf-change="uploadProductImage($files, ViewProductData._id, ViewProductData.ProductCode)" style="color:black">
+                                                            <div ng-disabled="ViewProductData._id.length <= 0 || ViewProductData._id === undefined" class="button" multiple="true" ngf-select ngf-change="uploadProductImage($files, ViewProductData._id, ViewProductData.ProductCode)" style="color:black">
                                                             Upload on file change</div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            <!--    <div class="form-group">
-                                                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.DROP_FILE' | translate}}</label>
-                                                    <div class="col-sm-6" >
-                                                        <div ngf-drop ng-model="files" class="drop-box"  
-                                                                ngf-drag-over-class="dragover" ngf-allow-dir="true" 
-                                                                ngf-accept="'image/*,application/pdf'">{{'BODY.SECTION.ACCOUNT.DROP_IMAGE_PDF' | translate}}</div>
-                                                            <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
-                                                    </div>
-                                                </div>-->
-
+                                            
                                                 <div class="form-group">
                                                     <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.IMAGE_THUMBNAIL' | translate}} </label>
                                                     <div class="col-sm-6" id="ThumbnailProductImage">
@@ -3385,18 +3551,117 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- /.col-lg-12 -->
                     </div>
                     
                     <div id="div-history-receipt-table">
                         <p><strong>Page:</strong> {{HistoryReceiptTableParams.page()}}</p>
                         <p><strong>Count per page:</strong> {{HistoryReceiptTableParams.count()}}</p>
+                        <div id="PrintROModal">    
+                            <div class="modal fade"  style="color:black">
+                                <div class="modal-dialog ">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-xs-4 col-sm-4 col-md-4">
+                                                    <address>
+                                                        <strong>{{PrintROData.BillingName}}</strong>
+                                                        <br>
+                                                        {{PrintROData.BillingAddress}}
+                                                        <br>
+                                                        {{PrintROData.BillingProvince.Province}}, {{PrintROData.BillingDistrict.District}}
+                                                        <br>
+                                                        {{PrintROData.BillingSubDistrict.SubDistrict}}, {{PrintROData.BillingSubDistrict.ZipCode}}
+                                                        <br>
+                                                        <abbr title="Phone">P:</abbr> (213) 484-6829
+                                                    </address>
+                                                </div>
+                                                <div class="col-xs-4 col-sm-4 col-md-4 text-center">
+                                                    <p>
+                                                        <img src="/images/KZHLogo.png">
+                                                    </p>
+                                                </div>
+                                                <div class="col-xs-4 col-sm-4 col-md-4 text-right">
+                                                    <p>
+                                                        <em>Date: {{PrintROData.RODate | date:'medium'}}</em>
+                                                    </p>
+                                                    <p>
+                                                        <em>Receipt #: {{PrintROData.RONo}}</em>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="text-center">
+                                                    <h1>{{'BODY.SECTION.VIEW_RO_MODAL.RO_LABEL' | translate}}</h1>
+                                                </div>
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-left">Product</th>
+                                                            <th class="text-center">#</th>
+                                                            <th class="text-right">Price</th>
+                                                            <th class="text-right">Total</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="roLine in PrintROData.ROLineList">
+                                                            <td class="col-md-9"><em>{{roLine.ProductNameTh}}</em></h4></td>
+                                                            <td class="col-md-1" style="text-align: center"> {{roLine.Quantity}} </td>
+                                                            <td class="col-md-1 text-center">{{roLine.Price | number:2}}</td>
+                                                            <td class="col-md-1 text-center">{{roLine.Amount | number:2}}</td>
+                                                        </tr>                                                
+                                                        <tr>
+                                                            <td>   </td>
+                                                            <td>   </td>
+                                                            <td>
+                                                                <p>
+                                                                    <strong class="text-left">Subtotal: </strong>
+                                                                </p>
+                                                                <p>
+                                                                    <strong class="text-left">Tax: </strong>
+                                                                </p>
+                                                                <p>
+                                                                    <strong class="text-left">Discount: </strong>
+                                                                </p>
+                                                                <p>
+                                                                    <strong class="text-left">Weight: </strong>
+                                                                </p>
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <p>
+                                                                    <strong class="text-right">{{PrintROData.SumAmount | number:2}}</strong>
+                                                                </p>
+                                                                <p>
+                                                                    <strong class="text-right">{{PrintROData.SumVatAmount | number:2}}</strong>
+                                                                </p>
+                                                                <p>
+                                                                    <strong class="text-right">{{PrintROData.SumDiscountAmount | number:2}}</strong>
+                                                                </p>
+                                                                <p>
+                                                                    <strong class="text-right">{{PrintROData.SumWeightAmount | number:2}}</strong>
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>   </td>
+                                                            <td>   </td>
+                                                            <td class="text-right"><h4><strong>Total: </strong></h4></td>
+                                                            <td class="text-center text-danger"><h4><strong>{{PrintROData.NetAmount | number:2}}
+                                                            </strong></h4></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
                         <div class="modal fade" id="HistoryROModal" style="color:black">
                             <div class="modal-dialog ">
                                 <div class="modal-content">
                                     <div class="modal-body">
                                         <div class="row">
-                                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                            <div class="col-xs-4 col-sm-4 col-md-4">
                                                 <address>
                                                     <strong>{{ViewHistoryRO.BillingName}}</strong>
                                                     <br>
@@ -3409,7 +3674,12 @@
                                                     <abbr title="Phone">P:</abbr> (213) 484-6829
                                                 </address>
                                             </div>
-                                            <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                                            <div class="col-xs-4 col-sm-4 col-md-4 text-center">
+                                                <p>
+                                                    <img src="/images/KZHLogo.png">
+                                                </p>
+                                            </div>
+                                            <div class="col-xs-4 col-sm-4 col-md-4 text-right">
                                                 <p>
                                                     <em>Date: {{ViewHistoryRO.RODate | date:'medium'}}</em>
                                                 </p>
@@ -3441,20 +3711,34 @@
                                                     <tr>
                                                         <td>   </td>
                                                         <td>   </td>
+                                                        <td>
+                                                            <p>
+                                                                <strong class="text-left">Subtotal: </strong>
+                                                            </p>
+                                                            <p>
+                                                                <strong class="text-left">Tax: </strong>
+                                                            </p>
+                                                            <p>
+                                                                <strong class="text-left">Discount: </strong>
+                                                            </p>
+                                                            <p>
+                                                                <strong class="text-left">Weight: </strong>
+                                                            </p>
+                                                        </td>
                                                         <td class="text-right">
-                                                        <p>
-                                                            <strong>Subtotal: </strong>
-                                                        </p>
-                                                        <p>
-                                                            <strong>Tax: </strong>
-                                                        </p></td>
-                                                        <td class="text-center">
-                                                        <p>
-                                                            <strong>{{ViewHistoryRO.SumAmount | number:2}}</strong>
-                                                        </p>
-                                                        <p>
-                                                            <strong>{{ViewHistoryRO.SumVatAmount | number:2}}</strong>
-                                                        </p></td>
+                                                            <p>
+                                                                <strong class="text-right">{{ViewHistoryRO.SumAmount | number:2}}</strong>
+                                                            </p>
+                                                            <p>
+                                                                <strong class="text-right">{{ViewHistoryRO.SumVatAmount | number:2}}</strong>
+                                                            </p>
+                                                            <p>
+                                                                <strong class="text-right">{{ViewHistoryRO.SumDiscountAmount | number:2}}</strong>
+                                                            </p>
+                                                            <p>
+                                                                <strong class="text-right">{{ViewHistoryRO.SumWeightAmount | number:2}}</strong>
+                                                            </p>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td>   </td>
@@ -3488,6 +3772,10 @@
                                 <td data-title="'View'" class="text-center">
                                     <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#HistoryROModal" ng-click="ViewRO(roHead._id, 'History')">
                                             <span class="glyphicon glyphicon glyphicon-list-alt" aria-hidden="true"></span></button>
+                                </td>
+                                <td data-title="'Print'" class="text-center">
+                                    <button type="submit" class="btn btn-primary" ng-click="PrintRO(roHead._id)">
+                                            <span class="glyphicon glyphicon glyphicon-print" aria-hidden="true"></span></button>
                                 </td>
                                 <td data-title="'#'" class="text-cetner">{{$index+1}}</td>
                                 <td data-title="'RONo'" class="text-left" >{{roHead.RONo}}</td>
@@ -3632,6 +3920,11 @@
                                                 <abbr title="Phone"> </abbr> 
                                             </address>
                                         </div>
+                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                            <p>
+                                                <img src="/images/KZHLogo.png">
+                                            </p>
+                                        </div>
                                         <div class="col-xs-6 col-sm-6 col-md-6 text-right">
                                             <p>
                                                 <em>Date: {{ViewStaffRO.RODate | date :'medium'}}</em>
@@ -3666,19 +3959,33 @@
                                                     <td>   </td>
                                                     <td>   </td>
                                                     <td class="text-right">
-                                                    <p>
-                                                        <strong>Subtotal: </strong>
-                                                    </p>
-                                                    <p>
-                                                        <strong>Tax: </strong>
-                                                    </p></td>
+                                                        <p>
+                                                            <strong>Subtotal: </strong>
+                                                        </p>
+                                                        <p>
+                                                            <strong>Tax: </strong>
+                                                        </p>
+                                                        <p>
+                                                            <strong>Discount: </strong>
+                                                        </p>
+                                                        <p>
+                                                            <strong>Weight: </strong>
+                                                        </p>
+                                                    </td>
                                                     <td class="text-center">
-                                                    <p>
-                                                        <strong>{{ViewStaffRO.SumAmount | number :2}}</strong>
-                                                    </p>
-                                                    <p>
-                                                        <strong>{{ViewStaffRO.SumVatAmount | number :2}}</strong>
-                                                    </p></td>
+                                                        <p>
+                                                            <strong>{{ViewStaffRO.SumAmount | number :2}}</strong>
+                                                        </p>
+                                                        <p>
+                                                            <strong>{{ViewStaffRO.SumVatAmount | number :2}}</strong>
+                                                        </p>
+                                                        <p>
+                                                            <strong>{{ViewStaffRO.SumDiscountAmount | number :2}}</strong>
+                                                        </p>
+                                                        <p>
+                                                            <strong>{{ViewStaffRO.SumWeightAmount | number :2}}</strong>
+                                                        </p>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td>   </td>
@@ -3694,8 +4001,8 @@
                                         <div class="text-center">
                                             <h1>{{'BODY.SECTION.VIEW_RO_MODAL.IMAGE_PAYMENT_DOCUMENT' | translate}}</h1>
                                         </div>
-                                        <div class="text-center col-md-11 col-sm-offset-1">
-                                            <div id="ThumbnailStaffViewReceiptPayment"></div>
+                                        <div class="text-center">
+                                            <div id="ThumbnailStaffViewReceiptPayment" ></div>
                                         </div>
                                         <div class="text-center">
                                             <button type="submit" class="btn btn-success btn-lg" ng-disabled="ViewStaffRO.StaffApprovePaymentStatus === 'Y'" ng-click="PerformValidatePaymentDocument('Y')">
@@ -3722,7 +4029,7 @@
                                 <td data-title="'#'" class="text-center">{{$index+1}}</td>
                                 <td data-title="'RONo'" class="text-center" >{{roHead.RONo}}</td>
                                 <td data-title="'RODate'" class="text-center">{{roHead.RODate | date:'dd/MM/yyyy'}}</td>
-                                <td data-title="'Customer'" class="text-left">{{roHead.Firstname}} {{roHead.Lastname}}</td>
+                                <td data-title="'Customer'" class="text-left"></td>
                                 <td data-title="'NetAmount'" class="text-right">{{roHead.NetAmount | number :2}}</td>
                                 <td data-title="'Bank'" class="text-center">
                                     <img src="images/bbl.png" ng-show="roHead.PaymentBank == 'bbl'" width="32" height="32">
@@ -3767,7 +4074,6 @@
                 </div>
                 <!-- div-change-view-->
             </div>
-            <!-- div BODY-->
         </div>
         <div id="div-footer" class="footer" ng-controller="FooterController">
             <hr class="footer-hr">
@@ -3829,7 +4135,10 @@
                 </div>
             <div>
             <a href="#" class="scrollup">Scroll</a>
+            <textarea id="printing-css" style="display:none;">html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}body{font:normal normal .8125em/1.4 Arial,Sans-Serif;background-color:white;color:#333}strong,b{font-weight:bold}cite,em,i{font-style:italic}a{text-decoration:none}a:hover{text-decoration:underline}a img{border:none}abbr,acronym{border-bottom:1px dotted;cursor:help}sup,sub{vertical-align:baseline;position:relative;top:-.4em;font-size:86%}sub{top:.4em}small{font-size:86%}kbd{font-size:80%;border:1px solid #999;padding:2px 5px;border-bottom-width:2px;border-radius:3px}mark{background-color:#ffce00;color:black}p,blockquote,pre,table,figure,hr,form,ol,ul,dl{margin:1.5em 0}hr{height:1px;border:none;background-color:#666}h1,h2,h3,h4,h5,h6{font-weight:bold;line-height:normal;margin:1.5em 0 0}h1{font-size:200%}h2{font-size:180%}h3{font-size:160%}h4{font-size:140%}h5{font-size:120%}h6{font-size:100%}ol,ul,dl{margin-left:3em}ol{list-style:decimal outside}ul{list-style:disc outside}li{margin:.5em 0}dt{font-weight:bold}dd{margin:0 0 .5em 2em}input,button,select,textarea{font:inherit;font-size:100%;line-height:normal;vertical-align:baseline}textarea{display:block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}pre,code{font-family:"Courier New",Courier,Monospace;color:inherit}pre{white-space:pre;word-wrap:normal;overflow:auto}blockquote{margin-left:2em;margin-right:2em;border-left:4px solid #ccc;padding-left:1em;font-style:italic}table[border="1"] th,table[border="1"] td,table[border="1"] caption{border:1px solid;padding:.5em 1em;text-align:left;vertical-align:top}th{font-weight:bold}table[border="1"] caption{border:none;font-style:italic}.no-print{display:none}</textarea>
+                    <iframe id="printing-frame" name="print_frame" src="about:blank" style="display:none;"></iframe>
         </div>
+        <!--
         <hr class="footer-hr">
         <div id="div-sub-footer" class="sub-footer">
             
@@ -3870,11 +4179,16 @@
                 </div>
             </div>
         </div>
+        -->
     </div>
         <script src="/bower_components/jquery/dist/jquery.min.js"></script>
         <script src="/bower_components/angular/angular.js"></script>
         <script src="/bower_components/angular-route/angular-route.min.js"></script>
+        <script src="/bower_components/angular-animate/angular-animate.min.js"></script>
+        <script src="/bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+        <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
         <script src="/bower_components/lodash/lodash.js"></script>
+        <script src="/bower_components/magnifier/Magnifier.js"></script>
         <script src="/bower_components/angular-block-ui/dist/angular-block-ui.min.js"></script>
         <script src="/bower_components/ngDialog/js/ngDialog.min.js"></script>
         <script src="/bower_components/angularjs-datepicker/dist/angular-datepicker.min.js"></script>
@@ -3883,7 +4197,6 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
         <script src="/bower_components/ng-file-upload/ng-file-upload.js"></script>
         <script src="/bower_components/ng-file-upload-shim/ng-file-upload-shim.js"></script>
-        <script src="/bower_components/angular-animate/angular-animate.js"></script>
         <script src="/bower_components/angular-translate/angular-translate.js"></script>
         <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
         <script src="/bower_components/bootstrap/js/tab.js"></script>
@@ -3910,6 +4223,8 @@
         <script src="/directives/enter-directive.js"></script>
         <script src="/directives/menu-directive.js"></script>
         <script src="/directives/menu-item-directive.js"></script>
+        <script src="/directives/focus-directive.js"></script>
+        <script src="/directives/scroll-on-click-directive.js"></script>
         <script src="/services/menu-service.js"></script>
         <script src="/services/locale-service.js"></script>
         <script src="/services/receipt-order-service.js"></script>
@@ -3921,10 +4236,11 @@
         <script src="/services/social-service.js"></script>
         <script src="/services/email-service.js"></script>
         <script src="/services/crypto-service.js"></script>
-        <script src="/services/product-category-service.js"></script>
         <script src="/services/product-type-service.js"></script>
+        <script src="/services/product-category-service.js"></script>
         <script src="/services/province-service.js"></script>
         <script src="/services/district-service.js"></script>
+        <script src="/services/weight-rate-service.js"></script>
         <script src="/services/sub-district-service.js"></script>
         <script src="/services/app-config-service.js"></script>
         <script src="/services/aws-service.js"></script>

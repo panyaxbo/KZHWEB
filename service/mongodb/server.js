@@ -52,6 +52,7 @@ var recaptchas = require('../recaptcha/recaptcha');
 var cryptojs = require('../cryptojs/cryptojs');
 var base64 = require('../base64/base64');
 var paypal = require('../paypal/paypal');
+var weight = require('./route/weight-rate');
 //app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -88,7 +89,7 @@ app.use('/recaptchas', recaptchas);
 app.use('/cryptojs', cryptojs);
 app.use('/base64', base64);
 app.use('/paypal', paypal);
-
+app.use('/weight', weight);
 
 var environment = process.env.NODE_ENV || '';
 var port = process.env.PORT || 3000;

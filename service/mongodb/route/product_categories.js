@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var Q = require('q');
 
 /* GET users listing. */
 router.get(mongodbConfig.url.product_category.home, function (req, res, next) {
@@ -72,6 +73,44 @@ router.get('/LoadProductCategoryByCondition/:ProductCategoryCode/:ProductCategor
         .toArray(function (err, items) {
             res.json(items);
         });
+});
+
+router.get('/LoadProductCategoryByProductType/:ProductTypeCode/', function (req, res) {
+    var TypeCode = req.params.ProductTypeCode;
+
+    var LoadProductCategoryByProductTypePromise = function() {
+        var defer = Q.defer();
+        
+        db.collection(mongodbConfig.mongodb.product_category.name)
+            .find({
+                'ProductTypeCode' : TypeCode
+            })
+            .toArray(function (err, items) {
+                console.log(TypeCode, items);
+                if (err) {
+                    defer.reject(err)
+                } else {
+                    defer.resolve(items);
+                }
+            });
+        return defer.promise;
+    }
+
+    LoadProductCategoryByProductTypePromise()
+    .then(function(data, status) {   
+        console.log(data);  
+        if (!data) {
+            res.SendStatus(404);
+        } else {
+               
+            res.json(data);
+        }
+    },function(err, status) {
+        console.log(err,status);     
+        res.SendStatus(500);
+        return;
+    });
+    
 });
 
 router.get(mongodbConfig.url.product_category.loadProductCategoryByObjId, function (req, res) {

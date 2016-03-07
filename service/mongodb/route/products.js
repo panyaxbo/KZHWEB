@@ -83,7 +83,7 @@ router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
         .find({})
         .limit(40)
         .toArray(function (err, items) {
-            findUomPromise({
+       /*     findUomPromise({
                 $or: [{
                     UomCode: 'UO0001'
                     }, {
@@ -92,7 +92,7 @@ router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
             })
     .then(function(data) {
         console.log('findUomPromise', data);
-    });
+    });*/
             if (items) {
                 var productsToFind = items.length;
                 var products = [];
@@ -506,6 +506,7 @@ router.get('/SearchProductWithCondition/:SearchConditionString', function (req, 
                 $query: searchquery 
             })
             .toArray(function (err, items) {
+                console.log(items);
                 if (err) {
                     defer.reject(err);
                 } else {
@@ -566,7 +567,8 @@ router.get('/SearchProductWithCondition/:SearchConditionString', function (req, 
         return defer.promise;
     }
     var newproducts = [];
-    FindProductPromise().then(function(products, status) {
+    FindProductPromise()
+    .then(function(products, status) {
         console.log('products ', products.length, products);
         products.forEach(function(product) {
             FindUomByProductPromise(product)
@@ -856,8 +858,9 @@ router.get(mongodbConfig.url.product.loadProductByProductCategoryCode, function 
 
     var FindUomPromise = function(products) {
         var promises = [];
-        var defer = Q.defer();
         products.forEach(function(product) {
+            var defer = Q.defer();
+            var new_product = product;
             var qUom = {
                 $or: [{
                     UomCode: product.UomCode
@@ -865,24 +868,26 @@ router.get(mongodbConfig.url.product.loadProductByProductCategoryCode, function 
                     UomCode: product.ContainUomCode
                     }]
             }; 
+            
             db.collection(mongodbConfig.mongodb.uom.name)
             .find(qUom).toArray(function (err, doc) {
                 if (err) {
                     defer.reject(err);
                 } else {
-                    product.Uom = doc;
-                    defer.resolve(product);
+                    new_product.Uom = doc;
+                //    console.log(new_product);
+                    defer.resolve(new_product);
                 }
             });
             promises.push(defer.promise);
         });
-
+        console.log(promises);
         return Q.all(promises);
     }
 
-    FindProductPromise().then(function(data, status) {
-        console.log('cats ', data);
-        return FindUomPromise( data);
+    FindProductPromise().then(function(products, status) {
+    //    console.log('cats ', data);
+        return FindUomPromise( products);
     }, function(err, status) {
         console.log(err, err.stack.split("\n"));
         res.sendStatus(500);
@@ -977,7 +982,9 @@ router.post(mongodbConfig.url.product.updateProduct, function (req, res) {
                     'ContainSpecialPrice': Product.ContainSpecialPrice,
                     'ContainQuantity': Product.ContainQuantity,
                     'UpdateBy' : Product.UpdateBy,
-                    'UpdateDate': Product.UpdateDate
+                    'UpdateDate': Product.UpdateDate,
+                    'Weight' : Product.Weight,
+                    'ContainWeight' : Product.ContainWeight
                 }
             },
             function (err, result) {

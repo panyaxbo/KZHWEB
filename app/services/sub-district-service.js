@@ -14,10 +14,10 @@ app.service("SubDistrictService", ["$q", "$http", "ENV", function ($q, $http, EN
     	},
         LoadSubDistrictBySubDistrict: function(SubDistrictId) {
             var defer = $q.defer();
-            var url = ENV.apiEndpoint + "/subdistricts/LoadSubDistrictBySubDistrictId/"+ $scope.ROHead.BillingSubDistrictId;
+            var url = ENV.apiEndpoint + "/subdistricts/LoadSubDistrictBySubDistrictId/"+ SubDistrictId;
             $http.get(url)
             .success(function (zipcode) {
-                defer.reject(zipcode);
+                defer.resolve(zipcode);
             })
             .error(function (err) {
                 defer.reject(err);

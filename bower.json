@@ -5,8 +5,8 @@
     "BrandButtons": "~0.2.1",
     "allmighty-autocomplete": "*",
     "angucomplete": "*",
-    "angular": "~1.4.8",
-    "angular-animate": "~1.4.3",
+    "angular": "1.4.8",
+    "angular-animate": "1.4.8",
     "angular-block-ui": "~0.2.0",
     "angular-facebook": "~0.2.3",
     "angular-google-maps": "~2.1.5",
@@ -20,7 +20,7 @@
     "bootstrap3-typeahead": "~3.1.1",
     "chartjs": "~1.0.2",
     "fontawesome": "~4.3.0",
-    "jspdf": "~1.1.135",
+    "jspdf": "^1.2.61",
     "layzr.js": "~1.4.3",
     "less": "less.js#~2.5.1",
     "ng-file-upload": "~4.1.0",
@@ -43,11 +43,13 @@
     "lodash": "~3.10.1",
     "paypaljsbuttons": "~1.0.4",
     "magnifier": "*",
-    "angular-spinners": "~3.0.4"
+    "angular-spinners": "~3.0.4",
+    "angular-bootstrap": "^1.1.2"
   },
   "devDependencies": {},
   "resolutions": {
-    "angular": "~1.4.8",
-    "select2": "~4.0.0"
+    "select2": "~4.0.0",
+    "angular": "1.4.8",
+    "jspdf": "^1.2.61"
   }
 }

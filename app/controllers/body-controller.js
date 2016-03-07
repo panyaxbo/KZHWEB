@@ -1,24 +1,28 @@
-app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$filter", "ngTableParams", "Upload", "$rootScope", "blockUI", "$http", 
+app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout", "$anchorScroll", "$filter", "ngTableParams", "Upload", "$rootScope", "blockUI", "$http", 
     "$filter", "MenuService", "ReceiptOrderService", "UserService", "CompanyService", "ENV", "ProductService", "ProductTypeService",
-    "ProductCategoryService", "ProvinceService", "DistrictService", "SubDistrictService", "AppConfigService",
-    function ($scope, $location, $anchorScroll, $filter, ngTableParams, Upload, $rootScope, blockUI, $http, $filter, MenuService, 
-        ReceiptOrderService, UserService, CompanyService, ENV, ProductService, ProductTypeService, ProductCategoryService,
-        ProvinceService, DistrictService, SubDistrictService, AppConfigService) {
+    "ProductCategoryService", "ProvinceService", "DistrictService", "SubDistrictService", "AppConfigService" ,"WeightRateService",
+    "AWSService", "EmailService",
+    function ($scope, $location, $window, $timeout, $anchorScroll, $filter, ngTableParams, Upload, $rootScope, blockUI, $http, $filter, 
+        MenuService, ReceiptOrderService, UserService, CompanyService, ENV, ProductService, ProductTypeService, ProductCategoryService,
+        ProvinceService, DistrictService, SubDistrictService, AppConfigService, WeightRateService, AWSService, EmailService) {
 
-    $scope.Product = [];
-  
+    $scope.Products = [];
     $scope.ROHead = {
         SumAmount: 0,
         SumVatAmount: 0,
         SumDiscountAmount: 0,
         NetAmount: 0,
-
+        SumWeight: 0,
+        SumWeightAmount: 0,
+        PostType: 'Normal',
         BillingName : "",
         BillingAddress : "",
         ProvinceId : "",
         DistrictId : "",
         SubDistrictId : "",
-        ZipCode : ""
+        ZipCode : "",
+        BillingName : "",
+        ROLineList : []
     };
 
     $scope.User = {
@@ -29,7 +33,11 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
         LastName: '',
         IsActivate : false
     };
-    
+    $scope.FirstPage = 1;
+    $scope.LastPage = 0;
+    $scope.NumberPerPage = 50;
+    $scope.TotalPage = 0;
+
     $scope.ROLineList = [];
     $scope.SelectedMenu = "product";
     $scope.SelectedCurrency = "thb";
@@ -91,7 +99,6 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
     });
     $scope.$on('handleHeadMenuBroadcast', function (event, args) {
     //    console.log('broadcast from head to body '+args.SelectedMenu);
-   
         $scope.SelectedMenu = args.SelectedMenu;
         if ($scope.SelectedMenu == 'history') {
             $scope.StartDate = new Date().getDate() +"/" + (new Date().getMonth() + 1) +"/" + new Date().getFullYear() ;
@@ -111,9 +118,10 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
             $('#ProductTypeTab').addClass("active");
             $scope.SearchProductType();
         } 
-        else if ($scope.SelectedMenu  == 'shipment') {
-            $('html, body').animate({ scrollTop: $('#shipment-section').offset().top }, 'slow');
-        } 
+    //    else if ($scope.SelectedMenu  == 'shipment') {
+    //        $('html, body').animate({ scrollTop: $('#shipment-section').offset().top }, 'slow');
+    //    } 
+    //    
     //    console.log('body $scope.SelectedMenu ' + $scope.SelectedMenu);
      
     });
@@ -198,6 +206,24 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
 
         });
     }
+    
+    $scope.totalItems = 40;
+    $scope.currentPage = 1;
+
+    $scope.setPage = function (pageNo) {
+      $scope.currentPage = pageNo;
+    };
+
+    $scope.pageChanged = function() {
+      console.log('Page changed to: ' + $scope.currentPage);
+    };
+    $scope.selectPage = function (pageNo) {
+        $scope.currentPage = pageNo;
+        $scope.bigCurrentPage = pageNo;
+      };
+    $scope.maxSize = 5;
+    $scope.bigTotalItems = 175;
+    $scope.bigCurrentPage = 1;
     $scope.LoadProduct = function () {
     /*    var url = ENV.apiEndpoint + '/products/LoadProduct';
         $http.get(url)
@@ -210,123 +236,180 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
             */
         ProductService.LoadProduct()
         .then(function(data, status) {
-            $scope.Product = data;
+            $scope.Products = data;
+            $scope.bigTotalItems = $scope.Products.length;
         }, function (err, status) {
 
         });
     }
+
+
+    $scope.Search = function() {
+      console.log($scope.SearchAllText);
+      ProductService.SearchProductWithCondition($scope.SearchAllText)
+      .then(function(data, status) {
+          $scope.Product = data;
+          $scope.SelectedMenu = "product";
+      }, function(error, status) {
+          console.log('error', error);
+      });
+      /*
+      var searchProductURL = ENV.apiEndpoint + "/products/SearchProductWithCondition/" + $scope.SearchAllText;
+      $http.get(searchProductURL)
+      .success(function(data, status, headers, config) {
+          $scope.Product = data;
+          $scope.SelectedHeadMenu("product");
+      })
+      .error(function(error, status, headers, config) {
+
+      });*/
+    }
+
+    $scope.ProductTypes = [];
+    ProductTypeService.LoadProductType()
+    .then(function(types, status) {
+        
+        console.log(types);
+        $scope.ProductTypes = types;
+        ProductTypeService.ProductTypes = types;
+   
+        return ProductCategoryService.LoadProductCategoryByProductType(ProductTypeService.ProductTypes);
+        
+    }, function(err, status) {
+        console.log(err);
+    })
+    .then(function(data, status) {
+        $timeout(function() {
+        //    console.log('data.ProductTypes ', data);
+        //    $scope.ProductTypes = data;
+        }, 2000);
+    }, function(err, status) {
+         console.log(err);
+    });
+
+    
     $scope.AddCart = function (SelectedProduct, BuyQty, Index) {
-            if (BuyQty > 0) {
-                var sumAmt = 0;
-                var netAmt = 0;
-                var sumVatAmt = 0;
+        if (BuyQty > 0) {
+            var sumAmt = 0;
+            var netAmt = 0;
+            var sumVatAmt = 0;
 
-                var ROLine = {
-                    Id: 0,
-                    ProductCode: "",
-                    ProductNameTh: "",
-                    Quantity: 0,
-                    Price: 0,
-                    DiscountAmount: 0,
-                    VatAmount: 0,
-                    Amount: 0
-                };
+            var ROLine = {
+                Id: 0,
+                ProductCode: "",
+                ProductNameTh: "",
+                Quantity: 0,
+                Price: 0,
+                DiscountAmount: 0,
+                VatAmount: 0,
+                Amount: 0
+            };
 
-                // Set value 
-                ROLine.ProductCode = SelectedProduct.ProductCode;
-                ROLine.ProductNameTh = SelectedProduct.ProductNameTh;
-                ROLine.Quantity = BuyQty;
-                ROLine.Price = SelectedProduct.RetailPrice;
-                ROLine.DiscountAmount = 0;
-                ROLine.Amount = (ROLine.Price * BuyQty) - ROLine.DiscountAmount;
-                ROLine.VatAmount = ($scope.Company.VatRate / 100) * ROLine.Amount;
-                ROLine.Uoms = SelectedProduct.Uom;
-                ROLine.UomCode = SelectedProduct.UomCode;
+            // Set value 
+            ROLine.ProductCode = SelectedProduct.ProductCode;
+            ROLine.ProductNameTh = SelectedProduct.ProductNameTh;
+            ROLine.Quantity = BuyQty;
+            ROLine.Price = SelectedProduct.RetailPrice;
+            ROLine.DiscountAmount = 0;
+            ROLine.Amount = (ROLine.Price * BuyQty) - ROLine.DiscountAmount;
+            ROLine.VatAmount = ($scope.Company.VatRate / 100) * ROLine.Amount;
+            ROLine.Uoms = SelectedProduct.Uom;
+            ROLine.UomCode = SelectedProduct.UomCode;
+            console.log(SelectedProduct.Weight);
+            ROLine.Weight = SelectedProduct.Weight * BuyQty;
+            
+            ROLine.DrRetailPrice = SelectedProduct.RetailPrice;
+            ROLine.DrCostPrice = SelectedProduct.CostPrice;
+            ROLine.DrWholesalePrice = SelectedProduct.WholesalePrice;
+            ROLine.DrSpecialPrice = SelectedProduct.SpecialPrice;
+            ROLine.DrContainCostPrice = SelectedProduct.ContainCostPrice;
+            ROLine.DrContainWholesalePrice = SelectedProduct.ContainWholesalePrice;
+            ROLine.DrContainSpecialPrice = SelectedProduct.ContainSpecialPrice;
+            ROLine.DrContainWeight = SelectedProduct.ContainWeight;
 
-                
-                ROLine.DrRetailPrice = SelectedProduct.RetailPrice;
-                ROLine.DrCostPrice = SelectedProduct.CostPrice;
-                ROLine.DrWholesalePrice = SelectedProduct.WholesalePrice;
-                ROLine.DrSpecialPrice = SelectedProduct.SpecialPrice;
-                ROLine.DrContainCostPrice = SelectedProduct.ContainCostPrice;
-                ROLine.DrContainWholesalePrice = SelectedProduct.ContainWholesalePrice;
-                ROLine.DrContainSpecialPrice = SelectedProduct.ContainSpecialPrice;
+            ROLine.DrUomCode = SelectedProduct.UomCode;
+            ROLine.DrContainUomCode = SelectedProduct.ContainUomCode;
 
-                ROLine.DrUomCode = SelectedProduct.UomCode;
-                ROLine.DrContainUomCode = SelectedProduct.ContainUomCode;
-
-                console.log('ROLine.Uoms ' + ROLine.Uoms);
-                console.log(ROLine.Amount);
-                $scope.ROHead.SumAmount += ROLine.Amount;
+            console.log('ROLine.Uoms ' + ROLine.Uoms);
+            console.log(ROLine.Amount);
+            $scope.ROHead.SumAmount += ROLine.Amount;
+            $scope.ROHead.SumWeight += ROLine.Weight;
+            console.log('$scope.ROHead.SumAmount ' + $scope.ROHead.SumAmount);
+            console.log('$scope.ROHead.SumWeight ' + $scope.ROHead.SumWeight);
+            WeightRateService.GetWeightRateByPostTypeAndWeight($scope.ROHead.PostType, $scope.ROHead.SumWeight)
+            .then(function(weightRate, status) {
+                $scope.ROHead.SumWeightAmount = parseInt(weightRate.Rate);
                 $scope.ROHead.SumVatAmount += ROLine.VatAmount;
                 $scope.ROHead.SumDiscountAmount += ROLine.DiscountAmount;
-                $scope.ROHead.NetAmount = $scope.ROHead.SumAmount + $scope.ROHead.SumVatAmount - $scope.ROHead.SumDiscountAmount;
+                $scope.ROHead.NetAmount = $scope.ROHead.SumAmount + $scope.ROHead.SumVatAmount + $scope.ROHead.SumWeightAmount - $scope.ROHead.SumDiscountAmount;
 
-                
+                console.log('sum amt ', $scope.ROHead.SumAmount);
+                console.log('sum disc ',$scope.ROHead.SumDiscountAmount);
+                console.log('sum vat ',$scope.ROHead.SumVatAmount);
+                console.log('sum wt ',$scope.ROHead.SumWeightAmount);
+                console.log('net amt ',$scope.ROHead.NetAmount);
                 $scope.ROLineList.push(ROLine);
-                console.log($scope.ROHead.SumAmount);
-                ReceiptOrderService.ROHead.SumAmount = $scope.ROHead.SumAmount;
-                ReceiptOrderService.ROHead.SumVatAmount = $scope.ROHead.SumVatAmount;
-                ReceiptOrderService.ROHead.SumDiscountAmount = $scope.ROHead.SumDiscountAmount;
-                ReceiptOrderService.ROHead.NetAmount = $scope.ROHead.NetAmount;
-
-                ReceiptOrderService.ROHead.ROLineList.push(ROLine);
-
+                  
+            
+                $scope.ROHead.ROLineList.push(ROLine);
+              
+            //    $scope.ROHead.ROLineList.push(ROLine);
                 $scope.$emit('handleReceiptOrderEmit', {
-                    ROHead: ReceiptOrderService.ROHead
+                    ROHead: $scope.ROHead
                 });
+            }, function(error, status) {
 
-          /*      sweetAlert({"สำเร็จ", "ใส่รายการ " + SelectedProduct.ProductNameTh + " จำนวน " + BuyQty + " ในตะกร้าสำเร็จ !!", "success"
-                }, function({
-                    $scope.$apply(function(){
-                        var someimage = document.getElementById('ThumbnailProductImage_'+SelectedProduct.ProductCode);
-                        var myimg = someimage.getElementsByTagName('img')[2]; //[0] stripe-new [1] stripe-sale
-                        console.log(someimage);    
-                        console.log(myimg);
-                        $('#CartProduct_'+SelectedProduct.ProductCode).append(myimg);
+            });
 
-                    });
-                });*/
-                swal({
-                  title: "สำเร็จ",
-                  text: "ใส่รายการ " + SelectedProduct.ProductNameTh + " จำนวน " + BuyQty + " ในตะกร้าสำเร็จ !!",
-                  type: "success",
-                  showCancelButton: false,
-                  confirmButtonColor: "#5583dd",
-                  confirmButtonText: "OK",
-                  closeOnConfirm: true
-                },
-                function(isConfirm){
-                  if (isConfirm) {
-                    $scope.$apply(function(){
-                        var someimage = document.getElementById('ThumbnailProductImage_'+SelectedProduct.ProductCode);
-                        
-                        var myimg = someimage.getElementsByTagName('img')[2]; //[0] stripe-new [1] stripe-sale
-                        if (myimg !== undefined) {
-                            var image_tag = myimg.cloneNode(true); // Must clone because image thumbnail will disappear
+        /*      sweetAlert({"สำเร็จ", "ใส่รายการ " + SelectedProduct.ProductNameTh + " จำนวน " + BuyQty + " ในตะกร้าสำเร็จ !!", "success"
+            }, function({
+                $scope.$apply(function(){
+                    var someimage = document.getElementById('ThumbnailProductImage_'+SelectedProduct.ProductCode);
+                    var myimg = someimage.getElementsByTagName('img')[2]; //[0] stripe-new [1] stripe-sale
+                    console.log(someimage);    
+                    console.log(myimg);
+                    $('#CartProduct_'+SelectedProduct.ProductCode).append(myimg);
 
-                            image_tag.setAttribute("width", "50px");
-                            image_tag.setAttribute("height", "50px");
-                            $('#CartProduct_'+SelectedProduct.ProductCode).append(image_tag);
-                        }
-                    });
-                  } else {
-                        swal("Cancelled", "Your imaginary file is safe :)", "error");
-                  }
                 });
-            } else {
-                //alert("จำนวนต้องเป็นตัวเลข และ มากกว่า 0");
-                sweetAlert("เกิดข้อผิดพลาด", "จำนวนต้องเป็นตัวเลข และ มากกว่า 0", "warning");
-                //      ROHead.ROLineList[Index].BuyQty = 0;
-            }
+            });*/
+            swal({
+              title: "สำเร็จ",
+              text: "ใส่รายการ " + SelectedProduct.ProductNameTh + " จำนวน " + BuyQty + " ในตะกร้าสำเร็จ !!",
+              type: "success",
+              showCancelButton: false,
+              confirmButtonColor: "#5583dd",
+              confirmButtonText: "OK",
+              closeOnConfirm: true
+            },
+            function(isConfirm){
+              if (isConfirm) {
+                $scope.$apply(function(){
+                    var someimage = document.getElementById('ThumbnailProductImage_'+SelectedProduct.ProductCode);
+                    
+                    var myimg = someimage.getElementsByTagName('img')[2]; //[0] stripe-new [1] stripe-sale
+                    if (myimg !== undefined) {
+                        var image_tag = myimg.cloneNode(true); // Must clone because image thumbnail will disappear
+
+                        image_tag.setAttribute("width", "50px");
+                        image_tag.setAttribute("height", "50px");
+                        $('#CartProduct_'+SelectedProduct.ProductCode).append(image_tag);
+                    }
+                });
+              } else {
+                    swal("Cancelled", "Your imaginary file is safe :)", "error");
+              }
+            });
+        } else {
+            //alert("จำนวนต้องเป็นตัวเลข และ มากกว่า 0");
+            sweetAlert("เกิดข้อผิดพลาด", "จำนวนต้องเป็นตัวเลข และ มากกว่า 0", "warning");
+            //      ROHead.ROLineList[Index].BuyQty = 0;
+        }
         }
         $scope.AddImageToCart = function() {
             var someimage = document.getElementById('ThumbnailProductImage_'+SelectedProduct.ProductCode);
             var myimg = someimage.getElementsByTagName('img')[2]; //[0] stripe-new [1] stripe-sale
-        //    var mysrc = myimg.src;
             console.log(someimage);    
             console.log(myimg);
-        //    $('#CartProduct_'+SelectedProduct.ProductCode).children("img").remove();
             $('#CartProduct_'+SelectedProduct.ProductCode).append(myimg);
         }
     
@@ -351,8 +434,8 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
             });*/
         ProductService.LoadProductByProductCategoryCode(ProductCategoryCode)
         .then(function(data, status) {
-            $scope.Product = data;
-
+            $scope.Products = data;
+            $scope.bigTotalItems = $scope.Products.length;
             $scope.SelectedMenu = "product";
             $scope.$emit('handleBodyMenuEmit', {
                 SelectedMenu: "product"
@@ -699,13 +782,24 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
                 
                 var productTypeURL = ENV.apiEndpoint + "/product_types/LoadProductType";
                 $http.get(productTypeURL)
-                    .success(function (productTypes) {
-                        $scope.SelectProductTypeList = productTypes;
-                        $scope.SelectedProductType = data.ProductTypeCode;
-                    })
-                    .error(function (productTypes) {
+                .success(function (productTypes) {
+                    $scope.SelectProductTypeList = productTypes;
+                    $scope.SelectedProductType = data.ProductTypeCode;
+                })
+                .error(function (productTypes) {
 
-                    });
+                });
+
+                var downloadUrl = ENV.apiEndpoint + '/aws/downloadProductCategoryImageThumbnail/' + ProductCategoryId + '/' + ProductCategoryCode;
+                $http.get(downloadUrl)
+                .success(function (data, status, headers, config) {
+                    $('#ThumbnailProductCategoryImage').children("img").remove();
+                    $('#ThumbnailProductCategoryImage').append(data);
+                })
+                .error(function (data, status, headers, config) {
+                    console.log(data);
+                });
+
             })
             .error(function (data) {
                 console.log(data);
@@ -849,6 +943,43 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
         $("#div-product-category-table").show("slow");
         $("#div-product-category-detail").hide("slow");
     }
+    // Upload Product Category Image
+    $scope.uploadProductCategoryImage = function (files, ProductCategoryId, ProductCategoryCode) {
+        console.log(" Product Category Id " + ProductCategoryId + ProductCategoryCode);
+        if (files && files.length) {
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                console.log(file);
+                Upload
+                .upload({
+                    url: ENV.apiEndpoint + '/aws/uploadProductCategoryImage/' + ProductCategoryId + '/' + ProductCategoryCode + '/admin',
+                    file: file
+                })
+                .progress(function (evt) {
+                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                    console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+                })
+                .success(function (data, status, headers, config) {
+                    // Download Image for Product
+                    console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
+
+                    var downloadUrl = ENV.apiEndpoint + '/aws/downloadProductCategoryImageThumbnail/' + ProductCategoryId + '/' + ProductCategoryCode;
+                    $http.get(downloadUrl)
+                    .success(function (data, status, headers, config) {
+                        $('#ThumbnailProductCategoryImage').children("img").remove();
+                        $('#ThumbnailProductCategoryImage').append(data);
+                    })
+                    .error(function (data, status, headers, config) {
+                        console.log(data);
+                    });
+                })
+                .error(function (data, status, headers, config) {
+                    console.log('error ' + data + ' status ' + status);
+                });
+            }
+        }
+        
+    };
     // End Function for Product Category Module
 
     // Start Function for Product Module
@@ -1205,7 +1336,6 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
         })
         .error(function (data, status, headers, config) {
             console.log(data);
-
         });
     }
     $scope.CheckPromotionIsExpire = function(expireDate) {
@@ -3312,6 +3442,8 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
             $scope.ROHead.ReceiptDistrictId = "";
             $scope.ROHead.ReceiptSubDistrictId = "";
             $scope.ROHead.ReceiptZipCode = "";
+
+            $scope.ROHead.BillingEmail = $scope.User.Email;
         }, function(err, status) {
             console.log(err);
         });
@@ -3360,7 +3492,7 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
                 console.log(subdistricts);
         });*/
         SubDistrictService.LoadSubDistrictByDistrict($scope.ROHead.BillingDistrictId)
-        .then(function(data, status) {
+        .then(function(subdistricts, status) {
             $scope.SelectBillingSubDistrictList = subdistricts;
         }, function(err, status) {
             console.log(err);
@@ -3377,7 +3509,7 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
         });
             */
         SubDistrictService.LoadSubDistrictByDistrict($scope.ROHead.BillingDistrictId)
-        .then(function(data, status) {
+        .then(function(subdistricts, status) {
             $scope.SelectReceiptSubDistrictList = subdistricts;
         }, function(err, status) {
             console.log(err);
@@ -3492,14 +3624,15 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
             swal("เตือน", "คุณต้องใส่หมายเลขมือถือ", "warning");
             return;
         }
-        if (!validateTelNo($scope.ROHead.TelNo)) {
+        if (validateTelNo($scope.ROHead.TelNo)) {
             swal("เตือน", "หมายเลขโทรศัพท์ไม่ถูกต้อง", "warning");
             return;
         }
-        if (!validateTelNo($scope.ROHead.MobileNo)) {
+        if (validateTelNo($scope.ROHead.MobileNo)) {
             swal("เตือน", "่หมายเลขไม่ถูกต้อง", "warning");
             return;
         }
+        /*
         if (!$scope.ROHead.ReceiptName || 0 === $scope.ROHead.ReceiptName.length) {
             swal("เตือน", "คุณต้องใส่ชื่อที่อยู่ที่แสดงในใบเสร็จ", "warning");
             return;
@@ -3524,7 +3657,7 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
             swal("เตือน", "คุณต้องเลือก รหัสไปรษณีร์ ที่แสดงในใบเสร็จ", "warning");
             return;
         }
-
+*/
         $scope.step = 2;
     //    $scope.LoadPaypalInformation();
         $("#nav-step2").removeAttr("disabled");
@@ -3554,6 +3687,11 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
 
         });
     }*/
+    $scope.ChangePaymentType = function() {
+        if ($scope.PaymentType == 'Paypal') {
+
+        }
+    }
     $scope.ValidatePayment =  function() {
         if ($scope.PaymentType == '') {
             swal("เตือน", "คุณต้องเลือกประเภทการชำระเงิน", "warning");
@@ -3842,7 +3980,24 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
             
         }
     }
+    $scope.PrintRO = function(roHeadId) {
+        ReceiptOrderService.LoadROHeadROLineByROHeadId(roHeadId)
+        .then(function(data, status) {
+            $scope.PrintROData = data;
 
+            $timeout(function() {
+                var a = document.getElementById('printing-css').value;
+                var b = document.getElementById('PrintROModal').innerHTML;
+                window.frames["print_frame"].document.title = document.title;
+                window.frames["print_frame"].document.body.innerHTML = '<style>' + a + '</style>' + b;
+                window.frames["print_frame"].window.focus();
+                window.frames["print_frame"].window.print();
+            }, 2000);
+        }, function(err, status) {
+            console.log(err);
+        });
+        
+    }
     $scope.ViewRO = function (roHeadId, mode) {
      /*    
      var loadROHeadLineUrl = ENV.apiEndpoint + "/receipts/LoadROHeadROLineByObjId/" + roHeadId;
@@ -3882,10 +4037,12 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
 */
         ReceiptOrderService.LoadROHeadROLineByROHeadId(roHeadId)
         .then(function(data, status) {
-            console.log(data);
+        //    console.log(data);
             if (mode === 'History') {
+                $scope.ViewHistoryRO = data;
                 return AWSService.DownloadReceiptPaymentThumbnail($scope.ViewHistoryRO.RONo);
             } else if (mode === 'Customer') {
+                $scope.ViewStaffRO = data;
                 return AWSService.DownloadReceiptPaymentThumbnail($scope.ViewStaffRO.RONo);
             }
         }, function(err, status) {
@@ -3971,9 +4128,11 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
             })
             .then(function(data, status) {
                 swal("สำเร็จ", "อนุมัติเอกสารการจ่ายเงินเรียบร้อย", "success"); 
+                $('#StaffROModal').modal('toggle');
             }, function(err, status) {
                 swal("เกิดข้อผิดพลาด", data, "error");
-            })
+            });
+
         } else if (IsApprove === 'N') {
             console.log($scope.ViewStaffRO.UserId);
             swal({   
@@ -3985,26 +4144,31 @@ app.controller('BodyController', [ "$scope", "$location", "$anchorScroll", "$fil
                 animation: "slide-from-top",   
                 inputPlaceholder: "Reject reason" }
                 , function(inputValue) {   
+                    console.log('inputValue' + inputValue);
                     if (inputValue === false) return false;      
                     if (inputValue === "") {     
                         swal.showInputError("You need to write something!");     
                         return false   
-                    }      
-                    $scope.ValidateForm = {
-                        UserId : '',
-                        RejectReason : ''
-                    };
-                    $scope.ValidateForm.UserId = UserId;
-                    $scope.ValidateForm.RejectReason = inputValue;
+                    } else if (inputValue.length > 0) {      
+                        $scope.ValidateForm = {
+                            UserId : '',
+                            RejectReason : ''
+                        };
+                        $scope.ValidateForm.UserId = UserId;
+                        $scope.ValidateForm.RejectReason = inputValue;
 
-                    EmailService.SendEmailRejectPayment($scope.ValidateForm)
-                    .then(function(data, status) {
-                        console.log('reject success');
-                        $('#ThumbnailReceiptPayment').modal('toggle');
-                    }, function(err, status) {
-                        swal("เกิดข้อผิดพลาด", data, "error");
-                    });
+                        EmailService.SendEmailRejectPayment($scope.ValidateForm)
+                        .then(function(data, status) {
+                            console.log('reject success');
+                            $('#StaffROModal').modal('toggle');
+                        }, function(err, status) {
+                            swal("เกิดข้อผิดพลาด", data, "error");
+                        });
+                    }
             });
         }
     }
+
+
+    
 }]);
