@@ -80,7 +80,9 @@ router.get('/LoadProductByCondition/:ProductCode/:ProductName/:ProductCategoryCo
 });
 router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
     db.collection(mongodbConfig.mongodb.product.name)
-        .find({})
+        .find({
+            Weight: { $gt: 0 }
+        })
         .limit(40)
         .toArray(function (err, items) {
        /*     findUomPromise({

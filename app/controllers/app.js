@@ -287,7 +287,8 @@ app.config(function ($translateProvider) {
                     },
                     FINISH : {
                         STEP : 'สิ้นสุด',
-                        BUTTON : 'กดเพื่อสิ้นสุด'
+                        BUTTON : 'กดเพื่อสิ้นสุด',
+                        THANK_MESSAGE: 'ขอบคุณสำหรับคำสั่งซื้อของท่าน ☺'
                     }
                 },
                 SETTING: {
@@ -924,7 +925,8 @@ app.config(function ($translateProvider) {
                     },
                     FINISH : {
                         STEP : 'Finish',
-                        BUTTON_FINISH : 'Click to finish'
+                        BUTTON_FINISH : 'Click to finish',
+                        THANK_MESSAGE: 'Thank you for your order. ☺'
                     }
                 },
                 GOOGLE_MAP: {
@@ -1452,7 +1454,8 @@ app.config(function ($translateProvider) {
                     },
                     FINISH : {
                         STEP : '結束',
-                        BUTTON_SUCCESS : '成功'
+                        BUTTON_SUCCESS : '成功',
+                        THANK_MESSAGE: '謝謝您的訂單。☺'
                     }
                 },
                 SETTING: {

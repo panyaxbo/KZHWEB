@@ -3731,6 +3731,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     $scope.ValidateFinish = function() {
         console.log('ValidateFinish');
         blockUI.start("Processing ...");
+        var newcode = '';
    /*     var newCodeUrl = ENV.apiEndpoint + "/appconfig/GetNewCode/RO";
         $http.get(newCodeUrl)
         .success(function(data, status, headers, config) {
@@ -3785,7 +3786,8 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         });
 */
         AppConfigService.GetNewCode("RO")
-        .then(function(newcode, status) {
+        .then(function(data, status) {
+            newcode = data;
             blockUI.message("25%");
             $scope.ROHead.RODate = new Date(); //(new Date()).toISOString();
             $scope.ROHead.RONo = newcode;

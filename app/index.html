@@ -954,20 +954,20 @@
                 </div>
                 <!-- <div> Shipment Process -->
                 <div id="shipment-section" name="shipment-section" class="section" ng-show="SelectedMenu === 'shipment'" ng-init="InitShipment()">
-                        <h2>{{'BODY.SECTION.SHIPMENT.HEAD' | translate}}</h2>
+                        <h2><i class="fa fa-truck fa-2x"></i> {{'BODY.SECTION.SHIPMENT.HEAD' | translate}}</h2>
                         <div class="stepwizard">
                             <div class="stepwizard-row setup-panel">
                                 <div class="stepwizard-step">
                                     <a id="nav-step1" href="#step-1" type="button" class="btn btn-primary btn-circle" ng-click="SelectStep(1)">1</a>
-                                    <p>{{'BODY.SECTION.SHIPMENT.BILLING.STEP' | translate}}</p>
+                                    <p><i class="fa fa-shopping-basket"></i> {{'BODY.SECTION.SHIPMENT.BILLING.STEP' | translate}}</p>
                                 </div>
                                 <div class="stepwizard-step">
                                     <a id="nav-step2" href="#step-2" type="button" class="btn btn-default btn-circle" ng-click="SelectStep(2)" disabled="disabled">2</a>
-                                    <p>{{'BODY.SECTION.SHIPMENT.PAYMENT.STEP' | translate}}</p>
+                                    <p><i class="fa fa-money"></i> {{'BODY.SECTION.SHIPMENT.PAYMENT.STEP' | translate}}</p>
                                 </div>
                                 <div class="stepwizard-step">
                                     <a id="nav-step3" href="#step-3" type="button" class="btn btn-default btn-circle" ng-click="SelectStep(3)" disabled="disabled">3</a>
-                                    <p>{{'BODY.SECTION.SHIPMENT.FINISH.STEP' | translate}}</p>
+                                    <p><i class="fa fa-flag-checkered"></i> {{'BODY.SECTION.SHIPMENT.FINISH.STEP' | translate}}</p>
                                 </div>
                             </div>
                         </div>
@@ -1070,9 +1070,7 @@
                                         <div class="row form-group">
                                             <div>
                                               <form class="form-horizontal" role="form">
-                                                  <!-- Form Name -->
                                                   <legend>&nbsp;</legend>
-                                                  <!-- Text input-->
                                                   <div class="form-group">
                                                         <label class="col-md-4 control-label" style="text-align: left">{{'BODY.SECTION.SHIPMENT.BILLING.RO_NAME' | translate}} :</label>
                                                         <div class="col-md-8">
@@ -1087,7 +1085,6 @@
                                                     </div>
                                                   </div>
                                                   
-                                                  <!-- Text input-->
                                                   <div class="form-group">
                                                     <label class="col-md-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SHIPMENT.BILLING.RO_PROVINCE' | translate}} :</label>
                                                     <div class="col-md-8">
@@ -1098,7 +1095,6 @@
                                                     </div>
                                                   </div>
                                                   
-                                                  <!-- Text input-->
                                                   <div class="form-group">
                                                     <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SHIPMENT.BILLING.RO_DISTRICT' | translate}} :</label>
                                                     <div class="col-sm-8">
@@ -1110,7 +1106,6 @@
                                                     </div>
                                                   </div>
                                                   
-                                                  <!-- Text input-->
                                                   <div class="form-group">
                                                     <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SHIPMENT.BILLING.RO_SUBDISTRICT' | translate}} :</label>
                                                     <div class="col-sm-8">
@@ -1127,7 +1122,7 @@
                                                     </div>
                                                   </div>
                                               </form>
-                                            </div><!-- /.col-lg-12 -->
+                                            </div><
                                         </div> -->
                                     </div>
 
@@ -1198,7 +1193,7 @@
                                                                                 <img src="/images/bbl.png" width="40" height="40">
                                                                             </td>
                                                                             <td>
-                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.BBL.NAME' | translate}}</label>
+                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.BBL.ACCOUNT_NO' | translate}}</label>
                                                                             </td>
                                                                             <td>
                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.BBL.ACCOUNT_TYPE' | translate}}</label>
@@ -1218,7 +1213,7 @@
                                                                                 <img src="/images/kbank.png" width="40" height="40">
                                                                             </td>
                                                                             <td>
-                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KBANK.NAME' | translate}}</label>
+                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KBANK.ACCOUNT_NO' | translate}}</label>
                                                                             </td>
                                                                             <td>
                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KBANK.ACCOUNT_TYPE' | translate}}</label>
@@ -1239,7 +1234,7 @@
                                                                                 <img src="/images/scb.png" width="40" height="40">
                                                                             </td>
                                                                             <td>
-                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.SCB.NAME' | translate}}</label>
+                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.SCB.ACCOUNT_NO' | translate}}</label>
                                                                             </td>
                                                                             <td>
                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.SCB.ACCOUNT_TYPE' | translate}}</label>
@@ -1259,7 +1254,7 @@
                                                                                 <img src="/images/ktb.png" width="40" height="40">
                                                                             </td>
                                                                             <td>
-                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KTB.NAME' | translate}}</label>
+                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KTB.ACCOUNT_NO' | translate}}</label>
                                                                             </td>
                                                                             <td>
                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KTB.ACCOUNT_TYPE' | translate}}</label>
@@ -1279,7 +1274,7 @@
                                                                                 <img src="/images/kcc.png" width="40" height="40">
                                                                             </td>
                                                                             <td>
-                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KCC.NAME' | translate}}</label>
+                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KCC.ACCOUNT_NO' | translate}}</label>
                                                                             </td>
                                                                             <td>
                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KCC.ACCOUNT_TYPE' | translate}}</label>
@@ -1300,7 +1295,7 @@
                                                                                 <img src="/images/tmb.png" width="60" height="35">
                                                                             </td>
                                                                             <td>
-                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.TMB.NAME'}}</label>
+                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.TMB.ACCOUNT_NO'}}</label>
                                                                             </td>
                                                                             <td>
                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.TMB.ACCOUNT_TYPE'}}</label>
@@ -1320,7 +1315,7 @@
                                                                                 <img src="/images/uob.png" width="60" height="30">
                                                                             </td>
                                                                             <td>
-                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.UOB.NAME'}}</label>
+                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.UOB.ACCOUNT_NO'}}</label>
                                                                             </td>
                                                                             <td>
                                                                                <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.UOB.ACCOUNT_TYPE'}}</label>
@@ -1496,7 +1491,8 @@
                                     <div class="col-md-12">
                                         <h3> Step 3</h3>
                                     <!--    <button class="btn btn-success btn-lg center-block" ng-click="ValidateFinish()">Finish!</button> -->
-                                        <center>Thank you for your order :).</center>
+                                        <center><h4><i class="fa fa-flag-checkered fa-3x"></i></h4></center>
+                                        <center>{{'BODY.SECTION.SHIPMENT.FINISH.THANK_MESSAGE' | translate}}</center>
                                     </div>
                                 </div>
                             </div>
