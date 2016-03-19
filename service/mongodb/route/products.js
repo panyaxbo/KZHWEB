@@ -10,7 +10,9 @@ router.get(mongodbConfig.url.product.home, function (req, res, next) {
 /* GET users listing. */
 router.get('/LoadProductForPromotion', function (req, res) {
     db.collection(mongodbConfig.mongodb.product.name)
-        .find({})
+        .find({
+            Weight: { $gt: 0 }
+        })
         .limit(100)
         .toArray(function (err, items) {
             if (items) {
@@ -59,6 +61,7 @@ router.get('/LoadProductByCondition/:ProductCode/:ProductName/:ProductCategoryCo
         ,
         'ProductCategoryCode' : {'$regex' : CatCode, '$options' : 'i'}
         ,
+        Weight: { $gt: 0 },
         $or : [
             {'ProductNameTh' : {'$regex' : SearchName}}
             ,
@@ -83,7 +86,7 @@ router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
         .find({
             Weight: { $gt: 0 }
         })
-        .limit(40)
+        .limit(100)
         .toArray(function (err, items) {
        /*     findUomPromise({
                 $or: [{
@@ -339,6 +342,7 @@ router.get('/SearchProductWithCondition/:SearchConditionString', function (req, 
     var SearchName = GenerateTextQuery(searchs);
     console.log(SearchName);
     var searchquery = {
+        Weight: { $gt: 0 },
         $or : [
             {'ProductNameTh' : {'$regex' : SearchName}}
             ,

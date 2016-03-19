@@ -99,10 +99,12 @@ var heroku_mongolab_uri = process.env.MONGOLAB_URI || 'mongodb://heroku_dmj53qsq
 app.set('', port);
 
 app.get('/', function(req, res) {
-
+  
+  
     if (environment !== 'production') {
       res.sendFile(appRoot + '/app/index.html');
     } else {
+     
       res.sendFile(path.resolve(__dirname, '../../') + '/index.html');
     }
 });
@@ -126,8 +128,9 @@ mongodb.MongoClient.connect(mongodbConfig.connection_url + mongodbConfig.collect
 
 mongodb.MongoClient.connect(mongolab_uri, function (err, database) {
     if (err) console.log(err, err.stack.split("\n"));
- //   console.log(database);
+    console.log(database);
     db = database;
+   
 });
 
 
@@ -156,10 +159,24 @@ process.on('uncaughtException', function (err) {
 
 app.use(function(err, req, res, next){
   console.error(err.stack);
-  //res.send(500, 'Something broke!');
-});
   console.error(appRoot +'/app/');
-// viewed at http://localhost:8080
+  //res.send(500, 'Something broke!');
+    db.collection('Holiday')
+          .findOne({
+              $and : [{
+                  'StartDate' : { $lte : new Date() },
+                  'EndDate' : { $gte: new Date() }
+              }]
+          }, function (err, holiday) {
+          if (err) {
+              console.log(err);
+          } else {
+              console.log(holiday);
+              res.sendFile(path.resolve(__dirname, '../../') + '/404.html');
+          }
+      });
+});
+  
 
 
 

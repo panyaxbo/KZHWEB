@@ -207,42 +207,35 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         });
     }
     
-    $scope.totalItems = 40;
+    $scope.totalItems = 0;
     $scope.currentPage = 1;
-
-    $scope.setPage = function (pageNo) {
-      $scope.currentPage = pageNo;
-    };
-
-    $scope.pageChanged = function() {
-      console.log('Page changed to: ' + $scope.currentPage);
-    };
-    $scope.selectPage = function (pageNo) {
-        $scope.currentPage = pageNo;
-        $scope.bigCurrentPage = pageNo;
-      };
+    $scope.itemsPerPage = 20;
     $scope.maxSize = 5;
-    $scope.bigTotalItems = 175;
+    $scope.bigTotalItems = 20;
     $scope.bigCurrentPage = 1;
+
     $scope.LoadProduct = function () {
-    /*    var url = ENV.apiEndpoint + '/products/LoadProduct';
-        $http.get(url)
-            .success(function (data) {
-                $scope.Product = data;
-            })
-            .error(function () {
-                //    alert("Cannot get Product data from Server..");
-            });
-            */
         ProductService.LoadProduct()
         .then(function(data, status) {
             $scope.Products = data;
+            $scope.totalItems = $scope.Products.length;
             $scope.bigTotalItems = $scope.Products.length;
         }, function (err, status) {
 
         });
     }
+    $scope.setPage = function (pageNo) {
+        $scope.currentPage = pageNo;
+    };
 
+    $scope.pageChanged = function() {
+        console.log('Page changed to: ' + $scope.currentPage);
+    };
+
+    $scope.setItemsPerPage = function(num) {
+      $scope.itemsPerPage = num;
+      $scope.currentPage = 1; //reset to first paghe
+    }
 
     $scope.Search = function() {
       console.log($scope.SearchAllText);
@@ -282,6 +275,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         $timeout(function() {
         //    console.log('data.ProductTypes ', data);
         //    $scope.ProductTypes = data;
+        //    return ProductService.LoadProductByProductCategory()
         }, 2000);
     }, function(err, status) {
          console.log(err);
