@@ -5,8 +5,8 @@ config.MAIL_SERVICE = 'Gmail';
 config.MAIL_USER = 'kzh.parts@gmail.com';
 config.CLIENT_ID = '269503840518-d22ta215d7kb3vopnh11trv9ov3piotk.apps.googleusercontent.com';
 config.CLIENT_SECRET = 'jqbp4XV2KYbmiaTuk4sZRLLu';
-config.CLIENT_REFRESH_TOKEN = '1/796Pc2f6DuWyokdQnPk0vsdZnkEZ9LQHIF4RZxSGO0o';
-config.CLIENT_ACCESS_TOKEN = 'ya29.pgEltUgmd9NBq4UXTiEBHmqIFskNip_8GyIOUxjjD-rYRuVGTN-BLBXn3ona2iKoO6aaMnRHoJlNOA';
+config.CLIENT_REFRESH_TOKEN = '1/EZHOVGAblv-2AKfZFLT3T4mrlzF7cv4f-n5ptWM2mZs';
+config.CLIENT_ACCESS_TOKEN = 'ya29.qgIJfCQ9StHjsWzEErlxVR_ESKrwierTsfo--ykZ7qtDo2xxR4AQnL8ITxTCN0LHBQ';
 
 config.MAIL_CONTENT_TITLE = '<meta charset="utf-8"><table width="650" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#e41f28">'+
   '<tbody><tr>'+

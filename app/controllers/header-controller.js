@@ -609,7 +609,8 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
         })*/
     // 
     } else if (UserBackFromEmailUrl.indexOf("forget=") > -1 ) {
-        UserService.UpdateEmailForgetPassword()
+      var asciiString = ReplaceASCIICharacter(UserBackFromEmailUrl);
+        UserService.UpdateEmailForgetPassword(asciiString)
         .then(function(data, status) {
             $scope.ForgetPasswordEmail = data;
             $('#InputPasswordModal').modal('show');

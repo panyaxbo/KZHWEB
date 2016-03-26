@@ -57,11 +57,10 @@ router.get('/LoadProductByCondition/:ProductCode/:ProductName/:ProductCategoryCo
     var SearchName = GenerateTextQuery(searchs);
     
     var searchquery = {
-        'ProductCode' : {'$regex' : Code, '$options' : 'i'}
+        'ProductCode' : {$regex : Code, $options : 'i'}
         ,
-        'ProductCategoryCode' : {'$regex' : CatCode, '$options' : 'i'}
+        'ProductCategoryCode' : {$regex : CatCode, $options : 'i'}
         ,
-        Weight: { $gt: 0 },
         $or : [
             {'ProductNameTh' : {'$regex' : SearchName}}
             ,
@@ -72,13 +71,18 @@ router.get('/LoadProductByCondition/:ProductCode/:ProductName/:ProductCategoryCo
             {'Remark' : {'$regex' : SearchName}}
         ]
     };
+    console.log(searchquery);
     db.collection(mongodbConfig.mongodb.product.name)
         .find({
             $query: searchquery ,
             $orderby: { ProductCode : 1 }
         })
         .toArray(function (err, items) {
-            res.json(items);
+            if (err) {
+                console.log('err ', err);
+            } else {
+                res.json(items);
+            }
         });
 });
 router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
@@ -604,7 +608,7 @@ router.get(mongodbConfig.url.product.loadProductByObjId, function (req, res) {
     console.log('Product id ' + req.params.ProductId);
     var ProductId = req.params.ProductId;
     var o_id = bson.BSONPure.ObjectID(ProductId.toString());
-    /*
+
     db.collection(mongodbConfig.mongodb.product.name)
         .findOne({
             '_id': o_id
@@ -671,7 +675,7 @@ router.get(mongodbConfig.url.product.loadProductByObjId, function (req, res) {
             }
         });
     };
-*/
+/*
     var FindProductByObjIdPromise = function() {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.product.name)
@@ -688,14 +692,16 @@ router.get(mongodbConfig.url.product.loadProductByObjId, function (req, res) {
     }
     var FindUomByUomCodePromise = function(UomCode) {
         var defer = Q.defer();
+        console.log('1333333');
         db.collection(mongodbConfig.mongodb.uom.name)
             .findOne({
-                UomCode : UomCode,
-                IsContainer: false
+                'UomCode' : UomCode
             }, function (err, uom) {
             if (err) {
+                console.log(err, err.stack.split("\n"));
                 defer.reject(err);
             } else {
+                console.log(uom);
                 defer.resolve(uom);
             }
         });
@@ -703,34 +709,44 @@ router.get(mongodbConfig.url.product.loadProductByObjId, function (req, res) {
     }
     var FindContainUomByUomCodePromise = function(ContainUomCode) {
         var defer = Q.defer();
+        console.log('55555');
         db.collection(mongodbConfig.mongodb.uom.name)
             .findOne({
-                'UomCode' : ContainUomCode,
-                'IsContainer' : true
+                'UomCode' : ContainUomCode
             }, function (err, containUom) {
+                console.log(containUom);
             if (err) {
+                console.log(err, err.stack.split("\n"));
                 defer.reject(err);
             } else {
+                     
                 defer.resolve(containUom);
             }
         });
         return defer.promise;
     }
+
+    var uom_code = '';
+    var contain_uom_code = '';
     FindProductByObjIdPromise()
-    .then(function(data, status) {
-        return FindUomByUomCodePromise(data.UomCode);
-    }, function(err, status) {
-        console.log(error, error.stack.split("\n"));
-        res.sendStatus(500);
-        return;
+    .then(function(product, status) {
+        console.log('1',product);
+        uom_code = product.UomCode;
+        contain_uom_code = product.ContainUomCode;
+        return FindUomByUomCodePromise(uom_code);
     })
-    .then(function(data, status) {
-        return FindContainUomByUomCodePromise(data.ContainUomCode);
-    }, function(err, status) {
-        console.log(error, error.stack.split("\n"));
-        res.sendStatus(500);
-        return;
+    .then(function(uom, status) {
+        console.log('2',product);
+        product.Uom = uom;
+        console.log('2',product);
+        return FindContainUomByUomCodePromise(contain_uom_code);
     })
+    .then(function(containuom, status) {
+        product.ContainUom = containuom;
+        console.log('3',product);
+        res.json(product);
+    });
+    */
 });
 
 router.get(mongodbConfig.url.product.loadProductById, function (req, res) {

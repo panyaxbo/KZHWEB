@@ -304,6 +304,7 @@ router.get("/downloadProductImageShop/:ProductId/:ProductCode",  function (req, 
         } else if (file) {
      //     console.log('file not null');
           var base64 = (data.toString('base64')); 
+      //    var base64 = (data.Body.toString('base64')); 
           res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive" style="max-height: 200px;max-width: 200px;margin: 0 auto;">');
         }
       });
@@ -639,7 +640,8 @@ router.get('/downloadProductImageThumbnail/:ProductId/:ProductCode', function(re
             res.sendStatus(200);
             return;
           } else if (data){
-            var base64 = (data.toString('base64')); 
+          //  var base64 = (data.toString('base64')); 
+            var base64 = (data.Body.toString('base64')); 
             res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive">');
           }
         }, function(err, status) {

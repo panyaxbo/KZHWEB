@@ -169,7 +169,7 @@ router.get(mongodbConfig.url.uom.loadContainUom, function (req, res){
             res.json(items);
         });
 */
-    var loadUomContainUom = function() {
+    var loadUomByContainUom = function() {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.uom.name)
             .find({'IsContainer' : true})

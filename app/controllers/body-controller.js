@@ -1169,8 +1169,8 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
 
                 });
             })
-            .error(function (data) {
-                console.log(data);
+            .error(function (err) {
+                console.log(err);
             });
         $("#div-product-table").hide("slow");
         $("#div-product-detail").show("slow");

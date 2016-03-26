@@ -14,7 +14,6 @@ app.service("EmailService", ["$q","$http", "ENV", function ($q, $http, ENV) {
     	},
     	SendEmailForgetPassword: function(mailForgetObj) {
     		var defer = $q.defer();
-    		var hostWithPort = $location.host() + ':' +$location.port();
 	          var forgetPasswordEmailUrl = ENV.apiEndpoint + "/mails/SendEmailForgetPassword";
 	      
 	          $http.post(forgetPasswordEmailUrl, mailForgetObj)
