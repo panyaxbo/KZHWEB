@@ -17,7 +17,7 @@ router.get('/GetPaypalInformation/', function(req, res) {
 		  	Shipping : 0.00,
 		  	Tax : 0.00,
 		  	CallbackUrl : 'localhost:9000',
-		  	EnvironmentSandbox : true
+		  	EnvironmentSandbox : false
 	  };
 	} else {
 		PaypalObj = {

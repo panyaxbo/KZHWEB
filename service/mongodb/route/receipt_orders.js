@@ -216,30 +216,12 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
     })
     .then(function(BillingSubDistrict, status) {
         ROHead.BillingSubDistrict = BillingSubDistrict;
-        return LoadReceiptProvincePromise(ROHead.ReceiptProvinceId);
+        res.json(ROHead);
     },function(err, status) {
         console.log(err, err.stack.split("\n"));
         console.log('err bill sub district');
-    })
-    .then(function(ReceiptProvince, status) {
-        ROHead.ReceiptProvince = ReceiptProvince;
-        return LoadReceiptDistrictPromise(ROHead.ReceiptDistrictId);
-    }, function(err, status) {
-        console.log('err receipt province');
-    })
-    .then(function(ReceiptDistrict, status) {
-        ROHead.ReceiptDistrict = ReceiptDistrict;
-        return LoadReceiptSubDistrictPromise(ROHead.ReceiptSubDistrictId);
-    }, function(err, status) {
-        console.log(err, err.stack.split("\n"));
-        console.log('err receipt district');
-    })
-    .then(function(ReceiptSubDistrict, status) {
-        ROHead.ReceiptSubDistrict = ReceiptSubDistrict;
-        res.json(ROHead);
-    }, function(err, status) {
-        console.log('err receipt sub-district');
     });
+    
 
 /*
     db.collection(mongodbConfig.mongodb.rohead.name)
@@ -582,9 +564,9 @@ router.post(mongodbConfig.url.receipt.createReceipt, function (req, res) {
     ROHead.BillingDistrictId = bson.BSONPure.ObjectID(ROHead.BillingDistrictId);
     ROHead.BillingSubDistrictId = bson.BSONPure.ObjectID(ROHead.BillingSubDistrictId);
 
-    ROHead.ReceiptProvinceId = bson.BSONPure.ObjectID(ROHead.ReceiptProvinceId);
-    ROHead.ReceiptDistrictId = bson.BSONPure.ObjectID(ROHead.ReceiptDistrictId);
-    ROHead.ReceiptSubDistrictId = bson.BSONPure.ObjectID(ROHead.ReceiptSubDistrictId);
+ //   ROHead.ReceiptProvinceId = bson.BSONPure.ObjectID(ROHead.ReceiptProvinceId);
+ //   ROHead.ReceiptDistrictId = bson.BSONPure.ObjectID(ROHead.ReceiptDistrictId);
+ //   ROHead.ReceiptSubDistrictId = bson.BSONPure.ObjectID(ROHead.ReceiptSubDistrictId);
 
     var curDate = new Date ();
     curDate.setHours ( curDate.getHours() + 7 );// GMT Bangkok +7

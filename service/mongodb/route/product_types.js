@@ -66,7 +66,7 @@ router.get('/LoadProductTypeByCondition/:ProductTypeCode/:ProductTypeName', func
                 console.log(err);
                 //       callback(err);
             } else {
-                 console.log(items);
+        //         console.log(items);
                 res.json(items);
             }
         });
@@ -99,7 +99,7 @@ router.get(mongodbConfig.url.product_type.loadProductTypeById, function (req, re
             'Id': parseInt(TypeId)
         })
         .toArray(function (err, items) {
-            console.log(items);
+    //        console.log(items);
             res.json(items);
 
         });
@@ -120,7 +120,7 @@ router.get(mongodbConfig.url.product_type.loadProductTypeByCode, function (req, 
 // Create Product Type
 router.post(mongodbConfig.url.product_type.createProductType, function (req, res) {
     var ProductType = req.body;
-    console.log('create product type ' + ProductType);
+  //  console.log('create product type ' + ProductType);
 
     var createDate = new Date ();
     createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
@@ -136,7 +136,7 @@ router.post(mongodbConfig.url.product_type.createProductType, function (req, res
 
 // Update Product Type
 router.post(mongodbConfig.url.product_type.updateProductType, function (req, res) {
-    console.log('Update product type 1 ' + req.body);
+//    console.log('Update product type 1 ' + req.body);
     var ProductType = req.body;
     var id = ProductType._id;
     
@@ -158,7 +158,7 @@ router.post(mongodbConfig.url.product_type.updateProductType, function (req, res
             },
             function (error, result) {
                 if (error) throw error
-                console.log(result.ProductTypeNameEn);
+//                console.log(result.ProductTypeNameEn);
                 res.json(result);
             });
 });

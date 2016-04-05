@@ -251,6 +251,68 @@ attachments : mailConfig.MAIL_ATTACHMENTS_FORGET_PASSWORD
 		});
 });
 
+
+// Send Mail to staff for reviewing payment document
+router.post('/ReviewPaymentDocument', function (req, res) {
+	var mailObj = req.body;
+	var CustomerEmail = mailObj.Email;
+	var Host = mailObj.Host;
+	var back2Url = mailObj.BacktoUrl;
+
+	var forgetPasswordLink = 'http://' + Host + '/#/?forget='+ back2Url;
+	
+	var smtpTransport = nodemailer.createTransport(mailConfig.MAIL_TRANSFER_PROTOCOL, {
+	  service: mailConfig.MAIL_SERVICE,
+	  auth: {
+	    XOAuth2: {
+	      user: mailConfig.MAIL_USER, // Your gmail address.
+	                                            // Not @developer.gserviceaccount.com
+	      clientId: mailConfig.CLIENT_ID,
+	      clientSecret: mailConfig.CLIENT_SECRET,
+	      refreshToken: mailConfig.CLIENT_REFRESH_TOKEN,
+	      accessToken: mailConfig.CLIENT_ACCESS_TOKEN
+	    }
+	  }
+	});
+
+	var mailOptions = {
+		  from: "KZH Parts <kzh.parts@gmail.com>", // sender address
+		  to: "KZH Parts <kzh.parts@gmail.com>",
+		  subject: "หมายเลขสั่งซื้อ " ++ " ได้ชำระเงิน", // Subject line
+		  generateTextFromHTML: true,
+		  html : mailConfig.MAIL_CONTENT_TITLE +
+'<table style="background-color:#fff"  width="650">'+
+'	<tbody>'+
+'		<tr>'+
+'			<td style="border-top:#e41f28 solid 6px;font:normal 13px/18px Arial,Helvetica,sans-serif;padding:45px 17px 30px 17px" valign="top">'+
+'			<h2 style="font:normal"><img height="20" src="cid:recovery@kzh.parts.co.th" style="margin-right:10px" width="21" >&nbsp;&nbsp;Recovery your password</h2>'+
+'			<p>กรุณาตรวจสอบสถานะการชำระเงิน ,<br>'+
+'			<br>'+
+'			<br>'+
+'			</p>'+
+'			<p>&nbsp;</p>'+
+'			<p><strong>Sincerely yours.&nbsp;</strong></p>'+
+'			<p><strong>KZH Staff&nbsp;</strong></p>'+
+'			</td>'+
+'		</tr>'+
+'		'+
+'	</tbody>'+
+'</table>'+
+mailConfig.MAIL_CONTENT_FOOTER,
+attachments : mailConfig.MAIL_ATTACHMENTS_FORGET_PASSWORD
+	}
+
+	smtpTransport.sendMail(mailOptions, function(error, response){
+		   if(error){
+		       console.log(error, error.stack.split("\n"));
+		       res.sendStatus(500);
+		   }else{
+		    //   console.log("Message sent: " + response.message);
+		   }
+		   smtpTransport.close();
+		   res.sendStatus(200);
+		});
+});
 // Approve Payment Document
 router.get('/ApprovePaymentDocument/:UserId', function (req, res) {
 	var UserId = req.params.UserId;
@@ -289,7 +351,7 @@ router.get('/ApprovePaymentDocument/:UserId', function (req, res) {
 		var mailOptions = {
 			  from: "KZH Parts <kzh.parts@gmail.com>", // sender address
 			  to: CustomerUser.Email,
-			  subject: "✔ การชำระเงินของท่านได้รับการอนุมัติ", // Subject line
+			  subject: "✔ ทางร้านได้รับการชำระสินค้าของท่านเรียบร้อย", // Subject line
 			  generateTextFromHTML: true,
 			  html : mailConfig.MAIL_CONTENT_TITLE +
 			'<table style="background-color:#fff"  width="650">'+
@@ -297,7 +359,7 @@ router.get('/ApprovePaymentDocument/:UserId', function (req, res) {
 			'		<tr>'+
 			'			<td style="border-top:#e41f28 solid 6px;font:normal 13px/18px Arial,Helvetica,sans-serif;padding:45px 17px 30px 17px" valign="top">'+
 			'			<h2 style="font:normal"><img height="24" src="cid:approve@kzh.parts.co.th" style="margin-right:10px" width="24" >&nbsp;&nbsp;เรียนลูกค้าที่มีค่า</h2>'+
-			'			<p>การชำระเงินของท่านได้รับการอนุมัติ<br>'+
+			'			<p>ทาง KZH Parts จะดำเนินการจัดส่งสินค้าให้กับท่านลูกค้าต่อไป<br>'+
 			'			<br>'+
 			'			<br>'+
 			'			</p>'+

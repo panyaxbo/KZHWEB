@@ -169,16 +169,12 @@ router.post('/uploadProductImage/:ProductId/:ProductCode/:Username', function (r
 
   var updateDate = new Date ();
     updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
-
+    console.log(file);
   file.name = ProductCode;
   var fileExt = file.originalFilename.split('.').pop();
   file.originalFilename = ProductCode + '.' + fileExt;
+ // var fileName = filePath.substr(filePath.lastIndexOf('/')+1,filePath.length-1);
   product_s3fsImpl.writeFile(file.originalFilename, stream).then(function() {
-    fs.unlink(file.path, function(err) {
-      if (err) {
-        console.log(err, err.stack.split("\n"));
-      }
-      else {
         console.log("success");
         delete file.path;
         file.fileName = ProductCode;
@@ -213,8 +209,8 @@ router.post('/uploadProductImage/:ProductId/:ProductCode/:Username', function (r
                         });
               }
             });
-      }
-    });
+    }, function(err) {
+      console.log(err, err.stack.split("\n"));
   });
 
   var InsertFilePromise = function() {
@@ -288,10 +284,9 @@ router.get("/downloadProductImageShop/:ProductId/:ProductCode",  function (req, 
     if (err) {
       res.sendStatus(500);
     } else if (!file) {
-      res.sendStatus(200);
+      res.sendStatus(404);
       return;
     } else if (file != null && file != undefined) {
-   
       product_s3fsImpl.readFile(file.originalFilename, function (err, data) {
         if (err) {
           console.log(err, err.stack.split("\n"));
@@ -486,7 +481,7 @@ router.get('/downloadProductCategoryImageThumbnail/:ProductCategoryId/:ProductCa
       if (file) { 
           return product_category_s3fsImpl.readFile(file.originalFilename).then(function(data, status) {
               if (!data) { 
-              res.sendStatus(200);
+              res.sendStatus(404);
               return;
             } else if (data){
               var base64 = (data.Body.toString('base64')); 
@@ -745,7 +740,7 @@ router.get('/downloadUserImageProfile/:UserId/:Username', function(req, res) {
 */
   user_s3fsImpl.readFile(home_bucket + user_bucket + Username + '.png').then(function(data, status) {
     if (!data) {
-        res.sendStatus(200);
+        res.sendStatus(404);
         return;
     } else if (data){ 
       console.log(data);
@@ -836,7 +831,7 @@ router.get('/downloadUserImageThumbnail/:UserId/:Username', function(req, res) {
 */
   user_s3fsImpl.readFile(home_bucket + user_bucket + Username + '.png').then(function(data , status) {
     if (!data) {
-        res.sendStatus(200);
+        res.sendStatus(404);
         return;
     } else if (data){ 
       var base64 = (data.Body.toString('base64')); 
@@ -867,30 +862,25 @@ router.post('/uploadReceiptPayment/:UserId/:Username/:RONo', function (req, res)
   file.originalFilename = RONo + '.' + fileExt;
   
   receipt_s3fsImpl.writeFile(file.originalFilename, stream).then(function() {
-      fs.unlink(file.path, function(err) {
-        if (err) {
-          console.log(err, err.stack.split("\n"));
-        }
-        else {
-          console.log("success");
-          delete file.path;
-          file.fileName = RONo;
-          file.uploadBy = Username;
-          file.uploadDate = updateDate;
-          //Remove exist image first
-          db.collection('fs.files')
-            .insert(file,
-              function (err, result) {
-                if (err) {
-                  console.log(err, err.stack.split("\n"));
-                  res.sendStatus(500);
-                  return
-                } else {
-                  res.sendStatus(200);
-                }
-              });
-        }
-      });
+      
+      console.log("success");
+      delete file.path;
+      file.fileName = RONo;
+      file.uploadBy = Username;
+      file.uploadDate = updateDate;
+      //Remove exist image first
+      db.collection('fs.files')
+        .insert(file,
+          function (err, result) {
+            if (err) {
+              console.log(err, err.stack.split("\n"));
+              res.sendStatus(500);
+              return
+            } else {
+              res.sendStatus(200);
+            }
+          });
+
     });
 
 });
@@ -914,7 +904,7 @@ router.get('/downloadReceiptPaymentThumbnail/:RONo', function(req, res) {
               return;
             } else if (!file) {
              //   console.log(err, err.stack.split("\n"));
-                res.sendStatus(200);
+                res.sendStatus(404);
                 return;
             } else if (file){
                 receipt_s3fsImpl.readFile(home_bucket + receipt_bucket + file.originalFilename , function (err, data) {
@@ -946,7 +936,7 @@ router.get('/downloadReceiptPaymentThumbnail/:RONo', function(req, res) {
   }
   findFileByRONoPromise().then(function(file, status) {
       if (!file) {
-          res.sendStatus(200);
+          res.sendStatus(404);
           return;
       } else if (file){
           return 

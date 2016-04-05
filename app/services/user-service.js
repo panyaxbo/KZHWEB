@@ -16,8 +16,12 @@ app.service("UserService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
     	ActivateAppUser: function(UserBackFromEmailUrl) {
     		var defer = $q.defer();
     		var url = UserBackFromEmailUrl.substr(UserBackFromEmailUrl.indexOf("confirm=") + 8);
-	        var updateActivateUrl = ENV.apiEndpoint + "/users/ActivateAppUser/" + url;
-	        $http.get(updateActivateUrl)
+            console.log(url);
+	        var updateActivateUrl = ENV.apiEndpoint + "/users/ActivateAppUser/";
+            var MailActivateForm = {
+               ActivateLink : url
+            }
+	        $http.post(updateActivateUrl, MailActivateForm)
 	        .success(function(data, status) {
 	        	defer.resolve(data);
 	        })

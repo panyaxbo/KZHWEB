@@ -10,6 +10,7 @@ global.mongodb = require('mongodb');
 global.mongodb_promise = require('mongodb-promise');
 global.bson = require('bson');
 global.http = require('http');
+var enforce = require('express-sslify');
 global.url = require('url');
 global.db;
 global.collection;

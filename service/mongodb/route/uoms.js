@@ -172,7 +172,7 @@ router.get(mongodbConfig.url.uom.loadContainUom, function (req, res){
     var loadUomByContainUom = function() {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.uom.name)
-            .find({'IsContainer' : true})
+            .find({})
             .toArray(function (err, items) {
                 if (err) {
                     defer.reject(err);

@@ -33,6 +33,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         LastName: '',
         IsActivate : false
     };
+
     $scope.FirstPage = 1;
     $scope.LastPage = 0;
     $scope.NumberPerPage = 50;
@@ -45,6 +46,9 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     $scope.Multiplier = 1;
     $scope.SelectedLocale = "th";
     $scope.Company = {};
+
+    $scope.IsProductTypeDataAvailable = false;
+    $scope.IsProductDataAvailable = false;
     //    $scope.ROLineList = $rootScope.ROLineList;
 
     // Initialize General Setting Module
@@ -118,6 +122,9 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             $('#ProductTypeTab').addClass("active");
             $scope.SearchProductType();
         } 
+        else if ($scope.SelectedMenu == 'payment') {
+            $scope.InitPaymentAndDeliveryMethod();
+        }
     //    else if ($scope.SelectedMenu  == 'shipment') {
     //        $('html, body').animate({ scrollTop: $('#shipment-section').offset().top }, 'slow');
     //    } 
@@ -125,6 +132,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     //    console.log('body $scope.SelectedMenu ' + $scope.SelectedMenu);
      
     });
+
 
     $scope.$on('handleUserBroadcast', function (event, args) {
         $scope.User = args.User;
@@ -179,6 +187,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     $scope.LoadProductType = function () {
         ProductService.LoadProductType().then(function(data, status) {
             $scope.ProductType = data;
+            console.log('LoadProductType');
         }, function(err, status) {
 
         });
@@ -217,9 +226,12 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     $scope.LoadProduct = function () {
         ProductService.LoadProduct()
         .then(function(data, status) {
+            console.log('LoadProduct');
             $scope.Products = data;
             $scope.totalItems = $scope.Products.length;
             $scope.bigTotalItems = $scope.Products.length;
+
+            $scope.IsProductDataAvailable = true;
         }, function (err, status) {
 
         });
@@ -261,11 +273,10 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     $scope.ProductTypes = [];
     ProductTypeService.LoadProductType()
     .then(function(types, status) {
-        
         console.log(types);
         $scope.ProductTypes = types;
         ProductTypeService.ProductTypes = types;
-   
+        $scope.IsProductTypeDataAvailable = true;
         return ProductCategoryService.LoadProductCategoryByProductType(ProductTypeService.ProductTypes);
         
     }, function(err, status) {
@@ -281,7 +292,36 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
          console.log(err);
     });
 
-    
+    $scope.InitPaymentAndDeliveryMethod = function() {
+        WeightRateService.GetNormalWeightRate()
+        .then(function(data, status) {
+            $scope.NormalTableParams = new ngTableParams({
+                    page: 1,            // show first page
+                    count: 10           // count per page
+                }, {
+                    total: data.length, // length of data
+                    getData: function($defer, params) {
+                        $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    }
+                });
+        }, function(err, status) {
+            console.log(err);
+        });
+         WeightRateService.GetEMSWeightRate()
+        .then(function(data, status) {
+            $scope.EMSTableParams = new ngTableParams({
+                    page: 1,            // show first page
+                    count: 10           // count per page
+                }, {
+                    total: data.length, // length of data
+                    getData: function($defer, params) {
+                        $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    }
+                });
+        }, function(err, status) {
+            console.log(err);
+        })
+    }
     $scope.AddCart = function (SelectedProduct, BuyQty, Index) {
         if (BuyQty > 0) {
             var sumAmt = 0;
@@ -975,7 +1015,12 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         
     };
     // End Function for Product Category Module
-
+    
+    // Prevent Load All Product When click Product Tab
+    $scope.SearchProductTab = function () {
+        $("#div-product-table").show("slow");
+        $("#div-product-detail").hide("slow");
+    }
     // Start Function for Product Module
     $scope.SearchProduct = function () {
         var code = '';
@@ -1000,6 +1045,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         var url = ENV.apiEndpoint + "/products/LoadProductByCondition/" + code + "/" + name + "/" + catcode;
         $http.get(url)
         .success(function (data) {
+            console.log(data);
                 $scope.SearchProducts = data;
 
                 $scope.ProductTableParams = new ngTableParams({
@@ -1019,12 +1065,12 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                     $scope.SearchProductCategoryList = categories;
                 })
                 .error(function (error) {
-
+                    console.log(error);
                 });
-            })
-            .error(function (data) {
-                
-            });
+        })
+        .error(function (error) {
+            console.log(error);
+        });
         $("#div-product-table").show("slow");
         $("#div-product-detail").hide("slow");
     }
@@ -1100,6 +1146,9 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 $scope.ViewProductData.UomCode = data.UomCode;
                 $scope.ViewProductData.ContainUomCode = data.ContainUomCode;
 
+                $scope.ViewProductData.Weight = data.Weight;
+                $scope.ViewProductData.ContainWeight = data.ContainWeight;
+
                 if (isEmpty(data.CreateBy)) {
                     $scope.ViewProductData.CreateBy = $scope.User.Username;
                 } else {
@@ -1130,6 +1179,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 var category_url = ENV.apiEndpoint + "/product_categories/LoadProductCategory";
                 $http.get(category_url)
                 .success(function(data) {
+                    console.log(data);
                     $scope.SelectProductCategoryList = data;
                 })
                 .error(function(data) {
@@ -1139,6 +1189,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 var uom_url = ENV.apiEndpoint + "/uoms/LoadNotContainUom";
                 $http.get(uom_url)
                 .success(function(data) {
+                    console.log(data);
                     $scope.SelectUomList = data;
                 })
                 .error(function(data) {
@@ -1148,12 +1199,13 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 var containuom_url = ENV.apiEndpoint + "/uoms/LoadContainUom";
                 $http.get(containuom_url)
                 .success(function(data) {
+                    console.log(data);
                     $scope.SelectContainUomList = data;
                 })
                 .error(function(data) {
 
                 });
-                console.log(data);
+                
                 $('#ThumbnailProductImage').children("img").remove();
                 
                 // Download Image for User Thumbnail
@@ -1251,9 +1303,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                     NewProductCode = data;
                     console.log('get new code ' + NewProductCode);
                     $scope.ViewProductData.ProductCode = NewProductCode;
-                    $scope.ViewProductData.ProductCategoryCode = $scope.SelectProductCategoryList.ProductCategoryCode;
-                    $scope.ViewProductData.UomCode = $scope.SelectUomList.UomCode;
-                    $scope.ViewProductData.ContainUomCode = $scope.SelectContainUomList.UomCode;
                     $scope.ViewProductData.CreateBy = $scope.User.Username;
                     $scope.ViewProductData.UpdateBy = $scope.User.Username;
                     var url = ENV.apiEndpoint + "/products/CreateProduct/";
@@ -1294,13 +1343,10 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         function(isConfirm){
           if (isConfirm) {
             var url = ENV.apiEndpoint + "/products/UpdateProduct/";
-            $scope.ViewProductData.ProductCategoryCode = $scope.SelectedProductCategory;
-            $scope.ViewProductData.UomCode = $scope.SelectedUom;
-            $scope.ViewProductData.ContainUomCode = $scope.SelectedContainUom;
             $scope.ViewProductData.UpdateBy = $scope.User.Username;
             $http.post(url, $scope.ViewProductData)
                 .success(function (data) {
-                    swal("Updated !!!", "แก้ไขรายการสินค้า " + data.ProductCode + " สำเร็จ !!!", "success");
+                    swal("Updated !!!", "แก้ไขรายการสินค้า " + $scope.ViewProductData.ProductCode + " สำเร็จ !!!", "success");
                     $scope.SearchProduct();
                 })
                 .error(function (data) {
@@ -1311,7 +1357,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
           }
         });
     }
-    $scope.SaveProduct= function () {
+    $scope.SaveProduct = function () {
         if ($scope.ViewProductData._id == '' || $scope.ViewProductData._id == undefined) {
             $scope.CreateProduct();
         } else if ($scope.ViewProductData._id != '') {
@@ -1743,8 +1789,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 .success(function (data, status, headers, config) {
                    
                     // Download Image for User Thumbnail
-                    var downloadThumbnailUrl = ENV.apiEndpoint + '/aws/downloadReceiptPaymentThumbnail/'+$scope.User.Id + '/' 
-                    + $scope.User.Username + '/' + RONo;
+                    var downloadThumbnailUrl = ENV.apiEndpoint + '/aws/downloadReceiptPaymentThumbnail/'+ RONo;
                     $http.get(downloadThumbnailUrl)
                     .success(function (data, status, headers, config) {
                         var img = $('#ThumbnailReceiptPayment').closest('div').find('img').first();
@@ -2221,7 +2266,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         }
     }
     // End Function for Customer Module
-
 
     // Start Function for AppUser Module
     $scope.SearchAppUser = function () {
@@ -3438,6 +3482,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             $scope.ROHead.ReceiptZipCode = "";
 
             $scope.ROHead.BillingEmail = $scope.User.Email;
+            console.log($scope.User.Email);
         }, function(err, status) {
             console.log(err);
         });

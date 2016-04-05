@@ -81,6 +81,7 @@ router.get('/LoadProductByCondition/:ProductCode/:ProductName/:ProductCategoryCo
             if (err) {
                 console.log('err ', err);
             } else {
+                console.log('items ', items);
                 res.json(items);
             }
         });
@@ -116,7 +117,7 @@ router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
                         {
                             // Do something with some_variable
                             var curDate = new Date();
-                            var diff = curDate - product.CreateDate(); // to millisecond
+                            var diff = curDate - product.CreateDate; // to millisecond
                             var monthDiff = diff/(1000*60*60*24*30); // make dif of month
                             if (monthDiff < 1) { // New Arrival must less than a month
                                 product.IsNew = true;
@@ -791,7 +792,10 @@ router.get(mongodbConfig.url.product.loadProductByProductCategoryCode, function 
     console.log('cat cade ' + ProductCategoryCode);
 
     var query = {
-        'ProductCategoryCode': ProductCategoryCode
+        'ProductCategoryCode': ProductCategoryCode,
+        'Weight' : {
+            $gt : 0
+        }
     }
     var new_product = [];
     /*
@@ -932,6 +936,8 @@ router.post(mongodbConfig.url.product.createProduct, function (req, res) {
     createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
     Product.CreateDate = createDate;
     Product.UpdateDate = createDate;
+    Product.Weight = Number(Product.Weight);
+    Product.ContainWeight = Number(Product.ContainWeight);
 
     db.collection(mongodbConfig.mongodb.product.name)
         .insert(Product,
@@ -1005,8 +1011,8 @@ router.post(mongodbConfig.url.product.updateProduct, function (req, res) {
                     'ContainQuantity': Product.ContainQuantity,
                     'UpdateBy' : Product.UpdateBy,
                     'UpdateDate': Product.UpdateDate,
-                    'Weight' : Product.Weight,
-                    'ContainWeight' : Product.ContainWeight
+                    'Weight' : Number(Product.Weight),
+                    'ContainWeight' : Number(Product.ContainWeight)
                 }
             },
             function (err, result) {

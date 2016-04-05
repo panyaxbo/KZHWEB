@@ -2,10 +2,10 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
   "Upload", "$rootScope", "$http", "$translate", "$timeout", "blockUI", "ngDialog", "MenuService", 
   "LocaleService", "ReceiptOrderService", "CompanyService", "CurrencyService", "ENV", "$cookies", 
   "vcRecaptchaService", "UserService", "ProductService", "CredentialService", "SocialService", "CryptoService", 
-  "EmailService", "WeightRateService", "AWSService", 
+  "EmailService", "WeightRateService", "AWSService", "UomService", 
   function ($scope, $location, $window, $filter, $anchorScroll, Upload,$rootScope, $http, $translate,$timeout, blockUI, ngDialog, 
   MenuService, LocaleService, ReceiptOrderService, CompanyService, CurrencyService, ENV , $cookies, vcRecaptchaService, UserService, 
-  ProductService, CredentialService, SocialService, CryptoService, EmailService, WeightRateService, AWSService) {
+  ProductService, CredentialService, SocialService, CryptoService, EmailService, WeightRateService, AWSService, UomService) {
 
     $scope.Locale = "th";
     $scope.Currency = "thb";
@@ -61,6 +61,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     var message_title_warning = $filter('translate')('MESSAGE.TITLE_WARNING');
     var message_title_error = $filter('translate')('MESSAGE.TITLE_ERROR');
 
+    $('#KZHPartsAdModal').modal('show');
     if ($cookies.getObject('User') !== undefined) {
         $scope.User = $cookies.getObject('User');
         $scope.User.Firstname = $cookies.getObject('User').Firstname;
@@ -107,7 +108,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     $scope.HideSearch = function() {
       $('#SearchCriteria').removeClass("open");      
     }
-
+    
     $scope.Search = function() {
       console.log($scope.SearchAllText);
       ProductService.SearchProductWithCondition($scope.SearchAllText)
@@ -586,6 +587,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
         console.log('UserBackFromEmailUrl ', UserBackFromEmailUrl);
         var asciiString = ReplaceASCIICharacter(UserBackFromEmailUrl);
         console.log('after  ', asciiString);
+       
         UserService.ActivateAppUser(asciiString)
         .then(function(data, status) {
             blockUI.message("100%");
@@ -1287,7 +1289,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
 
           $scope.SelectedMenu = "shipment";
          
-          
+          $scope.ROHead.BillingEmail = $scope.User.Email;
   //        $('html, body').animate({ scrollTop: $('#shipment-section').offset().top }, 'slow');
           $scope.$emit('handleHeadMenuEmit', {
               SelectedMenu: 'shipment'

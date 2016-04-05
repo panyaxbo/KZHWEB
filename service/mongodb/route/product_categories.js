@@ -86,7 +86,7 @@ router.get('/LoadProductCategoryByProductType/:ProductTypeCode/', function (req,
                 'ProductTypeCode' : TypeCode
             })
             .toArray(function (err, items) {
-                console.log(TypeCode, items);
+       //         console.log(TypeCode, items);
                 if (err) {
                     defer.reject(err)
                 } else {
@@ -98,7 +98,7 @@ router.get('/LoadProductCategoryByProductType/:ProductTypeCode/', function (req,
 
     LoadProductCategoryByProductTypePromise()
     .then(function(data, status) {   
-        console.log(data);  
+//        console.log(data);  
         if (!data) {
             res.SendStatus(404);
         } else {
@@ -159,7 +159,7 @@ router.get(mongodbConfig.url.product_category.loadProductCategoryById, function 
             'Id': parseInt(ProductCategoryId)
         })
         .toArray(function (err, items) {
-            console.log(items);
+//            console.log(items);
             res.json(items);
         });
 });
@@ -172,7 +172,7 @@ router.get(mongodbConfig.url.product_category.loadProductCategoryByProductCatego
             'ProductCategoryCode': ProductCategoryCode
         })
         .toArray(function (err, items) {
-            console.log(items);
+//            console.log(items);
             res.json(items);
         });
 });
@@ -180,7 +180,7 @@ router.get(mongodbConfig.url.product_category.loadProductCategoryByProductCatego
 // Create Product Category
 router.post(mongodbConfig.url.product_category.createProductCategory, function (req, res) {
     var ProductCategory = req.body;
-    console.log('create product category ' + ProductCategory);
+//    console.log('create product category ' + ProductCategory);
     var createDate = new Date ();
     createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
     ProductCategory.CreateDate = createDate;

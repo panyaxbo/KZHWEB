@@ -553,9 +553,11 @@ function ReplaceASCIICharacter(encodeUrl) {
  //   console.log(asciiString);
     return asciiString;
 }
+
 // Update AppUser Activate from EMail
-router.get("/ActivateAppUser/:EncodeUrl", function (req, res) {
-    var encodeUrl = req.params.EncodeUrl;
+router.post("/ActivateAppUser", function (req, res) {
+    var MailActivateForm = req.body;
+    var encodeUrl = MailActivateForm.ActivateLink;
     console.log(encodeUrl);
     var asciiString = ReplaceASCIICharacter(encodeUrl.toString());
 

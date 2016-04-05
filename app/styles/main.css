@@ -201,6 +201,9 @@ legend.search-table {
 {
     background-image: url("/images/product_background.png");
     background-size: 200px 200px;
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
 }
 .browsehappy {
     margin: 0.2em 0;
@@ -626,4 +629,40 @@ body {
 .list-group-item-success {
   color: #3c763d;
   background-color: none; 
+}
+#KZHPartsAdModal .modal-dialog {
+  width: 370px;
+}
+
+.img-container:before {
+  
+    float: left;
+    height: 120px;
+    margin-bottom: 5px;
+    margin-left: 9px;
+    position: relative;
+    width: 147px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 3px;
+    line-height:120px;
+    text-align:center;
+}
+
+.img-container img {
+    vertical-align: middle;
+
+}
+
+#ThumbnailReceiptPayment {
+    display:block;
+    margin:auto;
+}
+
+#ThumbnailStaffViewReceiptPayment {
+    display:block;
+    margin:auto;
+}
+
+#ApprovePayment {
+    padding-top: 10px;
 }

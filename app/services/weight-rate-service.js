@@ -26,6 +26,32 @@ app.service("WeightRateService", ["$q","$http", "ENV", function ($q, $http, ENV)
                 defer.reject(error);
             });
             return defer.promise;
+        },
+        GetNormalWeightRate: function() {
+            var defer = $q.defer();
+            var weightRateURL = ENV.apiEndpoint + "/weight/GetNormalWeightRate/";
+             $http.get(weightRateURL)
+             .success(function (data, status) {
+                console.log('weight data ', data);
+                defer.resolve(data);
+            })
+            .error(function (error, status) {
+                defer.reject(error);
+            });
+            return defer.promise;
+        },
+        GetEMSWeightRate: function() {
+            var defer = $q.defer();
+            var weightRateURL = ENV.apiEndpoint + "/weight/GetEMSWeightRate/";
+             $http.get(weightRateURL)
+             .success(function (data, status) {
+                console.log('weight data ', data);
+                defer.resolve(data);
+            })
+            .error(function (error, status) {
+                defer.reject(error);
+            });
+            return defer.promise;
         }
     };
 }]);
