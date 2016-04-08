@@ -138,7 +138,9 @@ db.collection(mongodbConfig.mongodb.uom.name)
     var loadUomNotContainUom = function() {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.uom.name)
-            .find({'IsContainer' : false})
+            .find({
+             //   'IsContainer' : false
+            })
             .toArray(function (err, items) {
                 if (err) {
                     defer.reject(err);

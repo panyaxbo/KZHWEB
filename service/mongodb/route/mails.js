@@ -1,7 +1,7 @@
 var express = require('express');
 var nodemailer = require('nodemailer');
 var mailConfig = require(appRoot +'/service/mail/mail-config.js');
-
+var Q = require('q');
 var router = express.Router();
 
 router.post('/SendEmailConfirmation', function (req, res) {
@@ -30,7 +30,7 @@ router.post('/SendEmailConfirmation', function (req, res) {
 	var mailOptions = {
 		  from: "KZH Parts <kzh.parts@gmail.com>", // sender address
 		  to: email,
-		  subject: "Email Confirm Activation ✔", // Subject line
+		  subject: "ยืนยันการเปิดใช้งานอีเมล ✔", // Subject line
 		  generateTextFromHTML: true,
 		  html : mailConfig.MAIL_CONTENT_TITLE +
 
@@ -39,16 +39,16 @@ router.post('/SendEmailConfirmation', function (req, res) {
 		'<tr>'+
 			'<td style="border-top:#e41f28 solid 6px;font:normal 13px/18px Arial,Helvetica,sans-serif;padding:45px 17px 30px 17px" valign="top">'+
 			'<h2 style="font:normal"><img height="15" src="cid:email@kzh.parts.co.th" style="margin-right:10px" width="21" >&nbsp;&nbsp;Email Confirm Activation </h2>'+
-			'<p>Dear Valued Customer ,<br>'+
+			'<p>เรียนท่านลูกค้า ,<br>'+
 			'<br>'+
-			'Please be informed that your email is completely registered from our system, but it\'s required you to activate your account by click this link below.<br><br>'+
+			'อีเมลของท่านได้ลงทะเบียนกับทางระบบของเราเรียบร้อยซึ่งเกือบสมบูรณ์แล้ว ท่านจำเป็นต้องกดปุ่มด้านล่างเพื่อเสร็จสิ้นการลงทะเบียน<br><br>'+
 			'<br>'+
-			'<a href="' + activateLink + '" style="background-color:#F64747;border-radius:4px;color:#ffffff;display:inline-block;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:bold;line-height:50px;text-align:center;text-decoration:none;width:240px;align:center; " target="_blank">Activate your account</a>'+
+			'<a href="' + activateLink + '" style="background-color:#F64747;border-radius:4px;color:#ffffff;display:inline-block;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:bold;line-height:50px;text-align:center;text-decoration:none;width:240px;align:center; " target="_blank">เปิดใช้งานบัญชีของท่าน</a>'+
 			'<br>'+
 			'</p>'+
 			'<p>&nbsp;</p>'+
-			'<p><strong>Sincerely yours.&nbsp;</strong></p>'+
-			'<p><strong>KZH Staff&nbsp;</strong></p>'+
+'			<p><strong>ขอขอบคุณสำหรับการช้อปปิ้งออนไลน์กับเรา&nbsp;</strong></p>'+
+'			<p><strong>KZH Parts Team&nbsp;</strong></p>'+
 			'</td>'+
 		'</tr>'+
 	'</tbody>'+
@@ -87,7 +87,7 @@ router.get('/SendEmailCustomerNewOrder/:CustomerEmail/:RONo', function (req, res
 	var mailOptions = {
 		  from: "KZH Parts <kzh.parts@gmail.com>", // sender address
 		  to: email,
-		  subject: "New order no." +roNo, // Subject line
+		  subject: "ยืนยันคำสั่งซื้อหมายเลข " +roNo, // Subject line
 		  generateTextFromHTML: true,
 		  html : mailConfig.MAIL_CONTENT_TITLE +
 
@@ -95,18 +95,16 @@ router.get('/SendEmailCustomerNewOrder/:CustomerEmail/:RONo', function (req, res
 '	<tbody>'+
 '		<tr>'+
 '			<td style="border-top:#e41f28 solid 6px;font:normal 13px/18px Arial,Helvetica,sans-serif;padding:45px 17px 30px 17px" valign="top">'+
-'			<h2 style="font:normal"><img height="20" src="cid:receipt@kzh.parts.co.th" style="margin-right:10px" width="20" >&nbsp;&nbsp;Your order number ' +roNo+ '</h2>'+
+'			<h2 style="font:normal"><img height="20" src="cid:receipt@kzh.parts.co.th" style="margin-right:10px" width="20" >&nbsp;&nbsp;ยืนยันคำสั่งซื้อหมายเลข ' +roNo+ '</h2>'+
 ''+
-'			<p>Dear Valued Customer ,<br>'+
+'			<p>เรียนท่านลูกค้า ,<br>'+
 '			<br>'+
-'			Our system\'s already received your order. You can track your order status after you make a payment for order.<br><br>'+
-''+
-'			By navigate to your setting and history order.'+
+'			เราได้รับคำสั่งซื้อของท่านเรียบร้อยแล้ว. ท่านสามารถติดตามสถานะการสั่งซื้อและการจัดส่งสินค้าได้ที่ ประวัติการสั่งซื้อของท่าน.<br><br>'+
 '			<br>'+
 '			</p>'+
 '			<p>&nbsp;</p>'+
-'			<p><strong>Sincerely yours.&nbsp;</strong></p>'+
-'			<p><strong>Customer&nbsp;</strong></p>'+
+'			<p><strong>ขอขอบคุณสำหรับการช้อปปิ้งออนไลน์กับเรา&nbsp;</strong></p>'+
+'			<p><strong>KZH Parts Team&nbsp;</strong></p>'+
 '			</td>'+
 '		</tr>'+
 '		'+
@@ -150,7 +148,7 @@ router.get('/SendEmailStaffNewOrder/:RONo', function (req, res) {
 	var mailOptions = {
 		  from: "KZH Parts <kzh.parts@gmail.com>", // sender address
 		  to: "KZH Parts <kzh.parts@gmail.com>",
-		  subject: "Customer create invoice No." + roNo, // Subject line
+		  subject: "ลูกค้าสร้างคำสั่งซื้อ หมายเลข " + roNo, // Subject line
 		  generateTextFromHTML: true,
 		  html : mailConfig.MAIL_CONTENT_TITLE +
 
@@ -158,15 +156,15 @@ router.get('/SendEmailStaffNewOrder/:RONo', function (req, res) {
 '	<tbody>'+
 '		<tr>'+
 '			<td style="border-top:#e41f28 solid 6px;font:normal 13px/18px Arial,Helvetica,sans-serif;padding:45px 17px 30px 17px" valign="top">'+
-'			<h2 style="font:normal"><img height="20" src="cid:create@kzh.parts.co.th" style="margin-right:10px" width="21" >&nbsp;&nbsp;Customer created receipt no. ' +roNo+ '</h2>'+
+'			<h2 style="font:normal"><img height="20" src="cid:create@kzh.parts.co.th" style="margin-right:10px" width="21" >&nbsp;&nbsp;ลูกค้าสร้างคำสั่งซื้อ ' +roNo+ '</h2>'+
 '			<p>Customer has been created new order ,<br>'+
 '			<br>'+
-'			Hello, I\'ve made new order with amount ,please investigate my order for product in stock and shipping.<br><br>'+
+'			กรุณาตรวจสอบคำสั่งซื้อ จำนวนเงิน และสินค้าว่ามีอยู่ในสต๊อกสินค้าหรือไม่<br>'+
 '			<br>'+
 '			</p>'+
 '			<p>&nbsp;</p>'+
-'			<p><strong>Sincerely yours.&nbsp;</strong></p>'+
-'			<p><strong>KZH Staff&nbsp;</strong></p>'+
+'			<p><strong>ขอขอบคุณสำหรับการช้อปปิ้งออนไลน์กับเรา&nbsp;</strong></p>'+
+'			<p><strong>KZH Parts Team&nbsp;</strong></p>'+
 '			</td>'+
 '		</tr>'+
 '		'+
@@ -221,15 +219,15 @@ router.post('/SendEmailForgetPassword', function (req, res) {
 '	<tbody>'+
 '		<tr>'+
 '			<td style="border-top:#e41f28 solid 6px;font:normal 13px/18px Arial,Helvetica,sans-serif;padding:45px 17px 30px 17px" valign="top">'+
-'			<h2 style="font:normal"><img height="20" src="cid:recovery@kzh.parts.co.th" style="margin-right:10px" width="21" >&nbsp;&nbsp;Recovery your password</h2>'+
+'			<h2 style="font:normal"><img height="20" src="cid:recovery@kzh.parts.co.th" style="margin-right:10px" width="21" >&nbsp;&nbsp;การกู้คืนรหัสผ่านของท่าน</h2>'+
 '			<p>การเรียกคืนรหัสผ่าน ,<br>'+
 '			<br>'+
-'<a href="' + forgetPasswordLink + '" type="application/x-www-form-urlencoded" style="background-color:#F64747;border-radius:4px;color:#ffffff;display:inline-block;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:bold;line-height:50px;text-align:center;text-decoration:none;width:240px;align:center; " target="_blank">Recovery Password</a>'+
+'<a href="' + forgetPasswordLink + '" type="application/x-www-form-urlencoded" style="background-color:#F64747;border-radius:4px;color:#ffffff;display:inline-block;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:bold;line-height:50px;text-align:center;text-decoration:none;width:240px;align:center; " target="_blank"> กู้คืนรหัสผ่าน </a>'+
 '			<br>'+
 '			</p>'+
 '			<p>&nbsp;</p>'+
-'			<p><strong>Sincerely yours.&nbsp;</strong></p>'+
-'			<p><strong>KZH Staff&nbsp;</strong></p>'+
+'			<p><strong>ขอขอบคุณสำหรับการช้อปปิ้งออนไลน์กับเรา&nbsp;</strong></p>'+
+'			<p><strong>KZH Parts Team&nbsp;</strong></p>'+
 '			</td>'+
 '		</tr>'+
 '		'+
@@ -255,12 +253,7 @@ attachments : mailConfig.MAIL_ATTACHMENTS_FORGET_PASSWORD
 // Send Mail to staff for reviewing payment document
 router.post('/ReviewPaymentDocument', function (req, res) {
 	var mailObj = req.body;
-	var CustomerEmail = mailObj.Email;
-	var Host = mailObj.Host;
-	var back2Url = mailObj.BacktoUrl;
-
-	var forgetPasswordLink = 'http://' + Host + '/#/?forget='+ back2Url;
-	
+	var RONo = mailObj.RONo;
 	var smtpTransport = nodemailer.createTransport(mailConfig.MAIL_TRANSFER_PROTOCOL, {
 	  service: mailConfig.MAIL_SERVICE,
 	  auth: {
@@ -278,28 +271,28 @@ router.post('/ReviewPaymentDocument', function (req, res) {
 	var mailOptions = {
 		  from: "KZH Parts <kzh.parts@gmail.com>", // sender address
 		  to: "KZH Parts <kzh.parts@gmail.com>",
-		  subject: "หมายเลขสั่งซื้อ " ++ " ได้ชำระเงิน", // Subject line
+		  subject: "หมายเลขสั่งซื้อ " +RONo+ " ได้ชำระเงิน", // Subject line
 		  generateTextFromHTML: true,
 		  html : mailConfig.MAIL_CONTENT_TITLE +
 '<table style="background-color:#fff"  width="650">'+
 '	<tbody>'+
 '		<tr>'+
 '			<td style="border-top:#e41f28 solid 6px;font:normal 13px/18px Arial,Helvetica,sans-serif;padding:45px 17px 30px 17px" valign="top">'+
-'			<h2 style="font:normal"><img height="20" src="cid:recovery@kzh.parts.co.th" style="margin-right:10px" width="21" >&nbsp;&nbsp;Recovery your password</h2>'+
-'			<p>กรุณาตรวจสอบสถานะการชำระเงิน ,<br>'+
+'			<h2 style="font:normal"><img height="20" src="cid:review@kzh.parts.co.th" style="margin-right:10px" width="21" >&nbsp;&nbsp;ยืนยันและตรวจสอบการชำระเงินของลูกค้า</h2>'+
+'			<p>กรุณาตรวจสอบสถานะการชำระเงิน <br>'+
 '			<br>'+
 '			<br>'+
 '			</p>'+
 '			<p>&nbsp;</p>'+
-'			<p><strong>Sincerely yours.&nbsp;</strong></p>'+
-'			<p><strong>KZH Staff&nbsp;</strong></p>'+
+'			<p><strong>ขอขอบคุณสำหรับการช้อปปิ้งออนไลน์กับเรา&nbsp;</strong></p>'+
+'			<p><strong>KZH Parts Team&nbsp;</strong></p>'+
 '			</td>'+
 '		</tr>'+
 '		'+
 '	</tbody>'+
 '</table>'+
 mailConfig.MAIL_CONTENT_FOOTER,
-attachments : mailConfig.MAIL_ATTACHMENTS_FORGET_PASSWORD
+attachments : mailConfig.MAIL_ATTACHMENTS_REVIEW_PAYMENT
 	}
 
 	smtpTransport.sendMail(mailOptions, function(error, response){
@@ -358,14 +351,14 @@ router.get('/ApprovePaymentDocument/:UserId', function (req, res) {
 			'	<tbody>'+
 			'		<tr>'+
 			'			<td style="border-top:#e41f28 solid 6px;font:normal 13px/18px Arial,Helvetica,sans-serif;padding:45px 17px 30px 17px" valign="top">'+
-			'			<h2 style="font:normal"><img height="24" src="cid:approve@kzh.parts.co.th" style="margin-right:10px" width="24" >&nbsp;&nbsp;เรียนลูกค้าที่มีค่า</h2>'+
+			'			<h2 style="font:normal"><img height="24" src="cid:approve@kzh.parts.co.th" style="margin-right:10px" width="24" >&nbsp;&nbsp;เรียนท่านลูกค้า</h2>'+
 			'			<p>ทาง KZH Parts จะดำเนินการจัดส่งสินค้าให้กับท่านลูกค้าต่อไป<br>'+
 			'			<br>'+
 			'			<br>'+
 			'			</p>'+
 			'			<p>&nbsp;</p>'+
-			'			<p><strong>Sincerely yours.&nbsp;</strong></p>'+
-			'			<p><strong>KZH Staff&nbsp;</strong></p>'+
+'			<p><strong>ขอขอบคุณสำหรับการช้อปปิ้งออนไลน์กับเรา&nbsp;</strong></p>'+
+'			<p><strong>KZH Parts Team&nbsp;</strong></p>'+
 			'			</td>'+
 			'		</tr>'+
 			'		'+
@@ -451,8 +444,8 @@ router.post('/RejectPaymentDocument', function (req, res) {
 			'			<br>'+
 			'			</p>'+
 			'			<p>&nbsp;</p>'+
-			'			<p><strong>Sincerely yours.&nbsp;</strong></p>'+
-			'			<p><strong>KZH Staff&nbsp;</strong></p>'+
+'			<p><strong>ขอขอบคุณสำหรับการช้อปปิ้งออนไลน์กับเรา&nbsp;</strong></p>'+
+'			<p><strong>KZH Parts Team&nbsp;</strong></p>'+
 			'			</td>'+
 			'		</tr>'+
 			'		'+
@@ -476,7 +469,94 @@ router.post('/RejectPaymentDocument', function (req, res) {
 	function ( err ) {
 	    console.log(err, err.stack.split("\n"));
 	});
+});
 
-	
+// Send Mail to customer for inform product is shpped
+router.post('/NofityCustomerShipping', function (req, res) {
+	var mailObj = req.body;
+	var CustomerEmail = mailObj.Email;
+	var RONo = mailObj.RONo;
+
+	var UpdateShippingStatusPromise = function() {
+		var defer = Q.defer();
+		db.collection(mongodbConfig.mongodb.rohead.name)
+	        .update({
+                RONo: RONo
+            }, {
+                $set: 
+                {
+                    ShippingStatus : 'Y',
+                }
+            },
+	        function (err, data) {
+	          if ( !err) {
+	            defer.resolve(data);
+	          }
+	          else {
+	          	console.log( err );
+	            defer.reject(Error("Update shipping status err"));
+	          }
+
+	    });
+	    return defer.promise;
+	}
+
+	UpdateShippingStatusPromise().then(function(data, status) {
+		console.log('shipping status y ');
+	}, function(err, status) {
+		console.log('err ', err);
+	})
+
+	var smtpTransport = nodemailer.createTransport(mailConfig.MAIL_TRANSFER_PROTOCOL, {
+	  service: mailConfig.MAIL_SERVICE,
+	  auth: {
+	    XOAuth2: {
+	      user: mailConfig.MAIL_USER, // Your gmail address.
+	                                            // Not @developer.gserviceaccount.com
+	      clientId: mailConfig.CLIENT_ID,
+	      clientSecret: mailConfig.CLIENT_SECRET,
+	      refreshToken: mailConfig.CLIENT_REFRESH_TOKEN,
+	      accessToken: mailConfig.CLIENT_ACCESS_TOKEN
+	    }
+	  }
+	});
+
+	var mailOptions = {
+		  from: "KZH Parts <kzh.parts@gmail.com>", // sender address
+		  to: CustomerEmail,
+		  subject: "สินค้าจากหมายเลขคำสั่งซื้อ " +RONo + " ได้ถูกจัดส่งแล้ว", // Subject line
+		  generateTextFromHTML: true,
+		  html : mailConfig.MAIL_CONTENT_TITLE +
+'<table style="background-color:#fff"  width="650">'+
+'	<tbody>'+
+'		<tr>'+
+'			<td style="border-top:#e41f28 solid 6px;font:normal 13px/18px Arial,Helvetica,sans-serif;padding:45px 17px 30px 17px" valign="top">'+
+'			<h2 style="font:normal"><img height="20" src="cid:shipped@kzh.parts.co.th" style="margin-right:10px" width="21" >&nbsp;&nbsp;สินค้าของท่านได้ถูกจัดส่งเรียบร้อยแล้ว</h2>'+
+'			<p>สินค้าจากหมายเลขคำสั่งซื้อ ' + RONo + ' ได้ถูกจัดส่งแล้ว<br>'+
+'			<br>'+
+'			<br>'+
+'			</p>'+
+'			<p>&nbsp;</p>'+
+'			<p><strong>ขอขอบคุณสำหรับการช้อปปิ้งออนไลน์กับเรา&nbsp;</strong></p>'+
+'			<p><strong>KZH Parts Team&nbsp;</strong></p>'+
+'			</td>'+
+'		</tr>'+
+'		'+
+'	</tbody>'+
+'</table>'+
+mailConfig.MAIL_CONTENT_FOOTER,
+attachments : mailConfig.MAIL_ATTACHMENTS_NOTIFY_CUSTOMER_SHIPPING
+	}
+
+	smtpTransport.sendMail(mailOptions, function(error, response){
+		   if(error){
+		       console.log(error, error.stack.split("\n"));
+		       res.sendStatus(500);
+		   }else{
+		    //   console.log("Message sent: " + response.message);
+		   }
+		   smtpTransport.close();
+		   res.sendStatus(200);
+		});
 });
 module.exports = router;

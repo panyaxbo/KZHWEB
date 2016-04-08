@@ -86,7 +86,7 @@ div.product-detail:hover
 .label_product_new {
     position: relative;
     float: left;
-    z-index: 800;
+    z-index: 100;
     margin-bottom: auto;
     margin-top: 20px;
     margin-left: 20px;
@@ -96,7 +96,7 @@ div.product-detail:hover
 .product_new {
     position: relative;
     float: left;
-    z-index: 749;
+    z-index: 50;
     margin-bottom: auto;
     margin-top: -6px;
     margin-left: -6px;
@@ -202,8 +202,8 @@ legend.search-table {
     background-image: url("/images/product_background.png");
     background-size: 200px 200px;
     display: inline-block;
-    height: 100%;
     vertical-align: middle;
+
 }
 .browsehappy {
     margin: 0.2em 0;
@@ -648,9 +648,14 @@ body {
     text-align:center;
 }
 
-.img-container img {
+.img-container {
     vertical-align: middle;
-
+        height: auto;
+    margin: 0 auto;
+    margin-top: 0px;
+    margin-right: auto;
+    margin-bottom: 0px;
+    margin-left: auto;
 }
 
 #ThumbnailReceiptPayment {
@@ -665,4 +670,20 @@ body {
 
 #ApprovePayment {
     padding-top: 10px;
+}
+
+.span-side-menu {
+    margin-top: 7px;
+}
+span.sale {
+    margin-top: -1.8em;
+    right: 5.5em;
+    position: absolute;
+    z-index: 400;
+}
+.label-hot {
+        margin-bottom: 1em;
+    position: absolute;
+    right: 6.5em;
+    z-index: 450;
 }

@@ -72,6 +72,30 @@ app.service("EmailService", ["$q","$http", "ENV", function ($q, $http, ENV) {
                 defer.reject(err);
             });
     		return defer.promise;
-    	}
+    	},
+        SendEmailReviewPayment : function(mailObj) {
+            var defer = $q.defer();
+            var reviewUrl = ENV.apiEndpoint + '/mails/ReviewPaymentDocument';
+            $http.post(reviewUrl, mailObj)
+            .success(function (data, status) {
+                defer.resolve(data);
+            })
+            .error(function (err, status) {
+                defer.reject(err);
+            });
+            return defer.promise;
+        }, 
+        SendEmailNotifyCustomerShipping: function(mailObj) {
+            var defer = $q.defer();
+            var notifyUrl = ENV.apiEndpoint + '/mails/NofityCustomerShipping';
+            $http.post(notifyUrl, mailObj)
+            .success(function (data, status) {
+                defer.resolve(data);
+            })
+            .error(function (err, status) {
+                defer.reject(err);
+            });
+            return defer.promise;
+        }
     };
 }]);

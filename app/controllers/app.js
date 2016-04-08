@@ -152,7 +152,7 @@ app.config(function ($translateProvider) {
                     BUY: 'ซื้อ',
                     DETAIL: 'รายละเอียด',
                     LABEL_NEW: 'ใหม่',
-                    LABEL_HOT: 'ขายดี',
+                    LABEL_HOT: 'ขายดี !!',
                     LABEL_SALE: 'ลด',
                 },
                 WEBBOARD: {
@@ -593,7 +593,8 @@ app.config(function ($translateProvider) {
                     IMAGE_PAYMENT_DOCUMENT : 'รูปเอกสารการชำระเงิน',
                     UPLOAD_BUTTON : 'อัพโหลดเอกสารการชำระเงิน',
                     APPROVE_BUTTON : 'อนุมัติ',
-                    REJECT_BUTTON : 'ปฏิเสธ'
+                    REJECT_BUTTON : 'ปฏิเสธ',
+                    SHIPPED_BUTTON : 'ส่งสินค้า'
                 }
             }
         },
@@ -805,7 +806,7 @@ app.config(function ($translateProvider) {
                     BUY: 'Buy',
                     DETAIL: 'Detail',
                     LABEL_NEW: 'N E W',
-                    LABEL_HOT: 'H O T',
+                    LABEL_HOT: 'Hot !!',
                     LABEL_SALE: 'S A L E',
 
                 },
@@ -1181,7 +1182,8 @@ app.config(function ($translateProvider) {
                     IMAGE_PAYMENT_DOCUMENT : 'Payment Document',
                     UPLOAD_BUTTON : 'Upload Payment Document',
                     APPROVE_BUTTON : 'Approve',
-                    REJECT_BUTTON : 'Reject'
+                    REJECT_BUTTON : 'Reject',
+                    SHIPPED_BUTTON : 'Shipped'
                 }
             }
         },
@@ -1361,7 +1363,7 @@ app.config(function ($translateProvider) {
                     BUY: '購買',
                     DETAIL: '細節',
                     LABEL_NEW: '新',
-                    LABEL_HOT: '熱',
+                    LABEL_HOT: '暢銷書 !!',
                     LABEL_SALE: '賣',
                 },
                 WEBBOARD : {
@@ -1700,7 +1702,8 @@ app.config(function ($translateProvider) {
                     IMAGE_PAYMENT_DOCUMENT : '付款單據',
                     UPLOAD_BUTTON : '上傳付款單據',
                     APPROVE_BUTTON : '批准',
-                    REJECT_BUTTON : '拒絕'
+                    REJECT_BUTTON : '拒絕',
+                    SHIPPED_BUTTON :'運'
                 }
             } // Setting
         },// BODY

@@ -6,5 +6,5 @@
 	"PRODUCT_CATEGORY_BUCKET" : "/product_category/",
 	"RECEIPT_BUCKET" : "/ro/",
 	"USER_BUCKET" : "/user/",
-	"REGION" : ""
+	"REGION" : "us-west-2"
 }

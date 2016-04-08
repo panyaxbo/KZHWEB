@@ -61,6 +61,22 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     var message_title_warning = $filter('translate')('MESSAGE.TITLE_WARNING');
     var message_title_error = $filter('translate')('MESSAGE.TITLE_ERROR');
 
+    if ($scope.SelectedLocale === 'th') {
+      document.title = $translate('TITLE.NAME');
+      document.keywords = $translate('TITLE.KEYWORD');
+      document.description = $translate('TITLE.DESCRIPTION');
+      document.author = $translate('TITLE.AUTHOR');
+    } else if ($scope.SelectedLocale === 'us') {
+      document.title = $translate('TITLE.NAME');
+      document.keywords = $translate('TITLE.KEYWORD');
+      document.description = $translate('TITLE.DESCRIPTION');
+      document.author = $translate('TITLE.AUTHOR');
+    } else if ($scope.SelectedLocale === 'cn') {
+      document.title = $translate('TITLE.NAME');
+      document.keywords = $translate('TITLE.KEYWORD');
+      document.description = $translate('TITLE.DESCRIPTION');
+      document.author = $translate('TITLE.AUTHOR');
+    }
     $('#KZHPartsAdModal').modal('show');
     if ($cookies.getObject('User') !== undefined) {
         $scope.User = $cookies.getObject('User');

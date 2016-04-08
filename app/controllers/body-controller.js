@@ -292,6 +292,21 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
          console.log(err);
     });
 
+    $scope.GetProductLengthFromProductCategory = function(ProductCategoryCode, index) {
+        ProductService.GetCountProductFromProductCategory(ProductCategoryCode)
+        .then(function(data, status) {
+            if (data === 0) {
+                $('#'+ProductCategoryCode).removeClass("label-primary");
+                $('#'+ProductCategoryCode).addClass("label-default");
+            } 
+            $('#'+ProductCategoryCode).text(data);
+        }, function(err, status) {
+            console.log(err);
+        });
+    }
+    $scope.LoadImagePaymentMethod = function(method) {
+
+    }
     $scope.InitPaymentAndDeliveryMethod = function() {
         WeightRateService.GetNormalWeightRate()
         .then(function(data, status) {
@@ -1799,6 +1814,8 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                     .error(function (data, status, headers, config) {
                         console.log(data);
                     });
+
+                    $scope.ReviewPaymentDocument(RONo);
                 })
                 .error(function (data, status, headers, config) {
                     console.log('error ' + data + ' status ' + status);
@@ -4170,6 +4187,8 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             .then(function(data, status) {
                 swal("สำเร็จ", "อนุมัติเอกสารการจ่ายเงินเรียบร้อย", "success"); 
                 $('#StaffROModal').modal('toggle');
+
+                $scope.SearchCustomerOrder();
             }, function(err, status) {
                 swal("เกิดข้อผิดพลาด", data, "error");
             });
@@ -4210,6 +4229,35 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         }
     }
 
+    $scope.ReviewPaymentDocument = function(RONo) {
+        console.log('RONo', RONo);
+        var mailObj = {
+            RONo : RONo
+        };
+        EmailService.SendEmailReviewPayment(mailObj)
+        .then(function(data, status) {
+            console.log(data);
+        }, function(err, status) {
+            console.log('err ', err);
+        });
+    }
+
+    $scope.NotifyCustomerShipping = function(ViewStaffRO) {
+        console.log('ViewStaffRO', ViewStaffRO);
+        var mailObj = {
+            Email : ViewStaffRO.BillingEmail,
+            RONo : ViewStaffRO.RONo
+        };
+        EmailService.SendEmailNotifyCustomerShipping(mailObj)
+        .then(function(data, status) {
+            console.log(data);
+            swal("สำเร็จ !!!", "ส่งอีเมลแจ้งลูกค้าสำเร็จ !!!", "success");
+
+            $scope.SearchCustomerOrder();
+        }, function(err, status) {
+            console.log('err ', err);
+        });
+    }
 
     
 }]);

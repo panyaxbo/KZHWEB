@@ -29,14 +29,29 @@ router.get('/LoadProductForPromotion', function (req, res) {
 
 function GenerateTextQuery (searchArray) {
     var query = '';
-    for (var ix = 0; ix < searchArray.length; ix++) {
-        // last
-        if (ix >=  searchArray.length - 1) {
-            query += searchArray[ix];
-        } else {
-            query += searchArray[ix] + '|';
+    if (searchArray.length <= 1) {
+        query += '^(?=.*\\b' + searchArray[0] + '\\b).*$';
+    } else {
+        for (var ix = 0; ix < searchArray.length; ix++) {
+        /*    or in regex |
+            if (ix >=  searchArray.length - 1) {
+                query += searchArray[ix];
+            } else {
+                query += searchArray[ix] + '|';
+            }
+            */
+            if (ix == 0) { // first one
+                query += '^';
+            }
+            if (ix >=  searchArray.length - 1) { // last one
+                query += '(?=.*\\b' + searchArray[ix] + '\\b).*$';
+            } else {
+                query += '(?=.*\\b' + searchArray[ix] +'\\b)';
+            }
+            // output ex. string ^(?=.*\bjack\b)(?=.*\bjames\b)(?=.*\bjason\b)(?=.*\bjules\b).*$
         }
     }
+    console.log(query);
     return query; 
 }
 
@@ -71,7 +86,8 @@ router.get('/LoadProductByCondition/:ProductCode/:ProductName/:ProductCategoryCo
             {'Remark' : {'$regex' : SearchName}}
         ]
     };
-    console.log(searchquery);
+    console.log(searchquery.toString());
+ //   console.log(searchquery);
     db.collection(mongodbConfig.mongodb.product.name)
         .find({
             $query: searchquery ,
@@ -89,7 +105,10 @@ router.get('/LoadProductByCondition/:ProductCode/:ProductName/:ProductCategoryCo
 router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
     db.collection(mongodbConfig.mongodb.product.name)
         .find({
-            Weight: { $gt: 0 }
+            $query: {Weight: { $gt: 0 }} ,
+            $orderby: { 
+                IsHot : -1 
+            }
         })
         .limit(100)
         .toArray(function (err, items) {
@@ -1076,7 +1095,20 @@ router.get(mongodbConfig.url.product.deleteProductByProductId, function (req, re
         return;
     });
 });
-
+router.get('/GetCountProductFromProductCategory/:ProductCategoryCode', function (req, res) {
+    var ProductCategoryCode = req.params.ProductCategoryCode;
+    db.collection(mongodbConfig.mongodb.product.name)
+        .find({
+            ProductCategoryCode: ProductCategoryCode,
+            Weight : {
+                $gt : 0
+            }
+        })
+        .toArray(function (err, items) {
+         //   console.log(ProductCategoryCode ,items.length);
+            res.json(items.length);
+        });
+});
 function isEmpty(obj) {
 
     // null and undefined are "empty"
