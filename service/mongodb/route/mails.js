@@ -15,6 +15,7 @@ router.post('/SendEmailConfirmation', function (req, res) {
 	
 	var smtpTransport = nodemailer.createTransport(mailConfig.MAIL_TRANSFER_PROTOCOL, {
 	  service: mailConfig.MAIL_SERVICE,
+
 	  auth: {
 	    XOAuth2: {
 	      user: mailConfig.MAIL_USER, // Your gmail address.
@@ -197,6 +198,11 @@ router.post('/SendEmailForgetPassword', function (req, res) {
 	
 	var smtpTransport = nodemailer.createTransport(mailConfig.MAIL_TRANSFER_PROTOCOL, {
 	  service: mailConfig.MAIL_SERVICE,
+	  host: mailConfig.MAIL_HOST,
+	  secureProtocol: 'SSLv2_method',
+	secureOptions: require('constants').SSL_OP_NO_TLSv1_2,
+	  requiresAuth: true,
+	  port: mailConfig.MAIL_PORT,
 	  auth: {
 	    XOAuth2: {
 	      user: mailConfig.MAIL_USER, // Your gmail address.

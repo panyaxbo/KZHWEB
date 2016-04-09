@@ -10,10 +10,13 @@ global.mongodb = require('mongodb');
 global.mongodb_promise = require('mongodb-promise');
 global.bson = require('bson');
 global.http = require('http');
-var enforce = require('express-sslify');
+//global.https = require('https');
+//var enforce = require('express-sslify');
+var fs = require('fs');
 global.url = require('url');
 global.db;
 global.collection;
+
 
 //app.use(express.static(__dirname));
 app.use(express.static('./app'));
@@ -118,6 +121,13 @@ app.on('close', function() {
 	
 });
 
+/*
+https.createServer({
+      key: fs.readFileSync('./key.pem', 'utf8'),
+      cert: fs.readFileSync('./server.crt', 'utf8')
+    }, app).listen(9901);
+console.log(https);*/
+
 // For localhost use
 /*
 mongodb.MongoClient.connect(mongodbConfig.connection_url + mongodbConfig.collection_name, function (err, database) {
@@ -177,23 +187,5 @@ app.use(function(err, req, res, next){
           }
       });
 });
-  
 
-
-
-/*
-process.on( 'SIGTERM', function () {
-
-   server.close(function () {
-     console.log( "Closed out remaining connections.");
-     // Close db connections, etc.
-   });
-
-   setTimeout( function () {
-     console.error("Could not close connections in time, forcefully shutting down");
-     process.exit(1); 
-   }, 30*1000);
-
-});
-*/
 module.exports = app;

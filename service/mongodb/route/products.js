@@ -1058,9 +1058,10 @@ router.post(mongodbConfig.url.product.updateProduct, function (req, res) {
 });
 
 // Delete Product 
-router.get(mongodbConfig.url.product.deleteProductByProductId, function (req, res) {
-    var ProductId = req.params.ProductId;
-    console.log('create product ' + ProductId);
+router.post(mongodbConfig.url.product.deleteProductByProductId, function (req, res) {
+    var Product = req.body;
+    console.log('deelte product ' + ProductId);
+    var ProductId = Product._id;
     var o_id = bson.BSONPure.ObjectID(ProductId.toString());
     
 /*    db.collection(mongodbConfig.mongodb.product.name)

@@ -724,7 +724,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
           swal("Sign up almost Success", "Please check your email to activate your account", "success");
           $("#LoginModal").modal("toggle");
       }, function(error, status) {
-          swal("Error", "Cannot sign up this time", "error");
+          swal("Error", "There is error occur , please contact administrator", "error");
       })
       .finally(function() {
           //Clear Fields after sign up successfully
@@ -1474,7 +1474,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
                     $('#ForgetPasswordModal').modal('toggle');
                   })
                   .error(function(data, status, headers, config) {
-                      swal("Error", "Cannot sign up this time", "error");
+                      swal("Error", "There is error occur, please contact administrator", "error");
                   });
               })
               .error(function (data, status, headers, config) {

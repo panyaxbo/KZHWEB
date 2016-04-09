@@ -1,5 +1,6 @@
 var config = {};
-
+config.MAIL_HOST = 'smtp.gmail.com';
+config.MAIL_PORT = '465';
 config.MAIL_TRANSFER_PROTOCOL = 'SMTP';
 config.MAIL_SERVICE = 'Gmail';
 config.MAIL_USER = 'kzh.parts@gmail.com';

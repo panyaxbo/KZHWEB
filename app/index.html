@@ -2194,7 +2194,7 @@
                                                                 <button type="submit" class="btn btn-primary" ng-click="SaveProduct()">
                                                                 <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.SAVE' | translate}}</button>
 
-                                                                <button type="submit" class="btn btn-danger" ng-click="DeleteProduct()">
+                                                                <button type="submit" class="btn btn-danger" ng-click="ConsiderDeleteProduct('edit', ViewProductData)">
                                                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.SAVE' | translate}}</button>
 
                                                                 <button type="submit" class="btn btn-default" ng-click="CancelProduct()">
@@ -2271,7 +2271,7 @@
                                                         </button>
                                                     </td>
                                                     <td data-title="''">
-                                                        <button ng-click="DeleteProduct()" class="btn btn-danger" alt="Delete">
+                                                        <button ng-click="ConsiderDeleteProduct('search',pd)" class="btn btn-danger" alt="Delete">
                                                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                                                     </td>
                                                 </tr>
