@@ -2,16 +2,8 @@ var express = require('express');
 var app = express();
 var util = require('util');
 var bodyParser = require('body-parser');
-var braintree = require("braintree");
 var path = require('path');
 var jsonParser = bodyParser.json();
-
-var gateway = braintree.connect({
-  environment: braintree.Environment.Sandbox,
-  merchantId: "jwft3xzrw3spfn4g",
-  publicKey: "tv82pfjh9zxqsfm2",
-  privateKey: "731db31805b60260b159223e86a962a2"
-});
 
 global.mongodbConfig = require('../mongodb_config.json');
 global.serverConfig = require('../server-config.js');
@@ -197,42 +189,6 @@ app.use(function(err, req, res, next){
               res.sendFile(path.resolve(__dirname, '../../') + '/404.html');
           }
       });
-});
-
-
-/**
- * Enable CORS (http://enable-cors.org/server_expressjs.html)
- * to allow different clients to request data from your server
- */
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
-/**
- * Route that returns a token to be used on the client side to tokenize payment details
- */
-app.post('/api/v1/token', function (request, response) {
-  gateway.clientToken.generate({}, function (err, res) {
-    if (err) throw err;
-    response.json({
-      "client_token": res.clientToken
-    });
-  });
-});
-/**
- * Route to process a sale transaction
- */
-app.post('/api/v1/process', jsonParser, function (request, response) {
-  var transaction = request.body;
-  gateway.transaction.sale({
-    amount: '100',
-    paymentMethodNonce: transaction.payment_method_nonce
-  }, function (err, result) {
-    if (err) throw err;
-    console.log(util.inspect(result));
-    response.json(result);
-  });
 });
 
 

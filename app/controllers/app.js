@@ -9,8 +9,8 @@ app.config(function ($translateProvider) {
     $translateProvider.translations('th', {
         TITLE: {
             NAME: 'โค้ว ซุ่น เฮง - ศูนย์รวมอะไหล่มอเตอร์ไซค์, ยาง และ น้ำมันเครื่อง',
-            KEYWORD: 'น้ำมันเครื่อง ยางนอก ยางใน อะไหล่มอเตอร์ไซค์ รถยนต์ รถไถ',
-            DESCRIPTION: 'น้ำมันเครื่อง ยางนอก ยางใน อะไหล่มอเตอร์ไซค์ รถยนต์ รถไถ',
+            KEYWORD: 'น้ำมันเครื่อง,ยางนอก,ยางใน,อะไหล่มอเตอร์ไซค์,รถยนต์,รถไถ, ไฟฟ้า, การเกษตร, ประปา',
+            DESCRIPTION: 'น้ำมันเครื่อง,ยางนอก,ยางใน,อะไหล่มอเตอร์ไซค์,รถยนต์,รถไถ, ไฟฟ้า, การเกษตร, ประปา สินค้าราคาถูก น่าเชื่อถือ',
             AUTHOR: 'ปัญญา บุญยกุลศรีรุ่ง'
         },
         HEAD: {
@@ -661,8 +661,8 @@ app.config(function ($translateProvider) {
     $translateProvider.translations('us', {
         TITLE: {
             NAME: 'Koh Zhun Heng - Center of Motorcycle Parts Tyre and Lubricant',
-            KEYWORD: 'Lubricant Motorcycle Inner Outer Tyre Motorcycle-Parts Car-Parts Tractor-Parts Electricity Agriculture',
-            DESCRIPTION: 'Lubricant Motorcycle Inner Outer Tyre Motorcycle-Parts Car-Parts Tractor-Parts Electricity Agriculture',
+            KEYWORD: 'Lubricant, Motorcycle Inner Tyre, Motorcycle Outer Tyre,Motorcycle-Parts, Car-Parts, Tractor-Parts, Electricity ,Agriculture, Water, Reasonable Price, Reliable',
+            DESCRIPTION: 'Lubricant, Motorcycle Inner Tyre, Motorcycle Outer Tyre, Motorcycle-Parts, Car-Parts, Tractor-Parts, Electricity, Agriculture, Water, Reasonable Price, Reliable',
             AUTHOR: 'Panya Boonyakulsrirung'
         },
         MESSAGE : {
@@ -1222,8 +1222,8 @@ app.config(function ($translateProvider) {
     $translateProvider.translations('cn', {
         TITLE: {
             NAME: '興 順 許 - 實施方案 摩托车配件 橡膠 和 润滑剂',
-            KEYWORD: '潤滑油摩托車內，外圈輪胎摩托車零部件汽車零部件拖拉機零件農業用電',
-            DESCRIPTION: '潤滑油摩托車內，外圈輪胎摩托車零部件汽車零部件拖拉機零件農業用電',
+            KEYWORD: '潤滑油，摩托車內胎，摩托車輪胎外，摩托車零部件，汽車零部件，拖拉機配件，電力，農業，水，合理的價格，可靠的',
+            DESCRIPTION: '潤滑油，摩托車內胎，摩托車輪胎外，摩托車零部件，汽車零部件，拖拉機配件，電力，農業，水，合理的價格，可靠的',
             AUTHOR: 'Panya Boonyakulsrirung'
         },
         MESSAGE : {
