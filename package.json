@@ -82,6 +82,7 @@
     "time-grunt": "^0.4.0",
     "try-thread-sleep": "^1.0.0",
     "twilio": "^2.2.1",
+    "util": "^0.10.3",
     "xoauth2": "^1.0.0"
   }
 }

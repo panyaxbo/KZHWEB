@@ -9,7 +9,9 @@ app.config(function ($translateProvider) {
     $translateProvider.translations('th', {
         TITLE: {
             NAME: 'โค้ว ซุ่น เฮง - ศูนย์รวมอะไหล่มอเตอร์ไซค์, ยาง และ น้ำมันเครื่อง',
-            DESCRIPTION: ''
+            KEYWORD: 'น้ำมันเครื่อง ยางนอก ยางใน อะไหล่มอเตอร์ไซค์ รถยนต์ รถไถ',
+            DESCRIPTION: 'น้ำมันเครื่อง ยางนอก ยางใน อะไหล่มอเตอร์ไซค์ รถยนต์ รถไถ',
+            AUTHOR: 'ปัญญา บุญยกุลศรีรุ่ง'
         },
         HEAD: {
             MENU: {
@@ -659,7 +661,9 @@ app.config(function ($translateProvider) {
     $translateProvider.translations('us', {
         TITLE: {
             NAME: 'Koh Zhun Heng - Center of Motorcycle Parts Tyre and Lubricant',
-            DESCRIPTION: ''
+            KEYWORD: 'Lubricant Motorcycle Inner Outer Tyre Motorcycle-Parts Car-Parts Tractor-Parts Electricity Agriculture',
+            DESCRIPTION: 'Lubricant Motorcycle Inner Outer Tyre Motorcycle-Parts Car-Parts Tractor-Parts Electricity Agriculture',
+            AUTHOR: 'Panya Boonyakulsrirung'
         },
         MESSAGE : {
             TYPE_SUCCESS : "success",
@@ -1218,7 +1222,9 @@ app.config(function ($translateProvider) {
     $translateProvider.translations('cn', {
         TITLE: {
             NAME: '興 順 許 - 實施方案 摩托车配件 橡膠 和 润滑剂',
-            DESCRIPTION: ''
+            KEYWORD: '潤滑油摩托車內，外圈輪胎摩托車零部件汽車零部件拖拉機零件農業用電',
+            DESCRIPTION: '潤滑油摩托車內，外圈輪胎摩托車零部件汽車零部件拖拉機零件農業用電',
+            AUTHOR: 'Panya Boonyakulsrirung'
         },
         MESSAGE : {
             TYPE_SUCCESS : "success",

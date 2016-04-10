@@ -53,6 +53,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     $scope.UsernameValidateMessage = "";
     $scope.IsAcceptCondition = false;
     $scope.IsHuman = false;
+
     var message_type_success = $filter('translate')('MESSAGE.TYPE_SUCCESS');
     var message_type_warning = $filter('translate')('MESSAGE.TYPE_WARNING');
     var message_type_error = $filter('translate')('MESSAGE.TYPE_ERROR');
@@ -61,21 +62,21 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     var message_title_warning = $filter('translate')('MESSAGE.TITLE_WARNING');
     var message_title_error = $filter('translate')('MESSAGE.TITLE_ERROR');
 
-    if ($scope.SelectedLocale === 'th') {
-      document.title = $translate('TITLE.NAME');
-      document.keywords = $translate('TITLE.KEYWORD');
-      document.description = $translate('TITLE.DESCRIPTION');
-      document.author = $translate('TITLE.AUTHOR');
-    } else if ($scope.SelectedLocale === 'us') {
-      document.title = $translate('TITLE.NAME');
-      document.keywords = $translate('TITLE.KEYWORD');
-      document.description = $translate('TITLE.DESCRIPTION');
-      document.author = $translate('TITLE.AUTHOR');
-    } else if ($scope.SelectedLocale === 'cn') {
-      document.title = $translate('TITLE.NAME');
-      document.keywords = $translate('TITLE.KEYWORD');
-      document.description = $translate('TITLE.DESCRIPTION');
-      document.author = $translate('TITLE.AUTHOR');
+    if ($scope.Locale === 'th') {
+      document.title = $filter('translate')('TITLE.NAME');
+      document.keywords = $filter('translate')('TITLE.KEYWORD');
+      document.description = $filter('translate')('TITLE.DESCRIPTION');
+      document.author = $filter('translate')('TITLE.AUTHOR');
+    } else if ($scope.Locale === 'us') {
+      document.title = $filter('translate')('TITLE.NAME');
+      document.keywords = $filter('translate')('TITLE.KEYWORD');
+      document.description = $filter('translate')('TITLE.DESCRIPTION');
+      document.author = $filter('translate')('TITLE.AUTHOR');
+    } else if ($scope.Locale === 'cn') {
+      document.title = $filter('translate')('TITLE.NAME');
+      document.keywords = $filter('translate')('TITLE.KEYWORD');
+      document.description = $filter('translate')('TITLE.DESCRIPTION');
+      document.author = $filter('translate')('TITLE.AUTHOR');
     }
     $('#KZHPartsAdModal').modal('show');
     if ($cookies.getObject('User') !== undefined) {
@@ -583,14 +584,26 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
             $scope.Locale = "th";
             LocaleService.Locale.SelectedLocale = "th";
             $translate.use(locale);
+            document.title = $filter('translate')('TITLE.NAME');
+      document.keywords = $filter('translate')('TITLE.KEYWORD');
+      document.description = $filter('translate')('TITLE.DESCRIPTION');
+      document.author = $filter('translate')('TITLE.AUTHOR');
         } else if (locale == "us") {
             $scope.Locale = "us";
             LocaleService.Locale.SelectedLocale = "us";
             $translate.use(locale);
+            document.title = $filter('translate')('TITLE.NAME');
+      document.keywords = $filter('translate')('TITLE.KEYWORD');
+      document.description = $filter('translate')('TITLE.DESCRIPTION');
+      document.author = $filter('translate')('TITLE.AUTHOR');
         } else if (locale == "cn") {
             LocaleService.Locale.SelectedLocale = "cn";
             $scope.Locale = "cn";
             $translate.use(locale);
+            document.title = $filter('translate')('TITLE.NAME');
+      document.keywords = $filter('translate')('TITLE.KEYWORD');
+      document.description = $filter('translate')('TITLE.DESCRIPTION');
+      document.author = $filter('translate')('TITLE.AUTHOR');
         }
         $scope.$emit('handleLocaleEmit', {
             SelectedLocale: locale

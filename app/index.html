@@ -793,7 +793,7 @@
                                         <div class="caption">
                                             <div class="product-gallery-name">
                                                 <h5 style="color:white;" ng-show="SelectedLocale=='th'">{{p.ProductNameTh}}</h5>
-                                                <h5 style="color:white;" ng-show="SelectedLocale=='en'">{{p.ProductNameEn}}</h5>
+                                                <h5 style="color:white;" ng-show="SelectedLocale=='us'">{{p.ProductNameEn}}</h5>
                                                 <h5 style="color:white;" ng-show="SelectedLocale=='cn'">{{p.ProductNameCn}}</h5>
                                             </div>
                                             <p style="color:white;">
@@ -1229,8 +1229,7 @@
                                                         <select class="form-control" ng-model="PaymentType" required="required" ng-change="ChangePaymentType()">
                                                             <option value="">{{'BODY.SECTION.SHIPMENT.PAYMENT.SELECT_PAYMENT_TYPE' | translate}}</option>
                                                             <option value="Transfer">{{'BODY.SECTION.SHIPMENT.PAYMENT.TRANSFER' | translate}}</option>
-                                                            <option value="Paypal">{{'BODY.SECTION.SHIPMENT.PAYMENT.PAYPAL' | translate}}</option> 
-                                                            <option value="Credit" disabled="true" title="Credit Card is not support yet :(">{{'BODY.SECTION.SHIPMENT.PAYMENT.CREDIT' | translate}}</option>
+                                                           
                                                         </select>
                                                     </div>
                                                 </div>
