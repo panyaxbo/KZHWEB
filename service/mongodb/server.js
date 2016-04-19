@@ -59,6 +59,8 @@ var cryptojs = require('../cryptojs/cryptojs');
 var base64 = require('../base64/base64');
 var paypal = require('../paypal/paypal');
 var weight = require('./route/weight-rate');
+var feedbacks = require('./route/feedback');
+
 //app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -96,7 +98,7 @@ app.use('/cryptojs', cryptojs);
 app.use('/base64', base64);
 app.use('/paypal', paypal);
 app.use('/weight', weight);
-
+app.use('/feedbacks', feedbacks);
 
 var environment = process.env.NODE_ENV || '';
 var port = process.env.PORT || 3000;
@@ -106,8 +108,6 @@ var heroku_mongolab_uri = process.env.MONGOLAB_URI || 'mongodb://heroku_dmj53qsq
 app.set('', port);
 
 app.get('/', function(req, res) {
-  
-  
     if (environment !== 'production') {
       res.sendFile(appRoot + '/app/index.html');
     } else {
@@ -174,7 +174,7 @@ process.on('uncaughtException', function (err) {
 app.use(function(err, req, res, next){
   console.error(err.stack);
   console.error(appRoot +'/app/');
-  //res.send(500, 'Something broke!');
+  /*res.send(500, 'Something broke!');
     db.collection('Holiday')
           .findOne({
               $and : [{
@@ -183,12 +183,12 @@ app.use(function(err, req, res, next){
               }]
           }, function (err, holiday) {
           if (err) {
-              console.log(err);
+        //      console.log(err);
           } else {
-              console.log(holiday);
-              res.sendFile(path.resolve(__dirname, '../../') + '/404.html');
+        //      console.log(holiday);
+        //      res.sendFile(path.resolve(__dirname, '../../') + '/404.html');
           }
-      });
+      });*/
 });
 
 

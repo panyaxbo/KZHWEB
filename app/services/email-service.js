@@ -96,6 +96,18 @@ app.service("EmailService", ["$q","$http", "ENV", function ($q, $http, ENV) {
                 defer.reject(err);
             });
             return defer.promise;
+        },
+        SendEmailFeedback: function(mailObj) {
+            var defer = $q.defer();
+            var feedbackUrl = ENV.apiEndpoint + '/mails/CustomerSendFeedback';
+            $http.post(feedbackUrl, mailObj)
+            .success(function (data, status) {
+                defer.resolve(data);
+            })
+            .error(function (err, status) {
+                defer.reject(err);
+            });
+            return defer.promise;
         }
     };
 }]);

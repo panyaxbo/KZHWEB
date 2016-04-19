@@ -4,6 +4,9 @@
 	"nodejs_port" : "3000",
 
 	"mongodb" : {
+		"feedback" : {
+			"name" : "Feedback"
+		},
 		"appconfig" : {
 			"name" : "AppConfig"
 		},

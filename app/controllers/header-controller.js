@@ -2,11 +2,45 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
   "Upload", "$rootScope", "$http", "$translate", "$timeout", "blockUI", "ngDialog", "MenuService", 
   "LocaleService", "ReceiptOrderService", "CompanyService", "CurrencyService", "ENV", "$cookies", 
   "vcRecaptchaService", "UserService", "ProductService", "CredentialService", "SocialService", "CryptoService", 
-  "EmailService", "WeightRateService", "AWSService", "UomService", 
+  "EmailService", "WeightRateService", "AWSService", "UomService", "PaypalService", 
   function ($scope, $location, $window, $filter, $anchorScroll, Upload,$rootScope, $http, $translate,$timeout, blockUI, ngDialog, 
   MenuService, LocaleService, ReceiptOrderService, CompanyService, CurrencyService, ENV , $cookies, vcRecaptchaService, UserService, 
-  ProductService, CredentialService, SocialService, CryptoService, EmailService, WeightRateService, AWSService, UomService) {
+  ProductService, CredentialService, SocialService, CryptoService, EmailService, WeightRateService, AWSService, UomService, PaypalService) {
 
+// Arguments :
+//  verb : 'GET'|'POST'
+//  target : an optional opening target (a name, or "_blank"), defaults to "_self"
+var open = function(verb, url, data, target) {
+  var form = document.createElement("form");
+  form.action = url;
+  form.method = verb;
+  form.target = target || "_self";
+  if (data) {
+    for (var key in data) {
+      var input = document.createElement("textarea");
+      input.name = key;
+      input.value = typeof data[key] === "object" ? JSON.stringify(data[key]) : data[key];
+      form.appendChild(input);
+    }
+  }
+  form.style.display = 'none';
+  document.body.appendChild(form);
+  form.submit();
+};
+
+    $scope.TestPaypal = function() {
+    //  window.open("localhost:3000/paypal/PayWithPaypal", width = "20px", height = "20px");
+      open(
+        'POST', 
+        'localhost:3000/paypal/PayWithPaypal', 
+        { 
+          creditCard: {}, 
+          amount: 10000,
+          description: 'Test Test Test'
+        }, 
+        '_blank'
+      );
+    }
     $scope.Locale = "th";
     $scope.Currency = "thb";
     $scope.DisplayResult = false;
@@ -15,9 +49,10 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     $scope.IsGuest = true;
     $scope.ROHead = {
         SumAmount: 0,
-        SumVatAmount: 0,
+        SumVatAmount: 0,        
+        NetAmount: 0,
+
         SumDiscountAmount: 0,
-        NetAmount: 0
     };
     if ($rootScope.ROLineList == undefined) {
         $rootScope.ROLineList = [];
@@ -62,22 +97,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     var message_title_warning = $filter('translate')('MESSAGE.TITLE_WARNING');
     var message_title_error = $filter('translate')('MESSAGE.TITLE_ERROR');
 
-    if ($scope.Locale === 'th') {
-      document.title = $filter('translate')('TITLE.NAME');
-      document.keywords = $filter('translate')('TITLE.KEYWORD');
-      document.description = $filter('translate')('TITLE.DESCRIPTION');
-      document.author = $filter('translate')('TITLE.AUTHOR');
-    } else if ($scope.Locale === 'us') {
-      document.title = $filter('translate')('TITLE.NAME');
-      document.keywords = $filter('translate')('TITLE.KEYWORD');
-      document.description = $filter('translate')('TITLE.DESCRIPTION');
-      document.author = $filter('translate')('TITLE.AUTHOR');
-    } else if ($scope.Locale === 'cn') {
-      document.title = $filter('translate')('TITLE.NAME');
-      document.keywords = $filter('translate')('TITLE.KEYWORD');
-      document.description = $filter('translate')('TITLE.DESCRIPTION');
-      document.author = $filter('translate')('TITLE.AUTHOR');
-    }
+    
     $('#KZHPartsAdModal').modal('show');
     if ($cookies.getObject('User') !== undefined) {
         $scope.User = $cookies.getObject('User');

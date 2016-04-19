@@ -102,21 +102,21 @@ config.MAIL_CONTENT_FOOTER = '<p>&nbsp;</p>'+
                 '<td style="border-top:#e41f28 solid 4px">'+
                       '<table style="margin:6px 0 10px 0;padding-left:17px;padding-right:17px" width="650" border="0" cellspacing="0" cellpadding="0">'+
                         '<tbody><tr>'+
-                            '<td width="286" valign="top" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif">31-32&nbsp;Moo.2&nbsp;Thepnimit&nbsp;Road&nbsp;'+
+                            '<td width="286" valign="top" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif">30-32&nbsp;Moo.2&nbsp;Thepnimit&nbsp;Road&nbsp;'+
                                 '<br>Ra-ngang Tumbol'+
 								'<br>Srikhoraphum Amphoe'+
 								'<br>Surin Province'+
                                 '<br>THAILAND 32110</td>'+
                             '<td width="115" valign="top" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif">'+
-							'<br>Tel.'+
-                                '<br><br>Email'+
-                                    '<br>Website'+
+							'<br>Tel. :'+
+                                '<br><br>Email :'+
+                                    '<br>Website & Shopping :'+
                             '</td>'+
                             '<td width="160" valign="top" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif">'+
 								'<br>+66 044 561-125'+
 								'<br><br>'+
-                                '<a href="mailto:support@icmarkets.com.au" target="_blank">kzh.support@gmail.com</a>'+
-                                    '<br><a href="iwidiI6MSwicCI6IntcInVcIjozMDUwMjkxNixcInZcIjoxLFwidXJsXCI6XCJodHRwOlxcXC9cXFwvd3d3LmljbWFya2V0cy5jb21cIixcImlkXCI6XCIwYTE0MWFhMTJmZGU0YWU3ODRkNzY0ZmVmZDUwYzQ2N1wiLFwidXJsX2lkc1wiOltcImEwN2M2MGJiNmI3NjNjYjM3ZWFmNzkxMjdlY2JjZThjYzQ2OGZiOTBcIl19In0" target="_blank">www.kzh.parts.co.th</a>'+
+                                '<a href="mailto:kzh.parts@gmail.com" target="_blank">kzh.parts@gmail.com</a>'+
+                                    '<br><a href="http://kzh-parts.com" target="_blank">http://kzh-parts.com</a>'+
                             '</td>'+
                             '<td width="89" align="right">'+
                                 '<img src="cid:KZHLogo@kzh.parts.co.th" width="80" height="30" >'+
@@ -713,4 +713,76 @@ config.MAIL_ATTACHMENTS_NOTIFY_CUSTOMER_SHIPPING = [
                 cid: 'shipped@kzh.parts.co.th'
             }
 ];     
+config.MAIL_ATTACHMENTS_CUSTOMER_FEEDBACK = [
+            {
+                fileName : 'KZH Logo.png',
+                filePath : appRoot + '/service/mail/KZH Logo.png',
+                cid: 'KZHLogo@kzh.parts.co.th'
+            },
+            {
+                fileName : 'battery.png',
+                filePath : appRoot + '/service/mail/battery.png',
+                cid: 'battery@kzh.parts.co.th'
+            },
+            {
+                fileName : 'brake.png',
+                filePath: appRoot + '/service/mail/brake.png',
+                cid: 'brake@kzh.parts.co.th'
+            },
+            {
+                fileName : 'facebook.png',
+                filePath: appRoot + '/service/mail/facebook.png',
+                cid: 'facebook@kzh.parts.co.th'
+            },
+            {
+                fileName : 'g+.png',
+                filePath: appRoot + '/service/mail/g+.png',
+                cid: 'g+@kzh.parts.co.th'
+            },
+            {
+                fileName : 'instagram.png',
+                filePath: appRoot + '/service/mail/instagram.png',
+                cid: 'instagram@kzh.parts.co.th'
+            },
+            {
+                fileName : 'line.png',
+                filePath: appRoot + '/service/mail/line.png',
+                cid: 'line@kzh.parts.co.th'
+            },
+            {
+                fileName : 'lubricant.png',
+                filePath: appRoot + '/service/mail/lubricant.png',
+                cid: 'lubricant@kzh.parts.co.th'
+            },
+            {
+                fileName : 'shock.png',
+                filePath : appRoot + '/service/mail/shock.png',
+                cid: 'shock@kzh.parts.co.th'
+            },
+            {
+                fileName : 'tel.png',
+                filePath : appRoot + '/service/mail/tel.png',
+                cid: 'tel@kzh.parts.co.th'
+            },
+            {
+                fileName : 'twitter.png',
+                filePath : appRoot + '/service/mail/twitter.png',
+                cid: 'twitter@kzh.parts.co.th'
+            },
+            {
+                fileName : 'tyre.png',
+                filePath : appRoot + '/service/mail/tyre.png',
+                cid: 'tyre@kzh.parts.co.th'
+            },
+            {
+                fileName : 'wrench.png',
+                filePath : appRoot + '/service/mail/wrench.png',
+                cid: 'wrench@kzh.parts.co.th'
+            },
+            {
+                fileName : 'feedback.png',
+                filePath : appRoot + '/service/mail/feedback.png',
+                cid: 'feedback@kzh.parts.co.th'
+            }
+];  
 module.exports = config;

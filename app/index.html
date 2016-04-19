@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="styles/step.css">
     <link rel="stylesheet" href="styles/main.css">
 </head>
-<body>
+<body> <!--onselectstart="return false;" ondragstart="return false;" oncontextmenu="return false;"-->
     <div class="modal fade " id="KZHPartsAdModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -76,6 +76,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <a href="#/">
                     <img src="/images/KZHLogo.png" width="150px" height="50px">
+                <!--    <button ng-click="TestPaypal()">Test</button> -->
                 </a>               
                 <ul class="nav nav-pills pull-right">                   
                     <li>
@@ -727,7 +728,7 @@
                         <tr>
                             <td style="center">
                                 <div class="text-center">
-                                    <a href="#google-map-section" ng-click="SelectedBodyMenu('google-map')">
+                                    <a href="https://www.google.com/maps/place/โค้วซุ่นเฮง+-+ค้าปลีก-+ส่ง+อะไหล่+น้ำมันเครื่อง+ยาง/@14.942145,103.7846685,16z/data=!4m2!3m1!1s0x0:0xe7284053efc84cd6?hl=en-US" target="_blank">
                                      <img src="/images/google-map.png" width="100px " height="65px" class="img-responsive">
                                     </a>
                                 </div>
@@ -900,7 +901,7 @@
                             <div class="panel panel-default">
                               <div class="panel-heading">
                                 <h4 class="panel-title">
-                                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><i class="fa fa-shopping-bag"></i> การสั่งซื้อ</a>
+                                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><i class="fa fa-shopping-bag"></i> {{'BODY.SECTION.PAYMENT.PAYMENT_TITLE' | translate}}</a>
                                 </h4>
                               </div>
                               <div id="collapseOne" class="panel-collapse collapse in">
@@ -911,40 +912,100 @@
                                         <img src="/images/How-To-Purchase.png" width="865" height="1350" class="img-respinsive">
                                     </p>
                                   </a>
-                                  <a href="" class="list-group-item">
-                                    <h4 class="list-group-item-heading">ขั้นตอนการสั่งซื้อสินค้า</h4>
-                                    <p class="list-group-item-text">
-
-
-                                    </p>
-                                  </a>
+                                  
                                 </div>                            
                               </div>
                             </div>
                             <div class="panel panel-default">
                               <div class="panel-heading">
                                 <h4 class="panel-title">
-                                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><i class="fa fa-archive"></i> อัตราน้ำหนัก</a>
+                                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive"><i class="fa fa-list">
+                                    </i> {{'BODY.SECTION.PAYMENT.PAYMENT_STEP' | translate}}</a>
+                                </h4>
+                              </div>
+                              <div id="collapseFive" class="panel-collapse collapse">
+                                <div class="list-group">
+                                  <a href="" class="list-group-item">
+                                    <h4 class="list-group-item-heading"></h4>
+                                    <p class="list-group-item-text">
+                                        <h5>{{'BODY.SECTION.PAYMENT.STEP_01' | translate}}</h5><br>
+                                        <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/purchase-payment-method/01-signup.png" class="img-responsive"><br>
+                                        <h5>{{'BODY.SECTION.PAYMENT.STEP_02' | translate}}</h5><br>
+                                        <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/purchase-payment-method/02-sign-up-modal.png" class="img-responsive"/><br>
+                                        <h5>{{'BODY.SECTION.PAYMENT.STEP_03' | translate}}</h5><br>
+                                        <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/purchase-payment-method/03-input-signup.png" class="img-responsive"/><br>
+                                        <h5>{{'BODY.SECTION.PAYMENT.STEP_04' | translate}}</h5><br>
+                                        <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/purchase-payment-method/04-message.png" class="img-responsive"/><br>
+                                        <h5>{{'BODY.SECTION.PAYMENT.STEP_05' | translate}}</h5><br>
+                                        <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/purchase-payment-method/05-get-email.png" class="img-responsive"/><br>
+                                        <h5>{{'BODY.SECTION.PAYMENT.STEP_06' | translate}}</h5><br>
+                                        <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/purchase-payment-method/06-activate-account.png" class="img-responsive"/><br>
+                                        <h5>{{'BODY.SECTION.PAYMENT.STEP_07' | translate}}</h5><br>
+                                        <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/purchase-payment-method/07-success-activate.png" class="img-responsive"/><br>
+                                        <h5>{{'BODY.SECTION.PAYMENT.STEP_08' | translate}}</h5><br>
+                                        <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/purchase-payment-method/08-input-product.png" class="img-responsive"/><br>
+                                        <h5>{{'BODY.SECTION.PAYMENT.STEP_09' | translate}}</h5><br>
+                                        <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/purchase-payment-method/09-add-cart.png" class="img-responsive"/><br>
+                                        <h5>{{'BODY.SECTION.PAYMENT.STEP_10' | translate}}</h5><br>
+                                        <p style="text-indent: 5em;">
+                                            {{'BODY.SECTION.PAYMENT.STEP_10_1' | translate}}
+                                        </p><br>
+                                        <p style="text-indent: 5em;">
+                                            {{'BODY.SECTION.PAYMENT.STEP_10_2' | translate}}
+                                        </p><br>
+                                        <p style="text-indent: 5em;">
+                                            {{'BODY.SECTION.PAYMENT.STEP_10_3' | translate}}
+                                        </p><br>
+                                        <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/purchase-payment-method/10-view-cart.png" class="img-responsive"/><br>
+                                        <h5>{{'BODY.SECTION.PAYMENT.STEP_11' | translate}}</h5><br>
+                                        <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/purchase-payment-method/11-not-log-in.png" class="img-responsive"/><br>
+                                    <h5>{{'BODY.SECTION.PAYMENT.STEP_12' | translate}} </h5><br>
+                                    <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/purchase-payment-method/12-billing.png" class="img-responsive"/><br>
+                                    <h5>{{'BODY.SECTION.PAYMENT.STEP_13' | translate}} </h5><br>
+                                    <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/purchase-payment-method/13-select-payment.png" class="img-responsive"/><br>
+                                    <h5>{{'BODY.SECTION.PAYMENT.STEP_14' | translate}} </h5><br>
+                                    <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/purchase-payment-method/14-validate-finish.png" class="img-responsive"/><br>
+                                    <h5>{{'BODY.SECTION.PAYMENT.STEP_15' | translate}} </h5><br>
+                                    <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/purchase-payment-method/15-create-ro-success.png" class="img-responsive"/><br>
+                                    <h5>{{'BODY.SECTION.PAYMENT.STEP_16' | translate}} </h5><br>
+                                    <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/purchase-payment-method/16-mail-sending.png" class="img-responsive"/><br>
+                                    <h5>{{'BODY.SECTION.PAYMENT.STEP_17' | translate}} </h5><br>
+                                    <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/purchase-payment-method/17-select-history.png" class="img-responsive"/><br>
+                                    <h5>{{'BODY.SECTION.PAYMENT.STEP_18' | translate}} </h5><br>
+                                    <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/purchase-payment-method/18-search-history.png" class="img-responsive"/><br>
+                                    <h5>{{'BODY.SECTION.PAYMENT.STEP_19' | translate}}</h5><br>
+                                    <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/purchase-payment-method/19-customer-view-ro.png" class="img-responsive"/><br>
+                                    <h5>{{'BODY.SECTION.PAYMENT.STEP_20' | translate}} </h5><br>
+                                    <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/purchase-payment-method/20-reject-doc.png" class="img-responsive"/><br>
+                                    </p>
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h4 class="panel-title">
+                                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><i class="fa fa-archive"></i> {{'BODY.SECTION.PAYMENT.WEIGHT_RATE' | translate}}</a>
                                 </h4>
                               </div>
                               <div id="collapseFour" class="panel-collapse collapse" style="color:black">
                                 <br>
-                                <h4 class="list-group-item-heading">ไปรษณีย์ธรรมดา</h4>
+                                <h4 class="list-group-item-heading"> {{'BODY.SECTION.PAYMENT.POST_NORMAL' | translate}}</h4>
                                 <table ng-table="NormalTableParams" class="table table-striped table-bordered table-condense" cellspacing="0" width="100%">
                                     <tr ng-repeat="nm in $data">
                                         <td data-title="'#'">{{$index + 1}}</td>
-                                        <td data-title="'น้ำหนัก (g)'">{{nm.MinRate}}</td>
-                                        <td data-title="'น้ำหนัก (g)'">{{nm.MaxRate}}</td>
-                                        <td data-title="'อัตรา'">{{pd.Rate}}</td>                                        
+                                        <td data-title="'BODY.SECTION.PAYMENT.TABLE_HEAD_WEIGHT' | translate">{{nm.MinRate}}</td>
+                                        <td data-title="'BODY.SECTION.PAYMENT.TABLE_HEAD_WEIGHT' | translate">{{nm.MaxRate}}</td>
+                                        <td data-title="'BODY.SECTION.PAYMENT.TABLE_HEAD_RATE' | translate">{{nm.Rate}}</td>                                        
                                     </tr>
                                 </table>
-                                <h4 class="list-group-item-heading">EMS</h4>
+                                <h4 class="list-group-item-heading"> {{'BODY.SECTION.PAYMENT.POST_EMS' | translate}}</h4>
                                 <table ng-table="EMSTableParams" class="table table-striped table-bordered table-condense" cellspacing="0" width="100%">
                                     <tr ng-repeat="ems in $data">
                                         <td data-title="'#'">{{$index + 1}}</td>
-                                        <td data-title="'น้ำหนัก (g)'">{{ems.MinRate}}</td>
-                                        <td data-title="'น้ำหนัก (g)'">{{ems.MaxRate}}</td>
-                                        <td data-title="'อัตรา'">{{ems.Rate}}</td>                                        
+                                        <td data-title="'BODY.SECTION.PAYMENT.TABLE_HEAD_WEIGHT' | translate">{{ems.MinRate}}</td>
+                                        <td data-title="'BODY.SECTION.PAYMENT.TABLE_HEAD_WEIGHT' | translate">{{ems.MaxRate}}</td>
+                                        <td data-title="'BODY.SECTION.PAYMENT.TABLE_HEAD_RATE' | translate">{{ems.Rate}}</td>                                        
                                     </tr>
                                 </table>
                                 <div class="list-group">
@@ -967,34 +1028,7 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="panel panel-default">
-                              <div class="panel-heading">
-                                <h4 class="panel-title">
-                                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive"><span class="glyphicon glyphicon-heart">
-                                    </span> Reports</a>
-                                </h4>
-                              </div>
-                              <div id="collapseFive" class="panel-collapse collapse">
-                                <div class="list-group">
-                                  <a href="#" class="list-group-item">
-                                    <h4 class="list-group-item-heading">List group item heading</h4>
-                                    <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                                  </a>
-                                </div>
-                                <div class="list-group">
-                                  <a href="#" class="list-group-item active">
-                                    <h4 class="list-group-item-heading">List group item heading</h4>
-                                    <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                                  </a>
-                                </div>
-                                <div class="list-group">
-                                  <a href="#" class="list-group-item">
-                                    <h4 class="list-group-item-heading">List group item heading</h4>
-                                    <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
+                            
                           </div>
                         </div>
                         
@@ -1002,30 +1036,161 @@
                     <!-- <div> about us -->
                     <div id="about-section" name="about-section" class="section" ng-show="SelectedMenu === 'about'">
                         <h3>{{'BODY.SECTION.ABOUT.HEAD' | translate}}</h3>
+                        <hr class="featurette-divider">
+
+                          <div class="row featurette">
+                            <div class="col-md-7 col-md-push-5">
+                                <div class="text-center">
+                                    <i class="fa fa-quote-left"></i>
+                                </div>
+                                <br>
+                              <h2 class="featurette-heading">{{'BODY.SECTION.ABOUT.MARKETING.CONTENT_1.TITLE' | translate}}<br>
+                              <span class="text-muted">{{'BODY.SECTION.ABOUT.MARKETING.CONTENT_1.SUB_TITLE' | translate}}</span></h2>
+                              <p class="lead">{{'BODY.SECTION.ABOUT.MARKETING.CONTENT_1.MESSAGE' | translate}}</p>
+                              <br>
+                              <div class="text-center">
+                                  <i class="fa fa-quote-right"></i>
+                              </div>
+                            </div>
+                            <div class="col-md-5 col-md-pull-7">
+                              <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="500x500"  src="/images/kzh-mkt-01.png" class="img-responsive"  data-holder-rendered="true">
+                            </div>
+                                
+                          </div>
+
+                          <hr class="featurette-divider">
+
+                          <div class="row featurette">
+                            <div class="col-md-7">
+                                <div class="text-center">
+                                    <i class="fa fa-quote-left"></i>
+                                </div>
+                                <br>
+                                <h2 class="featurette-heading">{{'BODY.SECTION.ABOUT.MARKETING.CONTENT_2.TITLE' | translate}} <br>
+                                <span class="text-muted">{{'BODY.SECTION.ABOUT.MARKETING.CONTENT_2.SUB_TITLE' | translate}}</span></h2>
+                                <p class="lead">{{'BODY.SECTION.ABOUT.MARKETING.CONTENT_2.MESSAGE' | translate}}</p>
+                                <br>
+                                  <div class="text-center">
+                                      <i class="fa fa-quote-right"></i>
+                                  </div>
+                            </div>
+                            <div class="col-md-5">
+                              <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="500x500"  src="/images/kzh-mkt-02.png" class="img-responsive"  data-holder-rendered="true">
+                            </div>
+                          </div>
+
+                           <hr class="featurette-divider">
+
+                          <div class="row featurette">
+                            <div class="col-md-7 col-md-push-5">
+                              <h2 class="featurette-heading">{{'BODY.SECTION.ABOUT.MARKETING.CONTENT_3.TITLE' | translate}}<br>
+                              <span class="text-muted">{{'BODY.SECTION.ABOUT.MARKETING.CONTENT_3.SUB_TITLE' | translate}}</span></h2>
+                              <p class="lead">{{'BODY.SECTION.ABOUT.MARKETING.CONTENT_3.MESSAGE' | translate}}</p>
+                            </div>
+                            <div class="col-md-5 col-md-pull-7">
+                              <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="500x500"  src="/images/kzh-mkt-03.png" class="img-responsive" data-holder-rendered="true">
+                            </div>
+                          </div>
+
+                          <hr class="featurette-divider">
+
+                          <div class="row featurette">
+                            <div class="col-md-7">
+                              <h2 class="featurette-heading">{{'BODY.SECTION.ABOUT.MARKETING.CONTENT_4.TITLE' | translate}}<br>
+                              <span class="text-muted">{{'BODY.SECTION.ABOUT.MARKETING.CONTENT_4.SUB_TITLE' | translate}}</span></h2>
+                              <p class="lead">{{'BODY.SECTION.ABOUT.MARKETING.CONTENT_4.MESSAGE' | translate}}</p>
+                            </div>
+                            <div class="col-md-5">
+                              <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="500x500" src="/images/kzh-mkt-04.png" class="img-responsive" data-holder-rendered="true" >
+                            </div>
+                          </div>
                     </div>
                     <!-- <div> about us -->
                     <div id="contact-section" name="contact-section" class="section" ng-show="SelectedMenu === 'contact'">
                         <h3>{{'BODY.SECTION.CONTACT.HEAD' | translate}}</h3>
+             
+                        <div class="row" style="color:white">
+                            <div class="col-md-8">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3854.896935251692!2d103.78534978108979!3d14.942834341782595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xe7284053efc84cd6!2z4LmC4LiE4LmJ4Lin4LiL4Li44LmI4LiZ4LmA4Liu4LiHIC0g4LiE4LmJ4Liy4Lib4Lil4Li14LiBLSDguKrguYjguIcg4Lit4Liw4LmE4Lir4Lil4LmIIOC4meC5ieC4s-C4oeC4seC4meC5gOC4hOC4o-C4t-C5iOC4reC4hyDguKLguLLguIc!5e0!3m2!1sen!2s!4v1461048799993" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <legend class="contact-us"><span class="glyphicon glyphicon-globe"></span>&nbsp;{{'BODY.SECTION.CONTACT.OFFICE' | translate}}</legend>
+                                
+                                <address>
+                                    <strong ng-show="SelectedLocale === 'th'"><h3>{{Company.CompanyNameTh}}</h3></strong>
+                                    <strong ng-show="SelectedLocale === 'us'"><h3>{{Company.CompanyNameEn}}</h3></strong>
+                                    <strong ng-show="SelectedLocale === 'cn'"><h3>{{Company.CompanyNameCn}}</h3></strong>
+                                    {{Company.CompanyAddress}}<br>
+                                    {{Company.CompanySubDistrict}}<br>
+                                    {{Company.CompanyDistrict}}<br>
+                                    {{Company.CompanyProvince}}<br>
+                                    {{Company.CompanyZipCode}}<br>
+                                    <abbr title="Phone">P:</abbr> {{Company.TelNo}}
+                                </address>
+                            </div>
+                        </div>
+                        <div class="row">
+                             <div class="col-md-12"><br></div>
+                        </div>
+                        <div class="row" style="color:black">
+                            <div class="col-md-12">
+                                <div class="well well-sm">
+                                    <form>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="name" >
+                                                    {{'BODY.SECTION.CONTACT.FEEDBACK.NAME' | translate}}</label> <span style="color:red">*</span>
+                                                <input type="text" class="form-control" id="name" placeholder="{{'BODY.SECTION.CONTACT.FEEDBACK.NAME_PHD' | translate}}" required="required" ng-model="Feedback.Name" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email">
+                                                    {{'BODY.SECTION.CONTACT.FEEDBACK.EMAIL' | translate}}</label> <span style="color:red">*</span>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-envelope"></span>
+                                                    </span>
+                                                    <input type="email" class="form-control" id="email" placeholder="{{'BODY.SECTION.CONTACT.FEEDBACK.EMAIL_PHD' | translate}}" required="required" ng-model="Feedback.Email"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="subject">
+                                                    {{'BODY.SECTION.CONTACT.FEEDBACK.SUBJECT' | translate}}</label><span style="color:red">*</span>
+                                                <select id="subject" name="subject" class="form-control" required="required" ng-model="Feedback.Subject">
+                                                    <option value="" selected="">{{'BODY.SECTION.CONTACT.FEEDBACK.SELECT_SUBJECT' | translate}}</option>
+                                                    <option value="general_usage">{{'BODY.SECTION.CONTACT.FEEDBACK.SUBJECT_TYPE.GENERAL_USAGE' | translate}}</option>
+                                                    <option value="problem_occur">{{'BODY.SECTION.CONTACT.FEEDBACK.SUBJECT_TYPE.PROBLEM_OCCUR' | translate}}</option>
+                                                    <option value="shipment_process">{{'BODY.SECTION.CONTACT.FEEDBACK.SUBJECT_TYPE.SHIPMENT_PROCESS' | translate}}</option>
+                                                    <option value="payment_process">{{'BODY.SECTION.CONTACT.FEEDBACK.SUBJECT_TYPE.PAYMENT_PROCESS' | translate}}</option>
+                                                    <option value="suggestions">{{'BODY.SECTION.CONTACT.FEEDBACK.SUBJECT_TYPE.SUGGESTIONS' | translate}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="name">
+                                                    {{'BODY.SECTION.CONTACT.FEEDBACK.MESSAGE' | translate}}</label><span style="color:red">*</span>
+                                                <textarea name="message" id="message" class="form-control" rows="9" cols="25" required="required"
+                                                    placeholder="{{'BODY.SECTION.CONTACT.FEEDBACK.MESSAGE_PHD' | translate}}" ng-model="Feedback.Message"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-primary pull-right" id="btnContactUs" ng-click="ValidateFeedback()">
+                                                <span class="glyphicon glyphicon-send"></span> {{'BODY.SECTION.CONTACT.FEEDBACK.SEND_MESSAGE' | translate}}</button>
+                                        </div>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+               
                     </div>
                     <!-- <div> google map -->
                     <div id="google-map-section" name="google-map-section" class="section" ng-show="SelectedMenu === 'google-map'">
                         <h3>{{'BODY.SECTION.MAP.HEAD' | translate}}</h3>
                         <div class="row-fluid">
-                            <div class="span8">
-                                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3854.8752229103643!2d103.78665719999998!3d14.944043499999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sth!4v1436260415558" width="960" height="500" frameborder="0" style="border:0" allowfullscreen ></iframe>
-                            </div>                        
-                            <div class="span4">
-                                <h2>Snail mail</h2>
-                                <address>
-                                    <strong>Hythe Window Cleaning</strong><br>
-                                    15 Springfield Way<br>
-                                    Hythe<br>
-                                    Kent<br>
-                                    United Kingdon<br>
-                                    CT21 5SH<br>
-                                    <abbr title="Phone">P:</abbr> 01234 567 890
-                                </address>
-                            </div>
+                        
                         </div>
 
                     </div>
@@ -1128,16 +1293,18 @@
                                                       </div>
                                                       <div class="form-group">
                                                         <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.TEL_NO' | translate}} :</label>
-                                                        <div class="col-sm-8">
+                                                        <div class="col-sm-4">
                                                            <input type="text" ng-model="ROHead.TelNo" required="required" placeholder="{{'BODY.SECTION.SHIPMENT.BILLING.TEL_NO' | translate}}" class="form-control">
                                                         </div>
+                                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.TEL_NO' | translate}} :</label>
                                                       </div>
                                                       <div class="form-group"></div>
                                                       <div class="form-group">
                                                         <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.MOBILE_NO' | translate}} :</label>
-                                                        <div class="col-sm-8">
+                                                        <div class="col-sm-4">
                                                            <input type="text" ng-model="ROHead.MobileNo" required="required" placeholder="{{'BODY.SECTION.SHIPMENT.BILLING.MOBILE_NO' | translate}}" class="form-control">
                                                         </div>
+                                                        <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.TEL_NO' | translate}} :</label>
                                                       </div>
                                                       <div class="form-group"></div>
                                                   </form>
@@ -4216,17 +4383,16 @@
                       </div>
                     </div>
                     <div class="row">
-                        <p><center><a href="#">Contact Stuff Here</a> <p class="footertext">Copyright 2014</p></center></p>
+                        <p><center><a href="#contact-section">Contact KZHParts Teams Here</a> <p class="footertext">Copyright 2014</p></center></p>
                     </div>
                 </div>
             <div>
             <a href="#" class="scrollup">Scroll</a>
             <textarea id="printing-css" style="display:none;">html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}body{font:normal normal .8125em/1.4 Arial,Sans-Serif;background-color:white;color:#333}strong,b{font-weight:bold}cite,em,i{font-style:italic}a{text-decoration:none}a:hover{text-decoration:underline}a img{border:none}abbr,acronym{border-bottom:1px dotted;cursor:help}sup,sub{vertical-align:baseline;position:relative;top:-.4em;font-size:86%}sub{top:.4em}small{font-size:86%}kbd{font-size:80%;border:1px solid #999;padding:2px 5px;border-bottom-width:2px;border-radius:3px}mark{background-color:#ffce00;color:black}p,blockquote,pre,table,figure,hr,form,ol,ul,dl{margin:1.5em 0}hr{height:1px;border:none;background-color:#666}h1,h2,h3,h4,h5,h6{font-weight:bold;line-height:normal;margin:1.5em 0 0}h1{font-size:200%}h2{font-size:180%}h3{font-size:160%}h4{font-size:140%}h5{font-size:120%}h6{font-size:100%}ol,ul,dl{margin-left:3em}ol{list-style:decimal outside}ul{list-style:disc outside}li{margin:.5em 0}dt{font-weight:bold}dd{margin:0 0 .5em 2em}input,button,select,textarea{font:inherit;font-size:100%;line-height:normal;vertical-align:baseline}textarea{display:block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}pre,code{font-family:"Courier New",Courier,Monospace;color:inherit}pre{white-space:pre;word-wrap:normal;overflow:auto}blockquote{margin-left:2em;margin-right:2em;border-left:4px solid #ccc;padding-left:1em;font-style:italic}table[border="1"] th,table[border="1"] td,table[border="1"] caption{border:1px solid;padding:.5em 1em;text-align:left;vertical-align:top}th{font-weight:bold}table[border="1"] caption{border:none;font-style:italic}.no-print{display:none}</textarea>
-                    <iframe id="printing-frame" name="print_frame" src="about:blank" style="display:none;"></iframe>
+            <iframe id="printing-frame" name="print_frame" src="about:blank" style="display:none;"></iframe>
         </div>
         <hr class="footer-hr">
         <div id="div-sub-footer" class="sub-footer">
-            
             <div class="container" style="color:white;">
                 <div class="row">
                     <div class="col-sm-4">
@@ -4398,6 +4564,8 @@
         <script src="/services/sub-district-service.js"></script>
         <script src="/services/app-config-service.js"></script>
         <script src="/services/aws-service.js"></script>
+        <script src="/services/paypal-service.js"></script>
+        <script src="/services/feedback-service.js"></script>
 </body>
 
 </html>

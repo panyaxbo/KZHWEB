@@ -565,4 +565,77 @@ attachments : mailConfig.MAIL_ATTACHMENTS_NOTIFY_CUSTOMER_SHIPPING
 		   res.sendStatus(200);
 		});
 });
+
+// Customer send mail feedback
+router.post('/CustomerSendFeedback', function (req, res) {
+	var mailObj = req.body;
+	var subject = '';
+	if (mailObj.Subject === 'general_usage') {
+		subject = 'การใช้งานทั่วไป';
+	} else if (mailObj.Subject === 'problem_occur') {
+		subject = 'เกิดปัญหาระหว่างใช้งาน';
+	} else if (mailObj.Subject === 'shipment_process') {
+		subject = 'การขนส่ง';
+	} else if (mailObj.Subject === 'payment_process') {
+		subject = 'การชำระเงิน';
+	} else if (mailObj.Subject === 'suggestions') {
+		subject = 'ข้อเสนอแนะ';
+	} else {
+		subject = 'อื่นๆ';
+	}
+
+
+	var smtpTransport = nodemailer.createTransport(mailConfig.MAIL_TRANSFER_PROTOCOL, {
+	  service: mailConfig.MAIL_SERVICE,
+	  auth: {
+	    XOAuth2: {
+	      user: mailConfig.MAIL_USER, // Your gmail address.
+	                                            // Not @developer.gserviceaccount.com
+	      clientId: mailConfig.CLIENT_ID,
+	      clientSecret: mailConfig.CLIENT_SECRET,
+	      refreshToken: mailConfig.CLIENT_REFRESH_TOKEN,
+	      accessToken: mailConfig.CLIENT_ACCESS_TOKEN
+	    }
+	  }
+	});
+
+	var mailOptions = {
+		  from: mailObj.Email, // sender address
+		  to: "KZH Parts <kzh.parts@gmail.com>",
+		  subject: "ลุกค้าส่งคำเสนอแนะเกี่ยวกับ " + subject + " ให้ทางร้าน", // Subject line
+		  generateTextFromHTML: true,
+		  html : mailConfig.MAIL_CONTENT_TITLE +
+'<table style="background-color:#fff"  width="650">'+
+'	<tbody>'+
+'		<tr>'+
+'			<td style="border-top:#e41f28 solid 6px;font:normal 13px/18px Arial,Helvetica,sans-serif;padding:45px 17px 30px 17px" valign="top">'+
+'			<h2 style="font:normal"><img height="20" src="cid:feedback@kzh.parts.co.th" style="margin-right:10px" width="21" >&nbsp;&nbsp;เรียนทีมงาน KZHParts ผม/ดิฉัน มีข้อเสนอแนะเรื่อง <br><br>'+
+'\''+ subject + '\' โดยมีรายละเอียด ดังนี้</h2>'+
+'			<p> ' + mailObj.Message + ' <br>'+
+'			<br>'+
+'			<br>'+
+'			</p>'+
+'			<p>&nbsp;</p>'+
+'			<p><strong>ขอขอบคุณ&nbsp;</strong></p>'+
+'			<p><strong>'+mailObj.Name+'&nbsp;</strong></p>'+
+'			</td>'+
+'		</tr>'+
+'		'+
+'	</tbody>'+
+'</table>'+
+mailConfig.MAIL_CONTENT_FOOTER,
+attachments : mailConfig.MAIL_ATTACHMENTS_CUSTOMER_FEEDBACK
+	}
+
+	smtpTransport.sendMail(mailOptions, function(error, response){
+		   if(error){
+		       console.log(error, error.stack.split("\n"));
+		       res.sendStatus(500);
+		   }else{
+		    //   console.log("Message sent: " + response.message);
+		   }
+		   smtpTransport.close();
+		   res.sendStatus(200);
+		});
+});
 module.exports = router;

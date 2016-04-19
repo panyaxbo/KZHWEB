@@ -161,18 +161,85 @@ app.config(function ($translateProvider) {
                     HEAD: "เว็บบอร์ด",
                 },
                 PAYMENT: {
-                    HEAD: "การจ่ายเงิน",
-                    BBL_ACC: 'หมายเลข : 440-99934-3454',
-                    KBANK_ACC: 'หมายเลข : 440-99934-3454',
-                    SCB_ACC: 'หมายเลข : 440-99934-3454',
-                    KTB: 'หมายเลข : 440-99934-3454',
-                    KCC: 'หมายเลข : 440-99934-3454'
+                    HEAD: "การชำระเงินและการจัดสั่ง",
+                    PAYMENT_TITLE : 'การจัดส่งและการสั่งซื้อ',
+                    PAYMENT_CHART : 'แผนผังการสั่งซื้อสินค้า',
+                    PAYMENT_STEP : 'ขั้นตอนการสั่งซื้อสินค้า',
+                    STEP_01 : '1. เมื่อเข้าสู่เว็ปไซต์ http://kzh-parts.com ท่านสามารถกดที่ปุ่ม “เข้าสู่ระบบ” ดังภาพด้านล่าง',
+                    STEP_02 : '2. หน้าต่างการเข้าสู่ระบบ/ลงทะเบียน ถ้าท่านยังไม่มีบัญชีเข้าระบบ ที่ส่วนด้านขวาท่านสามารถลงทะเบียนได้ หรือท่านสามารถเข้าสู่ระบบได้ถ้าท่านมีบัญชีอยู่แล้ว หรือสามารถเข้าสู่ระบบด้วยบัญชีโซเชียลอื่นๆ ได้',
+                    STEP_03 : '3. ใส่รายละเอียด อีเมลล์ ชื่อผู้ใช้ รหัสผ่าน ของท่าน ตรวจสอบตัวตนและยอมรับข้อตกลง แล้วกดปุ่ม “ลงทะเบียน”', 
+                    STEP_04 : '4. รอระบบประมวลผล เมื่อสำเร็จระบบจะแจ้งการลงทะเบียนสำเร็จแล้ว ดังภาพด้านล่าง แต่ท่านยังไม่สามารถเข้าสู่ระบบได้ เนื่องจากท่านต้องยืนยันบัญชีของท่านผ่านทางอีเมลของท่านก่อน',
+                    STEP_05 : '5. ท่านจะได้รับอีเมลจากระบบแจ้งการยืนยันการลงทะเบียน',
+                    STEP_06 : '6. กดปุ่ม ยืนยันการลงทะเบียน เพื่อเปิดใช้งานบัญชีของท่าน',
+                    STEP_07 : '7. ระบบจะกลับมาหน้าเว็บไซต์ ถ้าสำเร็จระบบจะแจ้งข้อความดังภาพ',
+                    STEP_08 : '8. การสั่งซื้อสินค้าให้ท่านใส่จำนวนสินค้าที่ต้องการดังภาพด้านล่าง จากนั้นกดที่ “ซื้อ”',
+                    STEP_09 : '9. ในตะกร้าสินค้าของท่าน จะมีรายการเพิ่มขึ้นมา 1 รายการ',
+                    STEP_10 : '10. เมื่อกดปุ่ม “ตะกร้า” ระบบจะแสดงรายละเอียดสินค้าที่ท่านต้องการสั่งซื้อ ซึ่งขั้นตอนนี้ระบบจะกำหนดการขนส่งไปรษณีย์แบบธรรมดาให้ท่าน ซึ่งท่านสามารถเปลี่ยนการจัดส่งเป็น EMS ได้ จากนั้นท่านสามารถดำเนินการต่อดังนี้',
+                    STEP_10_1: '10.1 ดูสินค้า เพื่อเลือกสินค้าใส่ ตะกร้าต่อ',
+                    STEP_10_2: '10.2 ล้างตะกร้า เพื่อลบรายการสินค้าในตะกร้าทั้งหมด',
+                    STEP_10_3: '10.3 ดำเนินการต่อ เพื่อเข้าสู่ขั้นตอนการจัดส่งและชำระเงิน',
+                    STEP_11 : '11. ถ้าหากท่านยังไม่ได้เข้าสู่ระบบ ระบบจะให้ท่านเข้าระบบก่อน',
+                    STEP_12 : '12. ใส่รายละเอียดของท่านและที่อยู่การจัดส่งสินค้า เมื่อเสร็จเรียบร้อยกดปุ่ม “ขั้นตอนต่อไป”',
+                    STEP_13 : '13. จะมาที่การชำระสินค้าโดยระบบให้ท่านเลือกช่องทาง ',
+                    STEP_14 : '14. รอระบบประมวลผลคำสั่งซื้อ',
+                    STEP_15 : '15. ระบบแสดงข้อความ เมื่อสร้างรายการสั่งซื้อสำเร็จ',
+                    STEP_16 : '16. ท่านได้รับอีเมลจากระบบแจ้งยืนยันรายการสั่งซื้อสินค้าของท่าน',
+                    STEP_17 : '17. เลือก เมนูประวัติการสั่งซื้อ เพื่อตรวจสอบและติดตามสถานะการสั่งซื้อ',
+                    STEP_18 : '18. เมื่อท่านชำระสินค้าเรียบร้อย กดที่ปุ่มสีเขียว',
+                    STEP_19 : '19. ระบบแสดงรายการสั่งซื้อย้อนหลัง จากนั้นเลือกรายการ ”อัพโหลดเอกสารชำระเงิน”',
+                    STEP_20 : '20. จากนั้นทีมงานตรวจสอบรายการชำระเงิน และตอบกลับอีเมลไปให้ท่าน',
+                    WEIGHT_RATE: 'อัตราน้ำหนัก',
+                    POST_NORMAL: 'ไปรษณีย์ธรรมดา',
+                    POST_EMS: 'ไปรษณีย์ EMS',
+                    TABLE_HEAD_WEIGHT: 'น้ำหนัก（g）',
+                    TABLE_HEAD_RATE: 'อัตรา'
                 },
                 ABOUT: {
-                    HEAD: "เกี่ยวกับเรา"
+                    HEAD: "เกี่ยวกับเรา",
+                    MARKETING: {
+                        CONTENT_1: {
+                            TITLE: 'Title',
+                            SUB_TITLE: 'Sub Title',
+                            MESSAGE: 'Message'
+                        },
+                        CONTENT_2: {
+                            TITLE: 'Title',
+                            SUB_TITLE: 'Sub Title',
+                            MESSAGE: 'Message'
+                        },
+                        CONTENT_3: {
+                            TITLE: 'Title',
+                            SUB_TITLE: 'Sub Title',
+                            MESSAGE: 'Message'
+                        },
+                        CONTENT_4: {
+                            TITLE: 'Title',
+                            SUB_TITLE: 'Sub Title',
+                            MESSAGE: 'Message'
+                        }
+                    }
                 },
                 CONTACT: {
-                    HEAD: "ติดต่อเรา"
+                    HEAD: "ติดต่อเรา",
+                    OFFICE: 'สำนักงานของเรา',
+                    FEEDBACK:{
+                        NAME :'ชื่อ',
+                        NAME_PHD : 'ชื่อ',
+                        EMAIL : 'อีเมล',
+                        EMAIL_PHD : 'อีเมล',
+                        SUBJECT: 'หัวข้อ',
+                        SELECT_SUBJECT: '--- เลือก หัวข้อ ---',
+                        SUBJECT_TYPE : {
+                            GENERAL_USAGE: 'การใช้งานทั่วไป',
+                            PROBLEM_OCCUR: 'เกิดปัญหาระหว่างใช้งาน',
+                            SHIPMENT_PROCESS: 'การขนส่ง',
+                            PAYMENT_PROCESS: 'การชำระเงิน',
+                            SUGGESTIONS: 'ข้อเสนอแนะ'
+                        },
+                        MESSAGE : 'รายละเอียด',
+                        MESSAGE_PHD : 'รายละเอียด',
+                        SEND_MESSAGE:'ส่งข้อความ'
+                    } 
                 },
                 GOOGLE_MAP: {
                     HEAD: "แผนที่",
@@ -205,9 +272,11 @@ app.config(function ($translateProvider) {
                         BILL_SELECT_ZIPCODE: '--- เลือก ไปรษณีย์ ---',
                         TEL_NO: 'โทรศัพท์',
                         MOBILE_NO: 'มือถือ',
+                        TEL_NO_EX: 'เช่น ถ้าเบอร์โทรท่าน 02-999-9999 ให้ใส่ 029999999',
+                        MOBILE_NO_EX: 'เช่น ถ้าเบอร์โทรท่าน 088-999-9999 ให้ใส่ 0889999999',
 
                         SAME_ADDRESS : "ที่อยู่เดียวกับที่จัดส่ง",
-
+        
                         RO_STEP : 'ที่อยู่ที่แสดงในใบเสร็จ ',
                         RO_NAME: 'ชื่อ ',
                         RO_ADDRESS: 'ที่อยู่',
@@ -818,17 +887,85 @@ app.config(function ($translateProvider) {
                     HEAD : "Webboard"
                 },
                 PAYMENT: {
-                    BBL_ACC: 'Acc. No : 440-99934-3454',
-                    KBANK_ACC: 'Acc. No : 440-99934-3454',
-                    SCB_ACC: 'Acc. No : 440-99934-3454',
-                    KTB_ACC: 'Acc. No : 440-99934-3454',
-                    KCC_ACC: 'Acc. No : 440-99934-3454'
+                    HEAD: 'Payment and Delivery',
+                    PAYMENT_TITLE : 'Payment and Delivery',
+                    PAYMENT_CHART : 'Purchasing order process Chart',
+                    PAYMENT_STEP : 'Purchasing order process Step by Step',
+                    STEP_01 : '1. Go to website http://kzh-parts.com you can log in to system by pressing “Login” as image below',
+                    STEP_02 : '2. The system display Login/Registration dialog. If you don’t have an account, you can input your information on the right side to create your account. If you have system account you can sign in on the left side or even using other social account such as Facebook , Google plus and Twitter etc.',
+                    STEP_03 : '3. Input your email, username and password information, verify yourself and accept agreement then click “Register”', 
+                    STEP_04 : '4. Wait for system processing after that the system will display success process, but it is almost complete registration which is you can not log in yet. Because of you need to activate your account via email.',
+                    STEP_05 : '5. You get an email from system to activate yourself.',
+                    STEP_06 : '6. Press button “Activate you account”',
+                    STEP_07 : '7. You will back to website if success the system display success registration.',
+                    STEP_08 : '8. Purchasing product please input quantity you need then press button “Buy”',
+                    STEP_09 : '9. There is additional 1 item in your Cart',
+                    STEP_10 : '10. When press button “Cart”, the system display purchasing product information. This step system default normal post type which is you can change post type to EMS later if needed. After that you can continue following step',
+                    STEP_10_1: '10.1 Continue shopping.',
+                    STEP_10_2: '10.2 Clear Cart to delete all product in cart.',
+                    STEP_10_3: '10.3 Check out to go to shipment and payment process.',
+                    STEP_11 : '11. If you do not log-in , the system will allow you to log in.',
+                    STEP_12 : '12. Input your personal and contactable address information ,then click button “Next Step”',
+                    STEP_13 : '13. System allow you to select payment channel.',
+                    STEP_14 : '14. Waiting for system processing.',
+                    STEP_15 : '15. System display success message for success create purchase order.',
+                    STEP_16 : '16. You have got email from system to confirm your purchase order.',
+                    STEP_17 : '17. Select menu purchase history to examine and track purchase status.',
+                    STEP_18 : '18. When you have already pay for product then click green button.',
+                    STEP_19 : '19. System display purchase history detail, then select button "Upload Payment document."',
+                    STEP_20 : '20. Then staff determine payment document and respond to customer via email.',
+                    WEIGHT_RATE: 'Post of Weight Rate',
+                    POST_NORMAL: 'Regular Mail',
+                    POST_EMS: 'EMS Mail',
+                    TABLE_HEAD_WEIGHT: 'Weight（g）',
+                    TABLE_HEAD_RATE: 'Rate'
                 },
                 ABOUT : {
-                    HEAD : "About us"
+                    HEAD : "About us",
+                    MARKETING: {
+                        CONTENT_1: {
+                            TITLE: '',
+                            SUB_TITLE: '',
+                            MESSAGE: ''
+                        },
+                        CONTENT_2: {
+                            TITLE: '',
+                            SUB_TITLE: '',
+                            MESSAGE: ''
+                        },
+                        CONTENT_3: {
+                            TITLE: '',
+                            SUB_TITLE: '',
+                            MESSAGE: ''
+                        },
+                        CONTENT_4: {
+                            TITLE: '',
+                            SUB_TITLE: '',
+                            MESSAGE: ''
+                        }
+                    }
                 },
                 CONTACT: {
-                    HEAD: "Contact us"
+                    HEAD: "Contact us",
+                    OFFICE: 'Our Office',
+                    FEEDBACK:{
+                        NAME :'Name',
+                        NAME_PHD : 'Input Name',
+                        EMAIL : 'Email',
+                        EMAIL_PHD : 'Input Email',
+                        SUBJECT: 'Subject',
+                        SELECT_SUBJECT: '--- Select Subject ---',
+                        SUBJECT_TYPE : {
+                            GENERAL_USAGE: 'General Usage',
+                            PROBLEM_OCCUR: 'Problem occur during usage',
+                            SHIPMENT_PROCESS: 'Shipment process',
+                            PAYMENT_PROCESS: 'Payment process',
+                            SUGGESTIONS: 'Suggestions'
+                        },
+                        MESSAGE : 'Message',
+                        MESSAGE_PHD : 'Message Detail',
+                        SEND_MESSAGE:'Send Message'
+                    } 
                 },
                 SHIPMENT: {
                     HEAD : "Shipment",
@@ -848,6 +985,8 @@ app.config(function ($translateProvider) {
                         BILL_SELECT_ZIPCODE: '--- Choose ZipCode ---',
                         TEL_NO: 'Tel No',
                         MOBILE_NO: 'Mobile No',
+                        TEL_NO_EX: 'EX. if you tel. no 02-999-9999 please use 029999999',
+                        MOBILE_NO_EX: 'EX. if you mobile no 088-999-9999 please use 0889999999',
 
                         SAME_ADDRESS : "Same as billing address",
 
@@ -1376,18 +1515,85 @@ app.config(function ($translateProvider) {
                     HEAD: "客服中心"
                 },
                 PAYMENT: {
-                    HEAD : "付款",
-                    BBL_ACC: '帳號 : 440-99934-3454',
-                    KBANK_ACC: '帳號 : 440-99934-3454',
-                    SCB_ACC: '帳號 : 440-99934-3454',
-                    KTB_ACC: '帳號 : 440-99934-3454',
-                    KCC_ACC: 'ห帳號 : 440-99934-3454'
+                    HEAD: '款到發貨',
+                    PAYMENT_TITLE : '款到發貨',
+                    PAYMENT_CHART : '採購訂單流程表',
+                    PAYMENT_STEP : '採購訂單流程一步一步',
+                    STEP_01 : '1. 前往網站 http://kzh-parts.com 您可以登錄到系統中按“登錄”，如下形象',
+                    STEP_02 : '2. 系統顯示登錄/註冊對話框。如果你沒有一個帳戶，您可以輸入您在右側的信息來創建您的帳戶。如果你有系統帳戶，您可以登錄到左側，甚至使用其他社交帳戶，如Facebook ， Google +和Twitter的等。',
+                    STEP_03 : '3. 輸入您的電子郵件，用戶名和密碼信息，驗證自己，接受協議，然後單擊 “註冊”', 
+                    STEP_04 : '4. 等待系統處理後，系統會顯示成功的過程，但它幾乎完成註冊這是您無法登錄呢。因為你需要通過電子郵件激活您的帳戶',
+                    STEP_05 : '5. 您可以從系統收到一封電子郵件，來激活自己。',
+                    STEP_06 : '6. 按下按鈕 “激活您的帳戶”',
+                    STEP_07 : '7. 您將回到網站，如果成功，系統顯示註冊成功',
+                    STEP_08 : '8. 購買商品請輸入需要數量然後按下按鈕， “買入”',
+                    STEP_09 : '9. 還有額外的 1 個項目在您的購物車',
+                    STEP_10 : '10. 當按下按鈕“購物車”，系統顯示採購的產品信息。這一步系統默認的正常崗位類型，是你可以根據需要柱式後來改為EMS 。之後，你可以繼續下一步驟',
+                    STEP_10_1: '10.1 繼續購物',
+                    STEP_10_2: '10.2 清除車來刪除車中的所有產品',
+                    STEP_10_3: '10.3 看看去運輸和付款過程',
+                    STEP_11 : '11. 如果你沒有登錄時，系統將允許您登錄。',
+                    STEP_12 : '12. 輸入您的個人和接觸的地址信息，然後點擊按鈕 “下一步”',
+                    STEP_13 : '13. 系統允許您選擇支付通道',
+                    STEP_14 : '14. 等待系統處理。',
+                    STEP_15 : '15. 成功的系統顯示成功信息創建採購訂單',
+                    STEP_16 : '16. 你已經得到的電子郵件系統，以確認您的採購訂單',
+                    STEP_17 : '17. 選擇菜單購買歷史來檢查和跟踪購買狀態',
+                    STEP_18 : '18. 當你已經支付的產品然後點擊綠色按鈕',
+                    STEP_19 : '19. 系統顯示購買歷史細節，然後選擇按鈕 “上傳付款單據”',
+                    STEP_20 : '20. 然後，工作人員確定付款單據，並通過電子郵件回复客戶',
+                    WEIGHT_RATE: '體重率',
+                    POST_NORMAL: '普通郵件',
+                    POST_EMS: 'EMS郵件',
+                    TABLE_HEAD_WEIGHT: '重量（g）',
+                    TABLE_HEAD_RATE: '率'
                 },
                 ABOUT : {
-                    HEAD: "關於我們"
+                    HEAD: "關於我們",
+                    MARKETING: {
+                        SUB_TITLE: '',
+                        CONTENT_1: {
+                            TITLE: '',
+                            MESSAGE: ''
+                        },
+                        CONTENT_2: {
+                            TITLE: '',
+                            SUB_TITLE: '',
+                            MESSAGE: ''
+                        },
+                        CONTENT_3: {
+                            TITLE: '',
+                            SUB_TITLE: '',
+                            MESSAGE: ''
+                        },
+                        CONTENT_4: {
+                            TITLE: '',
+                            SUB_TITLE: '',
+                            MESSAGE: ''
+                        }
+                    }
                 },
                 CONTACT: {
-                    HEAD: "聯繫我們"
+                    HEAD: '聯繫我們',
+                    OFFICE: '我們的辦公室',
+                    FEEDBACK:{
+                        NAME :'名稱',
+                        NAME_PHD : '輸入名字',
+                        EMAIL : '電子郵件',
+                        EMAIL_PHD : '輸入電子郵件',
+                        SUBJECT: '學科',
+                        SELECT_SUBJECT: '--- 選擇主題 ---',
+                        SUBJECT_TYPE : {
+                            GENERAL_USAGE: '一般使用',
+                            PROBLEM_OCCUR: '問題在使用過程中會出現',
+                            SHIPMENT_PROCESS: '發貨流程',
+                            PAYMENT_PROCESS: '支付流程',
+                            SUGGESTIONS: '建議'
+                        },
+                        MESSAGE : '信息',
+                        MESSAGE_PHD : '輸入信息詳細',
+                        SEND_MESSAGE:'發信息'
+                    } 
                 },
                 GOOGLE_MAP: {
                     HEAD : "裝船",
@@ -1420,6 +1626,8 @@ app.config(function ($translateProvider) {
                         BILL_SELECT_ZIPCODE: '--- 選擇 郵政編碼 ---',
                         TEL_NO : '電話號碼',
                         MOBILE_NO : '手機號碼',
+                        TEL_NO_EX: '例如，如果你的電話號碼 02-999-9999 請用 029999999',
+                        MOBILE_NO_EX: '例如，如果你的手機號碼 02-999-9999 請用 029999999',
 
                         SAME_ADDRESS : "與付款地址相同",
 
