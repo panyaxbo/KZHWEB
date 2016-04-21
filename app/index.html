@@ -848,10 +848,12 @@
                                                     <span class="glyphicon glyphicon-shopping-cart"></span> 
                                                     {{'BODY.SECTION.PRODUCT.BUY' | translate}}</a>
                                                 </div>
+                                                <!--
                                                 <div class="col-md-4 ">
                                                     <a class="btn btn-primary btn-product" data-toggle="modal" data-target="#DetailModal">
                                                     <span class="glyphicon glyphicon-exclamation-sign"></span> {{'BODY.SECTION.PRODUCT.DETAIL' | translate}}</a>
-                                                </div>
+                                                </div>-->
+
                                                 <div class="modal fade" id="DetailModal">
                                                     <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">
@@ -885,15 +887,14 @@
                         </div>
                     </div>
                   
-                    <!-- <div> article -->
                     <div id="article-section" name="article-section" class="section" ng-show="SelectedMenu === 'article'">
                         <h1>{{'BODY.SECTION.ARTICLE.HEAD' | translate}}</h1>
                     </div>
-                    <!-- <div> article -->
+            
                     <div id="webboard-section" name="webboard-section" class="section" ng-show="SelectedMenu === 'webboard'">
                         <h3>{{'BODY.SECTION.WEBBOARD.HEAD' | translate}}</h3>
                     </div>
-                    <!-- <div> payment method -->
+      
                     <div id="payment-section"  name="payment-section" class="section" ng-show="SelectedMenu === 'payment'">
                         <h3>{{'BODY.SECTION.PAYMENT.HEAD' | translate}}</h3>
                         <div class="col-sm-12 col-md-12">

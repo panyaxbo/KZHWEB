@@ -243,19 +243,19 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
 
             $scope.IsProductDataAvailable = true;
 
-            if ($scope.Locale === 'th') {
+            if ($scope.SelectedLocale === 'th') {
               (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
         //      document.title = $filter('translate')('TITLE.NAME');
        //       document.keywords = $filter('translate')('TITLE.KEYWORD');
         //      document.description = $filter('translate')('TITLE.DESCRIPTION');
          //     document.author = $filter('translate')('TITLE.AUTHOR');
-            } else if ($scope.Locale === 'us') {
+            } else if ($scope.SelectedLocale === 'us') {
               (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
         //      document.title = $filter('translate')('TITLE.NAME');
         //      document.keywords = $filter('translate')('TITLE.KEYWORD');
        //       document.description = $filter('translate')('TITLE.DESCRIPTION');
        //       document.author = $filter('translate')('TITLE.AUTHOR');
-            } else if ($scope.Locale === 'cn') {
+            } else if ($scope.SelectedLocale === 'cn') {
               (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
         //      document.title = $filter('translate')('TITLE.NAME');
         //      document.keywords = $filter('translate')('TITLE.KEYWORD');
