@@ -219,9 +219,9 @@ app.config(function ($translateProvider) {
                             MESSAGE: 'ให้บริการลูกค้าด้วยใจที่ทุ่มเทและความซื่อสัตย์ ตลอดไปจนถึงแนะนำสินค้าให้กับลูกค้า'
                         },
                         CONTENT_4: {
-                            TITLE: 'ความพยายามเปิดตลาดข้างนอก',
-                            SUB_TITLE: 'เพื่อเพิ่มศักยภาพกับทางร้านให้มากขึ้น',
-                            MESSAGE: 'ในปัจจุบันเทคโนโลยีไปเร็วมาก ทางร้านเล็งเห็นความสำคัญในการเปิดตลาดภายนอก เพื่อรองรับกับลูกค้ารายใหม่ๆและโลกที่หมุนเร็วขึ้น...'
+                            TITLE: 'มุมมอง',
+                            SUB_TITLE: 'ความพยายามเปิดตลาดภายนอก',
+                            MESSAGE: 'ในปัจจุบันเทคโนโลยีไปเร็วมาก ทางร้านเล็งเห็นความสำคัญในการเปิดตลาดภายนอก เพื่อเพิ่มศักยภาพกับทางร้านให้มากขึ้น เพื่อรองรับกับลูกค้ารายใหม่ๆและโลกที่หมุนเร็วขึ้น...'
                         }
                     }
                 },
@@ -947,8 +947,8 @@ app.config(function ($translateProvider) {
                             MESSAGE: 'Providing customers with a dedicated and honest mind. Additional, we introduce the product to the customer.'
                         },
                         CONTENT_4: {
-                            TITLE: 'Market Expansion',
-                            SUB_TITLE: 'To make more store potentiality',
+                            TITLE: 'Visions',
+                            SUB_TITLE: 'To make more store potentiality and Maket Expansion',
                             MESSAGE: 'Nowaday technology goes quickly that we vision the importance of opening external markets. To accommodate the new customers and the world with technology which goes faster ...'
                         }
                     }
@@ -1580,7 +1580,7 @@ app.config(function ($translateProvider) {
                             MESSAGE: '為客戶提供一個專門的和誠實的心靈。另外，我們介紹給客戶的產品。'
                         },
                         CONTENT_4: {
-                            TITLE: '市場拓展',
+                            TITLE: '願景',
                             SUB_TITLE: '為了讓更多的商店潛力',
                             MESSAGE: '當下 技術過得很快，我們的眼光打開外部市場的重要性。為了適應新的客戶和技術，更快地進入世界...'
                         }
