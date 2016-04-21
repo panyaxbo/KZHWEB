@@ -690,3 +690,15 @@ span.sale {
 legend.contact-us {
     color:white;
 }
+
+.marketing-subtitle {
+    color:whitesmoke;
+}
+.footer-container {
+    width : 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.footer-brand {
+    margin-bottom: 10px;
+}

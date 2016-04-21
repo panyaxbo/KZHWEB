@@ -107,6 +107,10 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         $scope.Paypal = args.Paypal;
     //    console.log($scope.Paypal);
     });
+
+    $scope.$on('handleFooterMenuBroadcast', function (event, args) {
+        $scope.SelectedMenu = args.SelectedMenu;
+    });
     $scope.$on('handleHeadMenuBroadcast', function (event, args) {
     //    console.log('broadcast from head to body '+args.SelectedMenu);
         $scope.SelectedMenu = args.SelectedMenu;
@@ -279,7 +283,9 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
       console.log($scope.SearchAllText);
       ProductService.SearchProductWithCondition($scope.SearchAllText)
       .then(function(data, status) {
-          $scope.Product = data;
+          $scope.Products = data;
+          $scope.totalItems = $scope.Products.length;
+          $scope.bigTotalItems = $scope.Products.length;
           $scope.SelectedMenu = "product";
       }, function(error, status) {
           console.log('error', error);
@@ -491,25 +497,12 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         // Load Product by ProductCategoryCode
     $scope.LoadProductByProductCategoryCode = function (ProductCategoryCode) {
         $('html, body').animate({ scrollTop: $('#product-section').offset().top }, 'slow');
-/*
-        var url = ENV.apiEndpoint + "/products/LoadProductByProductCategoryCode/" + ProductCategoryCode;
-        $http.get(url)
-            .success(function (data) {
-                console.log(data);
-                $scope.Product = data;
 
-                $scope.SelectedMenu = "product";
-                $scope.$emit('handleBodyMenuEmit', {
-                    SelectedMenu: "product"
-                });
-            })
-            .error(function (err) {
-                //    alert("Cannot get Product data from Server..");
-                sweetAlert("Error !!", "Cannot get Product data from Server..", "error");
-            });*/
         ProductService.LoadProductByProductCategoryCode(ProductCategoryCode)
         .then(function(data, status) {
             $scope.Products = data;
+
+            $scope.totalItems = $scope.Products.length;
             $scope.bigTotalItems = $scope.Products.length;
             $scope.SelectedMenu = "product";
             $scope.$emit('handleBodyMenuEmit', {
@@ -4318,7 +4311,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 EmailService.SendEmailFeedback(mailObj);
           })
           .then(function(data, status) {
-                swal("สำเร็จ !!!", "ทางทีมงานขอบคุณลูกค้าสำหรับข้อเสอนแนะ", "success");
+                swal("สำเร็จ !!!", "ทางทีมงานขอบคุณลูกค้าสำหรับข้อเสนอแนะ", "success");
 
                 $scope.Feedback.Subject = '';
                 $scope.Feedback.Message = '';

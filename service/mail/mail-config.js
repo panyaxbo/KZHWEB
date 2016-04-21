@@ -75,24 +75,45 @@ config.MAIL_CONTENT_FOOTER = '<p>&nbsp;</p>'+
                       '<table style="margin:6px 0 10px 0;padding-left:17px;padding-right:17px" width="650" border="0" cellspacing="0" cellpadding="0">'+
                         '<tbody>'+
 						'<tr>'+
-                            '<td width="215" valign="center" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif"><img width="48" height="48" src="cid:tyre@kzh.parts.co.th"></td>'+
-							
-                            '<td width="215" valign="center" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif"><img width="48" height="48" src="cid:lubricant@kzh.parts.co.th">'+
+                            '<td width="100" valign="center" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif">'+
+                            '<img width="48" height="48" src="cid:tyre@kzh.parts.co.th">'+
                             '</td>'+
-							
-                            '<td width="215" valign="center" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif">'+
+							'<td width="115" valign="top" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif">'+
+                            'ยางนอก - ยางใน'+
+                            '</td>'+
+                            '<td width="100" valign="center" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif">'+
+                            '<img width="48" height="48" src="cid:lubricant@kzh.parts.co.th">'+
+                            '</td>'+
+							'<td width="115" valign="top" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif">'+
+                            'น้ำมันเครื่อง'+
+                            '</td>'+
+                            '<td width="100" valign="center" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif">'+
                               '<img width="48" height="48" src="cid:battery@kzh.parts.co.th">'+
                             '</td>'+
-                            
+                            '<td width="115" valign="top" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif">'+
+                            'แบตเตอรี่'+
+                            '</td>'+
                         '</tr>'+
 						'<tr><td>&nbsp;</td></tr>'+
 						'<tr>'+
-                            '<td width="215" valign="top" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif"><img width="48" height="48" src="cid:brake@kzh.parts.co.th"></td>'+
-                            '<td width="215" valign="top" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif"><img width="48" height="48" src="cid:shock@kzh.parts.co.th">'+
+                            '<td width="100" valign="top" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif">'+
+                            '<img width="48" height="48" src="cid:brake@kzh.parts.co.th">'+
                             '</td>'+
-                            '<td width="215" valign="top" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif"><img width="48" height="48" src="cid:wrench@kzh.parts.co.th">'+
+                            '<td width="115" valign="top" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif">'+
+                            'ระบบเบรค'+
                             '</td>'+
-                        
+                            '<td width="100" valign="top" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif">'+
+                            '<img width="48" height="48" src="cid:shock@kzh.parts.co.th">'+
+                            '</td>'+
+                            '<td width="115" valign="top" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif">'+
+                            'โช๊คอัพ'+
+                            '</td>'+
+                            '<td width="100" valign="top" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif">'+
+                            '<img width="48" height="48" src="cid:wrench@kzh.parts.co.th">'+
+                            '</td>'+
+                            '<td width="115" valign="top" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif">'+
+                            'เครื่องมือ'+
+                            '</td>'+
                         '</tr>'+
 						
                     '</tbody></table>'+
@@ -102,12 +123,12 @@ config.MAIL_CONTENT_FOOTER = '<p>&nbsp;</p>'+
                 '<td style="border-top:#e41f28 solid 4px">'+
                       '<table style="margin:6px 0 10px 0;padding-left:17px;padding-right:17px" width="650" border="0" cellspacing="0" cellpadding="0">'+
                         '<tbody><tr>'+
-                            '<td width="286" valign="top" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif">30-32&nbsp;Moo.2&nbsp;Thepnimit&nbsp;Road&nbsp;'+
+                            '<td width="220" valign="top" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif">30-32&nbsp;Moo.2&nbsp;Thepnimit&nbsp;Road&nbsp;'+
                                 '<br>Ra-ngang Tumbol'+
 								'<br>Srikhoraphum Amphoe'+
 								'<br>Surin Province'+
                                 '<br>THAILAND 32110</td>'+
-                            '<td width="115" valign="top" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif">'+
+                            '<td width="150" valign="top" style="color:#4c4c4c;font:normal 13px/18px Arial,Helvetica,sans-serif">'+
 							'<br>Tel. :'+
                                 '<br><br>Email :'+
                                     '<br>Website & Shopping :'+
@@ -116,7 +137,7 @@ config.MAIL_CONTENT_FOOTER = '<p>&nbsp;</p>'+
 								'<br>+66 044 561-125'+
 								'<br><br>'+
                                 '<a href="mailto:kzh.parts@gmail.com" target="_blank">kzh.parts@gmail.com</a>'+
-                                    '<br><a href="http://kzh-parts.com" target="_blank">http://kzh-parts.com</a>'+
+                                    '<br><a href="http://kzh-parts.com" target="_blank">KZH Parts Shopping Online</a>'+
                             '</td>'+
                             '<td width="89" align="right">'+
                                 '<img src="cid:KZHLogo@kzh.parts.co.th" width="80" height="30" >'+

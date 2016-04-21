@@ -165,6 +165,8 @@ app.config(function ($translateProvider) {
                     PAYMENT_TITLE : 'การจัดส่งและการสั่งซื้อ',
                     PAYMENT_CHART : 'แผนผังการสั่งซื้อสินค้า',
                     PAYMENT_STEP : 'ขั้นตอนการสั่งซื้อสินค้า',
+                    PAYMENT_RETURN : 'การคืนสินค้า',
+
                     STEP_01 : '1. เมื่อเข้าสู่เว็ปไซต์ http://kzh-parts.com ท่านสามารถกดที่ปุ่ม “เข้าสู่ระบบ” ดังภาพด้านล่าง',
                     STEP_02 : '2. หน้าต่างการเข้าสู่ระบบ/ลงทะเบียน ถ้าท่านยังไม่มีบัญชีเข้าระบบ ที่ส่วนด้านขวาท่านสามารถลงทะเบียนได้ หรือท่านสามารถเข้าสู่ระบบได้ถ้าท่านมีบัญชีอยู่แล้ว หรือสามารถเข้าสู่ระบบด้วยบัญชีโซเชียลอื่นๆ ได้',
                     STEP_03 : '3. ใส่รายละเอียด อีเมลล์ ชื่อผู้ใช้ รหัสผ่าน ของท่าน ตรวจสอบตัวตนและยอมรับข้อตกลง แล้วกดปุ่ม “ลงทะเบียน”', 
@@ -192,30 +194,34 @@ app.config(function ($translateProvider) {
                     POST_NORMAL: 'ไปรษณีย์ธรรมดา',
                     POST_EMS: 'ไปรษณีย์ EMS',
                     TABLE_HEAD_WEIGHT: 'น้ำหนัก（g）',
-                    TABLE_HEAD_RATE: 'อัตรา'
+                    TABLE_HEAD_RATE: 'อัตรา',
+                    RETURN_CONDITION : {
+                        COND_01 : '1. สินค้าต้องอยู่ในสภาพสมบูรณ์ ไม่มีการแกะฉีก แกะ หรือ ตัดห่อวัสดุ ออก',
+                        COND_02 : '2. '
+                    }
                 },
                 ABOUT: {
                     HEAD: "เกี่ยวกับเรา",
                     MARKETING: {
                         CONTENT_1: {
-                            TITLE: 'Title',
-                            SUB_TITLE: 'Sub Title',
-                            MESSAGE: 'Message'
+                            TITLE: 'ลูกค้า',
+                            SUB_TITLE: 'หนึ่งในความสำคัญของร้าน',
+                            MESSAGE: 'ลูกค้ามีส่วนสำคัญที่จะทำให้ร้านสามารถก้าวไปต่อได้ '
                         },
                         CONTENT_2: {
-                            TITLE: 'Title',
-                            SUB_TITLE: 'Sub Title',
-                            MESSAGE: 'Message'
+                            TITLE: 'สินค้า',
+                            SUB_TITLE: 'จำหน่ายทั้งยี่ห้อที่มีคุณภาพและตามที่ลูกค้าพึงพอใจ',
+                            MESSAGE: 'ทั้งสินค้า อะไหล่มอเตอร์ไซค์ น้ำมันเครื่อง ยางนอก-ยางใน ทั้งสินค้าที่ได้รับการยอมรับแพร่หลาย หรือสินค้าคุณภาพทางเลือก'
                         },
                         CONTENT_3: {
-                            TITLE: 'Title',
-                            SUB_TITLE: 'Sub Title',
-                            MESSAGE: 'Message'
+                            TITLE: 'การบริการ',
+                            SUB_TITLE: 'อีกหนึ่งในความสำคัญของร้าน',
+                            MESSAGE: 'ให้บริการลูกค้าด้วยใจที่ทุ่มเทและความซื่อสัตย์ ตลอดไปจนถึงแนะนำสินค้าให้กับลูกค้า'
                         },
                         CONTENT_4: {
-                            TITLE: 'Title',
-                            SUB_TITLE: 'Sub Title',
-                            MESSAGE: 'Message'
+                            TITLE: 'ความพยายามเปิดตลาดข้างนอก',
+                            SUB_TITLE: 'เพื่อเพิ่มศักยภาพกับทางร้านให้มากขึ้น',
+                            MESSAGE: 'ในปัจจุบันเทคโนโลยีไปเร็วมาก ทางร้านเล็งเห็นความสำคัญในการเปิดตลาดภายนอก เพื่อรองรับกับลูกค้ารายใหม่ๆและโลกที่หมุนเร็วขึ้น...'
                         }
                     }
                 },
@@ -231,6 +237,7 @@ app.config(function ($translateProvider) {
                         SELECT_SUBJECT: '--- เลือก หัวข้อ ---',
                         SUBJECT_TYPE : {
                             GENERAL_USAGE: 'การใช้งานทั่วไป',
+                            PRODUCT_INQUIRY: 'สอบถามสินค้า',
                             PROBLEM_OCCUR: 'เกิดปัญหาระหว่างใช้งาน',
                             SHIPMENT_PROCESS: 'การขนส่ง',
                             PAYMENT_PROCESS: 'การชำระเงิน',
@@ -694,9 +701,10 @@ app.config(function ($translateProvider) {
                 HEAD : 'เครื่องมือ',
                 REMARK : 'ตอบโจทย์ปัญหาของช่างทุกคน'
             },
-            COPY_RIGHT : "",
-            CONTACT_US : "",
-            AVAILABLE_ON_APPSTORE_PLAYSTORE : "สามารถโหลดแอพพลิเคชั่นผ่านมือถือที่ แอพสโตร์ และ เพลสโตร์"
+            COPY_RIGHT : 'สงวนลิขสิทธิ์ 2016 KZHParts ประเทศไทย',
+            CONTACT_US : 'ติดต่อ ทีม KZHParts ได้ที่นี่',
+            AVAILABLE_ON_APPSTORE_PLAYSTORE : 'สามารถโหลดแอพพลิเคชั่นผ่านมือถือที่ แอพสโตร์ และ เพลสโตร์',
+            COMING_SOON : 'เร็วๆนี้...'
         },
         MESSAGE : {
             TYPE_SUCCESS : "success",
@@ -924,24 +932,24 @@ app.config(function ($translateProvider) {
                     HEAD : "About us",
                     MARKETING: {
                         CONTENT_1: {
-                            TITLE: '',
-                            SUB_TITLE: '',
-                            MESSAGE: ''
+                            TITLE: 'Customer',
+                            SUB_TITLE: 'One of the most important thing for store',
+                            MESSAGE: 'Customers are the key to making things can move forward'
                         },
                         CONTENT_2: {
-                            TITLE: '',
-                            SUB_TITLE: '',
-                            MESSAGE: ''
+                            TITLE: 'Product',
+                            SUB_TITLE: 'All brand and product quality to customer satisfaction',
+                            MESSAGE: 'The motorcycle spare parts, lubricant and inner-outer tyres which have been widely accepted or alternative Product'
                         },
                         CONTENT_3: {
-                            TITLE: '',
-                            SUB_TITLE: '',
-                            MESSAGE: ''
+                            TITLE: 'Services',
+                            SUB_TITLE: 'One of another priorities of the store.',
+                            MESSAGE: 'Providing customers with a dedicated and honest mind. Additional, we introduce the product to the customer.'
                         },
                         CONTENT_4: {
-                            TITLE: '',
-                            SUB_TITLE: '',
-                            MESSAGE: ''
+                            TITLE: 'Market Expansion',
+                            SUB_TITLE: 'To make more store potentiality',
+                            MESSAGE: 'Nowaday technology goes quickly that we vision the importance of opening external markets. To accommodate the new customers and the world with technology which goes faster ...'
                         }
                     }
                 },
@@ -957,6 +965,7 @@ app.config(function ($translateProvider) {
                         SELECT_SUBJECT: '--- Select Subject ---',
                         SUBJECT_TYPE : {
                             GENERAL_USAGE: 'General Usage',
+                            PRODUCT_INQUIRY: 'Product Inquiry',
                             PROBLEM_OCCUR: 'Problem occur during usage',
                             SHIPMENT_PROCESS: 'Shipment process',
                             PAYMENT_PROCESS: 'Payment process',
@@ -1337,25 +1346,29 @@ app.config(function ($translateProvider) {
             },
             LUBRICANT : {
                 HEAD : 'Lubricant',
-                REMARK : 'All high and normal quality brand.'
+                REMARK : 'Innumerable high and fair quality of lubricant brand for motorcycle, car and Tractor'
             },
             BATTERY : {
                 HEAD : 'Battery',
-                REMARK : 'All Motorcycle, Car and Tractor  '
+                REMARK : 'Various quality and alternatives brand Motorcycle, Car and Tractor.'
             },
             BRAKE : {
                 HEAD : 'Brake System',
-                REMARK : 'Make every drive with confident.'
+                REMARK : 'Make confident in performance while driving and in every situation.'
             },
             SHOCK : {
                 HEAD : 'Shock Absorber',
-                REMARK : 'Feel soft and good'
+                REMARK : 'Feel soft and good for every driving and situation'
             },
             WRENCH : {
                 HEAD : 'Tools',
                 REMARK : 'Worker trust with brand quality tools'
             },
-            AVAILABLE_ON_APPSTORE_PLAYSTORE : "We are also available on AppStore and PlayStore"
+            COPY_RIGHT : 'Copyright 2016 KZHParts Thailand',
+            CONTACT_US : 'Contact KZHParts team here',
+            AVAILABLE_ON_APPSTORE_PLAYSTORE : 'We are also available on AppStore and PlayStore',
+            COMING_SOON : 'Coming Soon...'
+            
         }
     });
     $translateProvider.translations('cn', {
@@ -1551,25 +1564,25 @@ app.config(function ($translateProvider) {
                 ABOUT : {
                     HEAD: "關於我們",
                     MARKETING: {
-                        SUB_TITLE: '',
                         CONTENT_1: {
-                            TITLE: '',
-                            MESSAGE: ''
+                            TITLE: '顧客',
+                            SUB_TITLE: '其中一個用於存儲最重要的事情',
+                            MESSAGE: '客戶是關鍵，使事情能夠向前邁進'
                         },
                         CONTENT_2: {
-                            TITLE: '',
-                            SUB_TITLE: '',
-                            MESSAGE: ''
+                            TITLE: '產品',
+                            SUB_TITLE: '所有的品牌和優質的產品讓客戶滿意',
+                            MESSAGE: '已被廣泛接受的或替代產品的摩托車零配件，潤滑劑和內外胎'
                         },
                         CONTENT_3: {
-                            TITLE: '',
-                            SUB_TITLE: '',
-                            MESSAGE: ''
+                            TITLE: '服務',
+                            SUB_TITLE: '一個商店的另一個重點。',
+                            MESSAGE: '為客戶提供一個專門的和誠實的心靈。另外，我們介紹給客戶的產品。'
                         },
                         CONTENT_4: {
-                            TITLE: '',
-                            SUB_TITLE: '',
-                            MESSAGE: ''
+                            TITLE: '市場拓展',
+                            SUB_TITLE: '為了讓更多的商店潛力',
+                            MESSAGE: '當下 技術過得很快，我們的眼光打開外部市場的重要性。為了適應新的客戶和技術，更快地進入世界...'
                         }
                     }
                 },
@@ -1585,6 +1598,7 @@ app.config(function ($translateProvider) {
                         SELECT_SUBJECT: '--- 選擇主題 ---',
                         SUBJECT_TYPE : {
                             GENERAL_USAGE: '一般使用',
+                            PRODUCT_INQUIRY: '產品查詢',
                             PROBLEM_OCCUR: '問題在使用過程中會出現',
                             SHIPMENT_PROCESS: '發貨流程',
                             PAYMENT_PROCESS: '支付流程',
@@ -1924,31 +1938,32 @@ app.config(function ($translateProvider) {
         FOOTER : {
             TYRE : {
                 HEAD : '內 - 外 輪胎',
-                REMARK : 'ด้วยยางเกรดคุณภาพ และทั่วไป'
+                REMARK : '憑著過硬的質量和優質的替代輪胎'
             },
             LUBRICANT : {
                 HEAD : '潤滑劑',
-                REMARK : 'น้ำมันหล่อลื่นคุณภาพดี ซึ่งมีจำหน่ายหลากหลายยี่ห้อ'
+                REMARK : '各種品牌的潤滑油摩托車和汽車'
             },
             BATTERY : {
                 HEAD : '摩托車 - 汽車 電池',
-                REMARK : ''
+                REMARK : '各種品牌的電池摩托車和汽車'
             },
             BRAKE : {
                 HEAD : '制動系統',
-                REMARK : 'ทำให้เชื่อมั่นในการขับขี่ยานพาหนะ ไม่ว่าสถานการณ์ไหน'
+                REMARK : '對性能有信心，而駕駛，並在任何情況下'
             },
             SHOCK : {
                 HEAD : '減震器',
-                REMARK : 'ช่วงล่างที่แน่นรู้สึกสบายและมั่นใจในยามขับขี่'
+                REMARK : '覺得各種行駛狀況和柔軟性好'
             },
             WRENCH : {
                 HEAD : '工具',
-                REMARK : ''
+                REMARK : '以品牌質量工具工人的信任'
             },
-            COPY_RIGHT : "",
-            CONTACT_US : "",
-            AVAILABLE_ON_APPSTORE_PLAYSTORE : "我們也可在 AppStore 上和 PlayStore"
+            COPY_RIGHT : '版權所有2016年 KZHParts 泰國',
+            CONTACT_US : '聯繫 KZHParts 隊這邊',
+            AVAILABLE_ON_APPSTORE_PLAYSTORE : "我們也可在 AppStore 上和 PlayStore",
+            COMING_SOON : '快來了...'
         }
     });
     $translateProvider.preferredLanguage('th');
@@ -1965,6 +1980,9 @@ app.run(function ($rootScope) {
     });
     $rootScope.$on('handleBodyMenuEmit', function (event, args) {
         $rootScope.$broadcast('handleBodyMenuBroadcast', args);
+    });
+    $rootScope.$on('handleFooterMenuEmit', function (event, args) {
+        $rootScope.$broadcast('handleFooterMenuBroadcast', args);
     });
     //For update curency
     $rootScope.$on('handleCurrencyEmit', function (event, args) {

@@ -572,6 +572,8 @@ router.post('/CustomerSendFeedback', function (req, res) {
 	var subject = '';
 	if (mailObj.Subject === 'general_usage') {
 		subject = 'การใช้งานทั่วไป';
+	} else if (mailObj.Subject === 'product_inquiry') {
+		subject = 'สอบถามสินค้า';
 	} else if (mailObj.Subject === 'problem_occur') {
 		subject = 'เกิดปัญหาระหว่างใช้งาน';
 	} else if (mailObj.Subject === 'shipment_process') {
@@ -609,7 +611,7 @@ router.post('/CustomerSendFeedback', function (req, res) {
 '	<tbody>'+
 '		<tr>'+
 '			<td style="border-top:#e41f28 solid 6px;font:normal 13px/18px Arial,Helvetica,sans-serif;padding:45px 17px 30px 17px" valign="top">'+
-'			<h2 style="font:normal"><img height="20" src="cid:feedback@kzh.parts.co.th" style="margin-right:10px" width="21" >&nbsp;&nbsp;เรียนทีมงาน KZHParts ผม/ดิฉัน มีข้อเสนอแนะเรื่อง <br><br>'+
+'			<h2 style="font:normal"><img height="20" src="cid:feedback@kzh.parts.co.th" style="margin-right:10px" width="21" >&nbsp;&nbsp;เรียนทีมงาน KZHParts ผม/ดิฉัน มีข้อสอบถาม/ข้อเสนอแนะเรื่อง <br><br>'+
 '\''+ subject + '\' โดยมีรายละเอียด ดังนี้</h2>'+
 '			<p> ' + mailObj.Message + ' <br>'+
 '			<br>'+
