@@ -143,7 +143,19 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
      
     });
 
-
+    var tid = setInterval( function () {
+        if ( document.readyState !== 'complete' ) return;
+        clearInterval( tid );       
+        // do your work
+        if ($scope.SelectedLocale === 'th') {
+          (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
+        } else if ($scope.SelectedLocale === 'us') {
+          (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
+        } else if ($scope.SelectedLocale === 'cn') {
+          (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
+        }
+    }, 100 );
+    
     $scope.$on('handleUserBroadcast', function (event, args) {
         $scope.User = args.User;
         $scope.ViewAppUserData = args.User;
