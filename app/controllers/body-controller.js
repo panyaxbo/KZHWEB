@@ -1,8 +1,12 @@
-app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout", "$anchorScroll", "$filter", "ngTableParams", "Upload", "$rootScope", "blockUI", "$http", 
+app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout", "$anchorScroll", "$filter", "ngTableParams", "Upload", "$rootScope", 
+ //   "blockUI", 
+    "$http", 
     "$filter", "MenuService", "ReceiptOrderService", "UserService", "CompanyService", "ENV", "ProductService", "ProductTypeService",
     "ProductCategoryService", "ProvinceService", "DistrictService", "SubDistrictService", "AppConfigService" ,"WeightRateService",
     "AWSService", "EmailService", "FeedbackService",
-    function ($scope, $location, $window, $timeout, $anchorScroll, $filter, ngTableParams, Upload, $rootScope, blockUI, $http, $filter, 
+    function ($scope, $location, $window, $timeout, $anchorScroll, $filter, ngTableParams, Upload, $rootScope,
+   //  blockUI, 
+     $http, $filter, 
         MenuService, ReceiptOrderService, UserService, CompanyService, ENV, ProductService, ProductTypeService, ProductCategoryService,
         ProvinceService, DistrictService, SubDistrictService, AppConfigService, WeightRateService, AWSService, EmailService,FeedbackService) {
 
@@ -53,8 +57,8 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     $scope.SelectedLocale = "th";
     $scope.Company = {};
 
-    $scope.IsProductTypeDataAvailable = false;
-    $scope.IsProductDataAvailable = false;
+    $scope.IsProductTypeDataReady = false;
+    $scope.IsProductDataReady = false;
     //    $scope.ROLineList = $rootScope.ROLineList;
 
     // Initialize General Setting Module
@@ -154,8 +158,8 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         } else if ($scope.SelectedLocale === 'cn') {
           (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
         }
-    }, 100 );
-    
+    }, 2000 );
+
     $scope.$on('handleUserBroadcast', function (event, args) {
         $scope.User = args.User;
         $scope.ViewAppUserData = args.User;
@@ -245,39 +249,27 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     $scope.bigTotalItems = 20;
     $scope.bigCurrentPage = 1;
 
-    $scope.LoadProduct = function () {
-        ProductService.LoadProduct()
-        .then(function(data, status) {
-            console.log('LoadProduct');
-            $scope.Products = data;
-            $scope.totalItems = $scope.Products.length;
-            $scope.bigTotalItems = $scope.Products.length;
 
-            $scope.IsProductDataAvailable = true;
+    ProductService.LoadProduct()
+    .then(function(data, status) {
+        console.log('LoadProduct');
+        $scope.Products = data;
+        $scope.totalItems = $scope.Products.length;
+        $scope.bigTotalItems = $scope.Products.length;
 
-            if ($scope.SelectedLocale === 'th') {
-              (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
-        //      document.title = $filter('translate')('TITLE.NAME');
-       //       document.keywords = $filter('translate')('TITLE.KEYWORD');
-        //      document.description = $filter('translate')('TITLE.DESCRIPTION');
-         //     document.author = $filter('translate')('TITLE.AUTHOR');
-            } else if ($scope.SelectedLocale === 'us') {
-              (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
-        //      document.title = $filter('translate')('TITLE.NAME');
-        //      document.keywords = $filter('translate')('TITLE.KEYWORD');
-       //       document.description = $filter('translate')('TITLE.DESCRIPTION');
-       //       document.author = $filter('translate')('TITLE.AUTHOR');
-            } else if ($scope.SelectedLocale === 'cn') {
-              (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
-        //      document.title = $filter('translate')('TITLE.NAME');
-        //      document.keywords = $filter('translate')('TITLE.KEYWORD');
-        //      document.description = $filter('translate')('TITLE.DESCRIPTION');
-        //      document.author = $filter('translate')('TITLE.AUTHOR');
-            }
-        }, function (err, status) {
+        $scope.IsProductDataReady = true;
 
-        });
-    }
+        if ($scope.SelectedLocale === 'th') {
+          (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
+        } else if ($scope.SelectedLocale === 'us') {
+          (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
+        } else if ($scope.SelectedLocale === 'cn') {
+          (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
+        }
+    }, function (err, status) {
+
+    });
+ 
     $scope.setPage = function (pageNo) {
         $scope.currentPage = pageNo;
     };
@@ -320,7 +312,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         console.log(types);
         $scope.ProductTypes = types;
         ProductTypeService.ProductTypes = types;
-        $scope.IsProductTypeDataAvailable = true;
+        $scope.IsProductTypeDataReady = true;
         return ProductCategoryService.LoadProductCategoryByProductType(ProductTypeService.ProductTypes);
         
     }, function(err, status) {
@@ -418,6 +410,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             ROLine.DrContainCostPrice = SelectedProduct.ContainCostPrice;
             ROLine.DrContainWholesalePrice = SelectedProduct.ContainWholesalePrice;
             ROLine.DrContainSpecialPrice = SelectedProduct.ContainSpecialPrice;
+            ROLine.DrWeight = SelectedProduct.Weight;
             ROLine.DrContainWeight = SelectedProduct.ContainWeight;
 
             ROLine.DrUomCode = SelectedProduct.UomCode;
@@ -429,30 +422,48 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             $scope.ROHead.SumWeight += ROLine.Weight;
             console.log('$scope.ROHead.SumAmount ' + $scope.ROHead.SumAmount);
             console.log('$scope.ROHead.SumWeight ' + $scope.ROHead.SumWeight);
-            WeightRateService.GetWeightRateByPostTypeAndWeight($scope.ROHead.PostType, $scope.ROHead.SumWeight)
-            .then(function(weightRate, status) {
-                $scope.ROHead.SumWeightAmount = parseInt(weightRate.Rate);
-                $scope.ROHead.SumVatAmount += ROLine.VatAmount;
-                $scope.ROHead.SumDiscountAmount += ROLine.DiscountAmount;
-                $scope.ROHead.NetAmount = $scope.ROHead.SumAmount + $scope.ROHead.SumVatAmount + $scope.ROHead.SumWeightAmount - $scope.ROHead.SumDiscountAmount;
 
-                console.log('sum amt ', $scope.ROHead.SumAmount);
-                console.log('sum disc ',$scope.ROHead.SumDiscountAmount);
-                console.log('sum vat ',$scope.ROHead.SumVatAmount);
-                console.log('sum wt ',$scope.ROHead.SumWeightAmount);
-                console.log('net amt ',$scope.ROHead.NetAmount);
-                $scope.ROLineList.push(ROLine);
+            // In BodyController occur only Normal PostType
+            if ($scope.ROHead.PostType === 'Normal') {
+                var weight_rate = WeightRateService.GetWeightRateNormal($scope.ROHead.SumWeight);
+                $scope.ROHead.SumWeightAmount = parseInt(weight_rate);
+                    $scope.ROHead.SumVatAmount += ROLine.VatAmount;
+                    $scope.ROHead.SumDiscountAmount += ROLine.DiscountAmount;
+                    $scope.ROHead.NetAmount = $scope.ROHead.SumAmount + $scope.ROHead.SumVatAmount + $scope.ROHead.SumWeightAmount - $scope.ROHead.SumDiscountAmount;
+
+                    $scope.ROLineList.push(ROLine);
+                      
+                    $scope.ROHead.ROLineList.push(ROLine);
                   
-            
-                $scope.ROHead.ROLineList.push(ROLine);
-              
-            //    $scope.ROHead.ROLineList.push(ROLine);
-                $scope.$emit('handleReceiptOrderEmit', {
-                    ROHead: $scope.ROHead
-                });
-            }, function(error, status) {
+                    $scope.$emit('handleReceiptOrderEmit', {
+                        ROHead: $scope.ROHead
+                    });
+            } else { // In case Case but 
+                WeightRateService.GetWeightRateByPostTypeAndWeight($scope.ROHead.PostType, $scope.ROHead.SumWeight)
+                .then(function(weightRate, status) {
+                    $scope.ROHead.SumWeightAmount = parseInt(weightRate.Rate);
+                    $scope.ROHead.SumVatAmount += ROLine.VatAmount;
+                    $scope.ROHead.SumDiscountAmount += ROLine.DiscountAmount;
+                    $scope.ROHead.NetAmount = $scope.ROHead.SumAmount + $scope.ROHead.SumVatAmount + $scope.ROHead.SumWeightAmount - $scope.ROHead.SumDiscountAmount;
+/*
+                    console.log('sum amt ', $scope.ROHead.SumAmount);
+                    console.log('sum disc ',$scope.ROHead.SumDiscountAmount);
+                    console.log('sum vat ',$scope.ROHead.SumVatAmount);
+                    console.log('sum wt ',$scope.ROHead.SumWeightAmount);
+                    console.log('net amt ',$scope.ROHead.NetAmount);*/
+                    $scope.ROLineList.push(ROLine);
+                      
+                
+                    $scope.ROHead.ROLineList.push(ROLine);
+                  
+                //    $scope.ROHead.ROLineList.push(ROLine);
+                    $scope.$emit('handleReceiptOrderEmit', {
+                        ROHead: $scope.ROHead
+                    });
+                }, function(error, status) {
 
-            });
+                });
+            }
 
         /*      sweetAlert({"สำเร็จ", "ใส่รายการ " + SelectedProduct.ProductNameTh + " จำนวน " + BuyQty + " ในตะกร้าสำเร็จ !!", "success"
             }, function({
@@ -508,6 +519,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     
         // Load Product by ProductCategoryCode
     $scope.LoadProductByProductCategoryCode = function (ProductCategoryCode) {
+        $scope.IsProductDataReady = false;
         $('html, body').animate({ scrollTop: $('#product-section').offset().top }, 'slow');
 
         ProductService.LoadProductByProductCategoryCode(ProductCategoryCode)
@@ -520,6 +532,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             $scope.$emit('handleBodyMenuEmit', {
                 SelectedMenu: "product"
             });
+            $scope.IsProductDataReady = true;
         }, function(err, status) {
             sweetAlert("Error !!", "Cannot get Product data from Server..", "error");
         });
@@ -557,7 +570,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             });
         $("#div-product-type-table").show("slow");
         $("#div-product-type-detail").hide("slow");
-
     }
 
     $scope.NewProductType = function () {
@@ -669,7 +681,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         $scope.ProductTypeUpdateDate = $filter('date')(newValue, 'dd/MM/yyyy HH:mm'); // Or whatever format your input should use
     });
     $scope.SaveProductType = function () {
-
         if ($scope.ViewProductTypeData._id == '' || $scope.ViewProductTypeData._id == undefined) {
             $scope.CreateProductType();
         } else if ($scope.ViewProductTypeData._id != '') {
@@ -1412,16 +1423,18 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     }
 
     $scope.LoadProductImageByProductCode = function(refId, id, code) {
-        // Download Image for User Thumbnail
+        // Download Image for Product Thumbnail
         var downloadUrl = ENV.apiEndpoint + '/aws/downloadProductImageShop/' + id + '/' + code;
         $http.get(downloadUrl)
         .success(function (data, status, headers, config) {
-        //    $scope.User.ProfileImage = data;
             $('#ThumbnailProductImage_'+code).children("img").remove();
             $('#ThumbnailProductImage_'+code).append(data);
+        
+            document.getElementById('ImageDataReady_'+code).style.display = 'none';
+        //    $('ImageDataReady_'+code).hide();
         })
         .error(function (data, status, headers, config) {
-            console.log(data);
+        //    console.log(data);
         });
     }
     $scope.CheckPromotionIsExpire = function(expireDate) {
@@ -3817,7 +3830,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
 
     $scope.ValidateFinish = function() {
         console.log('ValidateFinish');
-        blockUI.start("Processing ...");
+     //   blockUI.start("Processing ...");
         var newcode = '';
    /*     var newCodeUrl = ENV.apiEndpoint + "/appconfig/GetNewCode/RO";
         $http.get(newCodeUrl)
@@ -3875,7 +3888,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         AppConfigService.GetNewCode("RO")
         .then(function(data, status) {
             newcode = data;
-            blockUI.message("25%");
+    //        blockUI.message("25%");
             $scope.ROHead.RODate = new Date(); //(new Date()).toISOString();
             $scope.ROHead.RONo = newcode;
             $scope.ROHead.ROLineList = $scope.ROLineList;
@@ -3887,29 +3900,29 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             $scope.ROHead.StaffApprovePaymentStatus = "N";
             return ReceiptOrderService.CreateReceiptOrder($scope.ROHead);
         }, function(err, status) {
-            blockUI.stop();
+    //        blockUI.stop();
             console.log('err create receipt ', err);
         })
         .then(function(data, status) {
-            blockUI.message("53%");
+    //        blockUI.message("53%");
             return EmailService.SendEmailStaffNewOrder(newcode);
         }, function(err, status) {
-            blockUI.stop();
+    //        blockUI.stop();
             console.log('create ro head ', err);
         })
         .then(function(data, status) {
-            blockUI.message("74%");
+    //        blockUI.message("74%");
             return EmailService.SendEmailCustomerNewOrder($scope.User.Email, newcode);
         }, function(err, status) {
-            blockUI.stop();
+     //       blockUI.stop();
             console.log('error sending email staff ', err);
         })
         .then(function(data, status) {
-            blockUI.message("98%");
-            blockUI.stop();
+    //        blockUI.message("98%");
+    //        blockUI.stop();
             swal("Thank you for your order", "You can check and track your order in history.", "success");
         }, function(err, status) {
-            blockUI.stop();
+    //        blockUI.stop();
             console.log('error sending email customer ', err);
         });
     }

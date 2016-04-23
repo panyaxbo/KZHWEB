@@ -702,3 +702,12 @@ legend.contact-us {
 .footer-brand {
     margin-bottom: 10px;
 }
+.warn-excess-ems-weight {
+    color : red;
+}
+.loading-product-image {
+    margin-top:5em;
+    height:200px;
+    position:relative;
+    color:#333;
+}

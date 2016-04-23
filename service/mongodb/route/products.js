@@ -128,6 +128,7 @@ router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
                 for (var i = 0; i < items.length; i++) {
                 //    console.log("items[" +i+"]");
                     var product = items[i];
+                    product.ImageDataReady = false;
                     processing(product, function (err, product) {
 
                         if (err) console.log(err, err.stack.split("\n"));

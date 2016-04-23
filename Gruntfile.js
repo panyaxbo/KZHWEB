@@ -52,7 +52,7 @@ module.exports = function (grunt) {
         tasks: ['express:dev'],
         options: {
           spawn: false,
-          livereload: true
+          livereload: false
         }
       },
       jsTest: {

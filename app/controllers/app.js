@@ -1,8 +1,9 @@
 'use strict';
 
-var app = angular.module('KZHWEB', ['ngRoute','ngAnimate', 'ui.bootstrap', 'ngFileUpload', '720kb.datepicker','blockUI'
-    ,'ngDialog', 'ngPasswordStrength', 'ngTable','pascalprecht.translate', 'vcRecaptcha','autocomplete', 
-    'ngCookies', 'CONFIG']);
+var app = angular.module('KZHWEB', ['ngRoute','ngAnimate', 'ui.bootstrap', 'ngFileUpload', '720kb.datepicker',
+    //'blockUI',
+    'ngDialog', 'ngPasswordStrength', 'ngTable','pascalprecht.translate', 'vcRecaptcha','autocomplete', 
+    'ngCookies', 'CONFIG', 'angular-loading-bar']);
 
 //Config translate
 app.config(function ($translateProvider) {
@@ -90,7 +91,7 @@ app.config(function ($translateProvider) {
                     NORMAL: 'ไปรษณีย์ธรรมดา',
                     EMS: 'ไปรษณีย์ด่วนพิเศษ'
                 },
-
+                WARN_EMS : '*** น้ำหนัก EMS เกิน 20kg ***',
                 NETAMT: 'ยอดสุทธิ',
                 SHOP_BUTTON: 'ดูสินค้า',
                 SAVE_BUTTON: 'บันทึกตะกร้า',
@@ -831,6 +832,7 @@ app.config(function ($translateProvider) {
                     NORMAL: 'Normal',
                     EMS: 'EMS'
                 },
+                WARN_EMS : '*** EMS weight excess 20kg ***',
                 NETAMT: 'Net Amount',
                 SHOP_BUTTON: 'Continue Shopping',
                 SAVE_BUTTON: 'Save Cart',
@@ -1465,6 +1467,7 @@ app.config(function ($translateProvider) {
                     NORMAL: '正常',
                     EMS: 'EMS'
                 },
+                WARN_EMS : '*** EMS體重過量20公斤 ***',
                 NETAMT: '淨額',
                 SHOP_BUTTON: '繼續購物',
                 SAVE_BUTTON: '救車',
@@ -1968,6 +1971,11 @@ app.config(function ($translateProvider) {
     });
     $translateProvider.preferredLanguage('th');
 });
+
+app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
+    cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Custom Loading Message...</div>';
+}]);
 
 app.run(function ($rootScope) {
     /*

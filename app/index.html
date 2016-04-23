@@ -24,7 +24,8 @@
     <link rel="stylesheet" href="/bower_components/pnotify/pnotify.history.css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" />
     <link rel="stylesheet" href="/bower_components/sweetalert/dist/sweetalert.css" />
-    <link rel="stylesheet" href="/bower_components/angular-block-ui/dist/angular-block-ui.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.min.css" media='all'/>
+ <!--   <link rel="stylesheet" href="/bower_components/angular-block-ui/dist/angular-block-ui.min.css" />-->
     <link rel="stylesheet" href="/bower_components/ng-table/dist/ng-table.min.css">
     <link rel="stylesheet" href="/bower_components/magnifier/magnifier.css">
     <link rel="stylesheet" href="styles/bootstrap-magnify.css">
@@ -72,6 +73,7 @@
         </div>
     </div>
     <div class="container">
+    <div id="loading-bar-container"></div>
         <div class="header container-fluid" id="div-header" ng-controller="HeaderController" style="top: 0px;padding-bottom:10px;margin-bottom: 10px; margin-top:15px">
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <a href="#/">
@@ -198,10 +200,12 @@
                                                                     <td colspan="2"> </td>
                                                                     <td colspan="1"> 
                                                                         <select class="form-control" ng-model="ROHead.PostType" required="required" ng-change="ChangePostType()">
-                                                                            <option value="">{{'HEAD.MODAL_CART.POST_TYPE.SELECT_POST_TYPE' | translate}}</option>
+                                                                        <!--    <option value="">{{'HEAD.MODAL_CART.POST_TYPE.SELECT_POST_TYPE' | translate}}</option>-->
                                                                             <option value="Normal">{{'HEAD.MODAL_CART.POST_TYPE.NORMAL' | translate}}</option>
-                                                                            <option value="EMS" >{{'HEAD.MODAL_CART.POST_TYPE.EMS' | translate}}</option>
+                                                                            <option value="EMS" ng-disabled="ROHead.SumWeight > 20000" >{{'HEAD.MODAL_CART.POST_TYPE.EMS' | translate}}</option>
                                                                         </select>
+
+                                                                        <label class="warn-excess-ems-weight" ng-show="ROHead.SumWeight > 20000"> {{'HEAD.MODAL_CART.WARN_EMS' | translate}} </label>
                                                                     </td>
                                                                     <td colspan="2">  
                                                                         <h5>{{'HEAD.MODAL_CART.SUMWEIGHTAMT' | translate}}</h5>
@@ -592,7 +596,6 @@
         </div>
         <!--ng-show="IsProductTypeDataAvailable && IsProductDataAvailable" -->
         <div id="div-body" ng-controller="BodyController">
-            
                 <div class="input-group search-form">
                   <input type="text" class="form-control" ng-model="SearchAllText" ng-enter="Search()" ng-keydown="expression" placeholder="{{'HEAD.MENU.SEARCH.PLACEHOLDER' | translate}}">
                   <span class="input-group-btn">
@@ -681,9 +684,9 @@
                             </td>
                         </tr>
                     </table>-->
-                    <div id="ProductType" >
+                    <div id="ProductType">
                         <div class="list-group panel">
-                            <div ng-repeat="ProductType in ProductTypes">
+                            <div ng-if="IsProductTypeDataReady" ng-repeat="ProductType in ProductTypes">
                                 <a href="#{{ProductType.ProductTypeCode}}" class="list-group-item list-group-item-success" 
                                 data-toggle="collapse" data-parent="#ProductType" ng-show="SelectedLocale=='th'">
                                 {{ProductType.ProductTypeNameTh}}
@@ -718,8 +721,15 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row" ng-if="!IsProductTypeDataReady">
+                                <center>
+                                    <i class="fa fa-spinner fa-pulse fa-4x fa-fw margin-bottom"></i>
+                                    <span class="sr-only">Loading...</span>
+                                </center>
+                            </div>
                         </div>
                     </div>
+                   
                     <!-- Google Map & Thai-Post Image-->
                     <table>
                         <tr>
@@ -757,136 +767,150 @@
                 <!-- div-nav-->
                 
                 <div id="div-change-view">
-                    <div id="product-section" name="product-section" ng-init="LoadProduct()" class="section animated fadeIn" 
-                    ng-show="SelectedMenu === 'product'" style="padding-top:0px">
-                        <div class="row text-center" >
-                            <uib-pagination items-per-page="itemsPerPage"
-                    ng-model="currentPage" boundary-links="true" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" class="pagination" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3 col-sm-4 col-xs-6" ng-repeat="p in Products.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage))">
-                                <div class="product-detail">
-                                    <div class="product-gallery-footer">
-                                        <div class="mag thumbnailProductImage" style="height:200px">
-                                            <img src="/images/no-image.png" class="img-responsive" ng-show="p.ProductImageRefId.length <= 0 || p.ProductImageRefId === undefined">
-                                            <div class="label-hot animated infinite pulse" ng-show="p.IsHot"> {{'BODY.SECTION.PRODUCT.LABEL_HOT' | translate}}</div>
-                                            <span class="sale animated infinite pulse" ng-show="p.IsHot">
-                                                <img src="/images/sale.png" width="70" height="70">
-                                            </span>
-                                            <div id="ThumbnailProductImage_{{p.ProductCode}}" ng-init="LoadProductImageByProductCode(p.ProductImageRefId, p._id, p.ProductCode)" class="img-container">
-                                                <div class="label_product_new" ng-show="p.IsNew">{{'BODY.SECTION.PRODUCT.LABEL_NEW' | translate}}</div>
-                                                <div style="position:absolute;" ng-show="p.IsNew">
-                                                    <img src="/images/stripe-new.png" class="product_status product_new" 
-                                                    width="100px" height="100px" ng-show="p.ProductImageRefId.length > 0 || p.ProductImageRefId !== undefined">
-                                                </div>
-                                                <div ng-show="(p.Promotion !== undefined && p.Promotion !== null) || p.Promotion.length > 0">
-                                                    <img src="/images/stripe-sale.png" class="product_status product_sale" 
-                                                    width="100px" height="40px" >
-                                                </div>
-                                                <div ng-show="(p.Promotion !== undefined && p.Promotion !== null) || p.Promotion.length > 0">
-                                                    <label class="label_sale">{{'BODY.SECTION.PRODUCT.LABEL_SALE' | translate}}</label>
-                                                </div> 
-                                                <div ng-show="(p.Promotion !== undefined && p.Promotion !== null) || p.Promotion.length > 0">
-                                                    <label class="percent_sale">- {{p.Promotion[0].DiscountPercent}} %</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="caption">
-                                            <div class="product-gallery-name">
-                                                <h5 style="color:white;" ng-show="SelectedLocale=='th'">{{p.ProductNameTh}}</h5>
-                                                <h5 style="color:white;" ng-show="SelectedLocale=='us'">{{p.ProductNameEn}}</h5>
-                                                <h5 style="color:white;" ng-show="SelectedLocale=='cn'">{{p.ProductNameCn}}</h5>
-                                            </div>
-                                            <p style="color:white;">
-                                                <div class="row">
-                                                    <div class="col-sm-3">
-                                                        {{'BODY.SECTION.PRODUCT.PRICE' | translate}} 
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                    </div>
-                                                    <div id="ProductPriceLabel" class="col-sm-5 text-right" >
-                                                        <div>
-                                                            <strike ng-show="(p.Promotion !== undefined && p.Promotion !== null) || p.Promotion.length > 0">{{CurrencySymbol}} {{(p.RetailPrice * Multiplier) | currency:''}}
-                                                            </strike>
-                                                            <div ng-show="p.Promotion === undefined">{{CurrencySymbol}} {{(p.RetailPrice * Multiplier) | currency:''}}</div>
+                    <div id="product-section">
+                        <div name="product-section" ng-init="LoadProduct()" ng-if="IsProductDataReady" class="section animated fadeIn" 
+                        ng-show="SelectedMenu === 'product'" style="padding-top:0px">
+                            <div class="row text-center" >
+                                <uib-pagination items-per-page="itemsPerPage"
+                        ng-model="currentPage" boundary-links="true" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" class="pagination" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 col-sm-4 col-xs-6" ng-repeat="p in Products.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage))">
+                                   
+                                    <div class="product-detail">
+                                        <div class="product-gallery-footer">
+                                            <div class="mag thumbnailProductImage" style="height:200px">
+                                                <img src="/images/no-image.png" class="img-responsive" ng-show="p.ProductImageRefId.length <= 0 || p.ProductImageRefId === undefined">
+                                                <div class="label-hot animated infinite pulse" ng-show="p.IsHot"> {{'BODY.SECTION.PRODUCT.LABEL_HOT' | translate}}</div>
+                                                <span class="sale animated infinite pulse" ng-show="p.IsHot">
+                                                    <img src="/images/sale.png" width="70" height="70">
+                                                </span>
+                                                <div id="ThumbnailProductImage_{{p.ProductCode}}" ng-init="LoadProductImageByProductCode(p.ProductImageRefId, p._id, p.ProductCode)" class="img-container" >
+                                                    <div ng-if="p.ImageDataReady">
+                                                        <div class="label_product_new" ng-show="p.IsNew">{{'BODY.SECTION.PRODUCT.LABEL_NEW' | translate}}</div>
+                                                        <div style="position:absolute;" ng-show="p.IsNew">
+                                                            <img src="/images/stripe-new.png" class="product_status product_new" 
+                                                            width="100px" height="100px" ng-show="p.ProductImageRefId.length > 0 || p.ProductImageRefId !== undefined">
                                                         </div>
-                                                       
+                                                        <div ng-show="(p.Promotion !== undefined && p.Promotion !== null) || p.Promotion.length > 0">
+                                                            <img src="/images/stripe-sale.png" class="product_status product_sale" 
+                                                            width="100px" height="40px" >
+                                                        </div>
+                                                        <div ng-show="(p.Promotion !== undefined && p.Promotion !== null) || p.Promotion.length > 0">
+                                                            <label class="label_sale">{{'BODY.SECTION.PRODUCT.LABEL_SALE' | translate}}</label>
+                                                        </div> 
+                                                        <div ng-show="(p.Promotion !== undefined && p.Promotion !== null) || p.Promotion.length > 0">
+                                                            <label class="percent_sale">- {{p.Promotion[0].DiscountPercent}} %</label>
+                                                        </div>
                                                     </div>
-                                                    <div ng-show="(p.Promotion !== undefined && p.Promotion !== null) || p.Promotion.length > 0" 
-                                                        class="label_discount_price"> 
-                                                        {{CurrencySymbol}} {{(p.RetailPrice * ((100 - p.Promotion[0].DiscountPercent)/100)* Multiplier) | currency:''}}
-                                                    </div>
-
-                                                </div>
-                                            </p>
-                                            <p style="color:white;">
-                                                <div class="row">
-                                                    <div class="col-sm-4">
-                                                        {{'BODY.SECTION.PRODUCT.WEIGHT' | translate}}
-                                                    </div>
-                                                    
-                                                    <div class="col-sm-8 text-right">
-                                                        {{p.Weight | currency:''}} {{'BODY.SECTION.PRODUCT.WEIGHT_UOM' | translate}}
+                                                    <div id="ImageDataReady_{{p.ProductCode}}" ng-if="!p.ImageDataReady || p.ImageDataReady === undefined" class="loading-product-image text-center">
+                                                        <i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom"></i>
+                                                        <span class="sr-only">Loading...</span>
                                                     </div>
                                                 </div>
-                                            </p>
-                                            <p style="color:white;">
-                                                <div class="row">
-                                                    <div class="col-sm-3">
-                                                        {{'BODY.SECTION.PRODUCT.QTY' | translate}}
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                    </div>
-                                                    <div class="col-sm-5">
-                                                        <input type="number" class="form-control text-right" placeholder="0" ng-model="BuyQty">
-                                                    </div>
+                                                
+                                            </div>
+                                            <div class="caption">
+                                                <div class="product-gallery-name">
+                                                    <h5 style="color:white;" ng-show="SelectedLocale=='th'">{{p.ProductNameTh}}</h5>
+                                                    <h5 style="color:white;" ng-show="SelectedLocale=='us'">{{p.ProductNameEn}}</h5>
+                                                    <h5 style="color:white;" ng-show="SelectedLocale=='cn'">{{p.ProductNameCn}}</h5>
                                                 </div>
-                                            </p>
-                                            <p>
-                                                <div class="col-md-4">
-                                                    <a href="#" class="btn btn-success btn-product" ng-click="AddCart(p, BuyQty, $index)">
-                                                    <span class="glyphicon glyphicon-shopping-cart"></span> 
-                                                    {{'BODY.SECTION.PRODUCT.BUY' | translate}}</a>
-                                                </div>
-                                                <!--
-                                                <div class="col-md-4 ">
-                                                    <a class="btn btn-primary btn-product" data-toggle="modal" data-target="#DetailModal">
-                                                    <span class="glyphicon glyphicon-exclamation-sign"></span> {{'BODY.SECTION.PRODUCT.DETAIL' | translate}}</a>
-                                                </div>-->
-
-                                                <div class="modal fade" id="DetailModal">
-                                                    <div class="modal-dialog modal-lg">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                                <h4 class="modal-title">{{'HEAD.MODAL_CART.PRODUCT_CART' | translate}}</h4>
+                                                <p style="color:white;">
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            {{'BODY.SECTION.PRODUCT.PRICE' | translate}} 
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                        </div>
+                                                        <div id="ProductPriceLabel" class="col-sm-5 text-right" >
+                                                            <div>
+                                                                <strike ng-show="(p.Promotion !== undefined && p.Promotion !== null) || p.Promotion.length > 0">{{CurrencySymbol}} {{(p.RetailPrice * Multiplier) | currency:''}}
+                                                                </strike>
+                                                                <div ng-show="p.Promotion === undefined">{{CurrencySymbol}} {{(p.RetailPrice * Multiplier) | currency:''}}</div>
                                                             </div>
-                                                            <div class="modal-body">
-                                                                <div class="container">
-                                                                </div>
+                                                           
+                                                        </div>
+                                                        <div ng-show="(p.Promotion !== undefined && p.Promotion !== null) || p.Promotion.length > 0" 
+                                                            class="label_discount_price"> 
+                                                            {{CurrencySymbol}} {{(p.RetailPrice * ((100 - p.Promotion[0].DiscountPercent)/100)* Multiplier) | currency:''}}
+                                                        </div>
 
-                                                                <div class="row">
-                                                                    <div class="col-sm-12 col-md-12 col-md-offset-0">
-                                                                        
+                                                    </div>
+                                                </p>
+                                                <p style="color:white;">
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            {{'BODY.SECTION.PRODUCT.WEIGHT' | translate}}
+                                                        </div>
+                                                        
+                                                        <div class="col-sm-8 text-right">
+                                                            {{p.Weight | currency:''}} {{'BODY.SECTION.PRODUCT.WEIGHT_UOM' | translate}}
+                                                        </div>
+                                                    </div>
+                                                </p>
+                                                <p style="color:white;">
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            {{'BODY.SECTION.PRODUCT.QTY' | translate}}
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                        </div>
+                                                        <div class="col-sm-5">
+                                                            <input type="number" class="form-control text-right" placeholder="0" ng-model="BuyQty">
+                                                        </div>
+                                                    </div>
+                                                </p>
+                                                <p>
+                                                    <div class="col-md-4">
+                                                        <a href="#" class="btn btn-success btn-product" ng-click="AddCart(p, BuyQty, $index)">
+                                                        <span class="glyphicon glyphicon-shopping-cart"></span> 
+                                                        {{'BODY.SECTION.PRODUCT.BUY' | translate}}</a>
+                                                    </div>
+                                                    <!--
+                                                    <div class="col-md-4 ">
+                                                        <a class="btn btn-primary btn-product" data-toggle="modal" data-target="#DetailModal">
+                                                        <span class="glyphicon glyphicon-exclamation-sign"></span> {{'BODY.SECTION.PRODUCT.DETAIL' | translate}}</a>
+                                                    </div>-->
+
+                                                    <div class="modal fade" id="DetailModal">
+                                                        <div class="modal-dialog modal-lg">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                    <h4 class="modal-title">{{'HEAD.MODAL_CART.PRODUCT_CART' | translate}}</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="container">
+                                                                    </div>
+
+                                                                    <div class="row">
+                                                                        <div class="col-sm-12 col-md-12 col-md-offset-0">
+                                                                            
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </p>
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="row text-center" >
+                                <uib-pagination boundary-links="true" total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" ng-change="pageChanged()"  class="pagination" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+                            </div>
                         </div>
-                        <div class="row text-center" >
-                            <uib-pagination boundary-links="true" total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" ng-change="pageChanged()"  class="pagination" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+                        <div class="row" ng-if="!IsProductDataReady" style="color:white">
+                                <center><i class="fa fa-spinner fa-pulse fa-4x fa-fw margin-bottom"></i>
+                                    <span class="sr-only">Loading...</span></center>
                         </div>
                     </div>
-                  
+                    
                     <div id="article-section" name="article-section" class="section" ng-show="SelectedMenu === 'article'">
                         <h1>{{'BODY.SECTION.ARTICLE.HEAD' | translate}}</h1>
                     </div>
@@ -4703,12 +4727,13 @@
         <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
         <script src="/bower_components/lodash/lodash.js"></script>
         <script src="/bower_components/magnifier/Magnifier.js"></script>
-        <script src="/bower_components/angular-block-ui/dist/angular-block-ui.min.js"></script>
+        <!--<script src="/bower_components/angular-block-ui/dist/angular-block-ui.min.js"></script> -->
         <script src="/bower_components/ngDialog/js/ngDialog.min.js"></script>
         <script src="/bower_components/angularjs-datepicker/dist/angular-datepicker.min.js"></script>
         <script src="/bower_components/angular-cookies/angular-cookies.min.js"></script>
         <script src="/bower_components/ng-password-strength/dist/scripts/ng-password-strength.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.min.js"></script>
         <script src="/bower_components/ng-file-upload/ng-file-upload.js"></script>
         <script src="/bower_components/ng-file-upload-shim/ng-file-upload-shim.js"></script>
         <script src="/bower_components/angular-translate/angular-translate.js"></script>

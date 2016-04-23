@@ -1,9 +1,13 @@
 app.controller('HeaderController', ["$scope", "$location", "$window", "$filter", "$anchorScroll", 
-  "Upload", "$rootScope", "$http", "$translate", "$timeout", "blockUI", "ngDialog", "MenuService", 
+  "Upload", "$rootScope", "$http", "$translate", "$timeout",
+  // "blockUI", 
+  "ngDialog", "MenuService", 
   "LocaleService", "ReceiptOrderService", "CompanyService", "CurrencyService", "ENV", "$cookies", 
   "vcRecaptchaService", "UserService", "ProductService", "CredentialService", "SocialService", "CryptoService", 
   "EmailService", "WeightRateService", "AWSService", "UomService", "PaypalService", 
-  function ($scope, $location, $window, $filter, $anchorScroll, Upload,$rootScope, $http, $translate,$timeout, blockUI, ngDialog, 
+  function ($scope, $location, $window, $filter, $anchorScroll, Upload,$rootScope, $http, $translate,$timeout, 
+    //blockUI, 
+    ngDialog, 
   MenuService, LocaleService, ReceiptOrderService, CompanyService, CurrencyService, ENV , $cookies, vcRecaptchaService, UserService, 
   ProductService, CredentialService, SocialService, CryptoService, EmailService, WeightRateService, AWSService, UomService, PaypalService) {
 
@@ -170,7 +174,7 @@ var open = function(verb, url, data, target) {
     $scope.LoginWithSocial = function (provider) {
         //Let's say the /me endpoint on the provider API returns a JSON object
         //with the field "name" containing the name "John Doe"
-        blockUI.start("Logging in " +provider + ", please wait");
+      //  blockUI.start("Logging in " +provider + ", please wait");
         OAuth.popup(provider)
         .done(function(result) {
             result.me()
@@ -189,7 +193,7 @@ var open = function(verb, url, data, target) {
             //handle error with err
             console.log(err.message + err.stack);
         });
-        blockUI.stop();
+     //   blockUI.stop();
     }
 
     CredentialService.LoadOAuth()
@@ -238,11 +242,11 @@ var open = function(verb, url, data, target) {
       .then(function(weightRate, status) {
         $scope.ROHead.SumWeightAmount = parseInt(weightRate.Rate);
         $scope.ROHead.NetAmount = $scope.ROHead.SumAmount + $scope.ROHead.SumVatAmount + $scope.ROHead.SumWeightAmount - $scope.ROHead.SumDiscountAmount;
-        console.log('sum amt ', $scope.ROHead.SumAmount);
-        console.log('sum disc ',$scope.ROHead.SumDiscountAmount);
-        console.log('sum vat ',$scope.ROHead.SumVatAmount);
-        console.log('sum wt ',$scope.ROHead.SumWeightAmount);
-        console.log('net amt ',$scope.ROHead.NetAmount);
+     //   console.log('sum amt ', $scope.ROHead.SumAmount);
+    //    console.log('sum disc ',$scope.ROHead.SumDiscountAmount);
+    //    console.log('sum vat ',$scope.ROHead.SumVatAmount);
+    //    console.log('sum wt ',$scope.ROHead.SumWeightAmount);
+    //    console.log('net amt ',$scope.ROHead.NetAmount);
         
         $scope.$emit('UpdateROHeadROLine', $scope.ROHead );
      
@@ -604,26 +608,17 @@ var open = function(verb, url, data, target) {
             $scope.Locale = "th";
             LocaleService.Locale.SelectedLocale = "th";
             $translate.use(locale);
-            document.title = $filter('translate')('TITLE.NAME');
-      document.keywords = $filter('translate')('TITLE.KEYWORD');
-      document.description = $filter('translate')('TITLE.DESCRIPTION');
-      document.author = $filter('translate')('TITLE.AUTHOR');
+            (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
         } else if (locale == "us") {
             $scope.Locale = "us";
             LocaleService.Locale.SelectedLocale = "us";
             $translate.use(locale);
-            document.title = $filter('translate')('TITLE.NAME');
-      document.keywords = $filter('translate')('TITLE.KEYWORD');
-      document.description = $filter('translate')('TITLE.DESCRIPTION');
-      document.author = $filter('translate')('TITLE.AUTHOR');
+            (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
         } else if (locale == "cn") {
             LocaleService.Locale.SelectedLocale = "cn";
             $scope.Locale = "cn";
             $translate.use(locale);
-            document.title = $filter('translate')('TITLE.NAME');
-      document.keywords = $filter('translate')('TITLE.KEYWORD');
-      document.description = $filter('translate')('TITLE.DESCRIPTION');
-      document.author = $filter('translate')('TITLE.AUTHOR');
+            (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
         }
         $scope.$emit('handleLocaleEmit', {
             SelectedLocale: locale
@@ -632,18 +627,18 @@ var open = function(verb, url, data, target) {
 
     var UserBackFromEmailUrl = $location.url();
     if (UserBackFromEmailUrl.indexOf("confirm=") > -1 ) {
-        blockUI.start("Please wait ...");
+    //    blockUI.start("Please wait ...");
         console.log('UserBackFromEmailUrl ', UserBackFromEmailUrl);
         var asciiString = ReplaceASCIICharacter(UserBackFromEmailUrl);
         console.log('after  ', asciiString);
        
         UserService.ActivateAppUser(asciiString)
         .then(function(data, status) {
-            blockUI.message("100%");
-            blockUI.stop();
+    //        blockUI.message("100%");
+    //        blockUI.stop();
             swal("Sign up Success", "Your account is now activated.", "success");
         }, function(error, status) {
-            blockUI.stop();
+    //        blockUI.stop();
             swal("Error", "Cannot find your account.", "error");
         });
      /*   var updateActivateUrl = ENV.apiEndpoint + "/users/ActivateAppUser/" + url;
@@ -726,7 +721,7 @@ var open = function(verb, url, data, target) {
     }
 
     $scope.Signup = function () {
-      blockUI.start("Please wait while system sending email...");
+   //   blockUI.start("Please wait while system sending email...");
       console.log('sinn up ');
       var email = $scope.Email;
       $scope.User.Firstname = $scope.Firstname;
@@ -734,10 +729,10 @@ var open = function(verb, url, data, target) {
       var hashLink = '';
       UserService.CreateUserEmailActivate($scope.Username, $scope.Password, email, $scope.User)
       .then(function(data, status) {
-          blockUI.message("25%");
+   //       blockUI.message("25%");
           return CryptoService.GenerateHashLink($scope.Username, $scope.Password, email)
       }, function(err, status) {
-          blockUI.stop();
+   //       blockUI.stop();
           console.log('err create app user ', err);
       })
       .then(function (data, status) {
@@ -752,8 +747,8 @@ var open = function(verb, url, data, target) {
           return EmailService.SendEmailConfirmation(mailActivate)
       })
       .then(function(data, status){
-          blockUI.message("100%");
-          blockUI.stop();
+      //    blockUI.message("100%");
+     //     blockUI.stop();
           swal("Sign up almost Success", "Please check your email to activate your account", "success");
           $("#LoginModal").modal("toggle");
       }, function(error, status) {
@@ -1172,16 +1167,18 @@ var open = function(verb, url, data, target) {
     }
 
     $scope.UpdateCartUom = function (ROLine,UomCode, index) {
-      console.log("UpdateCartUom ..ROLINE " + ROLine + ' uom ' + UomCode);
+//      console.log("UpdateCartUom ..ROLINE " + ROLine + ' uom ' + UomCode);
       UomService.LoadUomByUomCode(UomCode)
       .then(function(uom, status) {
           console.log('IsContainer ' + uom.IsContainer)
           if (uom.IsContainer == true) {
             ROLine.Price = ROLine.DrContainWholesalePrice;
             ROLine.Amount = ROLine.Quantity * ROLine.DrContainWholesalePrice;
+            ROLine.Weight = ROLine.Quantity * ROLine.DrContainWeight;
           } else if (uom.IsContainer == false) {
             ROLine.Price = ROLine.DrRetailPrice;
             ROLine.Amount = ROLine.Quantity * ROLine.DrRetailPrice;
+            ROLine.Weight = ROLine.Quantity * ROLine.DrWeight;
           }
           $scope.ROHead.ROLineList.splice(index, 1);
           $scope.ROHead.ROLineList.splice(index, 0, ROLine);
@@ -1251,6 +1248,7 @@ var open = function(verb, url, data, target) {
         var sumDiscAmt = 0;
         var sumVatAmt = 0;
         var netAmt = 0; 
+        var sumWt = 0;
 
         for (i = 0 ; i < roLineList.length ; i++) {
           console.log(roLineList[i].Quantity);
@@ -1258,16 +1256,42 @@ var open = function(verb, url, data, target) {
           var roline = roLineList[i];
           console.log(roline.UomCode);
           roline.Amount = roline.Quantity * roline.Price;
-          roline.VatAmount = roline.Amount * 0.07;
+          roline.VatAmount = roline.Amount * $scope.Company.VatRate;
           sumAmt += roline.Amount;
           sumVatAmt += roline.VatAmount;
           sumDiscAmt += roline.DiscountAmount;
+          sumWt += roline.Weight;
         }
-        netAmt = sumAmt - sumDiscAmt + sumVatAmt;
-        $scope.ROHead.SumAmount = sumAmt;
-        $scope.ROHead.SumVatAmount = sumVatAmt;
-        $scope.ROHead.SumDiscountAmount = sumDiscAmt;
-        $scope.ROHead.NetAmount = netAmt;
+        console.log("sumWt ",sumWt);
+        if ($scope.ROHead.PostType === 'Normal') {
+          var weight_rate = WeightRateService.GetWeightRateNormal($scope.ROHead.SumWeight);
+          $scope.ROHead.SumWeightAmount = parseInt(weight_rate);
+              netAmt = sumAmt - sumDiscAmt + sumVatAmt + $scope.ROHead.SumWeightAmount;
+              $scope.ROHead.SumAmount = sumAmt;
+              $scope.ROHead.SumVatAmount = sumVatAmt;
+              $scope.ROHead.SumDiscountAmount = sumDiscAmt;
+              $scope.ROHead.NetAmount = netAmt;
+              $scope.ROHead.SumWeight = sumWt;
+        } else if ($scope.ROHead.PostType === 'EMS') {
+          WeightRateService.GetWeightRateByPostTypeAndWeight($scope.ROHead.PostType, sumWt)
+            .then(function(weightRate, status) {
+              $scope.ROHead.SumWeightAmount = parseInt(weightRate.Rate);
+              netAmt = sumAmt - sumDiscAmt + sumVatAmt + $scope.ROHead.SumWeightAmount;
+              $scope.ROHead.SumAmount = sumAmt;
+              $scope.ROHead.SumVatAmount = sumVatAmt;
+              $scope.ROHead.SumDiscountAmount = sumDiscAmt;
+              $scope.ROHead.NetAmount = netAmt;
+              $scope.ROHead.SumWeight = sumWt;
+            }, function(error, status) {
+
+          });
+        }
+       
+
+       
+        
+        
+        
     }
     function getBase64Image(img) {
       var canvas = document.createElement("canvas");
@@ -1459,7 +1483,7 @@ var open = function(verb, url, data, target) {
         //check is email exist in system
         UserService.IsExistEmail($scope.ForgetPasswordEmail)
         .then(function(data, status) {
-            blockUI.message("25%");
+      //      blockUI.message("25%");
             if(data) {
               return CryptoService.GenerateForgetPasswordHashLink($scope.ForgetPasswordEmail)
             } else {
@@ -1471,7 +1495,7 @@ var open = function(verb, url, data, target) {
         .then(function(data, status){
             var hostWithPort = $location.host() + ':' +$location.port();
        //     var forgetPasswordEmailUrl = ENV.apiEndpoint + "/mails/SendEmailForgetPassword";
-            blockUI.message("75%");
+      //      blockUI.message("75%");
             var mailForget = {
               Email : $scope.ForgetPasswordEmail,
               Host : hostWithPort,
@@ -1484,14 +1508,14 @@ var open = function(verb, url, data, target) {
         $http.get(IsExistEmail)
         .success(function(data, status, headers, config) {
           // exist email ,then send email
-            blockUI.message("25%");
+        //    blockUI.message("25%");
             if(data) {
               var genforgetLink = ENV.apiEndpoint + '/cryptojs/GenerateForgetPasswordHashLink/' + $scope.ForgetPasswordEmail;
               $http.get(genforgetLink)
               .success(function(data, status, headers, config) { 
                   var hostWithPort = $location.host() + ':' +$location.port();
                   var forgetPasswordEmailUrl = ENV.apiEndpoint + "/mails/SendEmailForgetPassword";
-                  blockUI.message("75%");
+        //          blockUI.message("75%");
                   var mailForget = {
                     Email : $scope.ForgetPasswordEmail,
                     Host : hostWithPort,
@@ -1499,7 +1523,7 @@ var open = function(verb, url, data, target) {
                   };
                   $http.post(forgetPasswordEmailUrl, mailForget)
                   .success(function(data, status, headers, config) {
-                    blockUI.stop();
+          //          blockUI.stop();
                     var type = $filter('translate')('MESSAGE.TYPE_SUCCESS');
                     var title = $filter('translate')('MESSAGE.TITLE_SUCCESS_DEFAULT');
                     swal(title, "Please check your email", type);
