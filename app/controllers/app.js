@@ -1974,7 +1974,11 @@ app.config(function ($translateProvider) {
 
 app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
-    cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Custom Loading Message...</div>';
+    cfpLoadingBarProvider.includeSpinner = true;
+
+ //   cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Custom Loading Message...</div>';
+    cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Loading...</div>';
+   // cfpLoadingBarProvider.spinnerTemplate = '<div><i class="fa fa-refresh fa-spin fa-5x fa-fw margin-bottom" ></i><span class="sr-only">Loading...</span></div>';
 }]);
 
 app.run(function ($rootScope) {
@@ -2018,6 +2022,11 @@ app.run(function ($rootScope) {
         $rootScope.$broadcast('handlePaypalBroadcast', args);
     });
 
+    $rootScope.$on('handleDataReadyEmit', function (event, args) {
+        console.log('app ', args)
+        $rootScope.$broadcast('handleDataReadyBroadcast', args);
+    });
+
     document.addEventListener("keyup", function(e) {
         if (e.keyCode === 27)
             $rootScope.$broadcast("escapePressed", e.target);
@@ -2026,4 +2035,8 @@ app.run(function ($rootScope) {
     document.addEventListener("click", function(e) {
         $rootScope.$broadcast("documentClicked", e.target);
     });
+
+    $("#DataNotReady").hide();
+    $("#DataReady").show('fade slow');
+
 });

@@ -711,3 +711,23 @@ legend.contact-us {
     position:relative;
     color:#333;
 }
+
+#loading-bar .bar {
+  background: #DC0505;
+}
+#loading-bar-spinner .spinner-icon {
+  border-top-color:  #DC0505;
+  border-left-color: #DC0505;
+}
+#loading-bar .peg {
+  -moz-box-shadow: #00AC34 1px 0 6px 1px;
+  -ms-box-shadow: #00AC34 1px 0 6px 1px;
+  -webkit-box-shadow: #00AC34 1px 0 6px 1px;
+  box-shadow: #00AC34 1px 0 6px 1px;
+}
+
+.loading-spinner {
+  -webkit-animation:spin 1s linear infinite;
+  -moz-animation:spin 1s linear infinite;
+  animation:spin 1s linear infinite;
+}

@@ -222,38 +222,32 @@ var open = function(verb, url, data, target) {
     }, function (error, status) {
         console.log('company err ', error);
     });
-  /*  var compnyaURL = ENV.apiEndpoint + "/companies/LoadCompany";
-    $http.get(compnyaURL)
-    .success(function (data, status, headers, config) {
-      $scope.Company = data;
-      $scope.$emit('handleCompanyEmit', {
-          Company: CompanyService.Company
-      });
-    })
-    .error(function (data, status, headers, config) {
-      console.log('cannot load company');
-    });*/
-
-
+    
     $scope.ChangePostType = function() {
-      console.log($scope.ROHead.PostType);
-      console.log($scope.ROHead.SumWeight);
-      WeightRateService.GetWeightRateByPostTypeAndWeight($scope.ROHead.PostType, $scope.ROHead.SumWeight)
-      .then(function(weightRate, status) {
-        $scope.ROHead.SumWeightAmount = parseInt(weightRate.Rate);
-        $scope.ROHead.NetAmount = $scope.ROHead.SumAmount + $scope.ROHead.SumVatAmount + $scope.ROHead.SumWeightAmount - $scope.ROHead.SumDiscountAmount;
-     //   console.log('sum amt ', $scope.ROHead.SumAmount);
-    //    console.log('sum disc ',$scope.ROHead.SumDiscountAmount);
-    //    console.log('sum vat ',$scope.ROHead.SumVatAmount);
-    //    console.log('sum wt ',$scope.ROHead.SumWeightAmount);
-    //    console.log('net amt ',$scope.ROHead.NetAmount);
-        
-        $scope.$emit('UpdateROHeadROLine', $scope.ROHead );
-     
-      }, function(error, status) {
+      if ($scope.ROHead.SumWeight > 20000 && $scope.ROHead.PostType === 'EMS') {
+        $scope.ROHead.PostType = 'Normal';
+        swal("คำเตือน", "น้ำหนัก EMS ต้องไม่เกิน 20kg", "warning");
+      } else {
+        if ($scope.ROHead.PostType === 'Normal') {
+            var weight_rate = WeightRateService.GetWeightRateNormal($scope.ROHead.SumWeight);
+            $scope.ROHead.SumWeightAmount = weight_rate;
+            $scope.ROHead.NetAmount = $scope.ROHead.SumAmount + $scope.ROHead.SumVatAmount + $scope.ROHead.SumWeightAmount - $scope.ROHead.SumDiscountAmount;
 
-      });
-        
+            $scope.$emit('UpdateROHeadROLine', $scope.ROHead );
+         
+        } else if ($scope.ROHead.PostType === 'EMS') {
+            WeightRateService.GetWeightRateByPostTypeAndWeight($scope.ROHead.PostType, $scope.ROHead.SumWeight)
+          .then(function(weightRate, status) {
+            $scope.ROHead.SumWeightAmount = parseInt(weightRate.Rate);
+            $scope.ROHead.NetAmount = $scope.ROHead.SumAmount + $scope.ROHead.SumVatAmount + $scope.ROHead.SumWeightAmount - $scope.ROHead.SumDiscountAmount;
+       
+            $scope.$emit('UpdateROHeadROLine', $scope.ROHead );
+         
+          }, function(error, status) {
+
+          });
+        }
+      }
     }
 
     // Load Paypal

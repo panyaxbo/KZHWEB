@@ -313,6 +313,11 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         $scope.ProductTypes = types;
         ProductTypeService.ProductTypes = types;
         $scope.IsProductTypeDataReady = true;
+
+        $scope.$emit('handleDataReadyEmit', {
+            IsDataReady: true
+        });
+
         return ProductCategoryService.LoadProductCategoryByProductType(ProductTypeService.ProductTypes);
         
     }, function(err, status) {
@@ -1434,7 +1439,11 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         //    $('ImageDataReady_'+code).hide();
         })
         .error(function (data, status, headers, config) {
-        //    console.log(data);
+            console.log('status ', status);
+            if (status === 404) {
+                document.getElementById('ImageDataReady_'+code).style.display = 'none';
+            }
+        
         });
     }
     $scope.CheckPromotionIsExpire = function(expireDate) {
