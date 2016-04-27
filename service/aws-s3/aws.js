@@ -915,7 +915,7 @@ router.get('/downloadReceiptPaymentThumbnail/:RONo', function(req, res) {
                   }
                   else { 
                     var base64 = (data.toString('base64')); 
-                    res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive" >');
+                    res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive" style="position: relative;top:25%;vertical-align:middle" >');
                   }
                 });
             } 

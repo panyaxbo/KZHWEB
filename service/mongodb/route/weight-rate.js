@@ -108,19 +108,13 @@ router.get('/GetNormalWeightRate', function(req, res) {
     });
 });
 
-router.get('/GetEMSWeightRate/:Weight', function(req, res) {
+router.get('/GetEMSWeightRate/', function(req, res) {
     var rate = parseInt(req.params.Weight);
     var GetWeightRatePromise = function() {
         var defer = Q.defer();
         db.collection('WeightRate')
             .find({
-                PostType: 'EMS',
-                MinRate: {
-                    $lt: rate
-                },
-                MaxRate: {
-                    $gte: rate
-                }
+                PostType: 'EMS'
             })
             .toArray(function (err, items) {
             if (err) {
@@ -144,4 +138,5 @@ router.get('/GetEMSWeightRate/:Weight', function(req, res) {
         res.SendStatus(500);
     });
 });
+
 module.exports = router;

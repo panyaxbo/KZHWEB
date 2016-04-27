@@ -1,9 +1,9 @@
 'use strict';
 
-var app = angular.module('KZHWEB', ['ngRoute','ngAnimate', 'ui.bootstrap', 'ngFileUpload', '720kb.datepicker',
+var app = angular.module('KZHWEB', ['ngRoute', 'ngAnimate', 'ui.bootstrap', 'ngFileUpload', '720kb.datepicker',
     //'blockUI',
     'ngDialog', 'ngPasswordStrength', 'ngTable','pascalprecht.translate', 'vcRecaptcha','autocomplete', 
-    'ngCookies', 'CONFIG', 'angular-loading-bar']);
+    'ngCookies', 'CONFIG']);
 
 //Config translate
 app.config(function ($translateProvider) {
@@ -17,7 +17,7 @@ app.config(function ($translateProvider) {
         HEAD: {
             MENU: {
                 SEARCH : {
-                    PLACEHOLDER : "พิมพ์เพื่อค้นหา และกด enter"
+                    PLACEHOLDER : 'พิมพ์เพื่อค้นหา และกด enter'
                 },
                 PRODUCT: 'สินค้า',
                 WEBBOARD: 'เว็บบอร์ด',
@@ -85,7 +85,7 @@ app.config(function ($translateProvider) {
                 SUMVATAMT: 'ภาษี',
                 SUMWEIGHT:'รวมน้ำหนัก',
                 WEIGHT_UOM:'กรัม',
-                SUMWEIGHTAMT:'รวมน้ำหนัก',
+                SUMWEIGHTAMT:'ค่าจัดส่ง',
                 POST_TYPE: {
                     SELECT_POST_TYPE:'--- เลือกชนิดการส่งไปรษณีย์ ---',
                     NORMAL: 'ไปรษณีย์ธรรมดา',
@@ -272,11 +272,11 @@ app.config(function ($translateProvider) {
                         BILL_ADDRESS: 'ที่อยู่',
                         BILL_PROVINCE: 'จังหวัด',
                         BILL_SELECT_PROVINCE: '--- เลือก จังหวัด ---',
-                        BILL_DISTRICT: 'เขต/อำเภอ :',
+                        BILL_DISTRICT: 'เขต/อำเภอ ',
                         BILL_SELECT_DISTRICT: '--- เลือก เขต/อำเภอ ---',
-                        BILL_SUBDISTRICT: 'แขวง/ตำบล :',
+                        BILL_SUBDISTRICT: 'แขวง/ตำบล ',
                         BILL_SELECT_SUBDISTRICT: '--- เลือก แขวง/ตำบล ---',
-                        BILL_ZIPCODE: 'รหัสไปรษณีย์ :',
+                        BILL_ZIPCODE: 'รหัสไปรษณีย์ ',
                         BILL_SELECT_ZIPCODE: '--- เลือก ไปรษณีย์ ---',
                         TEL_NO: 'โทรศัพท์',
                         MOBILE_NO: 'มือถือ',
@@ -367,6 +367,7 @@ app.config(function ($translateProvider) {
                     FINISH : {
                         STEP : 'สิ้นสุด',
                         BUTTON : 'กดเพื่อสิ้นสุด',
+                        PROCESSING: 'ระบบกำลังประมวลผลคำสั่งซื้อของท่าน กรุณารอสักครู่',
                         THANK_MESSAGE: 'ขอบคุณสำหรับคำสั่งซื้อของท่าน ☺'
                     }
                 },
@@ -826,7 +827,7 @@ app.config(function ($translateProvider) {
                 SUMAMT: 'Sum Amount',
                 SUMDISCAMT: 'Sum Discount Amount',
                 SUMVATAMT: 'VAT Amount',
-                SUMWEIGHTAMT:'Weight Rate Amount',
+                SUMWEIGHTAMT:'Shipping Amount',
                 POST_TYPE: {
                     SELECT_POST_TYPE:'--- Select Mail Delivery ---',
                     NORMAL: 'Normal',
@@ -1083,6 +1084,7 @@ app.config(function ($translateProvider) {
                     FINISH : {
                         STEP : 'Finish',
                         BUTTON_FINISH : 'Click to finish',
+                        PROCESSING: 'System is processing your purchase order, please wait a moment',
                         THANK_MESSAGE: 'Thank you for your order. ☺'
                     }
                 },
@@ -1461,7 +1463,7 @@ app.config(function ($translateProvider) {
                 SUMAMT: '量總和',
                 SUMDISCAMT: '總之折扣金額',
                 SUMVATAMT: '總之增值稅金額',
-                SUMWEIGHTAMT:'總重量金額',
+                SUMWEIGHTAMT:'交貨',
                 POST_TYPE: {
                     SELECT_POST_TYPE:'--- 選擇郵件傳遞的類型 ---',
                     NORMAL: '正常',
@@ -1692,6 +1694,7 @@ app.config(function ($translateProvider) {
                     FINISH : {
                         STEP : '結束',
                         BUTTON_SUCCESS : '成功',
+                        PROCESSING : '系統正在處理您的訂單，請稍等片刻。',
                         THANK_MESSAGE: '謝謝您的訂單。☺'
                     }
                 },
@@ -1971,15 +1974,6 @@ app.config(function ($translateProvider) {
     });
     $translateProvider.preferredLanguage('th');
 });
-
-app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
-    cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
-    cfpLoadingBarProvider.includeSpinner = true;
-
- //   cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Custom Loading Message...</div>';
-    cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Loading...</div>';
-   // cfpLoadingBarProvider.spinnerTemplate = '<div><i class="fa fa-refresh fa-spin fa-5x fa-fw margin-bottom" ></i><span class="sr-only">Loading...</span></div>';
-}]);
 
 app.run(function ($rootScope) {
     /*

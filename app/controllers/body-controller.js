@@ -253,11 +253,14 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     ProductService.LoadProduct()
     .then(function(data, status) {
         console.log('LoadProduct');
+
         $scope.Products = data;
         $scope.totalItems = $scope.Products.length;
         $scope.bigTotalItems = $scope.Products.length;
 
         $scope.IsProductDataReady = true;
+        document.getElementById('ProductDataReady').style.display = 'block';
+        document.getElementById('ProductDataNotReady').style.display = 'none';
 
         if ($scope.SelectedLocale === 'th') {
           (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
@@ -285,12 +288,16 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
 
     $scope.Search = function() {
       console.log($scope.SearchAllText);
+      document.getElementById('ProductDataReady').style.display = 'none';
+      document.getElementById('ProductDataNotReady').style.display = 'block';
       ProductService.SearchProductWithCondition($scope.SearchAllText)
       .then(function(data, status) {
           $scope.Products = data;
           $scope.totalItems = $scope.Products.length;
           $scope.bigTotalItems = $scope.Products.length;
           $scope.SelectedMenu = "product";
+          document.getElementById('ProductDataReady').style.display = 'block';
+          document.getElementById('ProductDataNotReady').style.display = 'none';
       }, function(error, status) {
           console.log('error', error);
       });
@@ -525,6 +532,8 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         // Load Product by ProductCategoryCode
     $scope.LoadProductByProductCategoryCode = function (ProductCategoryCode) {
         $scope.IsProductDataReady = false;
+        document.getElementById('ProductDataReady').style.display = 'none';
+        document.getElementById('ProductDataNotReady').style.display = 'block';
         $('html, body').animate({ scrollTop: $('#product-section').offset().top }, 'slow');
 
         ProductService.LoadProductByProductCategoryCode(ProductCategoryCode)
@@ -538,6 +547,8 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 SelectedMenu: "product"
             });
             $scope.IsProductDataReady = true;
+            document.getElementById('ProductDataReady').style.display = 'block';
+        document.getElementById('ProductDataNotReady').style.display = 'none';
         }, function(err, status) {
             sweetAlert("Error !!", "Cannot get Product data from Server..", "error");
         });
@@ -1241,7 +1252,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 var category_url = ENV.apiEndpoint + "/product_categories/LoadProductCategory";
                 $http.get(category_url)
                 .success(function(data) {
-                    console.log(data);
+        //            console.log(data);
                     $scope.SelectProductCategoryList = data;
                 })
                 .error(function(data) {
@@ -1251,7 +1262,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 var uom_url = ENV.apiEndpoint + "/uoms/LoadNotContainUom";
                 $http.get(uom_url)
                 .success(function(data) {
-                    console.log(data);
+        //            console.log(data);
                     $scope.SelectUomList = data;
                 })
                 .error(function(data) {
@@ -1261,7 +1272,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 var containuom_url = ENV.apiEndpoint + "/uoms/LoadContainUom";
                 $http.get(containuom_url)
                 .success(function(data) {
-                    console.log(data);
+         //           console.log(data);
                     $scope.SelectContainUomList = data;
                 })
                 .error(function(data) {
@@ -3557,7 +3568,12 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             console.log(err);
         });
     }
+
+//    $scope.DistrictDataReady = false;
+//    $scope.SubDistrictDataReady = false;
     $scope.UpdateBillingProvince = function() {
+        document.getElementById('DistrictDataReady').style.display = 'block';
+       
         console.log("ProvinceId " + $scope.ROHead.BillingProvinceId);
 /*        var url = ENV.apiEndpoint + "/districts/LoadDistrictByProvinceId/"+  $scope.ROHead.BillingProvinceId;
         $http.get(url)
@@ -3570,6 +3586,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         DistrictService.LoadDistrictByProvince($scope.ROHead.BillingProvinceId)
         .then(function(districts, status) {
             $scope.SelectBillingDistrictList = districts;
+            document.getElementById('DistrictDataReady').style.display = 'none';
         }, function(err, status) {
             console.log(err);
         });
@@ -3600,9 +3617,11 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             .error(function (subdistricts) {
                 console.log(subdistricts);
         });*/
+        document.getElementById('SubDistrictDataReady').style.display = 'block';
         SubDistrictService.LoadSubDistrictByDistrict($scope.ROHead.BillingDistrictId)
         .then(function(subdistricts, status) {
             $scope.SelectBillingSubDistrictList = subdistricts;
+            document.getElementById('SubDistrictDataReady').style.display = 'none';
         }, function(err, status) {
             console.log(err);
         });
@@ -3837,6 +3856,30 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         $scope.ValidateFinish();
     }
 
+     $scope.card = {
+        name: 'Mike Brown',
+        number: '5555 4444 3333 1111',
+        expiry: '11 / 2020',
+        cvc: '123'
+      };
+
+      $scope.cardPlaceholders = {
+        name: 'Your Full Name',
+        number: 'xxxx xxxx xxxx xxxx',
+        expiry: 'MM/YY',
+        cvc: 'xxx'
+      };
+
+      $scope.cardMessages = {
+        validDate: 'valid\nthru',
+        monthYear: 'MM/YYYY',
+      };
+
+      $scope.cardOptions = {
+        debug: false,
+        formatting: true
+      };
+
     $scope.ValidateFinish = function() {
         console.log('ValidateFinish');
      //   blockUI.start("Processing ...");
@@ -3929,6 +3972,8 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         .then(function(data, status) {
     //        blockUI.message("98%");
     //        blockUI.stop();
+            document.getElementById('ProcessingPurchaseOrder').style.display = 'none';
+            document.getElementById('ProcessedPurchaseOrder').style.display = 'block';
             swal("Thank you for your order", "You can check and track your order in history.", "success");
         }, function(err, status) {
     //        blockUI.stop();
@@ -4146,14 +4191,19 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
 
         });
 */
+        
         ReceiptOrderService.LoadROHeadROLineByROHeadId(roHeadId)
         .then(function(data, status) {
         //    console.log(data);
             if (mode === 'History') {
                 $scope.ViewHistoryRO = data;
+                document.getElementById('HistoryRODataNotReady').style.display = 'none';
+                document.getElementById('HistoryRODataReady').style.display = 'block';
                 return AWSService.DownloadReceiptPaymentThumbnail($scope.ViewHistoryRO.RONo);
             } else if (mode === 'Customer') {
                 $scope.ViewStaffRO = data;
+                document.getElementById('CustomerRODataNotReady').style.display = 'none';
+                document.getElementById('CustomerRODataReady').style.display = 'block';
                 return AWSService.DownloadReceiptPaymentThumbnail($scope.ViewStaffRO.RONo);
             }
         }, function(err, status) {

@@ -24,7 +24,6 @@
     <link rel="stylesheet" href="/bower_components/pnotify/pnotify.history.css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" />
     <link rel="stylesheet" href="/bower_components/sweetalert/dist/sweetalert.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.min.css" media='all'/>
  <!--   <link rel="stylesheet" href="/bower_components/angular-block-ui/dist/angular-block-ui.min.css" />-->
     <link rel="stylesheet" href="/bower_components/ng-table/dist/ng-table.min.css">
     <link rel="stylesheet" href="/bower_components/magnifier/magnifier.css">
@@ -75,13 +74,13 @@
                     </div>
                 </div>
             </div>
+            
             <div class="container">
-                <div id="loading-bar-container"></div>
                 <div class="header container-fluid" id="div-header" ng-controller="HeaderController" style="top: 0px;padding-bottom:10px;margin-bottom: 10px; margin-top:15px">
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <a href="#/">
                             <img src="/images/KZHLogo.png" width="150px" height="50px">
-                        <!--    <button ng-click="TestPaypal()">Test</button> -->
+                        <!--   <button data-toggle="modal" data-target="#CreditModal" >Test</button> -->
                         </a>               
                         <ul class="nav nav-pills pull-right">                   
                             <li>
@@ -118,7 +117,7 @@
                                                                 <h3 class="text-center">--------- {{'HEAD.MODAL_CART.EMPTY_CART' | translate}} ---------</h3>
                                                             </div>
                                                             <div id="ShowCartTable" ng-show="ROHead.ROLineList.length > 0">
-                                                                <table id="CartTable" class="table table-hover table table-condensed" ng-show="ROHead.ROLineList.length > 0">
+                                                                <table id="CartTable" class="table table-hover table table-condensed" >
                                                                     <thead>
                                                                         <tr>
                                                                             <th>{{'HEAD.MODAL_CART.SEQ' | translate}}</th>
@@ -218,9 +217,9 @@
                                                                             </td>
                                                                             <td colspan="1" class="text-right">  
                                                                                 <h5>
-                                                                                <strong ng-if="ROHead.SumWeight < 1000">{{ROHead.SumWeight | currency:''}} g</strong>
+                                                                            <!--    <strong ng-if="ROHead.SumWeight < 1000">{{ROHead.SumWeight | currency:''}} g</strong>
                                                                                 <strong ng-if="ROHead.SumWeight >= 1000">{{ROHead.SumWeight/1000 | currency:''}} kg</strong>
-                                                                                </h5>
+                                                                                </h5>-->
                                                                             </td>
                                                                             <td colspan="1" class="text-right">  
                                                                                 <h5><strong>{{CurrencySymbol}} {{ROHead.SumWeightAmount}}</strong></h5>
@@ -306,6 +305,15 @@
                                                             </button>
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-12" id="ForgetPasswordProgress" style="display:none">
+                                                        <br>
+                                                        <center>
+                                                            <i class="fa fa-spinner fa-pulse fa-4x fa-fw margin-bottom"></i>
+                                                            <span class="sr-only">Loading...</span>
+                                                        </center>
+                                                        <br>
+                                                        <uib-progressbar class="progress-striped active" value="ForgetPasswordProgressValue" type="success"><i ng-show="showWarning">!!! Watch out !!!</i></uib-progressbar>
+                                                    </div>
                                                 </div>
                                                 <!-- /.modal-content -->
 
@@ -348,13 +356,19 @@
                                                             </button>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <!-- /.modal-content -->
 
+                                                    <div class="col-md-12" id="InputPasswordProgress" style="display:none">
+                                                        <br>
+                                                        <center>
+                                                            <i class="fa fa-spinner fa-pulse fa-4x fa-fw margin-bottom"></i>
+                                                            <span class="sr-only">Loading...</span>
+                                                        </center>
+                                                        <br>
+                                                        <uib-progressbar class="progress-striped active" value="InputPasswordProgressValue" type="success"><i ng-show="showWarning">!!! Watch out !!!</i></uib-progressbar>
+                                                    </div>
+                                                </div>                                            
                                             </div>
-                                            <!-- /.modal-dialog -->
                                         </div>
-                                        <!-- /.modal -->
                                     </div>
                                 </div>
                                 <div class="modal fade" id="LoginModal">
@@ -366,6 +380,7 @@
                                                 <h4 class="modal-title"><i class="fa fa-sign-in fa-2x"></i> {{'HEAD.MODAL_SIGNIN.HEAD' | translate}}</h4>
                                             </div>
                                             <div class="modal-body">
+                                               
                                                 <div class="row">
                                                     <div class="col-xs-6">
                                                         <div class="well">
@@ -398,9 +413,20 @@
                                                                     </label>
                                                                     <p class="help-block">{{'HEAD.MODAL_SIGNIN.REMEMBER_ME_REASON' | translate}}</p>
                                                                 </div>
-                                                                <button type="submit" class="btn btn-success btn-block" ng-click="Login()">
-                                                                    <span class="glyphicon glyphicon-log-in" ></span> {{'HEAD.MODAL_SIGNIN.BUTTON_SIGNIN' | translate}}</button>
-                                                                
+                                                                <div class="row">
+                                                                    <div class="col-md-4 text-center"></div>
+                                                                    <div class="col-md-4 text-center">
+                                                                        <button type="submit" class="btn btn-success" ng-click="Login()">
+                                                                            <span class="glyphicon glyphicon-log-in" ></span> {{'HEAD.MODAL_SIGNIN.BUTTON_SIGNIN' | translate}}</button>
+
+                                                                    </div>
+                                                                    <div class="col-md-4 text-center">
+                                                                        <div id="LoginDataNotReady" style="display: none"> 
+                                                                            <i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom"></i>
+                                                                            <span class="sr-only">Loading...</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                                 <hr>
                                                                 <p class="text-center" style="margin-top:10px;">OR</p>
                                                                 <a class="btn btn-block btn-social btn-facebook" ng-click="LoginWithSocial('facebook')">
@@ -513,26 +539,33 @@
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label class="control-label"></label>
-                                                                    <div class="controls">
+                                                                    <div class="controls" style="margin-left: 1.5em">
                                                                         <label class="checkbox"><input type="checkbox" ng-model="IsAcceptCondition">
                                                                         {{'HEAD.MODAL_SIGNIN.TERM_SERVICE_LABEL' | translate}} 
                                                                         <a href="#">{{'HEAD.MODAL_SIGNIN.TERM_SERVICE' | translate}}</a></label> 
                                                                     </div>
                                                                 </div>
-                                                                <button class="btn btn-primary" type="submit" ng-click="Signup()" 
-                                                                ng-disabled="ExistUsername || ExistEmail || !ValidEmail || !IsHuman || !IsAcceptCondition">
-                                                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> {{'HEAD.MODAL_SIGNIN.BUTTON_SIGNUP' | translate}}
-                                                                </button> 
+                                                                <div class="row">
+                                                                    <div class="col-md-4 text-center"></div>
+                                                                    <div class="col-md-4 text-center">
+                                                                        <button class="btn btn-primary" type="submit" ng-click="Signup()" 
+                                                                        ng-disabled="ExistUsername || ExistEmail || !ValidEmail || !IsHuman || !IsAcceptCondition">
+                                                                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> {{'HEAD.MODAL_SIGNIN.BUTTON_SIGNUP' | translate}}
+                                                                        </button> 
+                                                                    </div>
+                                                                    <div class="col-md-4 text-center">
+                                                                        <div id="SignupDataNotReady" style="display: none"> 
+                                                                            <i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom"></i>
+                                                                            <span class="sr-only">Loading...</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                         </form>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- /.modal-content -->
-
                                             </div>
-                                            <!-- /.modal-dialog -->
                                         </div>
-                                        <!-- /.modal -->
                                     </div>
                                 </div>
                             </li>
@@ -559,7 +592,7 @@
                                 <div ng-show="IsAdmin && !IsGuest">
                                     <!-- code to render a large video block-->
                                     <a href="#" class="dropdown-toggle head-menu" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
-                                     {{User.Firstname}}<b class="caret"></b></a>
+                                     {{User.Username}}<b class="caret"></b></a>
                                     <ul class="dropdown-menu">
                                         <li><a href="#account-section" ng-click="('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}} </a>
                                         </li>
@@ -577,7 +610,7 @@
                                 <div ng-show="!IsAdmin && !IsGuest">
                                     <!-- code to render the regular video block -->
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
-                                     {{User.Firstname}}<b class="caret"></b></a>
+                                     {{User.Username}}<b class="caret"></b></a>
                                     <ul class="dropdown-menu">
                                         <li><a href="#account-section" ng-click="SelectedHeadMenu('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}}</a>
                                         </li>
@@ -592,7 +625,7 @@
                                 <div ng-show="!IsAdmin && IsGuest">
                                     <!-- code to render the regular video block -->
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
-                                     {{User.Firstname}}<b class="caret"></b></a>
+                                     {{User.Username}}<b class="caret"></b></a>
                                 </div>
                             </li>
                     </div>
@@ -687,7 +720,7 @@
                                 </tr>
                             </table>-->
                             <div id="ProductType">
-                                <div class="list-group panel">
+                                <div class="list-group panel" style="background-color: #EEEEEE">
                                     <div ng-if="IsProductTypeDataReady" ng-repeat="ProductType in ProductTypes">
                                         <a href="#{{ProductType.ProductTypeCode}}" class="list-group-item list-group-item-success" 
                                         data-toggle="collapse" data-parent="#ProductType" ng-show="SelectedLocale=='th'">
@@ -770,15 +803,14 @@
                         
                         <div id="div-change-view">
                             <div id="product-section">
-                                <div name="product-section" ng-init="LoadProduct()" ng-if="IsProductDataReady" class="section animated fadeIn" 
-                                ng-show="SelectedMenu === 'product'" style="padding-top:0px">
+                                <div name="product-section" ng-init="LoadProduct()" id="ProductDataReady" class="section animated fadeIn" 
+                                ng-show="SelectedMenu === 'product'" style="display:none; padding-top:0px">
                                     <div class="row text-center" >
                                         <uib-pagination items-per-page="itemsPerPage"
                                 ng-model="currentPage" boundary-links="true" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" class="pagination" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3 col-sm-4 col-xs-6" ng-repeat="p in Products.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage))">
-                                           
                                             <div class="product-detail">
                                                 <div class="product-gallery-footer">
                                                     <div class="mag thumbnailProductImage" style="height:200px">
@@ -842,6 +874,7 @@
                                                         </p>
                                                         <p style="color:white;">
                                                             <div class="row">
+                                                            <!--
                                                                 <div class="col-sm-4">
                                                                     {{'BODY.SECTION.PRODUCT.WEIGHT' | translate}}
                                                                 </div>
@@ -849,6 +882,7 @@
                                                                 <div class="col-sm-8 text-right">
                                                                     {{p.Weight | currency:''}} {{'BODY.SECTION.PRODUCT.WEIGHT_UOM' | translate}}
                                                                 </div>
+                                                                -->
                                                             </div>
                                                         </p>
                                                         <p style="color:white;">
@@ -874,7 +908,6 @@
                                                                 <a class="btn btn-primary btn-product" data-toggle="modal" data-target="#DetailModal">
                                                                 <span class="glyphicon glyphicon-exclamation-sign"></span> {{'BODY.SECTION.PRODUCT.DETAIL' | translate}}</a>
                                                             </div>-->
-
                                                             <div class="modal fade" id="DetailModal">
                                                                 <div class="modal-dialog modal-lg">
                                                                     <div class="modal-content">
@@ -907,8 +940,8 @@
                                         <uib-pagination boundary-links="true" total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" ng-change="pageChanged()"  class="pagination" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
                                     </div>
                                 </div>
-                                <div class="row" ng-if="!IsProductDataReady" style="color:white">
-                                        <center><i class="fa fa-spinner fa-pulse fa-4x fa-fw margin-bottom"></i>
+                                <div class="row" id="ProductDataNotReady"  style="color:white">
+                                        <center><i class="fa fa-spinner fa-pulse fa-5x fa-fw margin-bottom"></i>
                                             <span class="sr-only">Loading...</span></center>
                                 </div>
                             </div>
@@ -1035,24 +1068,6 @@
                                                 <td data-title="'BODY.SECTION.PAYMENT.TABLE_HEAD_RATE' | translate">{{ems.Rate}}</td>                                        
                                             </tr>
                                         </table>
-                                        <div class="list-group">
-                                          <a href="#" class="list-group-item">
-                                            Cras justo odio
-                                          </a>
-                                          <div class="list-group">
-                                            <a href="#" class="list-group-item">
-                                              Cras justo odio
-                                            </a>
-                                            <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-                                            <a href="#" class="list-group-item">Morbi leo risus</a>
-                                            <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-                                            <a href="#" class="list-group-item">Vestibulum at eros</a>
-                                          </div>
-                                          <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-                                          <a href="#" class="list-group-item">Morbi leo risus</a>
-                                          <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-                                          <a href="#" class="list-group-item">Vestibulum at eros</a>
-                                        </div>
                                       </div>
                                     </div>
                                     <div class="panel panel-default">
@@ -1302,91 +1317,107 @@
                                                 <div class="col-md-12">
                                                     <h3>{{'BODY.SECTION.SHIPMENT.BILLING.STEP' | translate}}</h3>
                                                     <div class="row form-group">
-                                                        <div>
-                                                          <form class="form-horizontal" role="form">
-                                                              <!-- Form Name -->
-                                                              <legend>&nbsp;</legend>
-                                                              <!-- Text input-->
-                                                              <div class="form-group">
-                                                                    <label class="col-md-4 control-label">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_NAME' | translate}} :</label>
-                                                                    <div class="col-md-8">
-                                                                        <input maxlength="200" type="text" ng-model="ROHead.BillingName" required="required" 
-                                                                        class="form-control" placeholder="{{'BODY.SECTION.SHIPMENT.BILLING.BILL_NAME' | translate}}" />
-                                                                    </div>
-                                                              </div>
-                                                              <div class="form-group"></div>
-                                                              <div class="form-group">
-                                                                    <label class="col-md-4 control-label">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_EMAIL' | translate}} :</label>
-                                                                    <div class="col-md-8">
-                                                                        <input maxlength="200" type="text" ng-model="ROHead.BillingEmail" required="required" 
-                                                                        class="form-control" placeholder="{{'BODY.SECTION.SHIPMENT.BILLING.BILL_EMAIL' | translate}}" />
-                                                                    </div>
-                                                              </div>
-                                                              <div class="form-group"></div>
-                                                              <div class="form-group">
+                         
+                                                        <form class="form-horizontal" role="form">
+                                                            <legend>&nbsp;</legend>
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_NAME' | translate}} :</label>
+                                                                <div class="col-md-8">
+                                                                    <input maxlength="200" type="text" ng-model="ROHead.BillingName" required="required"  class="form-control" placeholder="{{'BODY.SECTION.SHIPMENT.BILLING.BILL_NAME' | translate}}" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group"><div class="col-sm-12"></div></div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-4 control-label">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_EMAIL' | translate}} :</label>
+                                                                <div class="col-md-8">
+                                                                    <input maxlength="200" type="text" ng-model="ROHead.BillingEmail" required="required" 
+                                                                    class="form-control" placeholder="{{'BODY.SECTION.SHIPMENT.BILLING.BILL_EMAIL' | translate}}" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group"><div class="col-sm-12"></div></div>
+                                                            <div class="form-group">
                                                                 <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_ADDRESS' | translate}} :</label>
                                                                 <div class="col-sm-8">
                                                                   <input type="text" ng-model="ROHead.BillingAddress" required="required" placeholder="{{'BODY.SECTION.SHIPMENT.BILLING.BILL_ADDRESS' | translate}}" class="form-control">
                                                                 </div>
-                                                              </div>
-                                                              <div class="form-group"></div>
-                                                              <!-- Text input-->
-                                                              <div class="form-group">
+                                                            </div>
+                                                            <div class="form-group"><div class="col-sm-12"></div></div>
+                                                            <div class="form-group">
                                                                 <label class="col-md-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_PROVINCE' | translate}} :</label>
-                                                                <div class="col-md-8">
+                                                                <div class="col-md-6">
                                                                   <select id="SelectProvince" name="selectbasic" class="form-control input-md" 
                                                                ng-model="ROHead.BillingProvinceId" ng-options="Province._id as Province.Province for Province in SelectBillingProvinceList" ng-change="UpdateBillingProvince()" required="required">
-                                                                        <option value="">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_SELECT_PROVINCE' | translate}}</option>
+                                                                    <option value="">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_SELECT_PROVINCE' | translate}}</option>
                                                                    </select>
                                                                 </div>
-                                                              </div>
-                                                              <div class="form-group"></div>
-                                                              <!-- Text input-->
-                                                              <div class="form-group">
+                                                                <div class="col-md-2">
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group"><div class="col-sm-12"></div></div>
+                                                          
+                                                            <div class="form-group">
                                                                 <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_DISTRICT' | translate}} :</label>
-                                                                <div class="col-sm-8">
+                                                                <div class="col-sm-6">
                                                                    <select id="SelectDistrictList" name="selectbasic" class="form-control input-md"  
                                                                    required="required"
                                                                    ng-model="ROHead.BillingDistrictId" ng-options="District._id as District.District for District in SelectBillingDistrictList" ng-change="UpdateBillingDistrict(District._id)">
                                                                         <option value="">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_SELECT_DISTRICT' | translate}}</option>
                                                                    </select>
                                                                 </div>
-                                                              </div>
-                                                              <div class="form-group"></div>
-                                                              <!-- Text input-->
-                                                              <div class="form-group">
+                                                                <div class="col-md-2" id="DistrictDataReady" style="display: none">
+                                                                    <i class="fa fa-spinner fa-spin fa-2x fa-fw margin-bottom"></i>
+                                                                    <span class="sr-only">Loading...</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group"><div class="col-sm-12"></div></div>
+                                                            <div class="form-group">
                                                                 <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_SUBDISTRICT' | translate}} :</label>
-                                                                <div class="col-sm-8">
+                                                                <div class="col-sm-6">
                                                                   <select id="SelectSubDistrictList" name="selectbasic" class="form-control input-md" 
                                                                    required="required" ng-model="ROHead.BillingSubDistrictId" ng-options="SubDistrict._id as SubDistrict.SubDistrict for SubDistrict in SelectBillingSubDistrictList" ng-change="UpdateBillingSubDistrict()">
                                                                         <option value="">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_SELECT_SUBDISTRICT' | translate}}</option>
                                                                    </select>
                                                                 </div>
+                                                                 <div class="col-md-2" id="SubDistrictDataReady" style="display: none">
+                                                                    <i class="fa fa-spinner fa-spin fa-2x fa-fw margin-bottom"></i>
+                                                                    <span class="sr-only">Loading...</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group"><div class="col-sm-12"></div></div>
+                                                            <div class="form-group"><div class="col-sm-12"></div></div>
+                                                            <div class="form-group">
                                                                 <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_ZIPCODE' | translate}} :</label>
                                                                 <div class="col-sm-8">
                                                                   <select id="SelectZipCodeList" name="selectbasic" class="form-control input-md" ng-model="ROHead.BillingZipCode" ng-options="ZipCode._id as ZipCode.ZipCode for ZipCode in SelectBillingZipCodeList"  required="required">
                                                                         <option value="">{{'BODY.SECTION.SHIPMENT.BILLING.BILL_SELECT_ZIPCODE' | translate}}</option>
                                                                   </select>
                                                                 </div>
-                                                              </div>
-                                                              <div class="form-group">
+                                                            </div>
+                                                            <div class="form-group"><div class="col-sm-12"></div></div>
+                                                            <div class="form-group">
                                                                 <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.TEL_NO' | translate}} :</label>
                                                                 <div class="col-sm-4">
                                                                    <input type="text" ng-model="ROHead.TelNo" required="required" placeholder="{{'BODY.SECTION.SHIPMENT.BILLING.TEL_NO' | translate}}" class="form-control">
+                                                                    
                                                                 </div>
-                                                                <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.TEL_NO' | translate}} :</label>
-                                                              </div>
-                                                              <div class="form-group"></div>
-                                                              <div class="form-group">
+                                                                <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.TEL_NO_EX' | translate}} :</label>
+                                                              
+                                                            </div>
+                                                            <div class="form-group"><div class="col-sm-12"></div></div>
+                                                            <div class="form-group"><div class="col-sm-12"></div></div>
+                                                            <div class="form-group">
                                                                 <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.MOBILE_NO' | translate}} :</label>
                                                                 <div class="col-sm-4">
-                                                                   <input type="text" ng-model="ROHead.MobileNo" required="required" placeholder="{{'BODY.SECTION.SHIPMENT.BILLING.MOBILE_NO' | translate}}" class="form-control">
+                                                                    <input type="text" ng-model="ROHead.MobileNo" required="required" placeholder="{{'BODY.SECTION.SHIPMENT.BILLING.MOBILE_NO' | translate}}" class="form-control">
+                                                                  
                                                                 </div>
-                                                                <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.TEL_NO' | translate}} :</label>
-                                                              </div>
-                                                              <div class="form-group"></div>
+                                                                <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SHIPMENT.BILLING.MOBILE_NO_EX' | translate}} :</label>
+                                                            
+                                                            </div>
+                                                            
                                                           </form>
-                                                        </div>
+                                               
                                                     </div>
                                                     <!--
                                                     <h3>{{'BODY.SECTION.SHIPMENT.BILLING.STEP' | translate}}</h3> 
@@ -1474,7 +1505,8 @@
                                                                 <select class="form-control" ng-model="PaymentType" required="required" ng-change="ChangePaymentType()">
                                                                     <option value="">{{'BODY.SECTION.SHIPMENT.PAYMENT.SELECT_PAYMENT_TYPE' | translate}}</option>
                                                                     <option value="Transfer">{{'BODY.SECTION.SHIPMENT.PAYMENT.TRANSFER' | translate}}</option>
-                                                                   
+                                                            <!--       <option value="Credit">{{'BODY.SECTION.SHIPMENT.PAYMENT.CREDIT' | translate}}</option>
+                                                            <option value="Paypal">{{'BODY.SECTION.SHIPMENT.PAYMENT.PAYPAL' | translate}}</option>-->
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -1719,88 +1751,8 @@
                                                             <!-- PAYPAL FORM ENDS HERE -->
                                                              </div>  
                                                         </div>
-                                                        <div class="col-xs-12"> 
-                                                             <div class="col-xs-4">
-                                                             </div>        
-                                                              <div class="col-xs-8" style="font-size: 12pt; line-height: 2em;" ng-show="PaymentType == 'Credit'">
-                                                            <!-- CREDIT FORM STARTS HERE -->
-                                                            <div class="panel panel-default credit-card-box">
-                                                                <div class="panel-heading display-table" >
-                                                                    <div class="row display-tr" >
-                                                                        <h3 class="panel-title display-td">Credit Card Details</h3>
-                                                                        <img class="img-responsive pull-right" src="/images/accept_visa_type.png">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="panel-body">
-                                                                    <form role="form" id="credit-form">
-                                                                        <div class="row">
-                                                                            <div class="col-xs-12">
-                                                                                <div class="form-group" style="color:black">
-                                                                                    CARD NUMBER
-                                                                                    <div class="input-group">
-                                                                                        <input 
-                                                                                            type="tel"
-                                                                                            class="form-control"
-                                                                                            name="cardNumber"
-                                                                                            ng-model="cardNumber"
-                                                                                            placeholder="Valid Card Number"
-                                                                                            autocomplete="cc-number" payments-format="card"
-                                                                                            required="required" autofocus  
-                                                                                        />
-                                                                                        <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
-                                                                                    </div>
-                                                                                </div>                            
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col-xs-6 col-md-6">
-                                                                                <div class="form-group" style="color:black">
-                                                                                   EXPIRATION DATE
-                                                                                    <input 
-                                                                                        type="tel" 
-                                                                                        class="form-control" 
-                                                                                        name="cardExpiry"
-                                                                                        ng-model="cardExpiry"
-                                                                                        placeholder="MM / YY"
-                                                                                        autocomplete="cc-exp" payments-format="expiry"
-                                                                                        required="required" 
-                                                                                    />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-xs-4 col-md-4 pull-right">
-                                                                                <div class="form-group" style="color:black">
-                                                                                    CV CODE
-                                                                                    <input 
-                                                                                        type="tel" 
-                                                                                        class="form-control"
-                                                                                        name="cardCVC" payments-format="cvc" 
-                                                                                        ng-model="cardCVC"
-                                                                                        placeholder="CVC"
-                                                                                        autocomplete="cc-csc"
-                                                                                        required="required"
-                                                                                    />
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col-xs-6">
-                                                                                <div class="form-group" style="color:black">
-                                                                                    COUPON CODE
-                                                                                    <input type="text" class="form-control" name="couponCode" ng-model="couponCode"/>
-                                                                                </div>
-                                                                            </div>                        
-                                                                        </div>
-                                                                        
-                                                                        <div class="row" style="display:none;">
-                                                                            <div class="col-xs-6">
-                                                                                <p class="payment-errors"></p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </form>
-                                                                </div>
-                                                            </div>            
-                                                            <!-- TRANSFER FORM ENDS HERE -->
-                                                            </div>
+                                                        <div class="row col-xs-12"> 
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1816,8 +1768,19 @@
                                                 <div class="col-md-12">
                                                     <h3> Step 3</h3>
                                                 <!--    <button class="btn btn-success btn-lg center-block" ng-click="ValidateFinish()">Finish!</button> -->
-                                                    <center><h4><i class="fa fa-flag-checkered fa-3x"></i></h4></center>
-                                                    <center>{{'BODY.SECTION.SHIPMENT.FINISH.THANK_MESSAGE' | translate}}</center>
+                                                    <br><br>
+                                                    <div id="ProcessingPurchaseOrder" style="display: block">
+                                                        <center>
+                                                            <i class="fa fa-refresh fa-spin fa-3x fa-fw margin-bottom"></i>
+                                                            <span class="sr-only">Loading...</span>
+                                                        </center>
+                                                        <br>
+                                                        <center><h3>{{'BODY.SECTION.SHIPMENT.FINISH.PROCESSING' | translate}}</h3></center>
+                                                    </div>
+                                                    <div id="ProcessedPurchaseOrder" style="display: none" >
+                                                        <center><h4><i class="fa fa-flag-checkered fa-3x"></i></h4></center>
+                                                        <center>{{'BODY.SECTION.SHIPMENT.FINISH.THANK_MESSAGE' | translate}}</center>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -3806,7 +3769,6 @@
 
                                                     </div>
                                             </div>
-                                            <!-- End Receipt Order Setting -->
                                             </div>
                                         </div>
                                     </div>
@@ -3817,7 +3779,6 @@
                                 <h1>{{'BODY.SECTION.HISTORY.HEAD' | translate}}</h1> 
                                  <div id="div-history-receipt-detail" class="row">
                                     <div class="col-md-12 col-sm-offset-0">
-                                        <!-- Text input-->
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.HISTORY.FROM' | translate}}</label>
                                             <div class="col-sm-4">
@@ -3981,108 +3942,116 @@
                                         <div class="modal-dialog ">
                                             <div class="modal-content">
                                                 <div class="modal-body">
-                                                    <div class="row">
-                                                        <div class="col-xs-4 col-sm-4 col-md-4">
-                                                            <address>
-                                                                <strong>{{ViewHistoryRO.BillingName}}</strong>
-                                                                <br>
-                                                                {{ViewHistoryRO.BillingAddress}}
-                                                                <br>
-                                                                {{ViewHistoryRO.BillingProvince.Province}}, {{ViewHistoryRO.BillingDistrict.District}}
-                                                                <br>
-                                                                {{ViewHistoryRO.BillingSubDistrict.SubDistrict}}, {{ViewHistoryRO.BillingSubDistrict.ZipCode}}
-                                                                <br>
-                                                                <abbr title="Phone">P:</abbr> (213) 484-6829
-                                                            </address>
-                                                        </div>
-                                                        <div class="col-xs-4 col-sm-4 col-md-4 text-center">
-                                                            <p>
-                                                                <img src="/images/KZHLogo.png">
-                                                            </p>
-                                                        </div>
-                                                        <div class="col-xs-4 col-sm-4 col-md-4 text-right">
-                                                            <p>
-                                                                <em>Date: {{ViewHistoryRO.RODate | date:'medium'}}</em>
-                                                            </p>
-                                                            <p>
-                                                                <em>Receipt #: {{ViewHistoryRO.RONo}}</em>
-                                                            </p>
-                                                        </div>
+                                                    <div id="HistoryRODataNotReady" style="display: block">
+                                                        <br>
+                                                        <center>
+                                                            <i class="fa fa-circle-o-notch fa-spin fa-5x fa-fw margin-bottom"></i>
+                                                            <span class="sr-only">Loading...</span>
+                                                        </center>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="text-center">
-                                                            <h1>{{'BODY.SECTION.VIEW_RO_MODAL.RO_LABEL' | translate}}</h1>
+                                                    <div id="HistoryRODataReady" style="display: none">
+                                                        <div class="row">
+                                                            <div class="col-xs-4 col-sm-4 col-md-4">
+                                                                <address>
+                                                                    <strong>{{ViewHistoryRO.BillingName}}</strong>
+                                                                    <br>
+                                                                    {{ViewHistoryRO.BillingAddress}}
+                                                                    <br>
+                                                                    {{ViewHistoryRO.BillingProvince.Province}}, {{ViewHistoryRO.BillingDistrict.District}}
+                                                                    <br>
+                                                                    {{ViewHistoryRO.BillingSubDistrict.SubDistrict}}, {{ViewHistoryRO.BillingSubDistrict.ZipCode}}
+                                                                    <br>
+                                                                    <abbr title="Phone">P:</abbr> (213) 484-6829
+                                                                </address>
+                                                            </div>
+                                                            <div class="col-xs-4 col-sm-4 col-md-4 text-center">
+                                                                <p>
+                                                                    <img src="/images/KZHLogo.png">
+                                                                </p>
+                                                            </div>
+                                                            <div class="col-xs-4 col-sm-4 col-md-4 text-right">
+                                                                <p>
+                                                                    <em>Date: {{ViewHistoryRO.RODate | date:'medium'}}</em>
+                                                                </p>
+                                                                <p>
+                                                                    <em>Receipt #: {{ViewHistoryRO.RONo}}</em>
+                                                                </p>
+                                                            </div>
                                                         </div>
-                                                        <table class="table table-hover">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th class="text-left">Product</th>
-                                                                    <th class="text-center">#</th>
-                                                                    <th class="text-right">Price</th>
-                                                                    <th class="text-right">Total</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr ng-repeat="roLine in ViewHistoryRO.ROLineList">
-                                                                    <td class="col-md-9"><em>{{roLine.ProductNameTh}}</em></h4></td>
-                                                                    <td class="col-md-1" style="text-align: center"> {{roLine.Quantity}} </td>
-                                                                    <td class="col-md-1 text-center">{{roLine.Price | number:2}}</td>
-                                                                    <td class="col-md-1 text-center">{{roLine.Amount | number:2}}</td>
-                                                                </tr>                                                
-                                                                <tr>
-                                                                    <td>   </td>
-                                                                    <td>   </td>
-                                                                    <td>
-                                                                        <p>
-                                                                            <strong class="text-left">Subtotal: </strong>
-                                                                        </p>
-                                                                        <p>
-                                                                            <strong class="text-left">Tax: </strong>
-                                                                        </p>
-                                                                        <p>
-                                                                            <strong class="text-left">Discount: </strong>
-                                                                        </p>
-                                                                        <p>
-                                                                            <strong class="text-left">Weight: </strong>
-                                                                        </p>
-                                                                    </td>
-                                                                    <td class="text-right">
-                                                                        <p>
-                                                                            <strong class="text-right">{{ViewHistoryRO.SumAmount | number:2}}</strong>
-                                                                        </p>
-                                                                        <p>
-                                                                            <strong class="text-right">{{ViewHistoryRO.SumVatAmount | number:2}}</strong>
-                                                                        </p>
-                                                                        <p>
-                                                                            <strong class="text-right">{{ViewHistoryRO.SumDiscountAmount | number:2}}</strong>
-                                                                        </p>
-                                                                        <p>
-                                                                            <strong class="text-right">{{ViewHistoryRO.SumWeightAmount | number:2}}</strong>
-                                                                        </p>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>   </td>
-                                                                    <td>   </td>
-                                                                    <td class="text-right"><h4><strong>Total: </strong></h4></td>
-                                                                    <td class="text-center text-danger"><h4><strong>{{ViewHistoryRO.NetAmount | number:2}}
-                                                                    </strong></h4></td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                        <div class="text-center">
-                                                            <button type="button" class="btn btn-success btn-lg" ngf-select ngf-change="UploadPaymentDocument($files, ViewHistoryRO.RONo)" ng-disabled="ViewHistoryRO.StaffApprovePaymentStatus === 'Y'">
-                                                                {{'BODY.SECTION.VIEW_RO_MODAL.UPLOAD_BUTTON' | translate}}   <span class="glyphicon glyphicon-upload"></span>
-                                                            </button>
+                                                        <div class="row">
+                                                            <div class="text-center">
+                                                                <h1>{{'BODY.SECTION.VIEW_RO_MODAL.RO_LABEL' | translate}}</h1>
+                                                            </div>
+                                                            <table class="table table-hover">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="text-left">Product</th>
+                                                                        <th class="text-center">#</th>
+                                                                        <th class="text-right">Price</th>
+                                                                        <th class="text-right">Total</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr ng-repeat="roLine in ViewHistoryRO.ROLineList">
+                                                                        <td class="col-md-9"><em>{{roLine.ProductNameTh}}</em></h4></td>
+                                                                        <td class="col-md-1" style="text-align: center"> {{roLine.Quantity}} </td>
+                                                                        <td class="col-md-1 text-center">{{roLine.Price | number:2}}</td>
+                                                                        <td class="col-md-1 text-center">{{roLine.Amount | number:2}}</td>
+                                                                    </tr>                                                
+                                                                    <tr>
+                                                                        <td>   </td>
+                                                                        <td>   </td>
+                                                                        <td>
+                                                                            <p>
+                                                                                <strong class="text-left">Subtotal: </strong>
+                                                                            </p>
+                                                                            <p>
+                                                                                <strong class="text-left">Tax: </strong>
+                                                                            </p>
+                                                                            <p>
+                                                                                <strong class="text-left">Discount: </strong>
+                                                                            </p>
+                                                                            <p>
+                                                                                <strong class="text-left">Weight: </strong>
+                                                                            </p>
+                                                                        </td>
+                                                                        <td class="text-right">
+                                                                            <p>
+                                                                                <strong class="text-right">{{ViewHistoryRO.SumAmount | number:2}}</strong>
+                                                                            </p>
+                                                                            <p>
+                                                                                <strong class="text-right">{{ViewHistoryRO.SumVatAmount | number:2}}</strong>
+                                                                            </p>
+                                                                            <p>
+                                                                                <strong class="text-right">{{ViewHistoryRO.SumDiscountAmount | number:2}}</strong>
+                                                                            </p>
+                                                                            <p>
+                                                                                <strong class="text-right">{{ViewHistoryRO.SumWeightAmount | number:2}}</strong>
+                                                                            </p>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>   </td>
+                                                                        <td>   </td>
+                                                                        <td class="text-right"><h4><strong>Total: </strong></h4></td>
+                                                                        <td class="text-center text-danger"><h4><strong>{{ViewHistoryRO.NetAmount | number:2}}
+                                                                        </strong></h4></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <div class="text-center">
+                                                                <button type="button" class="btn btn-success btn-lg" ngf-select ngf-change="UploadPaymentDocument($files, ViewHistoryRO.RONo)" ng-disabled="ViewHistoryRO.StaffApprovePaymentStatus === 'Y'">
+                                                                    {{'BODY.SECTION.VIEW_RO_MODAL.UPLOAD_BUTTON' | translate}}   <span class="glyphicon glyphicon-upload"></span>
+                                                                </button>
+                                                            </div>
                                                         </div>
-                                                        
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="text-center">
-                                                            <h1>{{'BODY.SECTION.VIEW_RO_MODAL.IMAGE_PAYMENT_DOCUMENT' | translate}}</h1>
-                                                        </div>
-                                                        <div class="col-md-6 col-sm-offset-1 text-center">
-                                                            <div id="ThumbnailReceiptPayment"></div>
+                                                        <div class="row">
+                                                            <div class="text-center">
+                                                                <h1>{{'BODY.SECTION.VIEW_RO_MODAL.IMAGE_PAYMENT_DOCUMENT' | translate}}</h1>
+                                                            </div>
+                                                            <div class="col-md-12 col-sm-offset-0 text-center">
+                                                                <div id="ThumbnailReceiptPayment"></div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -4229,118 +4198,127 @@
                                     <div class="modal-dialog ">
                                         <div class="modal-content">
                                             <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-xs-4 col-sm-4 col-md-4">
-                                                        <address>
-                                                            <strong>{{ViewStaffRO.BillingName}}</strong>
-                                                            <br>
-                                                            {{ViewStaffRO.BillingAddress}}
-                                                            <br>
-                                                            <br>
-                                                            {{ViewStaffRO.BillingSubDistrict.SubDistrict}}, {{ViewStaffRO.BillingDistrict.District}} 
-                                                            <br>
-                                                            {{ViewStaffRO.BillingProvince.Province}}, {{ViewStaffRO.BillingSubDistrict.ZipCode}}
-                                                            <br>
-                                                            <abbr title="Phone"> </abbr> 
-                                                        </address>
-                                                    </div>
-                                                    <div class="col-xs-4 col-sm-4 col-md-4 text-center">
-                                                        <p>
-                                                            <img src="/images/KZHLogo.png">
-                                                        </p>
-                                                    </div>
-                                                    <div class="col-xs-4 col-sm-4 col-md-4 text-right">
-                                                        <p>
-                                                            <em>Date: {{ViewStaffRO.RODate | date :'medium'}}</em>
-                                                        </p>
-                                                        <p>
-                                                            <em>Receipt #: {{ViewStaffRO.RONo}}</em>
-                                                        </p>
-                                                    </div>
+                                                <div id="CustomerRODataNotReady" style="display: block">
+                                                    <br>
+                                                    <center>
+                                                        <i class="fa fa-circle-o-notch fa-spin fa-5x fa-fw margin-bottom"></i>
+                                                        <span class="sr-only">Loading...</span>
+                                                    </center>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="text-center">
-                                                        <h1>Receipt</h1>
+                                                <div id="CustomerRODataReady" style="display: none">
+                                                    <div class="row">
+                                                        <div class="col-xs-4 col-sm-4 col-md-4">
+                                                            <address>
+                                                                <strong>{{ViewStaffRO.BillingName}}</strong>
+                                                                <br>
+                                                                {{ViewStaffRO.BillingAddress}}
+                                                                <br>
+                                                                <br>
+                                                                {{ViewStaffRO.BillingSubDistrict.SubDistrict}}, {{ViewStaffRO.BillingDistrict.District}} 
+                                                                <br>
+                                                                {{ViewStaffRO.BillingProvince.Province}}, {{ViewStaffRO.BillingSubDistrict.ZipCode}}
+                                                                <br>
+                                                                <abbr title="Phone"> </abbr> 
+                                                            </address>
+                                                        </div>
+                                                        <div class="col-xs-4 col-sm-4 col-md-4 text-center">
+                                                            <p>
+                                                                <img src="/images/KZHLogo.png">
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-xs-4 col-sm-4 col-md-4 text-right">
+                                                            <p>
+                                                                <em>Date: {{ViewStaffRO.RODate | date :'medium'}}</em>
+                                                            </p>
+                                                            <p>
+                                                                <em>Receipt #: {{ViewStaffRO.RONo}}</em>
+                                                            </p>
+                                                        </div>
                                                     </div>
-                                                    </span>
-                                                    <table class="table table-hover">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Product</th>
-                                                                <th>#</th>
-                                                                <th class="text-center">Price</th>
-                                                                <th class="text-center">Total</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr ng-repeat="roLine in ViewStaffRO.ROLineList">
-                                                                <td class="col-md-9"><em>{{roLine.ProductNameTh}}</em></h4></td>
-                                                                <td class="col-md-1" style="text-align: center"> {{roLine.Quantity}} </td>
-                                                                <td class="col-md-1 text-center">{{roLine.Price | number :2}}</td>
-                                                                <td class="col-md-1 text-center">{{roLine.Amount | number :2}}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>   </td>
-                                                                <td>   </td>
-                                                                <td class="text-right">
-                                                                    <p>
-                                                                        <strong>Subtotal: </strong>
-                                                                    </p>
-                                                                    <p>
-                                                                        <strong>Tax: </strong>
-                                                                    </p>
-                                                                    <p>
-                                                                        <strong>Discount: </strong>
-                                                                    </p>
-                                                                    <p>
-                                                                        <strong>Weight: </strong>
-                                                                    </p>
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    <p>
-                                                                        <strong>{{ViewStaffRO.SumAmount | number :2}}</strong>
-                                                                    </p>
-                                                                    <p>
-                                                                        <strong>{{ViewStaffRO.SumVatAmount | number :2}}</strong>
-                                                                    </p>
-                                                                    <p>
-                                                                        <strong>{{ViewStaffRO.SumDiscountAmount | number :2}}</strong>
-                                                                    </p>
-                                                                    <p>
-                                                                        <strong>{{ViewStaffRO.SumWeightAmount | number :2}}</strong>
-                                                                    </p>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>   </td>
-                                                                <td>   </td>
-                                                                <td class="text-right"><h4><strong>Total: </strong></h4></td>
-                                                                <td class="text-center text-danger"><h4><strong>{{ViewStaffRO.NetAmount | number :2}}</strong></h4></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                    </td>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="text-center">
-                                                        <h1>{{'BODY.SECTION.VIEW_RO_MODAL.IMAGE_PAYMENT_DOCUMENT' | translate}}</h1>
+                                                    <div class="row">
+                                                        <div class="text-center">
+                                                            <h1>Receipt</h1>
+                                                        </div>
+                                                        </span>
+                                                        <table class="table table-hover">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Product</th>
+                                                                    <th>#</th>
+                                                                    <th class="text-center">Price</th>
+                                                                    <th class="text-center">Total</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="roLine in ViewStaffRO.ROLineList">
+                                                                    <td class="col-md-9"><em>{{roLine.ProductNameTh}}</em></h4></td>
+                                                                    <td class="col-md-1" style="text-align: center"> {{roLine.Quantity}} </td>
+                                                                    <td class="col-md-1 text-center">{{roLine.Price | number :2}}</td>
+                                                                    <td class="col-md-1 text-center">{{roLine.Amount | number :2}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>   </td>
+                                                                    <td>   </td>
+                                                                    <td class="text-right">
+                                                                        <p>
+                                                                            <strong>Subtotal: </strong>
+                                                                        </p>
+                                                                        <p>
+                                                                            <strong>Tax: </strong>
+                                                                        </p>
+                                                                        <p>
+                                                                            <strong>Discount: </strong>
+                                                                        </p>
+                                                                        <p>
+                                                                            <strong>Weight: </strong>
+                                                                        </p>
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        <p>
+                                                                            <strong>{{ViewStaffRO.SumAmount | number :2}}</strong>
+                                                                        </p>
+                                                                        <p>
+                                                                            <strong>{{ViewStaffRO.SumVatAmount | number :2}}</strong>
+                                                                        </p>
+                                                                        <p>
+                                                                            <strong>{{ViewStaffRO.SumDiscountAmount | number :2}}</strong>
+                                                                        </p>
+                                                                        <p>
+                                                                            <strong>{{ViewStaffRO.SumWeightAmount | number :2}}</strong>
+                                                                        </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>   </td>
+                                                                    <td>   </td>
+                                                                    <td class="text-right"><h4><strong>Total: </strong></h4></td>
+                                                                    <td class="text-center text-danger"><h4><strong>{{ViewStaffRO.NetAmount | number :2}}</strong></h4></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        </td>
                                                     </div>
-                                                    <div class="col-md-12 text-center">
-                                                        <div id="ThumbnailStaffViewReceiptPayment" ></div>
-                                                    </div>
-                                                    <div id="ApprovePayment" class="col-md-12 text-center">
-                                                        <button type="submit" class="btn btn-success btn-lg" ng-disabled="ViewStaffRO.StaffApprovePaymentStatus === 'Y'" ng-click="PerformValidatePaymentDocument('Y')">
-                                                            <span class="glyphicon glyphicon glyphicon-ok"  aria-hidden="true"></span> {{'BODY.SECTION.VIEW_RO_MODAL.APPROVE_BUTTON' | translate}}
-                                                        </button> 
-                                                        <button type="submit" class="btn btn-danger btn-lg" ng-disabled="ViewStaffRO.StaffApprovePaymentStatus === 'Y'" ng-click="PerformValidatePaymentDocument('N')">
-                                                            <span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span> {{'BODY.SECTION.VIEW_RO_MODAL.REJECT_BUTTON' | translate}}
-                                                        </button> 
-                                                    </div>
-                                                    <hr class="featurette-divider">
-                                                    <div id="ApprovePayment" class="col-md-12 text-center">
-                                                        <button type="submit" class="class=btn btn-warning btn-lg" ng-disabled="ViewStaffRO.StaffApprovePaymentStatus === 'N'" ng-click="NotifyCustomerShipping(ViewStaffRO)">
-                                                            <span class="glyphicon glyphicon glyphicon-plane" aria-hidden="true"></span> {{'BODY.SECTION.VIEW_RO_MODAL.SHIPPED_BUTTON' | translate}}
-                                                        </button> 
+                                                    <div class="row">
+                                                        <div class="text-center">
+                                                            <h1>{{'BODY.SECTION.VIEW_RO_MODAL.IMAGE_PAYMENT_DOCUMENT' | translate}}</h1>
+                                                        </div>
+                                                        <div class="col-md-12 text-center">
+                                                            <div id="ThumbnailStaffViewReceiptPayment" ></div>
+                                                        </div>
+                                                        <div id="ApprovePayment" class="col-md-12 text-center">
+                                                            <button type="submit" class="btn btn-success btn-lg" ng-disabled="ViewStaffRO.StaffApprovePaymentStatus === 'Y'" ng-click="PerformValidatePaymentDocument('Y')">
+                                                                <span class="glyphicon glyphicon glyphicon-ok"  aria-hidden="true"></span> {{'BODY.SECTION.VIEW_RO_MODAL.APPROVE_BUTTON' | translate}}
+                                                            </button> 
+                                                            <button type="submit" class="btn btn-danger btn-lg" ng-disabled="ViewStaffRO.StaffApprovePaymentStatus === 'Y'" ng-click="PerformValidatePaymentDocument('N')">
+                                                                <span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span> {{'BODY.SECTION.VIEW_RO_MODAL.REJECT_BUTTON' | translate}}
+                                                            </button> 
+                                                        </div>
+                                                        <hr class="featurette-divider">
+                                                        <div id="ApprovePayment" class="col-md-12 text-center">
+                                                            <button type="submit" class="class=btn btn-warning btn-lg" ng-disabled="ViewStaffRO.StaffApprovePaymentStatus === 'N'" ng-click="NotifyCustomerShipping(ViewStaffRO)">
+                                                                <span class="glyphicon glyphicon glyphicon-plane" aria-hidden="true"></span> {{'BODY.SECTION.VIEW_RO_MODAL.SHIPPED_BUTTON' | translate}}
+                                                            </button> 
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -4694,7 +4672,6 @@
         <script src="/bower_components/angular-cookies/angular-cookies.min.js"></script>
         <script src="/bower_components/ng-password-strength/dist/scripts/ng-password-strength.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.min.js"></script>
         <script src="/bower_components/ng-file-upload/ng-file-upload.js"></script>
         <script src="/bower_components/ng-file-upload-shim/ng-file-upload-shim.js"></script>
         <script src="/bower_components/angular-translate/angular-translate.js"></script>
@@ -4713,7 +4690,6 @@
         <script src="/bower_components/allmighty-autocomplete/script/autocomplete.js" ></script>
         <script src="/bower_components/paypaljsbuttons/dist/paypal-button.min.js" ></script>
         <script src="/scripts/main.js"></script>
-        <script src="/scripts/bootstrap-magnify.js"></script>
         <script src="/scripts/step.js"></script>
         <script src="/controllers/app.js"></script>
         <script src="/controllers/main-controller.js"></script>

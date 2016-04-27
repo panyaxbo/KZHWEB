@@ -37,7 +37,7 @@
     "sweetalert": "~1.0.1",
     "angular-cookies": "~1.4.8",
     "aws-sdk": "aws-sdk-js#~2.2.0",
-    "card": "~1.1.0",
+    "card": "~1.2.2",
     "select2-bootstrap-css": "~1.4.6",
     "angular-route": "~1.4.8",
     "lodash": "~3.10.1",
@@ -45,12 +45,14 @@
     "magnifier": "*",
     "angular-spinners": "~3.0.4",
     "angular-bootstrap": "^1.1.2",
-    "animate.css": "^3.5.1"
+    "animate.css": "^3.5.1",
+    "angular-card": "^0.3.7"
   },
   "devDependencies": {},
   "resolutions": {
     "select2": "~4.0.0",
     "angular": "1.4.8",
-    "jspdf": "^1.2.61"
+    "jspdf": "^1.2.61",
+    "card": "~1.2.2"
   }
 }

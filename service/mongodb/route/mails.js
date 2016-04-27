@@ -226,7 +226,7 @@ router.post('/SendEmailForgetPassword', function (req, res) {
 '		<tr>'+
 '			<td style="border-top:#e41f28 solid 6px;font:normal 13px/18px Arial,Helvetica,sans-serif;padding:45px 17px 30px 17px" valign="top">'+
 '			<h2 style="font:normal"><img height="20" src="cid:recovery@kzh.parts.co.th" style="margin-right:10px" width="21" >&nbsp;&nbsp;การกู้คืนรหัสผ่านของท่าน</h2>'+
-'			<p>การเรียกคืนรหัสผ่าน ,<br>'+
+'			<p>การเรียกคืนรหัสผ่าน ,ท่านสามารถกดที่ปุ่มด้านล่างนี้<br>'+
 '			<br>'+
 '<a href="' + forgetPasswordLink + '" type="application/x-www-form-urlencoded" style="background-color:#F64747;border-radius:4px;color:#ffffff;display:inline-block;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:bold;line-height:50px;text-align:center;text-decoration:none;width:240px;align:center; " target="_blank"> กู้คืนรหัสผ่าน </a>'+
 '			<br>'+

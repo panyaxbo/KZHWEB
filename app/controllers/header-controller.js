@@ -508,6 +508,7 @@ var open = function(verb, url, data, target) {
     $scope.SelectedHeadMenu = function (menu) {
         console.log("head ctrl " + menu);
         $scope.SelectedMenu = menu;
+
         if (menu == "product") {
             MenuService.Menu.SelectedMenu = "product";
             $scope.SelectedMenu = "product";
@@ -544,6 +545,7 @@ var open = function(verb, url, data, target) {
         $scope.$emit('handleHeadMenuEmit', {
             SelectedMenu: menu
         });
+
     }
     function ZeroPad(num, places) {
         var zero = places - num.toString().length + 1;
@@ -687,12 +689,19 @@ var open = function(verb, url, data, target) {
      //   console.log(asciiString);
         return asciiString;
     }
-    $scope.ChangePassword = function() {
-      if ($scope.ChangeForgetPassword === $scope.ConfirmChangeForgetPassword) {
 
+    $scope.InputPasswordProgressValue = 0;
+
+    $scope.ChangePassword = function() {
+      document.getElementById('InputPasswordProgress').style.display = 'block';
+      $scope.InputPasswordProgressValue = 33;
+      if ($scope.ChangeForgetPassword === $scope.ConfirmChangeForgetPassword) {
+        $scope.InputPasswordProgressValue = 69;
         UserService.PerformChangePassword($scope.ForgetPasswordEmail, $scope.ChangeForgetPassword)
         .then(function(data, status) {
             swal("Change Password Success", "Your password has changed successfully.", "success");
+            $scope.InputPasswordProgressValue = 100;
+            document.getElementById('InputPasswordProgress').style.display = 'block';
             $('#InputPasswordModal').modal('toggle');
         }, function(error, status) {
             swal("Error", "Cannot find your account.", "error");
@@ -715,7 +724,7 @@ var open = function(verb, url, data, target) {
     }
 
     $scope.Signup = function () {
-   //   blockUI.start("Please wait while system sending email...");
+      document.getElementById('SignupDataNotReady').style.display = 'block';
       console.log('sinn up ');
       var email = $scope.Email;
       $scope.User.Firstname = $scope.Firstname;
@@ -741,9 +750,8 @@ var open = function(verb, url, data, target) {
           return EmailService.SendEmailConfirmation(mailActivate)
       })
       .then(function(data, status){
-      //    blockUI.message("100%");
-     //     blockUI.stop();
           swal("Sign up almost Success", "Please check your email to activate your account", "success");
+          document.getElementById('SignupDataNotReady').style.display = 'none';
           $("#LoginModal").modal("toggle");
       }, function(error, status) {
           swal("Error", "There is error occur , please contact administrator", "error");
@@ -927,6 +935,7 @@ var open = function(verb, url, data, target) {
     }
 
     $scope.Login = function () {
+      document.getElementById('LoginDataNotReady').style.display = 'block';
       var appuser = {};
       UserService.LoginWithUsernameAndPassword($scope.username, $scope.password)
       .then(function(data, status) {
@@ -966,7 +975,7 @@ var open = function(verb, url, data, target) {
             }
             $scope.IsLogin = true;
             $("#LoginModal").modal("toggle");
-
+            document.getElementById('LoginDataNotReady').style.display = 'none';
             if ($scope.RememberMe) {
               var now = new Date();
               now.setDate(now.getDate() + 1);
@@ -1139,7 +1148,15 @@ var open = function(verb, url, data, target) {
       $('#UserProfileImage').append(imageNoProfile);
     }
     $scope.ViewCart = function () {
-        console.log("view cart " + $scope.ROHead);
+        console.log("view cart " , $scope.ROHead);
+         console.log("view cart " , $scope.ROHead.ROLineList.length);
+        if ($scope.ROHead.ROLineList.length <= 0 || $scope.ROHead.ROLineList === undefined) {
+                document.getElementById('HideCartTable').style.display = 'block';
+                document.getElementById('ShowCartTable').style.display = 'none';
+              } else if ($scope.ROHead.ROLineList.length > 0) {
+                document.getElementById('HideCartTable').style.display = 'none';
+                document.getElementById('ShowCartTable').style.display = 'block';
+              }
     }
 
     $scope.UpdateCartBuyQty = function (index, qty) {
@@ -1147,7 +1164,6 @@ var open = function(verb, url, data, target) {
       var regexp = /^\d+(\.\d{1,2})?$/;
 
       var isnum = regexp.test(qty.toString());
-   //   console.log(qty+" buy qty " + isnum);
       if (isnum) 
       {
           $scope.UpdateCartSummary();
@@ -1161,7 +1177,6 @@ var open = function(verb, url, data, target) {
     }
 
     $scope.UpdateCartUom = function (ROLine,UomCode, index) {
-//      console.log("UpdateCartUom ..ROLINE " + ROLine + ' uom ' + UomCode);
       UomService.LoadUomByUomCode(UomCode)
       .then(function(uom, status) {
           console.log('IsContainer ' + uom.IsContainer)
@@ -1180,26 +1195,6 @@ var open = function(verb, url, data, target) {
       }, function(error, status) {
           console.log('error ', error);
       })
-    /*  var url = ENV.apiEndpoint + "/uoms/LoadUomByUomCode/" + UomCode;
-      $http.get(url)
-      .success(function (uom) {
-        console.log('IsContainer ' + uom.IsContainer)
-          if (uom.IsContainer == true) {
-            ROLine.Price = ROLine.DrContainWholesalePrice;
-            ROLine.Amount = ROLine.Quantity * ROLine.DrContainWholesalePrice;
-          } else if (uom.IsContainer == false) {
-            ROLine.Price = ROLine.DrRetailPrice;
-            ROLine.Amount = ROLine.Quantity * ROLine.DrRetailPrice;
-          }
-          $scope.ROHead.ROLineList.splice(index, 1);
-          $scope.ROHead.ROLineList.splice(index, 0, ROLine);
-
-          $scope.UpdateCartSummary();
-      })
-      .error(function (uom) {
-
-      });
-*/
     }
     $scope.DeleteCartProduct = function (Row, ROLine, index) {
         swal({
@@ -1220,15 +1215,21 @@ var open = function(verb, url, data, target) {
               $scope.ROHead.ROLineList.splice(index, 1);
               $scope.ROLineList.splice(index, 1);
               if ($scope.ROHead.ROLineList.length <= 0 || $scope.ROHead.ROLineList === undefined) {
-                $('#HideCartTable').show('slow');
-                $('#ShowCartTable').hide('slow');
+              //  $('#HideCartTable').show('slow');
+              //  $('#ShowCartTable').hide('slow');
+                document.getElementById('HideCartTable').style.display = 'block';
+                document.getElementById('ShowCartTable').style.display = 'none';
               } else if ($scope.ROHead.ROLineList.length > 0) {
-                $('#HideCartTable').hide('slow');
-                $('#ShowCartTable').show('slow');
+              //  $('#HideCartTable').hide('slow');
+             //   $('#ShowCartTable').show('slow');
+                document.getElementById('HideCartTable').style.display = 'none';
+                document.getElementById('ShowCartTable').style.display = 'block';
               }
               $scope.UpdateCartSummary();
             } else {
             }
+            console.log($scope.ROHead.ROLineList.length);
+            console.log($scope.ROHead);
           });
         });
     }
@@ -1257,36 +1258,40 @@ var open = function(verb, url, data, target) {
           sumWt += roline.Weight;
         }
         console.log("sumWt ",sumWt);
-        if ($scope.ROHead.PostType === 'Normal') {
-          var weight_rate = WeightRateService.GetWeightRateNormal($scope.ROHead.SumWeight);
-          $scope.ROHead.SumWeightAmount = parseInt(weight_rate);
-              netAmt = sumAmt - sumDiscAmt + sumVatAmt + $scope.ROHead.SumWeightAmount;
-              $scope.ROHead.SumAmount = sumAmt;
-              $scope.ROHead.SumVatAmount = sumVatAmt;
-              $scope.ROHead.SumDiscountAmount = sumDiscAmt;
-              $scope.ROHead.NetAmount = netAmt;
-              $scope.ROHead.SumWeight = sumWt;
-        } else if ($scope.ROHead.PostType === 'EMS') {
-          WeightRateService.GetWeightRateByPostTypeAndWeight($scope.ROHead.PostType, sumWt)
-            .then(function(weightRate, status) {
-              $scope.ROHead.SumWeightAmount = parseInt(weightRate.Rate);
-              netAmt = sumAmt - sumDiscAmt + sumVatAmt + $scope.ROHead.SumWeightAmount;
-              $scope.ROHead.SumAmount = sumAmt;
-              $scope.ROHead.SumVatAmount = sumVatAmt;
-              $scope.ROHead.SumDiscountAmount = sumDiscAmt;
-              $scope.ROHead.NetAmount = netAmt;
-              $scope.ROHead.SumWeight = sumWt;
-            }, function(error, status) {
+        $scope.ROHead.SumWeight = sumWt;
+        if ($scope.ROHead.PostType === 'EMS' && sumWt > 20000) {
+        //  swal("Cancelled", "Your product data is safe :)", "success");
+          $scope.ROHead.PostType = 'Normal';
+          $scope.UpdateCartSummary();
+        } else {
+          if ($scope.ROHead.PostType === 'Normal') {
+            var weight_rate = WeightRateService.GetWeightRateNormal(sumWt);
+            console.log($scope.ROHead.SumWeight);
+              console.log(weight_rate);
+                $scope.ROHead.SumWeightAmount = parseInt(weight_rate);
+                netAmt = sumAmt - sumDiscAmt + sumVatAmt + $scope.ROHead.SumWeightAmount;
+                $scope.ROHead.SumAmount = sumAmt;
+                $scope.ROHead.SumVatAmount = sumVatAmt;
+                $scope.ROHead.SumDiscountAmount = sumDiscAmt;
+                $scope.ROHead.NetAmount = netAmt;
+                $scope.ROHead.SumWeight = sumWt;
+          } else if ($scope.ROHead.PostType === 'EMS') {
+            WeightRateService.GetWeightRateByPostTypeAndWeight($scope.ROHead.PostType, sumWt)
+              .then(function(weightRate, status) {
+                $scope.ROHead.SumWeightAmount = parseInt(weightRate.Rate);
+                netAmt = sumAmt - sumDiscAmt + sumVatAmt + $scope.ROHead.SumWeightAmount;
+                $scope.ROHead.SumAmount = sumAmt;
+                $scope.ROHead.SumVatAmount = sumVatAmt;
+                $scope.ROHead.SumDiscountAmount = sumDiscAmt;
+                $scope.ROHead.NetAmount = netAmt;
+                $scope.ROHead.SumWeight = sumWt;
+              }, function(error, status) {
 
-          });
+            });
+          }
         }
-       
-
-       
-        
-        
-        
     }
+
     function getBase64Image(img) {
       var canvas = document.createElement("canvas");
       canvas.width = img.width;
@@ -1466,11 +1471,14 @@ var open = function(verb, url, data, target) {
       }
     }
     
+    $scope.ForgetPasswordProgressValue = 0;
     $scope.ForgetPassword = function () {
       $("#LoginModal").modal('toggle');
       $("#ForgetPasswordModal").modal('show');
     }
     $scope.SendEmailForgetPassword = function () {
+      document.getElementById('ForgetPasswordProgress').style.display = 'block';
+      $scope.ForgetPasswordProgressValue = 23;
       var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
       if (filter.test($scope.ForgetPasswordEmail) && $scope.ForgetPasswordEmail.length > 0) {
         console.log('valid');
@@ -1479,6 +1487,7 @@ var open = function(verb, url, data, target) {
         .then(function(data, status) {
       //      blockUI.message("25%");
             if(data) {
+              $scope.ForgetPasswordProgressValue = 56;
               return CryptoService.GenerateForgetPasswordHashLink($scope.ForgetPasswordEmail)
             } else {
               swal("Error", "Cannot find your account.", "error");
@@ -1499,15 +1508,18 @@ var open = function(verb, url, data, target) {
         })
 
         var IsExistEmail = ENV.apiEndpoint + "/users/IsExistEmail/" + $scope.ForgetPasswordEmail;
+        $scope.ForgetPasswordProgressValue = 67;
         $http.get(IsExistEmail)
         .success(function(data, status, headers, config) {
           // exist email ,then send email
         //    blockUI.message("25%");
             if(data) {
               var genforgetLink = ENV.apiEndpoint + '/cryptojs/GenerateForgetPasswordHashLink/' + $scope.ForgetPasswordEmail;
+              $scope.ForgetPasswordProgressValue = 79;
               $http.get(genforgetLink)
               .success(function(data, status, headers, config) { 
                   var hostWithPort = $location.host() + ':' +$location.port();
+                  $scope.ForgetPasswordProgressValue = 93;
                   var forgetPasswordEmailUrl = ENV.apiEndpoint + "/mails/SendEmailForgetPassword";
         //          blockUI.message("75%");
                   var mailForget = {
@@ -1521,7 +1533,8 @@ var open = function(verb, url, data, target) {
                     var type = $filter('translate')('MESSAGE.TYPE_SUCCESS');
                     var title = $filter('translate')('MESSAGE.TITLE_SUCCESS_DEFAULT');
                     swal(title, "Please check your email", type);
-
+                    document.getElementById('ForgetPasswordProgress').style.display = 'none';
+                    $scope.ForgetPasswordProgressValue = 100;
                     $('#ForgetPasswordModal').modal('toggle');
                   })
                   .error(function(data, status, headers, config) {
