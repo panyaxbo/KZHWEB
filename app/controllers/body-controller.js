@@ -252,7 +252,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
 
     ProductService.LoadProduct()
     .then(function(data, status) {
-        console.log('LoadProduct');
+  //      console.log('LoadProduct');
 
         $scope.Products = data;
         $scope.totalItems = $scope.Products.length;
@@ -316,7 +316,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     $scope.ProductTypes = [];
     ProductTypeService.LoadProductType()
     .then(function(types, status) {
-        console.log(types);
+    //    console.log(types);
         $scope.ProductTypes = types;
         ProductTypeService.ProductTypes = types;
         $scope.IsProductTypeDataReady = true;
@@ -3563,7 +3563,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             $scope.ROHead.ReceiptZipCode = "";
 
             $scope.ROHead.BillingEmail = $scope.User.Email;
-            console.log($scope.User.Email);
+       //     console.log($scope.User.Email);
         }, function(err, status) {
             console.log(err);
         });
