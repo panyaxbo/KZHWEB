@@ -411,11 +411,16 @@ module.exports = function (grunt) {
             dest: '<%= yeoman.dist %>/scripts/script.min.js'
         },
         build2: {
-            src: ['<%= yeoman.app %>/controllers/{,*/}*.js'
+            src: ['<%= yeoman.app %>/controllers/app.js'
             ],
-            dest: '<%= yeoman.dist %>/controllers/controller.min.js'
+            dest: '<%= yeoman.dist %>/controllers/app.min.js'
         },
-   /*     build22: {
+        build21: {
+            src: ['<%= yeoman.app %>/controllers/main-controller.js'
+            ],
+            dest: '<%= yeoman.dist %>/controllers/main-controller.min.js'
+        },
+        build22: {
             src: ['<%= yeoman.app %>/controllers/header-controller.js'
             ],
             dest: '<%= yeoman.dist %>/controllers/header-controller.min.js'
@@ -430,7 +435,7 @@ module.exports = function (grunt) {
             ],
             dest: '<%= yeoman.dist %>/controllers/footer-controller.min.js'
         },
-*/
+
         build3: {
             src: ['<%= yeoman.app %>/constants/{,*/}*.js'
             ],

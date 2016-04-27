@@ -26,8 +26,6 @@
     <link rel="stylesheet" href="/bower_components/sweetalert/dist/sweetalert.css" />
  <!--   <link rel="stylesheet" href="/bower_components/angular-block-ui/dist/angular-block-ui.min.css" />-->
     <link rel="stylesheet" href="/bower_components/ng-table/dist/ng-table.min.css">
-    <link rel="stylesheet" href="/bower_components/magnifier/magnifier.css">
-    <link rel="stylesheet" href="styles/bootstrap-magnify.css">
     <link rel="stylesheet" href="styles/search.css">
     <link rel="stylesheet" href="styles/step.css">
     <link rel="stylesheet" href="styles/main.css">
@@ -813,7 +811,7 @@
                                         <div class="col-md-3 col-sm-4 col-xs-6" ng-repeat="p in Products.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage))">
                                             <div class="product-detail">
                                                 <div class="product-gallery-footer">
-                                                    <div class="mag thumbnailProductImage" style="height:200px">
+                                                    <div class="thumbnailProductImage" style="height:200px">
                                                         <img src="/images/no-image.png" class="img-responsive" ng-show="p.ProductImageRefId.length <= 0 || p.ProductImageRefId === undefined">
                                                         <div class="label-hot animated infinite pulse" ng-show="p.IsHot"> {{'BODY.SECTION.PRODUCT.LABEL_HOT' | translate}}</div>
                                                         <span class="sale animated infinite pulse" ng-show="p.IsHot">
