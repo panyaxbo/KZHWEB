@@ -63,7 +63,7 @@ router.post('/uploadProductCategoryImage/:ProductCategoryId/:ProductCategoryCode
   var fileExt = file.originalFilename.split('.').pop();
   file.originalFilename = ProductCategoryCode + '.' + fileExt;
   product_category_s3fsImpl.writeFile(file.originalFilename, stream).then(function() {
-    fs.unlink(file.path, function(err) {
+
       if (err) {
         console.log(err, err.stack.split("\n"));
       }
@@ -103,7 +103,7 @@ router.post('/uploadProductCategoryImage/:ProductCategoryId/:ProductCategoryCode
               }
             });
       }
-    });
+
   });
 
   var InsertFilePromise = function() {
@@ -147,7 +147,6 @@ router.post('/uploadProductCategoryImage/:ProductCategoryId/:ProductCategoryCode
         file.fileName = ProductCategoryCode;
         file.uploadBy = Username;
         file.uploadDate = updateDate;
-
 
     }, function(err) {
 

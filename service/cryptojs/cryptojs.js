@@ -49,8 +49,9 @@ router.get('/GenerateForgetPasswordHashLink/:ForgetPasswordEmail', function(req,
 
 });
 
-router.get('/GetForgetEncodeUrl/:EncodeUrl', function (req, res) {
-  var url = req.params.EncodeUrl;
+router.get('/GetForgetEncodeUrl', function (req, res) {
+  var encodeObj = req.body;
+  var url = encodeObj.EncodeUrl;
 
   var decodeString = cryptojs.AES.decrypt(url.toString(), serverConfig.app.passphrase, 256);
   

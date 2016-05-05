@@ -1052,6 +1052,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     }
     // Upload Product Category Image
     $scope.uploadProductCategoryImage = function (files, ProductCategoryId, ProductCategoryCode) {
+        document.getElementById('ViewProductCategoryImageNotReady').style.display = 'block';
         console.log(" Product Category Id " + ProductCategoryId + ProductCategoryCode);
         if (files && files.length) {
             for (var i = 0; i < files.length; i++) {
@@ -1073,11 +1074,14 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                     var downloadUrl = ENV.apiEndpoint + '/aws/downloadProductCategoryImageThumbnail/' + ProductCategoryId + '/' + ProductCategoryCode;
                     $http.get(downloadUrl)
                     .success(function (data, status, headers, config) {
+                        document.getElementById('ViewProductCategoryImageNotReady').style.display = 'none';
                         $('#ThumbnailProductCategoryImage').children("img").remove();
                         $('#ThumbnailProductCategoryImage').append(data);
+
                     })
                     .error(function (data, status, headers, config) {
                         console.log(data);
+                        document.getElementById('ViewProductCategoryImageNotReady').style.display = 'none';
                     });
                 })
                 .error(function (data, status, headers, config) {
@@ -1811,7 +1815,8 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
 
     // Upload Product Image
     $scope.uploadProductImage = function (files, ProductId, ProductCode) {
-        console.log(" Product Id " + ProductId + ProductCode);
+        // console.log(" Product Id " + ProductId + ProductCode);
+        document.getElementById('ViewProductImageNotReady').style.display = 'block';
         if (files && files.length) {
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
@@ -1832,13 +1837,13 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                     var downloadUrl = ENV.apiEndpoint + '/aws/downloadProductImageThumbnail/' + ProductId + '/' + ProductCode;
                     $http.get(downloadUrl)
                     .success(function (data, status, headers, config) {
-                    //    $scope.User.ProfileImage = data;
+                        document.getElementById('ViewProductImageNotReady').style.display = 'none';
                         $('#ThumbnailProductImage').children("img").remove();
                         $('#ThumbnailProductImage').append(data);
                     })
                     .error(function (data, status, headers, config) {
                         console.log(data);
-
+                        document.getElementById('ViewProductImageNotReady').style.display = 'none';
                     });
                     
                 })
@@ -3952,31 +3957,27 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             $scope.ROHead.StaffApprovePaymentStatus = "N";
             return ReceiptOrderService.CreateReceiptOrder($scope.ROHead);
         }, function(err, status) {
-    //        blockUI.stop();
             console.log('err create receipt ', err);
         })
         .then(function(data, status) {
-    //        blockUI.message("53%");
             return EmailService.SendEmailStaffNewOrder(newcode);
         }, function(err, status) {
-    //        blockUI.stop();
             console.log('create ro head ', err);
         })
         .then(function(data, status) {
-    //        blockUI.message("74%");
             return EmailService.SendEmailCustomerNewOrder($scope.User.Email, newcode);
         }, function(err, status) {
-     //       blockUI.stop();
             console.log('error sending email staff ', err);
         })
         .then(function(data, status) {
-    //        blockUI.message("98%");
-    //        blockUI.stop();
+   
             document.getElementById('ProcessingPurchaseOrder').style.display = 'none';
             document.getElementById('ProcessedPurchaseOrder').style.display = 'block';
-            swal("Thank you for your order", "You can check and track your order in history.", "success");
+            $ROHead.ROLineList.length = 0;
+            swal("Thank you for your order", "You can check and track your order in history.",
+             "success");
         }, function(err, status) {
-    //        blockUI.stop();
+    
             console.log('error sending email customer ', err);
         });
     }

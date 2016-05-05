@@ -556,6 +556,13 @@ module.exports = function (grunt) {
           tag: pkg.version
         }
       },
+      testheroku: {
+        options: {
+          remote: 'git@heroku.com:test-kzh-parts.git',
+          branch: 'master',
+          tag: pkg.version
+        }
+      },
       local: {
         options: {
           remote: '../',

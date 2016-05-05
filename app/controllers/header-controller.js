@@ -31,6 +31,10 @@ var open = function(verb, url, data, target) {
   document.body.appendChild(form);
   form.submit();
 };
+   $translate('HEAD.MENU.PRODUCT')
+      .then(function (translatedValue) {
+          $scope.pageTitle = translatedValue;
+      });
 
     $scope.TestPaypal = function() {
     //  window.open("localhost:3000/paypal/PayWithPaypal", width = "20px", height = "20px");
@@ -546,6 +550,7 @@ var open = function(verb, url, data, target) {
             SelectedMenu: menu
         });
 
+
     }
     function ZeroPad(num, places) {
         var zero = places - num.toString().length + 1;
@@ -619,6 +624,7 @@ var open = function(verb, url, data, target) {
         $scope.$emit('handleLocaleEmit', {
             SelectedLocale: locale
         });
+        document.getElementsByTagName('title')[0].text = $filter('translate')('TITLE.NAME');
     }
 
     var UserBackFromEmailUrl = $location.url();
@@ -1269,26 +1275,22 @@ var open = function(verb, url, data, target) {
             console.log($scope.ROHead.SumWeight);
               console.log(weight_rate);
                 $scope.ROHead.SumWeightAmount = parseInt(weight_rate);
-                netAmt = sumAmt - sumDiscAmt + sumVatAmt + $scope.ROHead.SumWeightAmount;
-                $scope.ROHead.SumAmount = sumAmt;
-                $scope.ROHead.SumVatAmount = sumVatAmt;
-                $scope.ROHead.SumDiscountAmount = sumDiscAmt;
-                $scope.ROHead.NetAmount = netAmt;
-                $scope.ROHead.SumWeight = sumWt;
+                
           } else if ($scope.ROHead.PostType === 'EMS') {
             WeightRateService.GetWeightRateByPostTypeAndWeight($scope.ROHead.PostType, sumWt)
               .then(function(weightRate, status) {
                 $scope.ROHead.SumWeightAmount = parseInt(weightRate.Rate);
-                netAmt = sumAmt - sumDiscAmt + sumVatAmt + $scope.ROHead.SumWeightAmount;
-                $scope.ROHead.SumAmount = sumAmt;
-                $scope.ROHead.SumVatAmount = sumVatAmt;
-                $scope.ROHead.SumDiscountAmount = sumDiscAmt;
-                $scope.ROHead.NetAmount = netAmt;
-                $scope.ROHead.SumWeight = sumWt;
+                
               }, function(error, status) {
 
             });
           }
+          netAmt = sumAmt - sumDiscAmt + sumVatAmt + $scope.ROHead.SumWeightAmount;
+          $scope.ROHead.SumAmount = sumAmt;
+          $scope.ROHead.SumVatAmount = sumVatAmt;
+          $scope.ROHead.SumDiscountAmount = sumDiscAmt;
+          $scope.ROHead.NetAmount = netAmt;
+          $scope.ROHead.SumWeight = sumWt;
         }
     }
 

@@ -34,8 +34,11 @@ app.service("UserService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
     		var defer = $q.defer();
     		var url = UserBackFromEmailUrl.substr(UserBackFromEmailUrl.indexOf("forget=") + 7);
 
-	        var getemailfromencode = ENV.apiEndpoint + '/cryptojs/GetForgetEncodeUrl/' + url;
-	        $http.get(getemailfromencode)
+	        var getemailfromencode = ENV.apiEndpoint + '/cryptojs/GetForgetEncodeUrl/';
+	        var encodeObj = {
+            EncodeUrl : url
+          }
+          $http.post(getemailfromencode, encodeObj)
 	        .success(function(data, status, headers, config ) {
 	          
 	      //    $scope.ForgetPasswordEmail = data;

@@ -732,7 +732,7 @@ router.post('/CreateAndUpdateWithSocial', function (req, res) {
     checkIsExistSocialAccount()
     .then(function(data, status) {
         if (data) {
-            res.sendStatus(200);
+            res.json(data);
         } else if (!data) {
             return createSocialAccount();
         }
@@ -742,7 +742,7 @@ router.post('/CreateAndUpdateWithSocial', function (req, res) {
         return;
     })
     .then(function(data, status) {
-        res.sendStatus(200);
+        res.json(data);
     }, function(err, status) {
         console.log(err, err.stack.split("\n"));
         res.json(500, err);

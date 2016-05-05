@@ -720,7 +720,20 @@ legend.contact-us {
     position:relative;
     color:#333;
 }
-
+.loading-screen {
+    position: fixed;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+    color:white;
+    display: none;
+}
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+ }
+[ng-cloak].loading-screen {
+  display: block !important;
+}
 #loading-bar .bar {
   background: #DC0505;
 }
@@ -748,3 +761,5 @@ legend.contact-us {
 .progress-bar { 
   transition: width 1s ease-in-out; 
 }
+
+
