@@ -1,13 +1,9 @@
 app.controller('HeaderController', ["$scope", "$location", "$window", "$filter", "$anchorScroll", 
-  "Upload", "$rootScope", "$http", "$translate", "$timeout",
-  // "blockUI", 
-  "ngDialog", "MenuService", 
+  "Upload", "$rootScope", "$http", "$translate", "$timeout", "MenuService", 
   "LocaleService", "ReceiptOrderService", "CompanyService", "CurrencyService", "ENV", "$cookies", 
   "vcRecaptchaService", "UserService", "ProductService", "CredentialService", "SocialService", "CryptoService", 
   "EmailService", "WeightRateService", "AWSService", "UomService", "PaypalService", 
   function ($scope, $location, $window, $filter, $anchorScroll, Upload,$rootScope, $http, $translate,$timeout, 
-    //blockUI, 
-    ngDialog, 
   MenuService, LocaleService, ReceiptOrderService, CompanyService, CurrencyService, ENV , $cookies, vcRecaptchaService, UserService, 
   ProductService, CredentialService, SocialService, CryptoService, EmailService, WeightRateService, AWSService, UomService, PaypalService) {
 
