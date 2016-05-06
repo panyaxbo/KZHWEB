@@ -151,7 +151,7 @@ var open = function(verb, url, data, target) {
     }
     
     $scope.Search = function() {
-      console.log($scope.SearchAllText);
+    //  console.log($scope.SearchAllText);
       ProductService.SearchProductWithCondition($scope.SearchAllText)
       .then(function(data, status) {
           $scope.Product = data;
@@ -477,13 +477,13 @@ var open = function(verb, url, data, target) {
           $("#LoginModal").modal("toggle");
         }
         response.provider = provider;
-        console.log(response);
+   //     console.log(response);
         
         var createAndCheckLofinSocialUrl = ENV.apiEndpoint + '/users/CreateAndUpdateWithSocial';
         
         $http.post(createAndCheckLofinSocialUrl, response)
         .success(function (data, status, headers, config) {
-          console.log(data);
+    //      console.log(data);
         })
         .error(function (data, status, headers, config) {
           console.log(data);
@@ -506,7 +506,7 @@ var open = function(verb, url, data, target) {
     });
 
     $scope.SelectedHeadMenu = function (menu) {
-        console.log("head ctrl " + menu);
+    //    console.log("head ctrl " + menu);
         $scope.SelectedMenu = menu;
 
         if (menu == "product") {
@@ -941,7 +941,7 @@ var open = function(verb, url, data, target) {
       var appuser = {};
       UserService.LoginWithUsernameAndPassword($scope.username, $scope.password)
       .then(function(data, status) {
-          console.log('data ' , data);
+     //     console.log('data ' , data);
           if (!data || data === undefined) {
               swal("Error", "Cannot login maybe username or password incorrect", "error");
               $scope.User = [];
@@ -954,7 +954,7 @@ var open = function(verb, url, data, target) {
           return UserService.CheckIsUserActivate($scope.username, $scope.password);
       })
       .then(function (data, status) {
-          console.log(appuser, appuser.Role.RoleCode);
+     //     console.log(appuser, appuser.Role.RoleCode);
           if (!data || data === undefined) {
             swal("Error", "Sorry, your account is not activated yet, please check your email.", "error");
           } else {
@@ -1150,8 +1150,6 @@ var open = function(verb, url, data, target) {
       $('#UserProfileImage').append(imageNoProfile);
     }
     $scope.ViewCart = function () {
-        console.log("view cart " , $scope.ROHead);
-         console.log("view cart " , $scope.ROHead.ROLineList.length);
         if ($scope.ROHead.ROLineList.length <= 0 || $scope.ROHead.ROLineList === undefined) {
                 document.getElementById('HideCartTable').style.display = 'block';
                 document.getElementById('ShowCartTable').style.display = 'none';
@@ -1181,7 +1179,7 @@ var open = function(verb, url, data, target) {
     $scope.UpdateCartUom = function (ROLine,UomCode, index) {
       UomService.LoadUomByUomCode(UomCode)
       .then(function(uom, status) {
-          console.log('IsContainer ' + uom.IsContainer)
+      //    console.log('IsContainer ' + uom.IsContainer)
           if (uom.IsContainer == true) {
             ROLine.Price = ROLine.DrContainWholesalePrice;
             ROLine.Amount = ROLine.Quantity * ROLine.DrContainWholesalePrice;
@@ -1237,7 +1235,7 @@ var open = function(verb, url, data, target) {
     }
 
     $scope.UpdateCartSummary = function () {
-        console.log("UpdateCartSummary ..");
+ //       console.log("UpdateCartSummary ..");
         var roLineList = $scope.ROHead.ROLineList;
         var roHead = $scope.ROHead;
         var amt = 0;
@@ -1248,10 +1246,10 @@ var open = function(verb, url, data, target) {
         var sumWt = 0;
 
         for (i = 0 ; i < roLineList.length ; i++) {
-          console.log(roLineList[i].Quantity);
-          console.log(roLineList[i].Price);
+   //       console.log(roLineList[i].Quantity);
+    //      console.log(roLineList[i].Price);
           var roline = roLineList[i];
-          console.log(roline.UomCode);
+    //      console.log(roline.UomCode);
           roline.Amount = roline.Quantity * roline.Price;
           roline.VatAmount = roline.Amount * $scope.Company.VatRate;
           sumAmt += roline.Amount;
@@ -1259,7 +1257,7 @@ var open = function(verb, url, data, target) {
           sumDiscAmt += roline.DiscountAmount;
           sumWt += roline.Weight;
         }
-        console.log("sumWt ",sumWt);
+  //      console.log("sumWt ",sumWt);
         $scope.ROHead.SumWeight = sumWt;
         if ($scope.ROHead.PostType === 'EMS' && sumWt > 20000) {
         //  swal("Cancelled", "Your product data is safe :)", "success");
@@ -1316,14 +1314,14 @@ var open = function(verb, url, data, target) {
       doc.save('sample-file.pdf');
     }
     $scope.ContinueShopping = function () {
-        console.log("continue shop ..");
+ //       console.log("continue shop ..");
         $("#CartModal").modal("toggle");
     }
     $scope.SaveCart = function () {
-        console.log("save cart ..");
+  //      console.log("save cart ..");
     }
     $scope.ClearCart = function () {
-      console.log("ClearCart ..");
+ //     console.log("ClearCart ..");
         swal({
           title: "Are you sure?",
           text: "คุณต้องการล้างสินค้าในตะกร้า ใช่ หรือ ไม่?",
@@ -1353,7 +1351,7 @@ var open = function(verb, url, data, target) {
     $scope.ShipmentProcess = function () {
         console.log("shipment..");
         if ($scope.IsUserInSession()) {
-          console.log('user lod in ');
+    //      console.log('user lod in ');
           $("#CartModal").modal("toggle");
           MenuService.Menu.SelectedMenu = "shipment";
 
@@ -1461,7 +1459,7 @@ var open = function(verb, url, data, target) {
     };
 
     $scope.IsUserInSession = function()  {
-      console.log($scope.User);
+  //    console.log($scope.User);
       if (!$scope.User) {
         return false;
       } else if ($scope.User.Id.length > 0) {
@@ -1562,7 +1560,7 @@ var open = function(verb, url, data, target) {
       var password_hash_url = ENV.apiEndpoint + "/bcrypts/encryptBcrypt/" + $scope.text2bcrypt;
       $http.get(password_hash_url)
       .success(function(data, status, headers, config) {
-          console.log(data);
+    //      console.log(data);
           $scope.enc_bcrypt = data;
       })
       .error(function(data, status, headers, config) {
@@ -1574,7 +1572,7 @@ var open = function(verb, url, data, target) {
       var password_compare_url = ENV.apiEndpoint + "/bcrypts/compareBcrypt/" + $scope.text2combcrypt;
       $http.get(password_compare_url)
       .success(function(data, status, headers, config) {
-          console.log(data);
+  //        console.log(data);
        //   $scope.enc_bcrypt = data;
       })
       .error(function(data, status, headers, config) {

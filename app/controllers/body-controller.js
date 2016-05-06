@@ -172,7 +172,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
 
     $scope.$on('handleCurrencyBroadcast', function (event, args) {
         $scope.SelectedCurrency = args.SelectedCurrency;
-        console.log('body ctrl from head $scope.SelectedCurrency ' + $scope.SelectedCurrency);
+    //    console.log('body ctrl from head $scope.SelectedCurrency ' + $scope.SelectedCurrency);
         if ($scope.SelectedCurrency == 'thb') {
             $scope.CurrencySymbol = '฿';
             $scope.Multiplier = 1;
@@ -194,7 +194,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     // Broadcast from head controller
     $scope.$on('handleLocaleBroadcast', function (event, args) {
         $scope.SelectedLocale = args.SelectedLocale;
-        console.log('$scope.SelectedLocale ' + $scope.SelectedLocale);
+    //    console.log('$scope.SelectedLocale ' + $scope.SelectedLocale);
     });
 
     $scope.SelectedBodyMenu = function (menu) {
@@ -278,7 +278,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     };
 
     $scope.pageChanged = function() {
-        console.log('Page changed to: ' + $scope.currentPage);
+     //   console.log('Page changed to: ' + $scope.currentPage);
     };
 
     $scope.setItemsPerPage = function(num) {
@@ -287,7 +287,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     }
 
     $scope.Search = function() {
-      console.log($scope.SearchAllText);
+ //     console.log($scope.SearchAllText);
       document.getElementById('ProductDataReady').style.display = 'none';
       document.getElementById('ProductDataNotReady').style.display = 'block';
       ProductService.SearchProductWithCondition($scope.SearchAllText)
@@ -412,7 +412,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             ROLine.VatAmount = ($scope.Company.VatRate / 100) * ROLine.Amount;
             ROLine.Uoms = SelectedProduct.Uom;
             ROLine.UomCode = SelectedProduct.UomCode;
-            console.log(SelectedProduct.Weight);
+        //    console.log(SelectedProduct.Weight);
             ROLine.Weight = SelectedProduct.Weight * BuyQty;
             
             ROLine.DrRetailPrice = SelectedProduct.RetailPrice;
@@ -428,13 +428,9 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             ROLine.DrUomCode = SelectedProduct.UomCode;
             ROLine.DrContainUomCode = SelectedProduct.ContainUomCode;
 
-            console.log('ROLine.Uoms ' + ROLine.Uoms);
-            console.log(ROLine.Amount);
             $scope.ROHead.SumAmount += ROLine.Amount;
             $scope.ROHead.SumWeight += ROLine.Weight;
-            console.log('$scope.ROHead.SumAmount ' + $scope.ROHead.SumAmount);
-            console.log('$scope.ROHead.SumWeight ' + $scope.ROHead.SumWeight);
-
+            
             // In BodyController occur only Normal PostType
             if ($scope.ROHead.PostType === 'Normal') {
                 var weight_rate = WeightRateService.GetWeightRateNormal($scope.ROHead.SumWeight);
@@ -524,8 +520,8 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         $scope.AddImageToCart = function() {
             var someimage = document.getElementById('ThumbnailProductImage_'+SelectedProduct.ProductCode);
             var myimg = someimage.getElementsByTagName('img')[2]; //[0] stripe-new [1] stripe-sale
-            console.log(someimage);    
-            console.log(myimg);
+    //        console.log(someimage);    
+    //        console.log(myimg);
             $('#CartProduct_'+SelectedProduct.ProductCode).append(myimg);
         }
     
@@ -607,7 +603,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         var url = ENV.apiEndpoint + "/product_types/LoadProductTypeByObjId/" + id;
         $http.get(url)
             .success(function (data) {
-                console.log('success ' + data._id + data.ProductTypeCode);
+        //        console.log('success ' + data._id + data.ProductTypeCode);
                 $scope.ViewProductTypeData._id = data._id;
                 $scope.ViewProductTypeData.ProductTypeCode = data.ProductTypeCode;
                 $scope.ViewProductTypeData.ProductTypeNameTh = data.ProductTypeNameTh;
@@ -722,7 +718,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewProductTypeCode = data;
-                    console.log('get new code ' + NewProductTypeCode);
+        //            console.log('get new code ' + NewProductTypeCode);
                     $scope.ViewProductTypeData.ProductTypeCode = NewProductTypeCode;
                     $scope.ViewProductTypeData.CreateBy = $scope.User.Username;
                     $scope.ViewProductTypeData.UpdateBy = $scope.User.Username;
@@ -782,7 +778,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         var catcode = '';
         var catname = '';
         var typecode = '';
-        console.log($scope.SearchProductType);
+    //    console.log($scope.SearchProductType);
         if ($scope.SearchProductCategoryData.ProductCategoryCode === undefined || $scope.SearchProductCategoryData.ProductCategoryCode.length <= 0) {
             catcode = '$';
         } else {
@@ -815,7 +811,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 type_list_url = ENV.apiEndpoint + "/product_types/LoadProductType";
                 $http.get(type_list_url)
                 .success(function (types) {
-                    console.log(types.length);
+            //        console.log(types.length);
                     $scope.SearchProductTypeList = types;
                 })
                 .error(function (error) {
@@ -855,7 +851,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     }
     $scope.ViewProductCategory = function (id) {
         var url = ENV.apiEndpoint + "/product_categories/LoadProductCategoryByObjId/" + id;
-        console.log(id);
+    //    console.log(id);
         $http.get(url)
             .success(function (data) {
                 $scope.ViewProductCategoryData = data;
@@ -885,7 +881,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 } else {
                     $scope.ViewProductCategoryData.UpdateDate = data.UpdateDate;
                 }
-                console.log('data.ProductTypeCode ' + data.ProductTypeCode);
+        //        console.log('data.ProductTypeCode ' + data.ProductTypeCode);
                 
                 var productTypeURL = ENV.apiEndpoint + "/product_types/LoadProductType";
                 $http.get(productTypeURL)
@@ -985,7 +981,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewProductCategoryCode = data;
-                    console.log('get new code ' + NewProductCategoryCode);
+            //        console.log('get new code ' + NewProductCategoryCode);
                     $scope.ViewProductCategoryData.ProductCategoryCode = NewProductCategoryCode;
                     $scope.ViewProductCategoryData.CreateBy = $scope.User.Username;
                     $scope.ViewProductCategoryData.UpdateBy = $scope.User.Username;
@@ -1053,11 +1049,11 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     // Upload Product Category Image
     $scope.uploadProductCategoryImage = function (files, ProductCategoryId, ProductCategoryCode) {
         document.getElementById('ViewProductCategoryImageNotReady').style.display = 'block';
-        console.log(" Product Category Id " + ProductCategoryId + ProductCategoryCode);
+    //    console.log(" Product Category Id " + ProductCategoryId + ProductCategoryCode);
         if (files && files.length) {
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
-                console.log(file);
+            //    console.log(file);
                 Upload
                 .upload({
                     url: ENV.apiEndpoint + '/aws/uploadProductCategoryImage/' + ProductCategoryId + '/' + ProductCategoryCode + '/admin',
@@ -1065,11 +1061,11 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 })
                 .progress(function (evt) {
                     var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                    console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+           //         console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
                 })
                 .success(function (data, status, headers, config) {
                     // Download Image for Product
-                    console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
+           //         console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
 
                     var downloadUrl = ENV.apiEndpoint + '/aws/downloadProductCategoryImageThumbnail/' + ProductCategoryId + '/' + ProductCategoryCode;
                     $http.get(downloadUrl)
@@ -1122,7 +1118,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         var url = ENV.apiEndpoint + "/products/LoadProductByCondition/" + code + "/" + name + "/" + catcode;
         $http.get(url)
         .success(function (data) {
-            console.log(data);
+        //    console.log(data);
                 $scope.SearchProducts = data;
 
                 $scope.ProductTableParams = new ngTableParams({
@@ -1378,7 +1374,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewProductCode = data;
-                    console.log('get new code ' + NewProductCode);
+            //        console.log('get new code ' + NewProductCode);
                     $scope.ViewProductData.ProductCode = NewProductCode;
                     $scope.ViewProductData.CreateBy = $scope.User.Username;
                     $scope.ViewProductData.UpdateBy = $scope.User.Username;
@@ -4226,7 +4222,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     }
 
      $scope.PerformValidatePaymentDocument = function (IsApprove) {
-        console.log($scope.ViewStaffRO.UserId);
+    //    console.log($scope.ViewStaffRO.UserId);
         var UserId = $scope.ViewStaffRO.UserId;
         
 /*        if (IsApprove === 'Y') {
@@ -4298,7 +4294,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             });
 
         } else if (IsApprove === 'N') {
-            console.log($scope.ViewStaffRO.UserId);
+    //        console.log($scope.ViewStaffRO.UserId);
             swal({   
                 title: "Reject Payment Document",   
                 text: "Reason",   
@@ -4308,7 +4304,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 animation: "slide-from-top",   
                 inputPlaceholder: "Reject reason" }
                 , function(inputValue) {   
-                    console.log('inputValue' + inputValue);
+        //            console.log('inputValue' + inputValue);
                     if (inputValue === false) return false;      
                     if (inputValue === "") {     
                         swal.showInputError("You need to write something!");     
@@ -4334,27 +4330,27 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     }
 
     $scope.ReviewPaymentDocument = function(RONo) {
-        console.log('RONo', RONo);
+    //    console.log('RONo', RONo);
         var mailObj = {
             RONo : RONo
         };
         EmailService.SendEmailReviewPayment(mailObj)
         .then(function(data, status) {
-            console.log(data);
+    //        console.log(data);
         }, function(err, status) {
             console.log('err ', err);
         });
     }
 
     $scope.NotifyCustomerShipping = function(ViewStaffRO) {
-        console.log('ViewStaffRO', ViewStaffRO);
+    //    console.log('ViewStaffRO', ViewStaffRO);
         var mailObj = {
             Email : ViewStaffRO.BillingEmail,
             RONo : ViewStaffRO.RONo
         };
         EmailService.SendEmailNotifyCustomerShipping(mailObj)
         .then(function(data, status) {
-            console.log(data);
+     //       console.log(data);
             swal("สำเร็จ !!!", "ส่งอีเมลแจ้งลูกค้าสำเร็จ !!!", "success");
 
             $scope.SearchCustomerOrder();
