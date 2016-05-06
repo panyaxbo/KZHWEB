@@ -247,6 +247,7 @@ module.exports = function (grunt) {
         src: [
           '<%= yeoman.dist %>/scripts/{,*/}*.js',
           '<%= yeoman.dist %>/controllers/{,*/}*.js',
+          '<%= yeoman.dist %>/configs/{,*/}*.js',
           '<%= yeoman.dist %>/constants/{,*/}*.js',
           '<%= yeoman.dist %>/directives/{,*/}*.js',
           '<%= yeoman.dist %>/services/{,*/}*.js',
@@ -281,8 +282,10 @@ module.exports = function (grunt) {
     usemin: {
       html: ['<%= yeoman.dist %>/index.html'],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
-      js: ['<%= yeoman.dist %>/scripts/{,*/}*.js', 
+      js: ['<%= yeoman.dist %>/scripts/{,*/}*.js'
+      , 
       '<%= yeoman.dist %>/controllers/{,*/}*.js',
+      '<%= yeoman.dist %>/configs/{,*/}*.js',
       '<%= yeoman.dist %>/constants/{,*/}*.js',
       '<%= yeoman.dist %>/directives/{,*/}*.js',
       '<%= yeoman.dist %>/services/{,*/}*.js'
@@ -292,8 +295,10 @@ module.exports = function (grunt) {
           '<%= yeoman.dist %>',
           '<%= yeoman.dist %>/images',
           '<%= yeoman.dist %>/styles',
-          '<%= yeoman.dist %>/scripts',
+          '<%= yeoman.dist %>/scripts'
+          ,
           '<%= yeoman.dist %>/controllers',
+          '<%= yeoman.dist %>/configs',
           '<%= yeoman.dist %>/constants',
           '<%= yeoman.dist %>/directives', 
           '<%= yeoman.dist %>/services'
@@ -402,6 +407,7 @@ module.exports = function (grunt) {
      //      '<%= yeoman.dist %>/services/services.js': ['<%= yeoman.app %>/services/{,*/}*.js']
      //    }
     //   },
+    
        options : {
         mangle: false
         },
@@ -435,18 +441,22 @@ module.exports = function (grunt) {
             ],
             dest: '<%= yeoman.dist %>/controllers/footer-controller.min.js'
         },
-
         build3: {
+            src: ['<%= yeoman.app %>/configs/{,*/}*.js'
+            ],
+            dest: '<%= yeoman.dist %>/configs/config.min.js'
+        },
+        build4: {
             src: ['<%= yeoman.app %>/constants/{,*/}*.js'
             ],
             dest: '<%= yeoman.dist %>/constants/constant.min.js'
         },
-        build4: {
+        build5: {
             src: ['<%= yeoman.app %>/directives/{,*/}*.js'
             ],
             dest: '<%= yeoman.dist %>/directives/directive.min.js'
         },
-        build5: {
+        build6: {
             src: ['<%= yeoman.app %>/services/{,*/}*.js'
             ],
             dest: '<%= yeoman.dist %>/services/service.min.js'

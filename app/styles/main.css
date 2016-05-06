@@ -755,7 +755,9 @@ legend.contact-us {
 }
 .progress { 
   height: 0.5em;
-  i { line-height: 3.5em; }
+  .i { 
+    line-height: 3.5em; 
+  }
 }
 
 .progress-bar { 
