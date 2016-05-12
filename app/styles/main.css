@@ -764,4 +764,44 @@ legend.contact-us {
   transition: width 1s ease-in-out; 
 }
 
+.facebook {
+    background-image: url("/images/facebook-circle.png");
+    background-repeat: no-repeat;
+    background-position: center; 
+    height: 64px;
+    transition: all 0.5s ease;
+}
+.facebook:hover {
+    background-image: url("/images/facebook-outline.png");
 
+}
+.google {
+    background-image: url("/images/google-circle.png");
+    background-repeat: no-repeat;
+    background-position: center; 
+    height: 64px;
+    transition: all 0.5s ease;
+}
+.google:hover {
+    background-image: url("/images/google-outline.png");
+}
+.twitter {
+    background-image: url("/images/twitter-circle.png");
+    background-repeat: no-repeat;
+    background-position: center; 
+    height: 64px;
+    transition: all 0.5s ease;
+}
+.twitter:hover {
+    background-image: url("/images/twitter-outline.png");
+}
+.instagram {
+    background-image: url("/images/instagram-circle.png");
+    background-repeat: no-repeat;
+    background-position: center; 
+    height: 64px;
+    transition: all 0.5s ease;
+}
+.instagram:hover {
+    background-image: url("/images/instagram-outline.png");
+}

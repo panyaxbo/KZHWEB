@@ -4,7 +4,7 @@ var util = require('util');
 var bodyParser = require('body-parser');
 var path = require('path');
 var jsonParser = bodyParser.json();
-
+var requestify = require('requestify');
 global.mongodbConfig = require('../mongodb_config.json');
 global.serverConfig = require('../server-config.js');
 global.appRoot = require('app-root-path');
@@ -191,6 +191,17 @@ app.use(function(err, req, res, next){
       });*/
 });
 
+app.get('/getpost/:countrycode/:weightgram', function(req, res) {
+  var country = req.params.countrycode;
+  var weightgram = req.params.weightgram;
+  requestify.get('http://example.com/api/resource')
+    .then(function(response) {
+        // Get the response body (JSON parsed or jQuery object for XMLs)
+        response.getBody();
+    }
+  );
+  
+});
 
 
 module.exports = app;
