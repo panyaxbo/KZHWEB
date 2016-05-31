@@ -1,0 +1,35 @@
+<div style="color:whitesmoke" ng-controller="ArticleController" ng-init="LoadArticles()">
+	<a href="/article" class="btn btn-primary" ng-click="CreateArticle()"> 
+		<span class="glyphicon glyphicon-plus"></span> new article</a>
+	<div class="animated fadeIn text-center" ng-if="!ArticlesDataReady">
+		<i class="fa fa-refresh fa-spin fa-3x fa-fw margin-bottom"></i>
+        <span class="sr-only">Loading...</span>
+	</div>
+	<div class="animated fadeIn" ng-if="ArticlesDataReady">
+		<div id="ViewArticle" class="animated fadeIn" style="display: block">
+			<div class="row">
+				<div class="col-md-12"><h3><i class="fa fa-thumb-tack"></i> กระทู้ปักหมุด</h3></div>
+				<div class="col-md-12" class="table-responsive">
+					<table class="table table-condensed">
+					</table>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12"><h3><i class="fa fa-thumb-tack"></i> กระทู้</h3></div>
+				<div class="col-md-12" ng-repeat="Article in Articles">
+					<div class="col-md-2">
+						<a href="/article/{{Article._id}}" ng-click="ViewArticle(Article._id)" class="btn btn-success"  >
+	                        <span class="glyphicon glyphicon-list-alt"></span> 
+	                    </a>
+					</div>
+					<div class="col-md-10">
+						<h4>{{Article.Title}} </h4>
+						<p class="line-height">{{Article.Content | limitTo: 20 }}</p>
+						<i><span am-time-ago="Article.CreateDate"></span></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>

@@ -1,0 +1,67 @@
+<div class="article-section">
+{{Page.Mode}}
+	<div id="ViewArticle" class="animated fadeIn article-section" ng-if="Page.Mode == 'view'">
+		<div class="row">
+			<div class="col-md-12">
+				<h3>Article.Title</h3>
+
+
+			</div>
+			<div class="col-md-12">
+				Article.Content
+			</div>
+		</div>
+
+		<div id="disqus_thread" styl></div>
+		<script>
+		/**
+		* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+		* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+		*/
+		/*
+		var disqus_config = function () {
+		this.page.url = PAGE_URL; // Replace PAGE_URL with your page's canonical URL variable
+		this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+		};
+		*/
+		(function() { // DON'T EDIT BELOW THIS LINE
+		var d = document, s = d.createElement('script');
+
+		s.src = '//kzhparts.disqus.com/embed.js';
+
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+		})();
+		</script>
+		<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+		</noscript>
+	</div>
+	<div id="NewArticle" class="animated fadeIn article-section" ng-if="Page.Mode == 'new'" >
+		<div class="row">
+			<div class="col-md-12"><h3 class="article-header">การสร้างหัวข้อ</h3></div>
+			<div class="col-md-12">
+				<div class="col-md-2">หัวข้อ : </div>
+				<div class="col-md-10">
+					<input type="text" class="article-input form-control" ng-model="Title">
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-2">เนื้อหา : </div>
+				<div class="col-md-10">
+					<div text-angular ng-model="Content"></div>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-2">แท็ก : </div>
+				<div class="col-md-10">
+					<tags-input ng-model="Tags" class="article-input"></tags-input>
+				</div>
+			</div>
+			
+			<div class="col-md-12 text-center">
+				<a ng-click="SaveArticle()" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> ตั้งกระทู้</a>
+				<a ng-click="CancelArticle()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> ยกเลิก</a>
+			</div>
+		</div>
+	</div>
+</div>

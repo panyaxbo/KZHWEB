@@ -1,0 +1,79 @@
+ <div id="contact-section" name="contact-section" class="row" ng-controller="ContactController" >
+    <h3>{{'BODY.SECTION.CONTACT.HEAD' | translate}}</h3>
+    <div class="row" style="color:white">
+        <div class="col-md-8">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3854.896935251692!2d103.78534978108979!3d14.942834341782595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xe7284053efc84cd6!2z4LmC4LiE4LmJ4Lin4LiL4Li44LmI4LiZ4LmA4Liu4LiHIC0g4LiE4LmJ4Liy4Lib4Lil4Li14LiBLSDguKrguYjguIcg4Lit4Liw4LmE4Lir4Lil4LmIIOC4meC5ieC4s-C4oeC4seC4meC5gOC4hOC4o-C4t-C5iOC4reC4hyDguKLguLLguIc!5e0!3m2!1sen!2s!4v1461048799993" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+        </div>
+        
+        <div class="col-md-4">
+            <legend class="contact-us"><span class="glyphicon glyphicon-globe"></span>&nbsp;{{'BODY.SECTION.CONTACT.OFFICE' | translate}}</legend>
+            
+            <address>
+                <strong ng-show="SelectedLocale === 'th'"><h3>{{Company.CompanyNameTh}}</h3></strong>
+                <strong ng-show="SelectedLocale === 'us'"><h3>{{Company.CompanyNameEn}}</h3></strong>
+                <strong ng-show="SelectedLocale === 'cn'"><h3>{{Company.CompanyNameCn}}</h3></strong>
+                {{Company.CompanyAddress}}<br>
+                {{Company.CompanySubDistrict}}<br>
+                {{Company.CompanyDistrict}}<br>
+                {{Company.CompanyProvince}}<br>
+                {{Company.CompanyZipCode}}<br>
+                <abbr title="Phone">P:</abbr> {{Company.TelNo}}
+            </address>
+        </div>
+    </div>
+    <div class="row">
+         <div class="col-md-12"><br></div>
+    </div>
+    <div class="row" style="color:black">
+        <div class="col-md-12">
+            <div class="well well-sm">
+                <form>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="name" >
+                                {{'BODY.SECTION.CONTACT.FEEDBACK.NAME' | translate}}</label> <span style="color:red">*</span>
+                            <input type="text" class="form-control" id="name" placeholder="{{'BODY.SECTION.CONTACT.FEEDBACK.NAME_PHD' | translate}}" required="required" ng-model="Feedback.Name" />
+                        </div>
+                        <div class="form-group">
+                            <label for="email">
+                                {{'BODY.SECTION.CONTACT.FEEDBACK.EMAIL' | translate}}</label> <span style="color:red">*</span>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-envelope"></span>
+                                </span>
+                                <input type="email" class="form-control" id="email" placeholder="{{'BODY.SECTION.CONTACT.FEEDBACK.EMAIL_PHD' | translate}}" required="required" ng-model="Feedback.Email"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">
+                                {{'BODY.SECTION.CONTACT.FEEDBACK.SUBJECT' | translate}}</label><span style="color:red">*</span>
+                            <select id="subject" name="subject" class="form-control" required="required" ng-model="Feedback.Subject">
+                                <option value="" selected="">{{'BODY.SECTION.CONTACT.FEEDBACK.SELECT_SUBJECT' | translate}}</option>
+                                <option value="general_usage">{{'BODY.SECTION.CONTACT.FEEDBACK.SUBJECT_TYPE.GENERAL_USAGE' | translate}}</option>
+                                <option value="product_inquiry">{{'BODY.SECTION.CONTACT.FEEDBACK.SUBJECT_TYPE.PRODUCT_INQUIRY' | translate}}</option>
+                                <option value="problem_occur">{{'BODY.SECTION.CONTACT.FEEDBACK.SUBJECT_TYPE.PROBLEM_OCCUR' | translate}}</option>
+                                <option value="shipment_process">{{'BODY.SECTION.CONTACT.FEEDBACK.SUBJECT_TYPE.SHIPMENT_PROCESS' | translate}}</option>
+                                <option value="payment_process">{{'BODY.SECTION.CONTACT.FEEDBACK.SUBJECT_TYPE.PAYMENT_PROCESS' | translate}}</option>
+                                <option value="suggestions">{{'BODY.SECTION.CONTACT.FEEDBACK.SUBJECT_TYPE.SUGGESTIONS' | translate}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="name">
+                                {{'BODY.SECTION.CONTACT.FEEDBACK.MESSAGE' | translate}}</label><span style="color:red">*</span>
+                            <textarea name="message" id="message" class="form-control" rows="9" cols="25" required="required"
+                                placeholder="{{'BODY.SECTION.CONTACT.FEEDBACK.MESSAGE_PHD' | translate}}" ng-model="Feedback.Message"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary pull-right" id="btnContactUs" ng-click="ValidateFeedback()">
+                            <span class="glyphicon glyphicon-send"></span> {{'BODY.SECTION.CONTACT.FEEDBACK.SEND_MESSAGE' | translate}}</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,9 +1,8 @@
 'use strict';
 
 var app = angular.module('KZHWEB', ['ngRoute', 'ngAnimate', 'ui.bootstrap', 'ngFileUpload', '720kb.datepicker',
-    //'blockUI',
     'ngDialog', 'ngPasswordStrength', 'ngTable','pascalprecht.translate', 'vcRecaptcha',
-    'ngCookies', 'CONFIG']);
+    'ngCookies', 'CONFIG','angularMoment', 'textAngular', 'ngTagsInput']);
 
 app.run(function ($rootScope) {
     /*
@@ -34,6 +33,7 @@ app.run(function ($rootScope) {
     });
     //For update User
     $rootScope.$on('handleUserEmit', function (event, args) {
+        console.log('root ', args.User);
         $rootScope.$broadcast('handleUserBroadcast', args);
     });
     
@@ -47,7 +47,6 @@ app.run(function ($rootScope) {
     });
 
     $rootScope.$on('handleDataReadyEmit', function (event, args) {
-        console.log('app ', args)
         $rootScope.$broadcast('handleDataReadyBroadcast', args);
     });
 

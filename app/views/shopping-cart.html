@@ -1,0 +1,150 @@
+<div class="row cart-section" ng-controller="CartController">
+    <div class="col-sm-12 col-md-12 col-md-offset-0">
+        <div id="HideCartTable" ng-show="ROHead.ROLineList.length <= 0 || ROHead.ROLineList === undefined">
+            <h3 class="text-center">--------- {{'HEAD.MODAL_CART.EMPTY_CART' | translate}} ---------</h3>
+        </div>
+        <div id="ShowCartTable" ng-show="ROHead.ROLineList.length > 0">
+            <table id="CartTable" class="table table-hover table table-condensed" >
+                <thead>
+                    <tr>
+                        <th>{{'HEAD.MODAL_CART.SEQ' | translate}}</th>
+                        <th></th>
+                        <th class="text-left">{{'HEAD.MODAL_CART.ITEM_NAME' | translate}}</th>
+                        <th class="text-right">{{'HEAD.MODAL_CART.QTY' | translate}}</th>
+                        <th class="text-left">{{'HEAD.MODAL_CART.UOM' | translate}}</th>
+                        <th class="text-right">{{'HEAD.MODAL_CART.PRICE' | translate}}</th>
+                        <th class="text-right">{{'HEAD.MODAL_CART.DISCOUNT' | translate}}</th>
+                        <th class="text-right">{{'HEAD.MODAL_CART.AMOUNT' | translate}}</th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="ro in ROHead.ROLineList" id="CartRow{{$index}}">
+                        <td class="col-sm-1 col-md-1 text-center" >
+                            {{$index+1}}.
+                        </td>
+                        <td class="col-sm-1 col-md-1 text-center" >
+                            <div id="CartProduct_{{ro.ProductCode}}">
+                                
+                            </div>
+                        </td>
+                        <td class="col-sm-5 col-md-5 text-left">
+                            <div class="media">
+                                <div class="media-body">
+                                    {{ro.ProductNameTh}}
+                                </div>
+                            </div>
+                        </td>
+                        <td class="col-xs-1 col-sm-1 col-md-1" style="text-align: right">
+                            <input type="text" class="form-control input-sm" id="BuyQty" ng-model="ro.Quantity" 
+                            ng-keyup="UpdateCartBuyQty($index, ro.Quantity)" >
+                        </td>
+                        <td class="col-sm-1 col-md-1" style="text-align: center">
+                            <select id="SelectUomList" name="selectbasic" class="form-control input-sm" ng-model="ro.UomCode" ng-options="Uom.UomCode as Uom.UomNameTh for Uom in ro.Uoms" ng-change="UpdateCartUom(ro, ro.UomCode, $index)">
+                            </select>
+                        </td>
+                        <td class="col-sm-1 col-md-1 text-right"><strong>{{CurrencySymbol}} {{(ro.Price * Multiplier) | currency:''}}</strong>
+                        </td>
+                        <td class="col-sm-1 col-md-1 text-right"><strong>{{CurrencySymbol}} {{(ro.DiscountAmount * Multiplier) | currency:''}}</strong>
+                        </td>
+                        <td class="col-sm-4 col-md-4 text-right"><strong>{{CurrencySymbol}} {{(ro.Amount * Multiplier) | currency:''}}</strong>
+                        </td>
+                        <td class="col-sm-1 col-md-1">
+                            <button type="button" class="btn btn-danger btn-xs" ng-click="DeleteCartProduct(this, ro, $index)">
+                                <span class="glyphicon glyphicon-trash"></span> 
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"> </td>
+                        <td colspan="2">  
+                            <h5>{{'HEAD.MODAL_CART.SUMAMT' | translate}}</h5> 
+                        </td>
+                        <td colspan="3" class="text-right">  
+                            <h5><strong>{{CurrencySymbol}} {{(ROHead.SumAmount * Multiplier)  | currency:''}}</strong></h5> 
+                        </td>
+                        <td>   </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"> </td>
+                        <td colspan="2">  
+                            <h5>{{'HEAD.MODAL_CART.SUMDISCAMT' | translate}}</h5>
+                        </td>
+                        <td colspan="3" class="text-right">  
+                            <h5><strong>{{CurrencySymbol}} {{(ROHead.SumDiscountAmount * Multiplier) | currency:''}}</strong></h5>
+                        </td>
+                        <td>   </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"> </td>
+                        <td colspan="2">  
+                            <h5>{{'HEAD.MODAL_CART.SUMVATAMT' | translate}}</h5>
+                        </td>
+                        <td colspan="3" class="text-right">  
+                            <h5><strong>{{CurrencySymbol}} {{(ROHead.SumVatAmount * Multiplier) | currency:''}}</strong></h5>
+                        </td>
+                        <td>   </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"> </td>
+                        <td colspan="1"> 
+                            <select class="form-control" ng-model="ROHead.PostType" required="required" ng-change="ChangePostType()">
+                            <!--    <option value="">{{'HEAD.MODAL_CART.POST_TYPE.SELECT_POST_TYPE' | translate}}</option>-->
+                                <option value="Normal">{{'HEAD.MODAL_CART.POST_TYPE.NORMAL' | translate}}</option>
+                                <option value="EMS" ng-disabled="ROHead.SumWeight > 20000" >{{'HEAD.MODAL_CART.POST_TYPE.EMS' | translate}}</option>
+                            </select>
+
+                            <label class="warn-excess-ems-weight" ng-show="ROHead.SumWeight > 20000"> {{'HEAD.MODAL_CART.WARN_EMS' | translate}} </label>
+                        </td>
+                        <td colspan="2">  
+                            <h5>{{'HEAD.MODAL_CART.SUMWEIGHTAMT' | translate}}</h5>
+                        </td>
+                        <td colspan="1" class="text-right">  
+                            <h5><strong></strong></h5>
+                        </td>
+                        <td colspan="1" class="text-right">  
+                            <h5>
+                        <!--    <strong ng-if="ROHead.SumWeight < 1000">{{ROHead.SumWeight | currency:''}} g</strong>
+                            <strong ng-if="ROHead.SumWeight >= 1000">{{ROHead.SumWeight/1000 | currency:''}} kg</strong>
+                            </h5>-->
+                        </td>
+                        <td colspan="1" class="text-right">  
+                            <h5><strong>{{CurrencySymbol}} {{ROHead.SumWeightAmount}}</strong></h5>
+                        </td>
+                        <td>   </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"> </td>
+                        <td colspan="2">  
+                            <h4>{{'HEAD.MODAL_CART.NETAMT' | translate}}</h4>
+                        </td>
+                        <td colspan="3" class="text-right">  
+                            <h4><strong>{{CurrencySymbol}} {{(ROHead.NetAmount * Multiplier) | currency:''}}</strong></h4>
+                        </td>
+                        <td>   </td>
+                    </tr>
+                    <tr>
+                        <td colspan="9">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="pull-right">
+                                    <button type="button" class="btn btn-default" ng-click="ContinueShopping()">
+                                    <span class="glyphicon glyphicon-shopping-cart"></span> {{'HEAD.MODAL_CART.SHOP_BUTTON' | translate}}
+                                </button>
+
+                                    <button type="button" class="btn btn-danger" ng-click="ClearCart()">
+                                    <span class="glyphicon glyphicon-trash"></span> {{'HEAD.MODAL_CART.CLEAR_BUTTON' | translate}}
+                                </button>
+
+                                    <a type="button" class="btn btn-success" ng-click="ShipmentProcess()" scroll-on-click href="#shipment-section">
+                                    {{'HEAD.MODAL_CART.CHECKOUT_BUTTON' | translate}} <span class="glyphicon glyphicon-play"></span>
+                                </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

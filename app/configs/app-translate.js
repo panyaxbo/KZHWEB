@@ -4,7 +4,7 @@ app.config(function ($translateProvider) {
         TITLE: {
             NAME: 'โค้ว ซุ่น เฮง - ศูนย์รวมอะไหล่มอเตอร์ไซค์, ยาง และ น้ำมันเครื่อง',
             KEYWORD: 'น้ำมันเครื่อง,ยางนอก,ยางใน,อะไหล่มอเตอร์ไซค์,รถยนต์,รถไถ, ไฟฟ้า, การเกษตร, ประปา',
-            DESCRIPTION: 'น้ำมันเครื่อง,ยางนอก,ยางใน,อะไหล่มอเตอร์ไซค์,รถยนต์,รถไถ, ไฟฟ้า, การเกษตร, ประปา สินค้าราคาถูก น่าเชื่อถือ',
+            DESCRIPTION: 'ค้าปลีก-ส่ง น้ำมันเครื่อง,ยางนอก,ยางใน,อะไหล่มอเตอร์ไซค์,รถยนต์,รถไถ, ไฟฟ้า, การเกษตร, ประปา สินค้าราคาถูก น่าเชื่อถือ',
             AUTHOR: 'ปัญญา บุญยกุลศรีรุ่ง'
         },
         HEAD: {
@@ -13,6 +13,7 @@ app.config(function ($translateProvider) {
                     PLACEHOLDER : 'พิมพ์เพื่อค้นหา และกด enter'
                 },
                 PRODUCT: 'สินค้า',
+                ARTICLE: 'บทความ',
                 WEBBOARD: 'เว็บบอร์ด',
                 PAYMENT: 'การชำะเงิน',
                 DELIVERY: 'การจัดส่งสินค้า',
@@ -155,7 +156,7 @@ app.config(function ($translateProvider) {
                     HEAD: "เว็บบอร์ด",
                 },
                 PAYMENT: {
-                    HEAD: "การชำระเงินและการจัดสั่ง",
+                    HEAD: "การชำระเงินและการจัดส่ง",
                     PAYMENT_TITLE : 'การจัดส่งและการสั่งซื้อ',
                     PAYMENT_CHART : 'แผนผังการสั่งซื้อสินค้า',
                     PAYMENT_STEP : 'ขั้นตอนการสั่งซื้อสินค้า',
@@ -758,6 +759,7 @@ app.config(function ($translateProvider) {
                     PLACEHOLDER : "Type for search and press enter"
                 },
                 PRODUCT: 'Product',
+                ARTICLE: 'Article',
                 WEBBOARD: 'Webboard',
                 PAYMENT: 'Payment',
                 DELIVERY: 'Delivery',
@@ -1395,6 +1397,7 @@ app.config(function ($translateProvider) {
                     PLACEHOLDER : "鍵入搜索，然後按 ENTER"
                 },
                 PRODUCT: '貨物',
+                ARTICLE: '文章',
                 WEBBOARD: '座談會',
                 PAYMENT: '付款',
                 DELIVERY: '交貨',

@@ -1,4 +1,12 @@
 app.service("CredentialService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
+	var Company = {};
+	var SetCompany = function(data) {
+	    Company = data
+	};
+
+	var GetCompany = function(){
+	    return Company;
+    };
     return {
     	LoadOAuth: function() {
     		var defer = $q.defer();
@@ -70,6 +78,9 @@ app.service("CredentialService", ["$q", "$http", "ENV", function ($q, $http, ENV
 		    	defer.reject(error);
 		    });
     		return defer.promise;
-    	}
+    	},
+    	GetCompany: GetCompany
+    	,
+    	SetCompany: SetCompany
     };
 }]);

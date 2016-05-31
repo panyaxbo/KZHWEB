@@ -2,32 +2,44 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
   "Upload", "$rootScope", "$http", "$translate", "$timeout", "MenuService", 
   "LocaleService", "ReceiptOrderService", "CompanyService", "CurrencyService", "ENV", "$cookies", 
   "vcRecaptchaService", "UserService", "ProductService", "CredentialService", "SocialService", "CryptoService", 
-  "EmailService", "WeightRateService", "AWSService", "UomService", "PaypalService", 
+  "EmailService", "WeightRateService", "AWSService", "UomService", "PaypalService", "DataModelFactory",
   function ($scope, $location, $window, $filter, $anchorScroll, Upload,$rootScope, $http, $translate,$timeout, 
   MenuService, LocaleService, ReceiptOrderService, CompanyService, CurrencyService, ENV , $cookies, vcRecaptchaService, UserService, 
-  ProductService, CredentialService, SocialService, CryptoService, EmailService, WeightRateService, AWSService, UomService, PaypalService) {
+  ProductService, CredentialService, SocialService, CryptoService, EmailService, WeightRateService, AWSService, UomService, 
+  PaypalService, DataModelFactory) {
 
-// Arguments :
-//  verb : 'GET'|'POST'
-//  target : an optional opening target (a name, or "_blank"), defaults to "_self"
-var open = function(verb, url, data, target) {
-  var form = document.createElement("form");
-  form.action = url;
-  form.method = verb;
-  form.target = target || "_self";
-  if (data) {
-    for (var key in data) {
-      var input = document.createElement("textarea");
-      input.name = key;
-      input.value = typeof data[key] === "object" ? JSON.stringify(data[key]) : data[key];
-      form.appendChild(input);
+  /*
+    BEGIN Broadcast Variable Area
+   */
+  $scope.$on('handleUserBroadcast', function (event, args) {
+      $scope.User = args.User;
+  });
+  /*
+    END Broadcast Variable Area
+   */
+
+  // Arguments :
+  //  verb : 'GET'|'POST'
+  //  target : an optional opening target (a name, or "_blank"), defaults to "_self"
+  var open = function(verb, url, data, target) {
+    var form = document.createElement("form");
+    form.action = url;
+    form.method = verb;
+    form.target = target || "_self";
+    if (data) {
+      for (var key in data) {
+        var input = document.createElement("textarea");
+        input.name = key;
+        input.value = typeof data[key] === "object" ? JSON.stringify(data[key]) : data[key];
+        form.appendChild(input);
+      }
     }
-  }
-  form.style.display = 'none';
-  document.body.appendChild(form);
-  form.submit();
-};
-   $translate('HEAD.MENU.PRODUCT')
+    form.style.display = 'none';
+    document.body.appendChild(form);
+    form.submit();
+  };
+
+  $translate('HEAD.MENU.PRODUCT')
       .then(function (translatedValue) {
           $scope.pageTitle = translatedValue;
       });
@@ -62,21 +74,6 @@ var open = function(verb, url, data, target) {
         $rootScope.ROLineList = [];
     }
 
-    $scope.User = {
-        Id :"",
-        RoleNameEn: "",
-        Username: "",
-        Password: "",
-        Role: {
-            RoleCode: "",
-            RoleNameEn: "",
-            RoleNameTh: "",
-        },
-        Staff: {
-            Firstname: "Guest",
-            Lastname: ""
-        }
-    };
     $scope.IsLogin = false;
     $scope.SelectedMenu = "product";
     $scope.CurrencySymbol = "฿";
@@ -92,7 +89,7 @@ var open = function(verb, url, data, target) {
     $scope.UsernameValidateMessage = "";
     $scope.IsAcceptCondition = false;
     $scope.IsHuman = false;
-
+ 
     var message_type_success = $filter('translate')('MESSAGE.TYPE_SUCCESS');
     var message_type_warning = $filter('translate')('MESSAGE.TYPE_WARNING');
     var message_type_error = $filter('translate')('MESSAGE.TYPE_ERROR');
@@ -100,8 +97,7 @@ var open = function(verb, url, data, target) {
     var message_title_success = $filter('translate')('MESSAGE.TITLE_SUCCESS');
     var message_title_warning = $filter('translate')('MESSAGE.TITLE_WARNING');
     var message_title_error = $filter('translate')('MESSAGE.TITLE_ERROR');
-
-    
+    console.log('head user ', $scope.User );
     $('#KZHPartsAdModal').modal('show');
     if ($cookies.getObject('User') !== undefined) {
         $scope.User = $cookies.getObject('User');
@@ -219,6 +215,7 @@ var open = function(verb, url, data, target) {
       $scope.$emit('handleCompanyEmit', {
           Company: data
       });
+      CredentialService.SetCompany(data);
     }, function (error, status) {
         console.log('company err ', error);
     });

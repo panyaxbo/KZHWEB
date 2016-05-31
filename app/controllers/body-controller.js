@@ -1,14 +1,11 @@
-app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout", "$anchorScroll", "$filter", "ngTableParams", "Upload", "$rootScope", 
- //   "blockUI", 
-    "$http", 
-    "$filter", "MenuService", "ReceiptOrderService", "UserService", "CompanyService", "ENV", "ProductService", "ProductTypeService",
-    "ProductCategoryService", "ProvinceService", "DistrictService", "SubDistrictService", "AppConfigService" ,"WeightRateService",
-    "AWSService", "EmailService", "FeedbackService",
+app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout", "$anchorScroll", "$filter", "ngTableParams", "Upload", 
+    "$rootScope", "$http", "$filter", "MenuService", "ReceiptOrderService", "UserService", "CompanyService", "ENV", "ProductService", 
+    "ProductTypeService", "ProductCategoryService", "ProvinceService", "DistrictService", "SubDistrictService", "AppConfigService" ,
+    "WeightRateService", "AWSService", "EmailService", "FeedbackService",
     function ($scope, $location, $window, $timeout, $anchorScroll, $filter, ngTableParams, Upload, $rootScope,
-   //  blockUI, 
-     $http, $filter, 
-        MenuService, ReceiptOrderService, UserService, CompanyService, ENV, ProductService, ProductTypeService, ProductCategoryService,
-        ProvinceService, DistrictService, SubDistrictService, AppConfigService, WeightRateService, AWSService, EmailService,FeedbackService) {
+     $http, $filter, MenuService, ReceiptOrderService, UserService, CompanyService, ENV, ProductService, ProductTypeService, 
+     ProductCategoryService, ProvinceService, DistrictService, SubDistrictService, AppConfigService, WeightRateService, AWSService, 
+     EmailService,FeedbackService) {
 
     $scope.Products = [];
     $scope.ROHead = {
@@ -349,7 +346,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             } 
             $('#'+ProductCategoryCode).text(data);
         }, function(err, status) {
-            console.log(err);
+        //    console.log(err);
         });
     }
     $scope.LoadImagePaymentMethod = function(method) {
@@ -431,6 +428,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             $scope.ROHead.SumAmount += ROLine.Amount;
             $scope.ROHead.SumWeight += ROLine.Weight;
             
+
             // In BodyController occur only Normal PostType
             if ($scope.ROHead.PostType === 'Normal') {
                 var weight_rate = WeightRateService.GetWeightRateNormal($scope.ROHead.SumWeight);
@@ -453,12 +451,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                     $scope.ROHead.SumVatAmount += ROLine.VatAmount;
                     $scope.ROHead.SumDiscountAmount += ROLine.DiscountAmount;
                     $scope.ROHead.NetAmount = $scope.ROHead.SumAmount + $scope.ROHead.SumVatAmount + $scope.ROHead.SumWeightAmount - $scope.ROHead.SumDiscountAmount;
-/*
-                    console.log('sum amt ', $scope.ROHead.SumAmount);
-                    console.log('sum disc ',$scope.ROHead.SumDiscountAmount);
-                    console.log('sum vat ',$scope.ROHead.SumVatAmount);
-                    console.log('sum wt ',$scope.ROHead.SumWeightAmount);
-                    console.log('net amt ',$scope.ROHead.NetAmount);*/
+
                     $scope.ROLineList.push(ROLine);
                       
                 
@@ -468,11 +461,13 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                     $scope.$emit('handleReceiptOrderEmit', {
                         ROHead: $scope.ROHead
                     });
+                    
                 }, function(error, status) {
 
                 });
             }
-
+            console.log($scope.ROHead);
+            ReceiptOrderService.SetReceiptOrder($scope.ROHead);
         /*      sweetAlert({"สำเร็จ", "ใส่รายการ " + SelectedProduct.ProductNameTh + " จำนวน " + BuyQty + " ในตะกร้าสำเร็จ !!", "success"
             }, function({
                 $scope.$apply(function(){

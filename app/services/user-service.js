@@ -1,4 +1,11 @@
 app.service("UserService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
+    var User = {};
+    var GetUser = function() {
+      return User;
+    };
+    var SetUser = function(data) {
+      User = data;
+    };
     return {
     	DownloadUserProfileImage: function(UserId, Username) {
     		var defer = $q.defer();
@@ -154,7 +161,8 @@ app.service("UserService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
 	            defer.reject(error);
 	        });
     		return defer.promise;
-    	}
-
+    	},
+      SetUser: SetUser,
+      GetUser: GetUser
     };
 }]);

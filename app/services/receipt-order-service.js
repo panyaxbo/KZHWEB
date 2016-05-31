@@ -1,7 +1,13 @@
 app.service("ReceiptOrderService", ["$q","$http", "ENV", function ($q, $http, ENV) {
-    this.ROHead = {};
+    var ROHead = {};
+    var ROLineList = [];
+    var SetReceiptOrder = function(data) {
+        ROHead = data
+    };
 
-    this.ROLineList = [];
+    var GetReceiptOrder = function(){
+        return ROHead;
+    };
 
     return {
         CreateReceiptOrder: function(ROHeadObject) {
@@ -66,6 +72,8 @@ app.service("ReceiptOrderService", ["$q","$http", "ENV", function ($q, $http, EN
                 defer.reject(error);
             });
             return defer.promise;
-        }
+        },
+        SetReceiptOrder: SetReceiptOrder,
+        GetReceiptOrder: GetReceiptOrder
     };
 }]);

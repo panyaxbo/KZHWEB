@@ -60,6 +60,7 @@ var base64 = require('../base64/base64');
 var paypal = require('../paypal/paypal');
 var weight = require('./route/weight-rate');
 var feedbacks = require('./route/feedback');
+var articles = require('../articles/article');
 
 //app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -99,6 +100,7 @@ app.use('/base64', base64);
 app.use('/paypal', paypal);
 app.use('/weight', weight);
 app.use('/feedbacks', feedbacks);
+app.use('/articles', articles);
 
 var environment = process.env.NODE_ENV || '';
 var port = process.env.PORT || 3000;

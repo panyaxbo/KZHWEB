@@ -1,0 +1,185 @@
+<div class="row" ng-controller="LoginController">
+    <div class="col-md-2"></div>
+    <div class="col-sm-12 col-xs-12 col-md-4">
+        <div class="well">
+            <form id="loginForm" role="form">
+                <div class="form-group">
+
+                    <label for="username" class="control-label">{{'HEAD.MODAL_SIGNIN.LABEL_USERNAME' | translate}}</label>
+                    <input type="text" class="form-control" id="username" name="username" value="" required title="Please enter you username" placeholder="example@gmail.com" ng-model="username" data-error="Bruh, that email address is invalid">
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="control-label">{{'HEAD.MODAL_SIGNIN.LABEL_PASSWORD' | translate}}</label>
+                    <input type="password" class="form-control" id="password" name="password" value="" required ng-model="password">
+                    <span class="help-block"></span>
+                </div>
+                 <div class="controls">
+                    <div id="LoginErrorAlert" class="alert alert-danger fade in" style="display: none">
+                        <!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
+                        <strong>{{LoginErrorMessage}}</strong> 
+                    </div>
+                </div>
+                <div>
+                    <label>
+                        <a ng-click="ForgetPassword()">{{'HEAD.MODAL_SIGNIN.FORGET_PASSWORD' | translate}}</a>
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="RememberMe" id="remember"> {{'HEAD.MODAL_SIGNIN.REMEMBER_ME' | translate}}
+                    </label>
+                    <p class="help-block">{{'HEAD.MODAL_SIGNIN.REMEMBER_ME_REASON' | translate}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 text-center"></div>
+                    <div class="col-md-4 text-center">
+                        <button type="submit" class="btn btn-success" ng-click="Login()">
+                            <span class="glyphicon glyphicon-log-in" ></span> {{'HEAD.MODAL_SIGNIN.BUTTON_SIGNIN' | translate}}</button>
+
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div id="LoginDataNotReady" style="display: none"> 
+                            <i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom"></i>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <p class="text-center" style="margin-top:10px;">OR</p>
+                <a class="btn btn-block btn-social btn-facebook" ng-click="LoginWithSocial('facebook')">
+                    <i class="fa fa-facebook"></i> {{'HEAD.MODAL_SIGNIN.FACEBOOK_SIGNIN' | translate}}
+                </a>
+                <a class="btn btn-block btn-social btn-google" ng-click="LoginWithSocial('google_plus')">
+                    <i class="fa fa-google"></i> {{'HEAD.MODAL_SIGNIN.GOOGLE_PLUS_SIGNIN' | translate}}
+                </a>
+                
+                <a class="btn btn-block btn-social btn-twitter" ng-click="LoginWithSocial('twitter')">
+                    <i class="fa fa-twitter"></i> {{'HEAD.MODAL_SIGNIN.TWITTER_SIGNIN' | translate}}
+                </a>
+                <a class="btn btn-block btn-social btn-linkedin" ng-click="LoginWithSocial('linkedin')">
+                    <i class="fa fa-linkedin"></i> {{'HEAD.MODAL_SIGNIN.LINKEDIN_SIGNIN' | translate}}
+                </a>
+               <a class="btn btn-block btn-social btn-instagram" ng-click="LoginWithSocial('instagram')">
+                    <i class="fa fa-instagram"></i> {{'HEAD.MODAL_SIGNIN.INSTAGRAM_SIGNIN' | translate}}
+                </a>
+                <a class="btn btn-block btn-social btn-github" ng-click="LoginWithSocial('github')">
+                    <i class="fa fa-github"></i> {{'HEAD.MODAL_SIGNIN.GITHUB_SIGNIN' | translate}}
+                </a>
+                <a class="btn btn-block btn-social btn-dropbox" ng-click="LoginWithSocial('dropbox')">
+                    <i class="fa fa-dropbox"></i> {{'HEAD.MODAL_SIGNIN.DROPBOX_SIGNIN' | translate}}
+                </a>
+                <a class="btn btn-block btn-social btn-foursquare" ng-click="LoginWithSocial('foursquare')">
+                    <i class="fa fa-foursquare"></i> {{'HEAD.MODAL_SIGNIN.FOURSQUARE_SIGNIN' | translate}}
+                </a>
+                <a class="btn btn-block btn-social btn-soundcloud" ng-click="LoginWithSocial('soundcloud')">
+                    <i class="fa fa-soundcloud"></i> {{'HEAD.MODAL_SIGNIN.SOUNDCLOUD_SIGNIN' | translate}}
+                </a>
+            </form>
+        </div>
+    </div>
+    <div class="col-sm-12 col-xs-12 col-md-4">
+        <div class="well">
+        <form id="SignupForm" ng-submit="Signup()" role="form" type="multipart/form-data">
+        <!--
+                <div class="form-group">
+                    <label class="control-label" for="inputFirst">{{'HEAD.MODAL_SIGNIN.FIRST_NAME' | translate}}</label>
+                    <div class="controls">
+                        <input id="Firstname" ng-model="Firstname" placeholder="E.g. Ashwin" type="text" 
+                        class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="inputLast">{{'HEAD.MODAL_SIGNIN.LAST_NAME' | translate}}</label>
+                    <div class="controls">
+                        <input id="Lastname" ng-model="Lastname" placeholder="E.g. Hegde" type="text" 
+                        class="form-control">
+                    </div>
+                </div>-->
+                <div class="form-group">
+                    <label class="control-label" for="inputEmail">{{'HEAD.MODAL_SIGNIN.EMAIL' | translate}}</label>
+                    <div class="controls">
+                        <input id="Email" ng-model="Email" placeholder="E.g. ashwinh@cybage.com" 
+                        type="text" class="form-control" ng-keydown="ValidateEmail()"/>
+                    </div>
+                    <div class="controls">
+                    <!--    <img id="ValidateSignupEmail" src="" width="30" height="30">-->
+                        <div id="EmailAlert" class="alert alert-warning fade in" style="display: none">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                            <strong>{{EmailValidateMessage}}</strong> 
+                        </div>
+                    </div>
+                </div>
+               
+                <div class="form-group">
+                    <label class="control-label" for="inputUser">{{'HEAD.MODAL_SIGNIN.USERNAME' | translate}}</label>
+                    <div class="controls">
+                        <input id="Username" ng-model="Username" placeholder="E.g. ashwinhegde" 
+                        type="text" class="form-control" ng-blur="ValidateExistUsername()">
+                    </div>
+                    <div class="controls">
+                        <div id="UsernameAlert" class="alert alert-warning fade in" style="display: none">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                            <strong>{{UsernameValidateMessage}}</strong> 
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="inputPassword">{{'HEAD.MODAL_SIGNIN.PASSWORD' | translate}}</label>
+                    <div class="controls">
+                        <input id="Password" ng-model="Password" placeholder="Min. 8 Characters" type="password" 
+                        class="form-control" >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">{{'HEAD.MODAL_SIGNIN.STRENGTH' | translate}}</label>
+                    <div class="controls">
+                        <div ng-password-strength="Password" strength="passStrength" inner-class="progress-bar" 
+                        inner-class-prefix="progress-bar-"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label">{{'HEAD.MODAL_SIGNIN.RECAPTCHA' | translate}}</label>
+                    <!-- Call a method in the scope of your controller to handle data submit -->
+                    <form ng-submit="submit()">
+                        <div
+                            vc-recaptcha
+                            theme="'light'"
+                            key="model.key"
+                            on-create="setWidgetId(widgetId)"
+                            on-success="setResponse(response)"
+                            on-expire="cbExpiration()"
+                        ></div>
+                    </form>
+                </div>
+                <div class="form-group">
+                    <label class="control-label"></label>
+                    <div class="controls" style="margin-left: 1.5em">
+                        <label class="checkbox"><input type="checkbox" ng-model="IsAcceptCondition">
+                        {{'HEAD.MODAL_SIGNIN.TERM_SERVICE_LABEL' | translate}} 
+                        <a href="#">{{'HEAD.MODAL_SIGNIN.TERM_SERVICE' | translate}}</a></label> 
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 text-center"></div>
+                    <div class="col-md-4 text-center">
+                        <button class="btn btn-primary" type="submit" ng-click="Signup()" 
+                        ng-disabled="ExistUsername || ExistEmail || !ValidEmail || !IsHuman || !IsAcceptCondition">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> {{'HEAD.MODAL_SIGNIN.BUTTON_SIGNUP' | translate}}
+                        </button> 
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div id="SignupDataNotReady" style="display: none"> 
+                            <i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom"></i>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+        </form>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>

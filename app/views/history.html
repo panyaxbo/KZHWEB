@@ -1,0 +1,341 @@
+<div class="history-section" ng-controller="HistoryController">
+    <h1>{{'BODY.SECTION.HISTORY.HEAD' | translate}}</h1> 
+    <div id="div-history-receipt-detail" class="row">
+        <div class="col-md-12 col-sm-offset-0">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.HISTORY.FROM' | translate}}</label>
+                <div class="col-sm-4">
+                    <datepicker button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>"
+                       date-format="dd/MM/yyyy"  date-set="">
+                      <input ng-model="StartDate" type="text" style="color:black" class="form-control" />
+                    </datepicker>
+                </div>
+                <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.HISTORY.TO' | translate}}</label>
+                <div class="col-sm-4">
+                    <datepicker button-prev="<i class='fa fa-arrow-left'></i>"  button-next="<i class='fa fa-arrow-right'></i>" 
+                           date-format="dd/MM/yyyy"  date-set="">
+                          <input ng-model="EndDate" type="text" style="color:black" class="form-control"/>
+                    </datepicker>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.HISTORY.PAYMENT_STATUS' | translate}}</label>
+                <div class="col-sm-4">
+                    <select class="form-control" ng-model="SearchPaymentStatus" required="required">
+                        <option value="N" selected>{{'BODY.SECTION.HISTORY.PAYMENT.OWED' | translate}}</option>
+                        <option value="Y">{{'BODY.SECTION.HISTORY.PAYMENT.PAID' | translate}}</option>
+                    </select>
+                </div>
+                <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.HISTORY.SHIPPING_STATUS' | translate}}</label>
+                <div class="col-sm-4">
+                    <select class="form-control" ng-model="SearchShippingStatus" required="required">
+                        <option value="N" selected>{{'BODY.SECTION.HISTORY.SHIPPING.NOT_SHIPPING' | translate}}</option>
+                        <option value="Y">{{'BODY.SECTION.HISTORY.SHIPPING.SHIPPING' | translate}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                
+                <label class="col-sm-2 control-label" for="textinput">&nbsp;</label>
+                <div class="col-sm-4">
+                    &nbsp;
+                </div>
+                <label class="col-sm-2 control-label" for="textinput">&nbsp;</label>
+                <div class="col-sm-4">
+                    &nbsp;
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-5 col-md-12">
+                    <div class="center-block">
+                        <button ng-click="SearchHistoryReceipt()" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> {{'BODY.SECTION.HISTORY.BUTTON.SEARCH' | translate}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="div-history-receipt-table">
+        <p><strong>Page:</strong> {{HistoryReceiptTableParams.page()}}</p>
+        <p><strong>Count per page:</strong> {{HistoryReceiptTableParams.count()}}</p>
+        <div id="PrintROModal">    
+            <div class="modal fade"  style="color:black">
+                <div class="modal-dialog ">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-xs-4 col-sm-4 col-md-4">
+                                    <address>
+                                        <strong>{{PrintROData.BillingName}}</strong>
+                                        <br>
+                                        {{PrintROData.BillingAddress}}
+                                        <br>
+                                        {{PrintROData.BillingProvince.Province}}, {{PrintROData.BillingDistrict.District}}
+                                        <br>
+                                        {{PrintROData.BillingSubDistrict.SubDistrict}}, {{PrintROData.BillingSubDistrict.ZipCode}}
+                                        <br>
+                                        <abbr title="Phone">P:</abbr> (213) 484-6829
+                                    </address>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4 text-center">
+                                    <p>
+                                        <img src="/images/KZHLogo.png">
+                                    </p>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4 text-right">
+                                    <p>
+                                        <em>Date: {{PrintROData.RODate | date:'medium'}}</em>
+                                    </p>
+                                    <p>
+                                        <em>Receipt #: {{PrintROData.RONo}}</em>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="text-center">
+                                    <h1>{{'BODY.SECTION.VIEW_RO_MODAL.RO_LABEL' | translate}}</h1>
+                                </div>
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">Product</th>
+                                            <th class="text-center">#</th>
+                                            <th class="text-right">Price</th>
+                                            <th class="text-right">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="roLine in PrintROData.ROLineList">
+                                            <td class="col-md-9"><em>{{roLine.ProductNameTh}}</em></h4></td>
+                                            <td class="col-md-1" style="text-align: center"> {{roLine.Quantity}} </td>
+                                            <td class="col-md-1 text-center">{{roLine.Price | number:2}}</td>
+                                            <td class="col-md-1 text-center">{{roLine.Amount | number:2}}</td>
+                                        </tr>                                                
+                                        <tr>
+                                            <td>   </td>
+                                            <td>   </td>
+                                            <td>
+                                                <p>
+                                                    <strong class="text-left">Subtotal: </strong>
+                                                </p>
+                                                <p>
+                                                    <strong class="text-left">Tax: </strong>
+                                                </p>
+                                                <p>
+                                                    <strong class="text-left">Discount: </strong>
+                                                </p>
+                                                <p>
+                                                    <strong class="text-left">Weight: </strong>
+                                                </p>
+                                            </td>
+                                            <td class="text-right">
+                                                <p>
+                                                    <strong class="text-right">{{PrintROData.SumAmount | number:2}}</strong>
+                                                </p>
+                                                <p>
+                                                    <strong class="text-right">{{PrintROData.SumVatAmount | number:2}}</strong>
+                                                </p>
+                                                <p>
+                                                    <strong class="text-right">{{PrintROData.SumDiscountAmount | number:2}}</strong>
+                                                </p>
+                                                <p>
+                                                    <strong class="text-right">{{PrintROData.SumWeightAmount | number:2}}</strong>
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>   </td>
+                                            <td>   </td>
+                                            <td class="text-right"><h4><strong>Total: </strong></h4></td>
+                                            <td class="text-center text-danger"><h4><strong>{{PrintROData.NetAmount | number:2}}
+                                            </strong></h4></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div class="modal fade" id="HistoryROModal" style="color:black">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div id="HistoryRODataNotReady" style="display: block">
+                            <br>
+                            <center>
+                                <i class="fa fa-circle-o-notch fa-spin fa-5x fa-fw margin-bottom"></i>
+                                <span class="sr-only">Loading...</span>
+                            </center>
+                        </div>
+                        <div id="HistoryRODataReady" style="display: none">
+                            <div class="row">
+                                <div class="col-xs-4 col-sm-4 col-md-4">
+                                    <address>
+                                        <strong>{{ViewHistoryRO.BillingName}}</strong>
+                                        <br>
+                                        {{ViewHistoryRO.BillingAddress}}
+                                        <br>
+                                        {{ViewHistoryRO.BillingProvince.Province}}, {{ViewHistoryRO.BillingDistrict.District}}
+                                        <br>
+                                        {{ViewHistoryRO.BillingSubDistrict.SubDistrict}}, {{ViewHistoryRO.BillingSubDistrict.ZipCode}}
+                                        <br>
+                                        <abbr title="Phone">P:</abbr> (213) 484-6829
+                                    </address>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4 text-center">
+                                    <p>
+                                        <img src="/images/KZHLogo.png">
+                                    </p>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4 text-right">
+                                    <p>
+                                        <em>Date: {{ViewHistoryRO.RODate | date:'medium'}}</em>
+                                    </p>
+                                    <p>
+                                        <em>Receipt #: {{ViewHistoryRO.RONo}}</em>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="text-center">
+                                    <h1>{{'BODY.SECTION.VIEW_RO_MODAL.RO_LABEL' | translate}}</h1>
+                                </div>
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">Product</th>
+                                            <th class="text-center">#</th>
+                                            <th class="text-right">Price</th>
+                                            <th class="text-right">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="roLine in ViewHistoryRO.ROLineList">
+                                            <td class="col-md-9"><em>{{roLine.ProductNameTh}}</em></h4></td>
+                                            <td class="col-md-1" style="text-align: center"> {{roLine.Quantity}} </td>
+                                            <td class="col-md-1 text-center">{{roLine.Price | number:2}}</td>
+                                            <td class="col-md-1 text-center">{{roLine.Amount | number:2}}</td>
+                                        </tr>                                                
+                                        <tr>
+                                            <td>   </td>
+                                            <td>   </td>
+                                            <td>
+                                                <p>
+                                                    <strong class="text-left">Subtotal: </strong>
+                                                </p>
+                                                <p>
+                                                    <strong class="text-left">Tax: </strong>
+                                                </p>
+                                                <p>
+                                                    <strong class="text-left">Discount: </strong>
+                                                </p>
+                                                <p>
+                                                    <strong class="text-left">Weight: </strong>
+                                                </p>
+                                            </td>
+                                            <td class="text-right">
+                                                <p>
+                                                    <strong class="text-right">{{ViewHistoryRO.SumAmount | number:2}}</strong>
+                                                </p>
+                                                <p>
+                                                    <strong class="text-right">{{ViewHistoryRO.SumVatAmount | number:2}}</strong>
+                                                </p>
+                                                <p>
+                                                    <strong class="text-right">{{ViewHistoryRO.SumDiscountAmount | number:2}}</strong>
+                                                </p>
+                                                <p>
+                                                    <strong class="text-right">{{ViewHistoryRO.SumWeightAmount | number:2}}</strong>
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>   </td>
+                                            <td>   </td>
+                                            <td class="text-right"><h4><strong>Total: </strong></h4></td>
+                                            <td class="text-center text-danger"><h4><strong>{{ViewHistoryRO.NetAmount | number:2}}
+                                            </strong></h4></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-success btn-lg" ngf-select ngf-change="UploadPaymentDocument($files, ViewHistoryRO.RONo)" ng-disabled="ViewHistoryRO.StaffApprovePaymentStatus === 'Y'">
+                                        {{'BODY.SECTION.VIEW_RO_MODAL.UPLOAD_BUTTON' | translate}}   <span class="glyphicon glyphicon-upload"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="text-center">
+                                    <h1>{{'BODY.SECTION.VIEW_RO_MODAL.IMAGE_PAYMENT_DOCUMENT' | translate}}</h1>
+                                </div>
+                                <div class="col-md-12 col-sm-offset-0 text-center">
+                                    <div id="ThumbnailReceiptPayment"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+            </div>
+        </div>
+        <table ng-table="HistoryReceiptTableParams" class="table">
+            <tr ng-repeat="roHead in SearchHistoryReceipts">
+                <td data-title="'View'" class="text-center">
+                    <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#HistoryROModal" ng-click="ViewRO(roHead._id, 'History')">
+                            <span class="glyphicon glyphicon glyphicon-list-alt" aria-hidden="true"></span></button>
+                </td>
+            <!--    <td data-title="'Print'" class="text-center">
+                    <button type="submit" class="btn btn-primary" ng-click="PrintRO(roHead._id)">
+                            <span class="glyphicon glyphicon glyphicon-print" aria-hidden="true"></span></button>
+                </td> -->
+                <td data-title="'#'" class="text-cetner">{{$index+1}}</td>
+                <td data-title="'RONo'" class="text-left" >{{roHead.RONo}}</td>
+                <td data-title="'RODate'" class="text-center">{{roHead.RODate | date:'dd/MM/yyyy'}}</td>
+                <td data-title="'NetAmount'" class="text-right">{{roHead.NetAmount | number:2}}</td>
+                <td data-title="'Bank'" class="text-center">
+                    <img src="images/bbl.png" ng-show="roHead.PaymentBank == 'bbl'" width="32" height="32">
+                    <img src="images/kbank.png" ng-show="roHead.PaymentBank == 'kbank'" width="32" height="32">
+                    <img src="images/ktb.png" ng-show="roHead.PaymentBank == 'ktb'" width="32" height="32">
+                    <img src="images/kcc.png" ng-show="roHead.PaymentBank == 'kcc'" width="32" height="32">
+                    <img src="images/scb.png" ng-show="roHead.PaymentBank == 'scb'" width="32" height="32">
+                    <img src="images/tmb.png" ng-show="roHead.PaymentBank == 'tmb'" width="32" height="32">
+                    <img src="images/uob.png" ng-show="roHead.PaymentBank == 'uob'" width="32" height="32">
+                </td>
+                
+                <td data-title="'Payment'" class="text-center">
+                    <img src="images/dpay_stat.png" ng-show="roHead.PaymentStatus == 'N'" title="No Payment">
+                    <img src="images/pay_stat.png" ng-show="roHead.PaymentStatus == 'Y'" title="Paid">
+                </td>
+                
+                <td data-title="'Shipping'" class="text-center">
+                    <img src="images/dship_stat.png" ng-show="roHead.ShippingStatus == 'N'" title="No Shipping">
+                    <img src="images/ship_stat.png" ng-show="roHead.ShippingStatus == 'Y'" title="Shipped">
+                </td>
+            </tr>
+        </table>
+        <script type="text/ng-template" id="custom/pager">
+            <ul class="pager ng-cloak">
+              <li ng-repeat="page in pages"
+                    ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}"
+                    ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+                <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">&laquo; Previous</a>
+                <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Next &raquo;</a>
+              </li>
+                <li> 
+                <div class="btn-group">
+                    <button type="button" ng-class="{'active':params.count() == 10}" ng-click="params.count(10)" class="btn btn-default">10</button>
+                    <button type="button" ng-class="{'active':params.count() == 25}" ng-click="params.count(25)" class="btn btn-default">25</button>
+                    <button type="button" ng-class="{'active':params.count() == 50}" ng-click="params.count(50)" class="btn btn-default">50</button>
+                    <button type="button" ng-class="{'active':params.count() == 100}" ng-click="params.count(100)" class="btn btn-default">100</button>
+                </div>
+                </li>
+            </ul>
+        </script>
+    <!--End Product Category Table Setting -->
+    </div>
+</div>
