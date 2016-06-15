@@ -54,7 +54,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     $scope.SelectedLocale = "th";
     $scope.Company = {};
 
-    $scope.IsProductTypeDataReady = false;
+    
     $scope.IsProductDataReady = false;
     //    $scope.ROLineList = $rootScope.ROLineList;
 
@@ -213,15 +213,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             console.log('LoadProductType');
         }, function(err, status) {
 
-        });
-    /*  var url = ENV.apiEndpoint + '/product_types/LoadProductType';
-        $http.get(url)
-            .success(function (data) {
-                $scope.ProductType = data;
-                //       $scope.CurrentIndex = index;
-            })
-            .error(function () {
-            });*/
+        });    
     }
     $scope.LoadProductCategory = function () {
     /*    var url = ENV.apiEndpoint  + '/product_categories/LoadProductCategory';
@@ -310,78 +302,11 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
       });*/
     }
 
-    $scope.ProductTypes = [];
-    ProductTypeService.LoadProductType()
-    .then(function(types, status) {
-    //    console.log(types);
-        $scope.ProductTypes = types;
-        ProductTypeService.ProductTypes = types;
-        $scope.IsProductTypeDataReady = true;
-
-        $scope.$emit('handleDataReadyEmit', {
-            IsDataReady: true
-        });
-
-        return ProductCategoryService.LoadProductCategoryByProductType(ProductTypeService.ProductTypes);
-        
-    }, function(err, status) {
-        console.log(err);
-    })
-    .then(function(data, status) {
-        $timeout(function() {
-        //    console.log('data.ProductTypes ', data);
-        //    $scope.ProductTypes = data;
-        //    return ProductService.LoadProductByProductCategory()
-        }, 2000);
-    }, function(err, status) {
-         console.log(err);
-    });
-
-    $scope.GetProductLengthFromProductCategory = function(ProductCategoryCode, index) {
-        ProductService.GetCountProductFromProductCategory(ProductCategoryCode)
-        .then(function(data, status) {
-            if (data === 0) {
-                $('#'+ProductCategoryCode).removeClass("label-primary");
-                $('#'+ProductCategoryCode).addClass("label-default");
-            } 
-            $('#'+ProductCategoryCode).text(data);
-        }, function(err, status) {
-        //    console.log(err);
-        });
-    }
+    
     $scope.LoadImagePaymentMethod = function(method) {
 
     }
-    $scope.InitPaymentAndDeliveryMethod = function() {
-        WeightRateService.GetNormalWeightRate()
-        .then(function(data, status) {
-            $scope.NormalTableParams = new ngTableParams({
-                    page: 1,            // show first page
-                    count: 10           // count per page
-                }, {
-                    total: data.length, // length of data
-                    getData: function($defer, params) {
-                        $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                    }
-                });
-        }, function(err, status) {
-            console.log(err);
-        });
-         WeightRateService.GetEMSWeightRate()
-        .then(function(data, status) {
-            $scope.EMSTableParams = new ngTableParams({
-                    page: 1,            // show first page
-                    count: 10           // count per page
-                }, {
-                    total: data.length, // length of data
-                    getData: function($defer, params) {
-                        $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                    }
-                });
-        }, function(err, status) {
-            console.log(err);
-        })
-    }
+    
     $scope.AddCart = function (SelectedProduct, BuyQty, Index) {
         if (BuyQty > 0) {
             var sumAmt = 0;
@@ -441,9 +366,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                       
                     $scope.ROHead.ROLineList.push(ROLine);
                   
-                    $scope.$emit('handleReceiptOrderEmit', {
-                        ROHead: $scope.ROHead
-                    });
+                 
             } else { // In case Case but 
                 WeightRateService.GetWeightRateByPostTypeAndWeight($scope.ROHead.PostType, $scope.ROHead.SumWeight)
                 .then(function(weightRate, status) {
@@ -458,16 +381,20 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                     $scope.ROHead.ROLineList.push(ROLine);
                   
                 //    $scope.ROHead.ROLineList.push(ROLine);
-                    $scope.$emit('handleReceiptOrderEmit', {
-                        ROHead: $scope.ROHead
-                    });
+                   
                     
                 }, function(error, status) {
 
                 });
             }
-            console.log($scope.ROHead);
+        //    console.log($scope.ROHead);
             ReceiptOrderService.SetReceiptOrder($scope.ROHead);
+
+            $timeout(function() {
+                $rootScope.$emit('handleReceiptOrderEmit', {
+                    ROHead: $scope.ROHead
+                });
+            }, 100);
         /*      sweetAlert({"สำเร็จ", "ใส่รายการ " + SelectedProduct.ProductNameTh + " จำนวน " + BuyQty + " ในตะกร้าสำเร็จ !!", "success"
             }, function({
                 $scope.$apply(function(){
@@ -520,30 +447,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             $('#CartProduct_'+SelectedProduct.ProductCode).append(myimg);
         }
     
-        // Load Product by ProductCategoryCode
-    $scope.LoadProductByProductCategoryCode = function (ProductCategoryCode) {
-        $scope.IsProductDataReady = false;
-        document.getElementById('ProductDataReady').style.display = 'none';
-        document.getElementById('ProductDataNotReady').style.display = 'block';
-        $('html, body').animate({ scrollTop: $('#product-section').offset().top }, 'slow');
-
-        ProductService.LoadProductByProductCategoryCode(ProductCategoryCode)
-        .then(function(data, status) {
-            $scope.Products = data;
-
-            $scope.totalItems = $scope.Products.length;
-            $scope.bigTotalItems = $scope.Products.length;
-            $scope.SelectedMenu = "product";
-            $scope.$emit('handleBodyMenuEmit', {
-                SelectedMenu: "product"
-            });
-            $scope.IsProductDataReady = true;
-            document.getElementById('ProductDataReady').style.display = 'block';
-        document.getElementById('ProductDataNotReady').style.display = 'none';
-        }, function(err, status) {
-            sweetAlert("Error !!", "Cannot get Product data from Server..", "error");
-        });
-    }
+    
 
     // Function for Product Type Module
     $scope.SearchProductType = function () {
@@ -3526,452 +3430,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             $scope.UpdateReceipt();
         }
     }
-    // End Function for Receipt Module
-    $scope.InitShipment = function() {
-    /*    var url = ENV.apiEndpoint + '/provinces/LoadProvince/';
-        $http.get(url)
-            .success(function (provinces) {
-                $scope.SelectBillingProvinceList = provinces;
-                $scope.SelectReceiptProvinceList = provinces;
-                $scope.ROHead.BillingProvinceId = "";
-                $scope.ROHead.BillingDistrictId = "";
-                $scope.ROHead.BillingSubDistrictId = "";
-                $scope.ROHead.BillingZipCode = "";
-                $scope.ROHead.ReceiptProvinceId = "";
-                $scope.ROHead.ReceiptDistrictId = "";
-                $scope.ROHead.ReceiptSubDistrictId = "";
-                $scope.ROHead.ReceiptZipCode = "";
-            })
-            .error(function (provinces) {
-                console.log(provinces);
-            });*/
-        ProvinceService.LoadProvince()
-        .then(function(provinces, status) {
-            $scope.SelectBillingProvinceList = provinces;
-            $scope.SelectReceiptProvinceList = provinces;
-            $scope.ROHead.BillingProvinceId = "";
-            $scope.ROHead.BillingDistrictId = "";
-            $scope.ROHead.BillingSubDistrictId = "";
-            $scope.ROHead.BillingZipCode = "";
-            $scope.ROHead.ReceiptProvinceId = "";
-            $scope.ROHead.ReceiptDistrictId = "";
-            $scope.ROHead.ReceiptSubDistrictId = "";
-            $scope.ROHead.ReceiptZipCode = "";
 
-            $scope.ROHead.BillingEmail = $scope.User.Email;
-       //     console.log($scope.User.Email);
-        }, function(err, status) {
-            console.log(err);
-        });
-    }
-
-//    $scope.DistrictDataReady = false;
-//    $scope.SubDistrictDataReady = false;
-    $scope.UpdateBillingProvince = function() {
-        document.getElementById('DistrictDataReady').style.display = 'block';
-       
-        console.log("ProvinceId " + $scope.ROHead.BillingProvinceId);
-/*        var url = ENV.apiEndpoint + "/districts/LoadDistrictByProvinceId/"+  $scope.ROHead.BillingProvinceId;
-        $http.get(url)
-            .success(function (districts) {
-                $scope.SelectBillingDistrictList = districts;
-            })
-            .error(function (districts) {
-                console.log(districts);
-            });*/
-        DistrictService.LoadDistrictByProvince($scope.ROHead.BillingProvinceId)
-        .then(function(districts, status) {
-            $scope.SelectBillingDistrictList = districts;
-            document.getElementById('DistrictDataReady').style.display = 'none';
-        }, function(err, status) {
-            console.log(err);
-        });
-    }
-    $scope.UpdateReceiptProvince = function() {
-        console.log("ProvinceId " + $scope.ROHead.ReceiptProvinceId);
-    /*    var url = ENV.apiEndpoint + "/districts/LoadDistrictByProvinceId/"+  $scope.ROHead.ReceiptProvinceId;
-        $http.get(url)
-            .success(function (districts) {
-                $scope.SelectReceiptDistrictList = districts;
-            })
-            .error(function (districts) {
-                console.log(districts);
-            });*/
-        DistrictService.LoadDistrictByProvince($scope.ROHead.ReceiptProvinceId)
-        .then(function(districts, status) {
-            $scope.SelectReceiptDistrictList = districts;
-        }, function(err, status) {
-            console.log(err);
-        });
-    }
-    $scope.UpdateBillingDistrict = function() {
-    /*    var url = ENV.apiEndpoint + "/subdistricts/LoadSubDistrictByDistrictId/"+ $scope.ROHead.BillingDistrictId;
-        $http.get(url)
-            .success(function (subdistricts) {
-                $scope.SelectBillingSubDistrictList = subdistricts;
-            })
-            .error(function (subdistricts) {
-                console.log(subdistricts);
-        });*/
-        document.getElementById('SubDistrictDataReady').style.display = 'block';
-        SubDistrictService.LoadSubDistrictByDistrict($scope.ROHead.BillingDistrictId)
-        .then(function(subdistricts, status) {
-            $scope.SelectBillingSubDistrictList = subdistricts;
-            document.getElementById('SubDistrictDataReady').style.display = 'none';
-        }, function(err, status) {
-            console.log(err);
-        });
-    }
-    $scope.UpdateReceiptDistrict = function() {
-    /*    var url = ENV.apiEndpoint + "/subdistricts/LoadSubDistrictByDistrictId/"+ $scope.ROHead.ReceiptDistrictId;
-        $http.get(url)
-            .success(function (subdistricts) {
-                $scope.SelectReceiptSubDistrictList = subdistricts;
-            })
-            .error(function (subdistricts) {
-                console.log(subdistricts);
-        });
-            */
-        SubDistrictService.LoadSubDistrictByDistrict($scope.ROHead.BillingDistrictId)
-        .then(function(subdistricts, status) {
-            $scope.SelectReceiptSubDistrictList = subdistricts;
-        }, function(err, status) {
-            console.log(err);
-        });
-    }
-    $scope.UpdateBillingSubDistrict = function() {
-    /*    var url = ENV.apiEndpoint + "/subdistricts/LoadSubDistrictBySubDistrictId/"+ $scope.ROHead.BillingSubDistrictId;
-        $http.get(url)
-            .success(function (zipcode) {
-                console.log('Bill ' + zipcode);
-                console.log(zipcode);
-                console.log(zipcode.ZipCode);
-                $scope.SelectBillingZipCodeList = zipcode;
-                $scope.ROHead.BillingZipCode = zipcode.ZipCode;
-            })
-            .error(function (zipcode) {
-                console.log(zipcode);
-        });*/
-        SubDistrictService.LoadSubDistrictBySubDistrict($scope.ROHead.BillingSubDistrictId)
-        .then(function(zipcode, status) {
-            console.log('Bill ' + zipcode);
-            console.log(zipcode);
-            console.log(zipcode.ZipCode);
-            $scope.SelectBillingZipCodeList = zipcode;
-            $scope.ROHead.BillingZipCode = zipcode.ZipCode;
-        }, function(err, status) {
-            console.log(err);
-        });
-    }
-
-    $scope.UpdateReceiptSubDistrict = function() {
-    /*    var url = ENV.apiEndpoint + "/subdistricts/LoadSubDistrictBySubDistrictId/"+ $scope.ROHead.ReceiptSubDistrictId;
-        $http.get(url)
-            .success(function (zipcode) {
-                console.log(zipcode);
-                console.log(zipcode[0].ZipCode);
-                $scope.SelectReceiptZipCodeList = zipcode;
-                $scope.ROHead.ReceiptZipCode = zipcode.ZipCode;
-            })
-            .error(function (zipcode) {
-                console.log(zipcode);
-        });*/
-        SubDistrictService.LoadSubDistrictBySubDistrict($scope.ROHead.ReceiptSubDistrictId)
-        .then(function(zipcode, status) {
-            console.log(zipcode);
-            console.log(zipcode[0].ZipCode);
-            $scope.SelectReceiptZipCodeList = zipcode;
-            $scope.ROHead.ReceiptZipCode = zipcode.ZipCode;
-        }, function(err, status) {
-            console.log(err);
-        });
-    }
-
-    $scope.SelectStep = function(step) {
-        if (step == 1) {
-            $scope.step = 1;
-        } else if (step == 2) {
-            $scope.step = 2;
-        } else if (step == 3) {
-            $scope.step = 3;
-        }
-    }
-    function validateEmail(email) {
-        var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(email);
-    }
-    function validateTelNo(telNo) {
-        var re =/\d\-/g;
-        return re.test(telNo);
-    }
-    $scope.ValidateBilling =  function() {
-        //!str || 0 === str.length
-        if (!$scope.ROHead.BillingName || 0 === $scope.ROHead.BillingName.length) {
-            swal("เตือน", "คุณต้องใส่ชื่อที่อยู่", "warning");
-            return;
-        } 
-        if (!$scope.ROHead.BillingEmail || 0 === $scope.ROHead.BillingEmail.length) {
-            swal("เตือน", "คุณต้องใส่อีเมล", "warning");
-            return;
-        }
-        if (!validateEmail($scope.ROHead.BillingEmail)) {
-            swal("เตือน", "อีเมลไม่ถูกต้อง", "warning");
-            return;
-        }
-        if (!$scope.ROHead.BillingAddress || 0 === $scope.ROHead.BillingAddress.length) {
-            swal("เตือน", "คุณต้องใส่ที่อยู่เพื่อรับสินค้า", "warning");
-            return;
-        }
-        if (!$scope.ROHead.BillingProvinceId || 0 === $scope.ROHead.BillingProvinceId.length) {
-            swal("เตือน", "คุณต้องเลือก จังหวัด", "warning");
-            return;
-        }
-        if (!$scope.ROHead.BillingDistrictId || 0 === $scope.ROHead.BillingDistrictId.length) {
-            swal("เตือน", "คุณต้องเลือก เขต/อำเภอ", "warning");
-            return;
-        }
-        if (!$scope.ROHead.BillingSubDistrictId || 0 === $scope.ROHead.BillingSubDistrictId.length) {
-            swal("เตือน", "คุณต้องเลือก แขวง/ตำบล", "warning");
-            return;
-        }
-        if (!$scope.ROHead.BillingZipCode || 0 === $scope.ROHead.BillingZipCode.length) {
-            swal("เตือน", "คุณต้องเลือก รหัสไปรษณีร์", "warning");
-            return;
-        }
-
-        if (!$scope.ROHead.TelNo || 0 === $scope.ROHead.TelNo.length) {
-            swal("เตือน", "คุณต้องเลือกใส่หมายเลขโทรศัพท์", "warning");
-            return;
-        }
-
-        if (!$scope.ROHead.MobileNo || 0 === $scope.ROHead.MobileNo.length) {
-            swal("เตือน", "คุณต้องใส่หมายเลขมือถือ", "warning");
-            return;
-        }
-        if (validateTelNo($scope.ROHead.TelNo)) {
-            swal("เตือน", "หมายเลขโทรศัพท์ไม่ถูกต้อง", "warning");
-            return;
-        }
-        if (validateTelNo($scope.ROHead.MobileNo)) {
-            swal("เตือน", "่หมายเลขไม่ถูกต้อง", "warning");
-            return;
-        }
-        /*
-        if (!$scope.ROHead.ReceiptName || 0 === $scope.ROHead.ReceiptName.length) {
-            swal("เตือน", "คุณต้องใส่ชื่อที่อยู่ที่แสดงในใบเสร็จ", "warning");
-            return;
-        } 
-        if (!$scope.ROHead.ReceiptAddress || 0 === $scope.ROHead.ReceiptAddress.length) {
-            swal("เตือน", "คุณต้องใส่ที่อยู่ที่แสดงในใบเสร็จ", "warning");
-            return;
-        }
-        if (!$scope.ROHead.ReceiptProvinceId || 0 === $scope.ROHead.ReceiptProvinceId.length) {
-            swal("เตือน", "คุณต้องเลือก จังหวัด ที่แสดงในใบเสร็จ", "warning");
-            return;
-        }
-        if (!$scope.ROHead.ReceiptDistrictId || 0 === $scope.ROHead.ReceiptDistrictId.length) {
-            swal("เตือน", "คุณต้องเลือก เขต/อำเภอ ที่แสดงในใบเสร็จ", "warning");
-            return;
-        }
-        if (!$scope.ROHead.ReceiptSubDistrictId || 0 === $scope.ROHead.ReceiptSubDistrictId.length) {
-            swal("เตือน", "คุณต้องเลือก แขวง/ตำบล ที่แสดงในใบเสร็จ", "warning");
-            return;
-        }
-        if (!$scope.ROHead.ReceiptZipCode || 0 === $scope.ROHead.ReceiptZipCode.length) {
-            swal("เตือน", "คุณต้องเลือก รหัสไปรษณีร์ ที่แสดงในใบเสร็จ", "warning");
-            return;
-        }
-*/
-        $scope.step = 2;
-    //    $scope.LoadPaypalInformation();
-        $("#nav-step2").removeAttr("disabled");
-        $("#nav-step2").addClass("btn-primary");
-        $("#nav-step1").addClass("btn-default");
-        $("#nav-step3").addClass("btn-default");
-    }
-    /*
-    $scope.Paypal = {};
-    $scope.LoadPaypalInformation = function () {
-        var paypalUrl = ENV.apiEndpoint + "/paypal/GetPaypalInformation";
-        $http.get(paypalUrl)
-        .success(function(data, status, headers, config) {
-            
-            $scope.Paypal.MerchantId = data.MerchantId;
-            $scope.Paypal.Name = data.Name;
-            $scope.Paypal.Quantity = data.Quantity;
-            $scope.Paypal.Amount = data.Amount;
-            $scope.Paypal.Currency = data.Currency;
-            $scope.Paypal.Shipping = data.Shipping;
-            $scope.Paypal.Tax = data.Tax;
-            $scope.Paypal.CallbackUrl = data.CallbackUrl;
-            
-            console.log($scope.Paypal);
-        })
-        .error(function (data, status, headers, config) {
-
-        });
-    }*/
-    $scope.ChangePaymentType = function() {
-        if ($scope.PaymentType == 'Paypal') {
-
-        }
-    }
-    $scope.ValidatePayment =  function() {
-        if ($scope.PaymentType == '') {
-            swal("เตือน", "คุณต้องเลือกประเภทการชำระเงิน", "warning");
-            return;
-        } 
-        if ($scope.PaymentType == 'Transfer') {
-            if ($scope.PaymentBank == '') {
-                swal("เตือน", "คุณต้องเลือกธนาคาร", "warning");
-                return;
-            } 
-        } else if ($scope.PaymentType == 'Paypal') {
-            
-        } else if ($scope.PaymentType == 'Credit') {
-            if (!$scope.cardNumber || 0 === $scope.cardNumber) {
-                swal("เตือน", "คุณต้องใส่หมายเลขบัตร", "warning");
-                return;
-            } 
-            if (!$scope.cardExpiry || 0 === $scope.cardNumber) {
-                swal("เตือน", "คุณต้องใส่หมายเลขบัตร", "warning");
-                return;
-            } 
-            if (!$scope.cardCVC || 0 === $scope.cardNumber) {
-                swal("เตือน", "คุณต้องใส่หมายเลขบัตร", "warning");
-                return;
-            } 
-        }
-         
-        $scope.step = 3;
-        $("#nav-step3").removeAttr("disabled");
-        $("#nav-step3").addClass("btn-primary");
-        $("#nav-step1").addClass("btn-default");
-        $("#nav-step2").addClass("btn-default");
-
-        $scope.ValidateFinish();
-    }
-
-     $scope.card = {
-        name: 'Mike Brown',
-        number: '5555 4444 3333 1111',
-        expiry: '11 / 2020',
-        cvc: '123'
-      };
-
-      $scope.cardPlaceholders = {
-        name: 'Your Full Name',
-        number: 'xxxx xxxx xxxx xxxx',
-        expiry: 'MM/YY',
-        cvc: 'xxx'
-      };
-
-      $scope.cardMessages = {
-        validDate: 'valid\nthru',
-        monthYear: 'MM/YYYY',
-      };
-
-      $scope.cardOptions = {
-        debug: false,
-        formatting: true
-      };
-
-    $scope.ValidateFinish = function() {
-        console.log('ValidateFinish');
-     //   blockUI.start("Processing ...");
-        var newcode = '';
-   /*     var newCodeUrl = ENV.apiEndpoint + "/appconfig/GetNewCode/RO";
-        $http.get(newCodeUrl)
-        .success(function(data, status, headers, config) {
-            var newRONo = data;
-            if (!newRONo) {
-            } else if (newRONo) {
-                  blockUI.message("25%");
-                  var sendEmailStaffUrl = ENV.apiEndpoint + "/mails/SendEmailStaffNewOrder/" + newRONo;
-                  var sendEmailCustomerUrl = ENV.apiEndpoint + "/mails/SendEmailCustomerNewOrder/" + $scope.User.Email + "/" + newRONo;
-                  var createReceiptUrl = ENV.apiEndpoint + '/receipts/CreateReceipt';
-                  $scope.ROHead.RODate = new Date(); //(new Date()).toISOString();
-                  $scope.ROHead.RONo = newRONo;
-                  $scope.ROHead.ROLineList = $scope.ROLineList;
-                  $scope.ROHead.PaymentType = $scope.PaymentType;
-                  $scope.ROHead.PaymentBank = $scope.PaymentBank;
-                  $scope.ROHead.UserId = $scope.User.Id;
-                  $scope.ROHead.PaymentStatus = "N";
-                  $scope.ROHead.ShippingStatus = "N";
-                  $scope.ROHead.StaffApprovePaymentStatus = "N";
-
-                  $http.post(createReceiptUrl, $scope.ROHead)
-                  .success(function (data, status, headers, config) {
-                      blockUI.message("53%");
-                      // after create order then send email for staff and customer 
-                      $http.get(sendEmailStaffUrl)
-                      .success(function (data, status, headers, config) {
-                          blockUI.message("74%");
-                          $http.get(sendEmailCustomerUrl)
-                          .success(function (data, status, headers, config) {
-                            blockUI.message("98%");
-                            blockUI.stop();
-                            swal("Thank you for your order", "You can check and track your order in history.", "success");
-                          })
-                          .error(function (data, status, headers, config) {
-                                blockUI.stop();
-                                console.log('error sending email customer');
-                          });
-                      })
-                      .error(function (data, status, headers, config) {
-                            blockUI.stop();
-                            console.log('error sending email staff');
-                      });    
-                  })
-                  .error(function(data, status, headers, config) {
-                        blockUI.stop();
-                        console.log('create ro head ');
-                  });
-                  //end of create receipt
-            }
-        }).error(function(data, status, headers, config) {
-            blockUI.stop();
-        });
-*/
-        AppConfigService.GetNewCode("RO")
-        .then(function(data, status) {
-            newcode = data;
-    //        blockUI.message("25%");
-            $scope.ROHead.RODate = new Date(); //(new Date()).toISOString();
-            $scope.ROHead.RONo = newcode;
-            $scope.ROHead.ROLineList = $scope.ROLineList;
-            $scope.ROHead.PaymentType = $scope.PaymentType;
-            $scope.ROHead.PaymentBank = $scope.PaymentBank;
-            $scope.ROHead.UserId = $scope.User.Id;
-            $scope.ROHead.PaymentStatus = "N";
-            $scope.ROHead.ShippingStatus = "N";
-            $scope.ROHead.StaffApprovePaymentStatus = "N";
-            return ReceiptOrderService.CreateReceiptOrder($scope.ROHead);
-        }, function(err, status) {
-            console.log('err create receipt ', err);
-        })
-        .then(function(data, status) {
-            return EmailService.SendEmailStaffNewOrder(newcode);
-        }, function(err, status) {
-            console.log('create ro head ', err);
-        })
-        .then(function(data, status) {
-            return EmailService.SendEmailCustomerNewOrder($scope.User.Email, newcode);
-        }, function(err, status) {
-            console.log('error sending email staff ', err);
-        })
-        .then(function(data, status) {
-   
-            document.getElementById('ProcessingPurchaseOrder').style.display = 'none';
-            document.getElementById('ProcessedPurchaseOrder').style.display = 'block';
-            $ROHead.ROLineList.length = 0;
-            swal("Thank you for your order", "You can check and track your order in history.",
-             "success");
-        }, function(err, status) {
-    
-            console.log('error sending email customer ', err);
-        });
-    }
 
     $scope.SearchHistoryReceipt = function() {
     /*    var historyReceiptUrl = ENV.apiEndpoint + "/receipts/LoadROHeadByUserIdAndStatus/"+$scope.User.Id+"/"+$scope.SearchPaymentStatus
@@ -4078,8 +3537,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             console.log(err);
         });
     }
-
-   
 
     $scope.PDF = function() {
         $http.post('https://api.twilio.com/2015-07-09/Accounts/AC18d3cf60c6c6840932587231874b6c0b/SMS/Messages')
@@ -4219,7 +3676,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
      $scope.PerformValidatePaymentDocument = function (IsApprove) {
     //    console.log($scope.ViewStaffRO.UserId);
         var UserId = $scope.ViewStaffRO.UserId;
-        
 /*        if (IsApprove === 'Y') {
             var approveMailUrl = ENV.apiEndpoint + '/mails/ApprovePaymentDocument/' + UserId;
             $http.get(approveMailUrl)
@@ -4354,51 +3810,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         });
     }
 
-    $scope.ValidateFeedback = function() {
-        if ($scope.Feedback.Name === undefined || $scope.Feedback.Name.length <= 0) {
-        //    swal("คำเตือน !!!", "ท่านต้องใส่ชื่อ", "warning");
-         //    return;
-        }
-        else if ($scope.Feedback.Email === undefined || $scope.Feedback.Email.length <= 0) {
-        //    swal("คำเตือน !!!", "ท่านต้องใส่อีเมล", "warning");
-        //     return;
-        }
-         else if (!validateEmail($scope.Feedback.Email)) {
-        //    swal("คำเตือน", "อีเมลไม่ถูกต้อง", "warning");
-        //    return;
-        }
-         else if ($scope.Feedback.Subject === undefined || $scope.Feedback.Subject.length <= 0) {
-        //    swal("คำเตือน !!!", "ท่านต้องเลือกหัวข้อ", "warning");
-        //    return;
-        }
-        else  if ($scope.Feedback.Message === undefined || $scope.Feedback.Message.length <= 0) {
-         //   swal("คำเตือน !!!", "ท่านต้องใส่ชื่อ", "warning");
-        //    return;
-        }
-        else {
-          FeedbackService.CreateFeedback($scope.Feedback.Name, $scope.Feedback.Email,$scope.Feedback.Subject,$scope.Feedback.Message)
-          .then(function(data, status) {
-                var mailObj = {
-                    Name: $scope.Feedback.Name,
-                    Email: $scope.Feedback.Email,
-                    Subject: $scope.Feedback.Subject,
-                    Message: $scope.Feedback.Message
-                }
-                EmailService.SendEmailFeedback(mailObj);
-          })
-          .then(function(data, status) {
-                swal("สำเร็จ !!!", "ทางทีมงานขอบคุณลูกค้าสำหรับข้อเสนอแนะ", "success");
-
-                $scope.Feedback.Subject = '';
-                $scope.Feedback.Message = '';
-          }, function(err, status) {
-                swal("คำเตือน !!!", "เกิดข้อผิดพลาด", "warning");
-                 $scope.Feedback.Subject = '';
-                $scope.Feedback.Message = '';
-          });
-
-        }
-
-    }
+    
     
 }]);

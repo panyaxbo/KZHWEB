@@ -16,914 +16,544 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/bootstrap-social/bootstrap-social.css" />
     <link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.min.css" />
-    <link rel="stylesheet" href="bower_components/pnotify/pnotify.core.css" />
-    <link rel="stylesheet" href="bower_components/pnotify/pnotify.buttons.css" />
-    <link rel="stylesheet" href="bower_components/pnotify/pnotify.history.css" />
     <link rel="stylesheet" href="bower_components/sweetalert/dist/sweetalert.css" />
-    <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
+    <link rel="stylesheet" href="bower_components/animate.css/animate.min.css" />
+    <link rel="stylesheet" href="bower_components/angular-aside/dist/css/angular-aside.min.css" />
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css" />
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.0.2/css/hover-min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-css/1.4.6/select2-bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.1/textAngular.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ng-tags-input/3.0.0/ng-tags-input.min.css">
-    <link rel="stylesheet" href="styles/bootstrap-magnify.css">
     <link rel="stylesheet" href="styles/search.css">
     <link rel="stylesheet" href="styles/step.css">
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/screen-device.css">
     <link rel="stylesheet" href="styles/kzh-navbar.css">
-    <base href="/" />
+    <link rel="stylesheet" href="styles/kzh-side-menu.css">
+    <base href="/" >
 </head>
 
-<body ng-controller="MainController"> <!--onselectstart="return false;" ondragstart="return false;" oncontextmenu="return false;"-->
+<body ng-controller="MainController" id="main"> <!--onselectstart="return false;" ondragstart="return false;" oncontextmenu="return false;"-->
     <div ng-show="i18nLoaded" class="loading-screen" ng-cloak="">
         <i class="fa fa-refresh fa-spin fa-5x fa-fw margin-bottom"></i>
         <span class="sr-only">Loading...</span>
     </div>
     <div ng-hide="i18nLoaded" ng-cloak="" >
-        <div class="container">
-            <div class="modal fade " id="KZHPartsAdModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title"></h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container">                        
+        <div class="aside-div">
+            <div class="aside-left" >
+            <!-- Use any element to open the sidenav -->
+                <button type="button" class="btn btn-default" onclick="openNav()">
+                    <span class="glyphicon glyphicon-align-justify"></span> 
+                </button>
+            </div>
+        <!--    <div class="aside-right">
+                <button type="button" class="btn btn-default" ng-click="openAside('right', false)">
+                   <span class="glyphicon glyphicon-align-justify"></span>
+                </button>
+            </div> -->
+        </div>
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <div class="row text-center aside-header"><h3>ชนิดสินค้า</h3></div>
+            <div class="col-xs-12 col-sm-12 col-md-12 " style="word-wrap: break-word;">
+                <div id="ProductType" >
+                    <div class="list-group panel" style="background-color: #EEEEEE">
+                        <div ng-if="IsProductTypeDataReady" ng-repeat="ProductType in ProductTypes">
+                            <a href="#{{ProductType.ProductTypeCode}}" class="list-group-item list-group-item-success" 
+                            data-toggle="collapse" data-parent="#ProductType" ng-if="SelectedLocale=='th'" onclick="return false;">
+                                {{ProductType.ProductTypeNameTh}}
+                                <span class="label label-pill label-success pull-right span-side-menu">
+                                {{ProductType.ProductCategories.length}}</span>
+                            </a>
+                            <a href="#{{ProductType.ProductTypeCode}}" class="list-group-item list-group-item-success" 
+                            data-toggle="collapse" data-parent="#ProductType" ng-if="SelectedLocale=='us'" onclick="return false;">
+                            {{ProductType.ProductTypeNameEn}}
+                            <span class="label label-pill label-success pull-right span-side-menu">{{ProductType.ProductCategories.length}}</span>
+                            </a>
+                            <a href="#{{ProductType.ProductTypeCode}}" class="list-group-item list-group-item-success" 
+                            data-toggle="collapse" data-parent="#ProductType" ng-if="SelectedLocale=='cn'" onclick="return false;" >
+                            {{ProductType.ProductTypeNameCn}} 
+                            <span class="label label-pill label-success pull-right span-side-menu">{{ProductType.ProductCategories.length}}</span>
+                            </a>
+                            <div class="collapse" id="{{ProductType.ProductTypeCode}}" >
+                                <div ng-repeat="ProductCategory in ProductType.ProductCategories" >
+                                    <div ng-init="GetProductLengthFromProductCategory(ProductCategory.ProductCategoryCode)">
+                                        <a href="" class="list-group-item" ng-if="SelectedLocale=='th'" 
+                                        ng-click="LoadProductByProductCategoryCode(ProductCategory.ProductCategoryCode)" >{{ProductCategory.ProductCategoryNameTh}}
+                                        <span class="label label-pill label-primary pull-right span-side-menu" id="{{ProductCategory.ProductCategoryCode}}"></span>
+                                        </a>
+                                        <a href="" class="list-group-item" ng-if="SelectedLocale=='us'" 
+                                        ng-click="LoadProductByProductCategoryCode(ProductCategory.ProductCategoryCode)" >{{ProductCategory.ProductCategoryNameEn}}
+                                       <span class="label label-pill label-primary pull-right span-side-menu" id="{{ProductCategory.ProductCategoryCode}}"></span>
+                                        </a>
+                                        <a href="" class="list-group-item" ng-if="SelectedLocale=='cn'" 
+                                        ng-click="LoadProductByProductCategoryCode(ProductCategory.ProductCategoryCode)">{{ProductCategory.ProductCategoryNameCn}}
+                                        <span class="label label-pill label-primary pull-right span-side-menu" id="{{ProductCategory.ProductCategoryCode}}"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div> 
                         </div>
-                        <div class="row">
-                            <div class="col-sm-12 col-md-12 col-md-offset-0">
-                                <div class="fb-page" data-href="https://www.facebook.com/https://www.facebook.com/KZH-Parts-571156579574584/" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"></div>
-                            </div>
+                        <div class="row" ng-if="!IsProductTypeDataReady">
+                            <center>
+                                <i class="fa fa-spinner fa-pulse fa-4x fa-fw margin-bottom"></i>
+                                <span class="sr-only">Loading...</span>
+                            </center>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="ProductDetailModal">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title"></h4>
+        <div class="container">
+            <!--    <div class="modal fade " id="KZHPartsAdModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title"></h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container">                        
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 col-md-offset-0">
+                                        <div class="fb-page" data-href="https://www.facebook.com/https://www.facebook.com/KZH-Parts-571156579574584/" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <div class="container">                        
+                </div> -->
+                <nav class="navbar navbar-default" role="navigation" ng-controller="HeaderController">
+                  <div class="container-fluid nav-header">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a href="/" class="text-center">
+                            <img src="/images/KZHLogo.png" width="150px" height="50px">
+                        </a> 
+                    </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav nav-pills pull-right">    
+                            <li>
+                                <a href="/articles" ng-click="SelectedHeadMenu('article')" class="head-menu">{{'HEAD.MENU.ARTICLE' | translate}}</a>
+                            </li>               
+                            <li>
+                                <a href="/product" ng-click="SelectedHeadMenu('product')" class="head-menu">{{'HEAD.MENU.PRODUCT' | translate}}</a>
+                            </li>
+                            <li>
+                                <a href="/payment-delivery" ng-click="SelectedHeadMenu('payment')" class="head-menu">{{'HEAD.MENU.PAYMENT_N_DELIVERY' | translate}}</a>
+                            </li>
+                            <li>
+                                <a href="/about" ng-click="SelectedHeadMenu('about')" class="head-menu">{{'HEAD.MENU.ABOUT' | translate}}</a>
+                            </li>
+                            <li>
+                                <a href="/contact" ng-click="SelectedHeadMenu('contact')" class="head-menu">{{'HEAD.MENU.CONTACT' | translate}}</a>
+                            </li>
+                            <li>
+                                <div>
+                                    <a href="/cart" class="btn btn-success">
+                                    <span class="glyphicon glyphicon-shopping-cart"></span> ({{ROHead.ROLineList.length}}) {{'HEAD.CART' | translate}}</a>
+                           
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <a href="/login" class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-log-in"></span> {{'HEAD.SIGNIN' | translate}}</a>
+                                    <button id="LogoutButton" class="btn btn-danger" ng-click="Logout()" ng-show="IsLogin" ng-hide="!IsLogin">
+                                        <span class="glyphicon glyphicon-log-out"></span> {{'HEAD.SIGNOUT' | translate}}
+                                    </button>
+                                </div>
+                            </li>
+
+                            <li class="dropdown" class="head-menu" style="margin-top:-10px">
+                                 <a href="" class="dropdown-toggle head-menu" data-toggle="dropdown"><span id="SelectedDropdownLanguage"><img src="/images/th.png">&nbsp;ไทย</span><b class="caret"></b></a>
+                                  <ul id="DropdownLanguage" class="dropdown-menu">
+                                    <li><a href="" ng-click="SelectedLocale('th')"><img src="/images/th.png">&nbsp; ไทย</a>
+                                    </li>
+                                    <li><a href="" ng-click="SelectedLocale('us')"><img src="/images/us.png">&nbsp; English</a>
+                                    </li>
+                                    <li><a href="" ng-click="SelectedLocale('cn')"><img src="/images/cn.png">&nbsp; 中國</a>
+                                    </li>
+                                  </ul>
+                            </li>
+                            
+                            <li class="dropdown" class="head-menu" style="margin-top:5px">
+                                <div id="UserProfileImage">
+                                    <img src="/images/noProfileImg.png"  class="img-circle" width="40" height="40" ng-show="!IsLogin || User.ProfileImage === undefined" style="margin-top:-5px">
+                                </div>
+                            </li>
+                            <li class="dropdown" class="head-menu" style="margin-top:5px">
+                                <div ng-show="IsAdmin && !IsGuest">
+                                    <!-- code to render a large video block-->
+                                    <a href="#" class="dropdown-toggle head-menu" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
+                                     {{DataModelFactory.User.Username}}<b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#account-section" ng-click="('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}} </a>
+                                        </li>
+                                        <li><a href="#customer-order-section" ng-click="SelectedHeadMenu('customer-order')"><span class="glyphicon glyphicon-tasks"></span> {{'HEAD.MENU.CUSTOMER' | translate}} </a>
+                                        </li>
+                                        <li><a ui-sref="history" ng-click="SelectedHeadMenu('history')"><span class="glyphicon glyphicon-time"></span> {{'HEAD.MENU.HISTORY' | translate}}</a>
+                                        </li>
+                                        <li><a href="#setting-section" ng-click="SelectedHeadMenu('setting')"><span class="glyphicon glyphicon-cog"></span> {{'HEAD.MENU.GENERAL' | translate}}</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li><a href="#" ng-click="Logout()"><span class="glyphicon glyphicon-off"></span> {{'HEAD.MENU.LOGOUT' | translate}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div ng-show="!IsAdmin && !IsGuest">
+                                    <!-- code to render the regular video block -->
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
+                                     {{User.Username}}<b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#account-section" ng-click="SelectedHeadMenu('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}}</a>
+                                        </li>
+                                        <li> <a href="#history-section" ng-click="SelectedHeadMenu('history')"><span class="glyphicon glyphicon-time"></span> {{'HEAD.MENU.HISTORY' | translate}}</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li><a ng-href="#" ng-click="Logout()"><span class="glyphicon glyphicon-off"></span> {{'HEAD.MENU.LOGOUT' | translate}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div ng-show="!IsAdmin && IsGuest">
+                                    <!-- code to render the regular video block -->
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
+                                     {{User.Username}}<b class="caret"></b></a>
+                                </div>
+                            </li>
+                    </div>
+                  </div>
+                </nav>
+           
+                <hr class="header-hr">
+
+                <div ng-view></div>
+
+                <hr class="footer-hr">
+                <div id="div-footer" class="footer" ng-controller="FooterController">
+                    <div class="container" style="color:white;">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <center>
+                                  <img src="/images/tyre.png" width="64" height="64"  alt="the-brains" class="img-responsive">
+                                  <br>
+                                  <h4 class="footertext">{{'FOOTER.TYRE.HEAD' | translate}}</h4>
+                                  <p class="footertext">{{'FOOTER.TYRE.REMARK' | translate}}<br>
+                                </center>
+                            </div>
+                            <div class="col-sm-6 col-md-4">
+                                <center>
+                                  <img src="/images/lubricant.png" width="64" height="64" alt="..." class="img-responsive">
+                                  <br>
+                                  <h4 class="footertext">{{'FOOTER.LUBRICANT.HEAD' | translate}}</h4>
+                                  <p class="footertext">{{'FOOTER.LUBRICANT.REMARK' | translate}}<br>
+                                </center>
+                            </div>
+                            <div class="col-sm-6 col-md-4">
+                                <center>
+                                  <img src="/images/battery.png" width="64" height="64" alt="..." class="img-responsive">
+                                  <br>
+                                  <h4 class="footertext">{{'FOOTER.BATTERY.HEAD' | translate}}</h4>
+                                  <p class="footertext">{{'FOOTER.BATTERY.REMARK' | translate}}<br>
+                                </center>
+                            </div>
+                            <div class="col-sm-6 col-md-4">
+                                <center>
+                                  <img src="/images/brake.png" width="64" height="64"  alt="the-brains" class="img-responsive">
+                                  <br>
+                                  <h4 class="footertext">{{'FOOTER.BRAKE.HEAD' | translate}}</h4>
+                                  <p class="footertext">{{'FOOTER.BRAKE.REMARK' | translate}}<br>
+                                </center>
+                            </div>
+                            <div class="col-sm-6 col-md-4">
+                                <center>
+                                  <img src="/images/shock.png" width="64" height="64" alt="..." class="img-responsive">
+                                  <br>
+                                  <h4 class="footertext">{{'FOOTER.SHOCK.HEAD' | translate}}</h4>
+                                  <p class="footertext">{{'FOOTER.SHOCK.REMARK' | translate}}<br>
+                                </center>
+                            </div>
+                            <div class="col-sm-6 col-md-4">
+                                <center>
+                                  <img src="/images/wrench.png" width="64" height="64" alt="..." class="img-responsive">
+                                  <br>
+                                  <h4 class="footertext">{{'FOOTER.WRENCH.HEAD' | translate}}</h4>
+                                  <p class="footertext">{{'FOOTER.WRENCH.REMARK' | translate}}<br>
+                                </center>
+                            </div>
                         </div>
                         <div class="row">
+                            <div class="col-md-5">
+                                <img class="pull-right" src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/kzhapp-100x100.png" width="32px" height="32px">
+                            </div>
+                            <div class="col-md-7">
+                                <a href="/contact" ng-click="SelectedBodyMenu('thai-post')">{{'FOOTER.CONTACT_US' | translate}}</a> 
+                                <p class="footertext">{{'FOOTER.COPY_RIGHT' | translate}}</p>
+                            </div>
+                        </div>
+                    </div>
+                <div>
+                <a href="#" class="scrollup">Scroll</a>
+               
+            </div>
+            <hr class="footer-hr">
+            <div class="footer-container" style="color:white;">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-md-offset-0 footer-brand">
+                        <div class="col-sm-4 col-md-3">
+                            <center>
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/parts/honda.png" max-width="90" max-height="90" alt="honda" class="img-responsive">
+                            </center>
+                        </div>
+                        <div class="col-sm-4 col-md-3">
+                            <center>
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/parts/yamaha.png"  max-width="90" max-height="90"  alt="yamaha" class="img-responsive">
+                            </center>
+                        </div>
+                        <div class="col-sm-4 col-md-3">
+                            <center>
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/parts/suzuki.png" max-width="90" max-height="90"  alt="suzuki" class="img-responsive">
+                            </center>
+                        </div>
+                        <div class="col-sm-4 col-md-3">
+                            <center>
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/parts/kawasaki.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
+                            </center>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-md-offset-0 footer-brand">
+                          <div class="col-sm-6 col-md-4">
+                            <center>
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/parts/jomthai.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
+                          
+                            </center>
+                          </div>
+                          <div class="col-sm-6 col-md-4">
+                            <center>
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/parts/yaguso.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
+                      
+                            </center>
+                          </div>
+                          <div class="col-sm-6 col-md-4">
+                            <center>
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/parts/ngk.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
+                      
+                            </center>
+                          </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-md-offset-0 footer-brand">
+                            <div class="col-sm-4 col-md-2">
+                            <center>
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/lubricants/ptt.png" max-width="90" max-height="90" alt="honda" class="img-responsive">
+                              
+                            </center>
+                          </div>
+                          <div class="col-sm-4 col-md-2">
+                            <center>
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/lubricants/shell.png"  max-width="90" max-height="90"  alt="yamaha" class="img-responsive">
+                            </center>
+                          </div>
+                          <div class="col-sm-4 col-md-2">
+                            <center>
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/lubricants/castrol.png" max-width="90" max-height="90"  alt="suzuki" class="img-responsive">
+                            </center>
+                          </div>
+                          
+                          <div class="col-sm-4 col-md-2">
+                            <center>
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/lubricants/caltex.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
+                             
+                            </center>
+                          </div>
+                          <div class="col-sm-4 col-md-2">
+                            <center>
+                               <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/lubricants/daikyo.png" max-width="90" max-height="90"  alt="daikyo" class="img-responsive">
+                          
+                            </center>
+                          </div>
+                          <div class="col-sm-4 col-md-2">
+                            <center>
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/lubricants/trane.png" max-width="90" max-height="90"  alt="trane" class="img-responsive">
+                            </center>
+                          </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-md-offset-0 footer-brand">
+                            <div class="col-sm-4 col-md-2">
+                            <center>
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/tyre/michelin.png" max-width="90" max-height="90" alt="honda" class="img-responsive">
+                              
+                            </center>
+                          </div>
+                          <div class="col-sm-4 col-md-2">
+                            <center>
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/tyre/irc.png"  max-width="90" max-height="90"  alt="yamaha" class="img-responsive">
+                            </center>
+                          </div>
+                          <div class="col-sm-4 col-md-2">
+                            <center>
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/tyre/dunlop.png" max-width="90" max-height="90"  alt="suzuki" class="img-responsive">
+                            </center>
+                          </div>
+                          
+                          <div class="col-sm-4 col-md-2">
+                            <center>
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/tyre/veerubber.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
+                             
+                            </center>
+                          </div>
+                          <div class="col-sm-4 col-md-2">
+                            <center>
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/tyre/camel.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
+                            </center>
+                          </div>
+                          <div class="col-sm-4 col-md-2">
+                            <center valign="center">
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/tyre/nd.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
+                             
+                            </center>
+                          </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-md-offset-0 footer-brand">
+                            <div class="col-sm-4 col-md-3">
+                            <center>
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/battery/gs.png" max-width="90" max-height="90" alt="honda" class="img-responsive">
+                              
+                            </center>
+                          </div>
+                          <div class="col-sm-4 col-md-3">
+                            <center>
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/battery/3k.png"  max-width="90" max-height="90"  alt="yamaha" class="img-responsive">
+                            </center>
+                          </div>
+                          <div class="col-sm-4 col-md-3">
+                            <center>
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/battery/fb.png" max-width="90" max-height="90"  alt="suzuki" class="img-responsive">
+                            </center>
+                          </div>
+                          
+                          <div class="col-sm-4 col-md-3">
+                            <center>
+                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/battery/yuasa.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
+                             
+                            </center>
+                          </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="footer-hr">
+            <div id="div-sub-footer" class="sub-footer">
+                <div class="container" style="color:white;">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-4 text-center">
+                            <div id="fb-root"></div>
+                            <script>(function(d, s, id) {
+                              var js, fjs = d.getElementsByTagName(s)[0];
+                              if (d.getElementById(id)) return;
+                              js = d.createElement(s); js.id = id;
+                              js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=174419525934936";
+                              fjs.parentNode.insertBefore(js, fjs);
+                            }(document, 'script', 'facebook-jssdk'));</script>
+
+                            <div class="fb-page" data-href="https://www.facebook.com/https://www.facebook.com/KZH-Parts-571156579574584/" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"></div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-4">
+                            <center>
+                              <blockquote>
+                                {{'FOOTER.AVAILABLE_ON_APPSTORE_PLAYSTORE' | translate}}...
+                                <br>
+                                <footer style="color:white;">KZH Parts</footer>
+                            </blockquote>
+                            </center>
+                            <br>
+                            <div class="row">
+                                <a href="https://goo.gl/SHaPTS" target="_blank">
+                                    <div class="col-md-3 facebook"></div>
+                                </a>
+                                <a href="https://goo.gl/GYHJ6E" target="_blank">
+                                    <div class="col-md-3 google"></div>
+                                </a>
+                                <a href="https://goo.gl/tlFCBT" target="_blank">
+                                    <div class="col-md-3 twitter"></div>
+                                </a>
+                                <a href="https://goo.gl/orQMJe" target="_blank">
+                                    <div class="col-md-3 instagram"></div>
+                                </a>
+                            </div>
+                            <div class="row text-center google-thaipost">
+                                <div class="col-md-offset-1 col-xs-12 col-sm-12 col-md-5">
+                                    <a href="https://www.google.com/maps/place/โค้วซุ่นเฮง+-+ค้าปลีก-+ส่ง+อะไหล่+น้ำมันเครื่อง+ยาง/@14.942145,103.7846685,16z/data=!4m2!3m1!1s0x0:0xe7284053efc84cd6?hl=en-US" target="_blank">
+                                         <img src="/images/google-map.png" width="100px " height="65px" class="img-responsive">
+                                        </a>
+                                </div>
+                                <div class="col-md-offset-1 col-xs-12 col-sm-12 col-md-5">
+                                    <a href="http://track.thailandpost.co.th/tracking/default.aspx" target="_blank" ng-click="SelectedBodyMenu('thai-post')"><img src="/images/thaipost.png" width="100px" height="65px" class="img-responsive">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row text-center">
+                                <img src="/images/comodo_secure_seal_113x59_transp.png" />
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-4">
+                            <center>
+                              <blockquote>
+                                    {{'FOOTER.COMING_SOON' | translate}}...
+                                </blockquote>
+                            </center>
+                            <br>
+                            <center>
+                                <img src="/images/dbappstore.png" width="180" height="75"  alt="KZHParts on AppStore" class="img-responsive">
+                            </center>
+                            <br>
+                            <center>
+                                <img src="/images/dbplaystore.png" width="180" height="75"  alt="KZHParts on PlayStore" class="img-responsive">
+                            </center>
+                            <br>
+                            <!-- PayPal Logo --><table border="0" cellpadding="10" cellspacing="0" align="center"><tr><td align="center"></td></tr><tr><td align="center"><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/cc-badges-ppmcvdam.png" alt="Buy now with PayPal" /></td></tr></table><!-- PayPal Logo -->
+                        </div>
+                        <div class="col-sm-8" style="margin-top: 1.8em">
+                            <div class="row well">
+                                <div class="col-md-2 text-center" style="color: #333;margin-top: 0.7em;font-size: 16px;"><label>Subscriber :</label></div>
+                                <div class="col-md-8">
+                                     <form >
+                                      <div class="row text-center">
+                                            <div class="col-md-10">
+                                            <input class="btn btn-lg btn-block" ng-model="EmailSubscriber" name="email" id="email" type="email" placeholder="Your Email" required style="color:#333;">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button ng-click="Subscribe()" class="btn btn-info btn-lg" type="submit">Submit</button>
+                                            </div>
+                                      </div>
+                                     </form>
+                                 </div>
+                            </div>
                             
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <nav class="navbar transparent navbar-default" role="navigation" ng-controller="HeaderController">
-          <div class="container-fluid nav-header">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a href="/">
-                        <img src="/images/KZHLogo.png" width="150px" height="50px">
-                </a> 
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-              <ul class="nav nav-pills pull-right">    
-                    <li>
-                    <!--   <a href="#payment-section"></a> -->
-                        <a href="/articles" ng-click="SelectedHeadMenu('article')" class="head-menu">{{'HEAD.MENU.ARTICLE' | translate}}</a>
-                    </li>               
-                    <li>
-                        <a href="#product-section" ng-click="SelectedHeadMenu('product')" class="head-menu">{{'HEAD.MENU.PRODUCT' | translate}}</a>
-                    </li>
-                    <li>
-                        <a href="/payment-delivery" ng-click="SelectedHeadMenu('payment')" class="head-menu">{{'HEAD.MENU.PAYMENT_N_DELIVERY' | translate}}</a>
-                    </li>
-                    <li>
-                        <a href="/about" ng-click="SelectedHeadMenu('about')" class="head-menu">{{'HEAD.MENU.ABOUT' | translate}}</a>
-                    </li>
-                    <li>
-                        <a href="/contact" ng-click="SelectedHeadMenu('contact')" class="head-menu">{{'HEAD.MENU.CONTACT' | translate}}</a>
-                    </li>
-                    <li>
-                        <div>
-                            <a href="/cart" class="btn btn-success">
-                            <span class="glyphicon glyphicon-shopping-cart"></span> ({{ROHead.ROLineList.length}}) {{'HEAD.CART' | translate}}</a>
-                            <div class="modal fade" id="CartModal">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                                            </button>
-                                            <h4 class="modal-title"><i class="fa fa-shopping-basket fa-2x"></i> {{'HEAD.MODAL_CART.PRODUCT_CART' | translate}}</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="container">                        
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm-12 col-md-12 col-md-offset-0">
-                                                    <div id="HideCartTable" ng-show="ROHead.ROLineList.length <= 0 || ROHead.ROLineList === undefined">
-                                                        <h3 class="text-center">--------- {{'HEAD.MODAL_CART.EMPTY_CART' | translate}} ---------</h3>
-                                                    </div>
-                                                    <div id="ShowCartTable" ng-show="ROHead.ROLineList.length > 0">
-                                                        <table id="CartTable" class="table table-hover table table-condensed" >
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>{{'HEAD.MODAL_CART.SEQ' | translate}}</th>
-                                                                    <th></th>
-                                                                    <th class="text-left">{{'HEAD.MODAL_CART.ITEM_NAME' | translate}}</th>
-                                                                    <th class="text-right">{{'HEAD.MODAL_CART.QTY' | translate}}</th>
-                                                                    <th class="text-left">{{'HEAD.MODAL_CART.UOM' | translate}}</th>
-                                                                    <th class="text-right">{{'HEAD.MODAL_CART.PRICE' | translate}}</th>
-                                                                    <th class="text-right">{{'HEAD.MODAL_CART.DISCOUNT' | translate}}</th>
-                                                                    <th class="text-right">{{'HEAD.MODAL_CART.AMOUNT' | translate}}</th>
-                                                                    <th> </th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr ng-repeat="ro in ROHead.ROLineList" id="CartRow{{$index}}">
-                                                                    <td class="col-sm-1 col-md-1 text-center" >
-                                                                        {{$index+1}}.
-                                                                    </td>
-                                                                    <td class="col-sm-1 col-md-1 text-center" >
-                                                                        <div id="CartProduct_{{ro.ProductCode}}">
-                                                                            
-                                                                        </div>
-                                                                    </td>
-                                                                    <td class="col-sm-5 col-md-5 text-left">
-                                                                        <div class="media">
-                                                                            <div class="media-body">
-                                                                                {{ro.ProductNameTh}}
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td class="col-xs-1 col-sm-1 col-md-1" style="text-align: right">
-                                                                        <input type="text" class="form-control input-sm" id="BuyQty" ng-model="ro.Quantity" 
-                                                                        ng-keyup="UpdateCartBuyQty($index, ro.Quantity)" >
-                                                                    </td>
-                                                                    <td class="col-sm-1 col-md-1" style="text-align: center">
-                                                                        <select id="SelectUomList" name="selectbasic" class="form-control input-sm" ng-model="ro.UomCode" ng-options="Uom.UomCode as Uom.UomNameTh for Uom in ro.Uoms" ng-change="UpdateCartUom(ro, ro.UomCode, $index)">
-                                                                        </select>
-                                                                    </td>
-                                                                    <td class="col-sm-1 col-md-1 text-right"><strong>{{CurrencySymbol}} {{(ro.Price * Multiplier) | currency:''}}</strong>
-                                                                    </td>
-                                                                    <td class="col-sm-1 col-md-1 text-right"><strong>{{CurrencySymbol}} {{(ro.DiscountAmount * Multiplier) | currency:''}}</strong>
-                                                                    </td>
-                                                                    <td class="col-sm-4 col-md-4 text-right"><strong>{{CurrencySymbol}} {{(ro.Amount * Multiplier) | currency:''}}</strong>
-                                                                    </td>
-                                                                    <td class="col-sm-1 col-md-1">
-                                                                        <button type="button" class="btn btn-danger btn-xs" ng-click="DeleteCartProduct(this, ro, $index)">
-                                                                            <span class="glyphicon glyphicon-trash"></span> 
-                                                                        </button>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="3"> </td>
-                                                                    <td colspan="2">  
-                                                                        <h5>{{'HEAD.MODAL_CART.SUMAMT' | translate}}</h5> 
-                                                                    </td>
-                                                                    <td colspan="3" class="text-right">  
-                                                                        <h5><strong>{{CurrencySymbol}} {{(ROHead.SumAmount * Multiplier)  | currency:''}}</strong></h5> 
-                                                                    </td>
-                                                                    <td>   </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="3"> </td>
-                                                                    <td colspan="2">  
-                                                                        <h5>{{'HEAD.MODAL_CART.SUMDISCAMT' | translate}}</h5>
-                                                                    </td>
-                                                                    <td colspan="3" class="text-right">  
-                                                                        <h5><strong>{{CurrencySymbol}} {{(ROHead.SumDiscountAmount * Multiplier) | currency:''}}</strong></h5>
-                                                                    </td>
-                                                                    <td>   </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="3"> </td>
-                                                                    <td colspan="2">  
-                                                                        <h5>{{'HEAD.MODAL_CART.SUMVATAMT' | translate}}</h5>
-                                                                    </td>
-                                                                    <td colspan="3" class="text-right">  
-                                                                        <h5><strong>{{CurrencySymbol}} {{(ROHead.SumVatAmount * Multiplier) | currency:''}}</strong></h5>
-                                                                    </td>
-                                                                    <td>   </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="2"> </td>
-                                                                    <td colspan="1"> 
-                                                                        <select class="form-control" ng-model="ROHead.PostType" required="required" ng-change="ChangePostType()">
-                                                                        <!--    <option value="">{{'HEAD.MODAL_CART.POST_TYPE.SELECT_POST_TYPE' | translate}}</option>-->
-                                                                            <option value="Normal">{{'HEAD.MODAL_CART.POST_TYPE.NORMAL' | translate}}</option>
-                                                                            <option value="EMS" ng-disabled="ROHead.SumWeight > 20000" >{{'HEAD.MODAL_CART.POST_TYPE.EMS' | translate}}</option>
-                                                                        </select>
-
-                                                                        <label class="warn-excess-ems-weight" ng-show="ROHead.SumWeight > 20000"> {{'HEAD.MODAL_CART.WARN_EMS' | translate}} </label>
-                                                                    </td>
-                                                                    <td colspan="2">  
-                                                                        <h5>{{'HEAD.MODAL_CART.SUMWEIGHTAMT' | translate}}</h5>
-                                                                    </td>
-                                                                    <td colspan="1" class="text-right">  
-                                                                        <h5><strong></strong></h5>
-                                                                    </td>
-                                                                    <td colspan="1" class="text-right">  
-                                                                        <h5>
-                                                                    <!--    <strong ng-if="ROHead.SumWeight < 1000">{{ROHead.SumWeight | currency:''}} g</strong>
-                                                                        <strong ng-if="ROHead.SumWeight >= 1000">{{ROHead.SumWeight/1000 | currency:''}} kg</strong>
-                                                                        </h5>-->
-                                                                    </td>
-                                                                    <td colspan="1" class="text-right">  
-                                                                        <h5><strong>{{CurrencySymbol}} {{ROHead.SumWeightAmount}}</strong></h5>
-                                                                    </td>
-                                                                    <td>   </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="3"> </td>
-                                                                    <td colspan="2">  
-                                                                        <h4>{{'HEAD.MODAL_CART.NETAMT' | translate}}</h4>
-                                                                    </td>
-                                                                    <td colspan="3" class="text-right">  
-                                                                        <h4><strong>{{CurrencySymbol}} {{(ROHead.NetAmount * Multiplier) | currency:''}}</strong></h4>
-                                                                    </td>
-                                                                    <td>   </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="9">
-                                                                        <div class="col-sm-offset-2 col-sm-10">
-                                                                            <div class="pull-right">
-                                                                                <button type="button" class="btn btn-default" ng-click="ContinueShopping()">
-                                                                                <span class="glyphicon glyphicon-shopping-cart"></span> {{'HEAD.MODAL_CART.SHOP_BUTTON' | translate}}
-                                                                            </button>
-
-                                                                                <button type="button" class="btn btn-danger" ng-click="ClearCart()">
-                                                                                <span class="glyphicon glyphicon-trash"></span> {{'HEAD.MODAL_CART.CLEAR_BUTTON' | translate}}
-                                                                            </button>
-
-                                                                                <a type="button" class="btn btn-success" ng-click="ShipmentProcess()" scroll-on-click href="#shipment-section">
-                                                                                {{'HEAD.MODAL_CART.CHECKOUT_BUTTON' | translate}} <span class="glyphicon glyphicon-play"></span>
-                                                                            </a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                    <!--Shopping Cart Modal /.modal-content -->
-                                </div>
-                                <!-- Shopping Cart Modal /.modal-dialog -->
-                            </div>
-                            <!-- Shopping Cart Modal /.modal -->
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <a href="/login" class="btn btn-primary">
-                            <span class="glyphicon glyphicon-log-in"></span> {{'HEAD.SIGNIN' | translate}}</a>
-                            <button id="LogoutButton" class="btn btn-danger" ng-click="Logout()" ng-show="IsLogin" ng-hide="!IsLogin">
-                                <span class="glyphicon glyphicon-log-out"></span> {{'HEAD.SIGNOUT' | translate}}
-                            </button>
-                            <div class="modal fade" id="ForgetPasswordModal">
-                                <div class="modal-dialog ">
-                                    <div class="modal-content">
-                                        <div class="modal-body">
-                                            <div class="row">
-                                                <div class="col-md-offset-2 col-xs-8 col-sm-8 col-md-8 text-center">
-                                                    <div class="form-group text-center">
-                                                        <i class="fa fa-lock fa-5x"></i>
-                                                    </div>
-                                                    <div class="form-group text-center">
-                                                        <h2>{{'HEAD.MODAL_FORGET_PASSWORD.TITLE' | translate}} </h2>
-                                                    </div>
-                                                    <div class="form-group text-center">
-                                                        <h4>{{'HEAD.MODAL_FORGET_PASSWORD.TEXT' | translate}} </h4>
-                                                    </div>
-                                                    <div class="form-group text-center">
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                                            <input type="text" class="form-control input-lg" ng-model="ForgetPasswordEmail" placeholder="email address">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <button class="btn btn-primary btn-block btn-lg" ng-click="SendEmailForgetPassword()" >
-                                                            <span class="glyphicon glyphicon-envelope"></span> {{'HEAD.MODAL_FORGET_PASSWORD.SEND_EMAIL_BUTTON' | translate}}
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12" id="ForgetPasswordProgress" style="display:none">
-                                                    <br>
-                                                    <center>
-                                                        <i class="fa fa-spinner fa-pulse fa-4x fa-fw margin-bottom"></i>
-                                                        <span class="sr-only">Loading...</span>
-                                                    </center>
-                                                    <br>
-                                                    <uib-progressbar class="progress-striped active" value="ForgetPasswordProgressValue" type="success"><i ng-show="showWarning">!!! Watch out !!!</i></uib-progressbar>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal fade" id="InputPasswordModal">
-                                <div class="modal-dialog ">
-                                    <div class="modal-content">
-                                        <div class="modal-body">
-                                            <div class="row">
-                                                <div class="col-md-offset-2 col-xs-8 col-sm-8 col-md-8 text-center">
-                                                    <div class="form-group text-center">
-                                                        <i class="fa fa-unlock fa-5x"></i>
-                                                    </div>
-                                                    <div class="form-group text-center">
-                                                        <h2>{{'HEAD.MODAL_INPUT_PASSWORD.TITLE' | translate}} </h2>
-                                                    </div>
-                                                    <div class="form-group text-center">
-                                                        <h4>{{'HEAD.MODAL_INPUT_PASSWORD.TEXT' | translate}} </h4>
-                                                    </div>
-                                                    <div class="form-group text-center">
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                                                            <input type="password" class="form-control input-lg" ng-model="ChangeForgetPassword" placeholder="{{'HEAD.MODAL_INPUT_PASSWORD.PASSWORD' | translate}}">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group text-center">
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                                                            <input type="password" class="form-control input-lg" ng-model="ConfirmChangeForgetPassword" placeholder="{{'HEAD.MODAL_INPUT_PASSWORD.CONFIRM_PASSWORD' | translate}}">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <button class="btn btn-primary btn-block btn-lg" ng-click="ChangePassword()" >
-                                                            <span class="glyphicon glyphicon-floppy-saved"></span> {{'HEAD.MODAL_INPUT_PASSWORD.CHANGE_PASSWORD_BUTTON' | translate}}
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-12" id="InputPasswordProgress" style="display:none">
-                                                    <br>
-                                                    <center>
-                                                        <i class="fa fa-spinner fa-pulse fa-4x fa-fw margin-bottom"></i>
-                                                        <span class="sr-only">Loading...</span>
-                                                    </center>
-                                                    <br>
-                                                    <uib-progressbar class="progress-striped active" value="InputPasswordProgressValue" type="success"><i ng-show="showWarning">!!! Watch out !!!</i></uib-progressbar>
-                                                </div>
-                                            </div>                                            
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal fade" id="LoginModal">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                                            </button>
-                                            <h4 class="modal-title"><i class="fa fa-sign-in fa-2x"></i> {{'HEAD.MODAL_SIGNIN.HEAD' | translate}}</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="row">
-                                                <div class="col-xs-6">
-                                                    <div class="well">
-                                                        <form id="loginForm" role="form">
-                                                            <div class="form-group">
-
-                                                                <label for="username" class="control-label">{{'HEAD.MODAL_SIGNIN.LABEL_USERNAME' | translate}}</label>
-                                                                <input type="text" class="form-control" id="username" name="username" value="" required title="Please enter you username" placeholder="example@gmail.com" ng-model="username" data-error="Bruh, that email address is invalid">
-                                                                <span class="help-block"></span>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="password" class="control-label">{{'HEAD.MODAL_SIGNIN.LABEL_PASSWORD' | translate}}</label>
-                                                                <input type="password" class="form-control" id="password" name="password" value="" required ng-model="password">
-                                                                <span class="help-block"></span>
-                                                            </div>
-                                                             <div class="controls">
-                                                                <div id="LoginErrorAlert" class="alert alert-danger fade in" style="display: none">
-                                                                    <!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
-                                                                    <strong>{{LoginErrorMessage}}</strong> 
-                                                                </div>
-                                                            </div>
-                                                            <div>
-                                                                <label>
-                                                                    <a ng-click="ForgetPassword()">{{'HEAD.MODAL_SIGNIN.FORGET_PASSWORD' | translate}}</a>
-                                                                </label>
-                                                            </div>
-                                                            <div class="checkbox">
-                                                                <label>
-                                                                    <input type="checkbox" ng-model="RememberMe" id="remember"> {{'HEAD.MODAL_SIGNIN.REMEMBER_ME' | translate}}
-                                                                </label>
-                                                                <p class="help-block">{{'HEAD.MODAL_SIGNIN.REMEMBER_ME_REASON' | translate}}</p>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-4 text-center"></div>
-                                                                <div class="col-md-4 text-center">
-                                                                    <button type="submit" class="btn btn-success" ng-click="Login()">
-                                                                        <span class="glyphicon glyphicon-log-in" ></span> {{'HEAD.MODAL_SIGNIN.BUTTON_SIGNIN' | translate}}</button>
-
-                                                                </div>
-                                                                <div class="col-md-4 text-center">
-                                                                    <div id="LoginDataNotReady" style="display: none"> 
-                                                                        <i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom"></i>
-                                                                        <span class="sr-only">Loading...</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <hr>
-                                                            <p class="text-center" style="margin-top:10px;">OR</p>
-                                                            <a class="btn btn-block btn-social btn-facebook" ng-click="LoginWithSocial('facebook')">
-                                                                <i class="fa fa-facebook"></i> {{'HEAD.MODAL_SIGNIN.FACEBOOK_SIGNIN' | translate}}
-                                                            </a>
-                                                            <a class="btn btn-block btn-social btn-google" ng-click="LoginWithSocial('google_plus')">
-                                                                <i class="fa fa-google"></i> {{'HEAD.MODAL_SIGNIN.GOOGLE_PLUS_SIGNIN' | translate}}
-                                                            </a>
-                                                            
-                                                            <a class="btn btn-block btn-social btn-twitter" ng-click="LoginWithSocial('twitter')">
-                                                                <i class="fa fa-twitter"></i> {{'HEAD.MODAL_SIGNIN.TWITTER_SIGNIN' | translate}}
-                                                            </a>
-                                                            <a class="btn btn-block btn-social btn-linkedin" ng-click="LoginWithSocial('linkedin')">
-                                                                <i class="fa fa-linkedin"></i> {{'HEAD.MODAL_SIGNIN.LINKEDIN_SIGNIN' | translate}}
-                                                            </a>
-                                                           <a class="btn btn-block btn-social btn-instagram" ng-click="LoginWithSocial('instagram')">
-                                                                <i class="fa fa-instagram"></i> {{'HEAD.MODAL_SIGNIN.INSTAGRAM_SIGNIN' | translate}}
-                                                            </a>
-                                                            <a class="btn btn-block btn-social btn-github" ng-click="LoginWithSocial('github')">
-                                                                <i class="fa fa-github"></i> {{'HEAD.MODAL_SIGNIN.GITHUB_SIGNIN' | translate}}
-                                                            </a>
-                                                            <a class="btn btn-block btn-social btn-dropbox" ng-click="LoginWithSocial('dropbox')">
-                                                                <i class="fa fa-dropbox"></i> {{'HEAD.MODAL_SIGNIN.DROPBOX_SIGNIN' | translate}}
-                                                            </a>
-                                                            <a class="btn btn-block btn-social btn-foursquare" ng-click="LoginWithSocial('foursquare')">
-                                                                <i class="fa fa-foursquare"></i> {{'HEAD.MODAL_SIGNIN.FOURSQUARE_SIGNIN' | translate}}
-                                                            </a>
-                                                            <a class="btn btn-block btn-social btn-soundcloud" ng-click="LoginWithSocial('soundcloud')">
-                                                                <i class="fa fa-soundcloud"></i> {{'HEAD.MODAL_SIGNIN.SOUNDCLOUD_SIGNIN' | translate}}
-                                                            </a>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xs-6">
-                                                    <div class="well">
-                                                    <form id="SignupForm" ng-submit="Signup()" role="form" type="multipart/form-data">
-                                                    <!--
-                                                            <div class="form-group">
-                                                                <label class="control-label" for="inputFirst">{{'HEAD.MODAL_SIGNIN.FIRST_NAME' | translate}}</label>
-                                                                <div class="controls">
-                                                                    <input id="Firstname" ng-model="Firstname" placeholder="E.g. Ashwin" type="text" 
-                                                                    class="form-control">
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="control-label" for="inputLast">{{'HEAD.MODAL_SIGNIN.LAST_NAME' | translate}}</label>
-                                                                <div class="controls">
-                                                                    <input id="Lastname" ng-model="Lastname" placeholder="E.g. Hegde" type="text" 
-                                                                    class="form-control">
-                                                                </div>
-                                                            </div>-->
-                                                            <div class="form-group">
-                                                                <label class="control-label" for="inputEmail">{{'HEAD.MODAL_SIGNIN.EMAIL' | translate}}</label>
-                                                                <div class="controls">
-                                                                    <input id="Email" ng-model="Email" placeholder="E.g. ashwinh@cybage.com" 
-                                                                    type="text" class="form-control" ng-keydown="ValidateEmail()"/>
-                                                                </div>
-                                                                <div class="controls">
-                                                                <!--    <img id="ValidateSignupEmail" src="" width="30" height="30">-->
-                                                                    <div id="EmailAlert" class="alert alert-warning fade in" style="display: none">
-                                                                        <a href="#" class="close" data-dismiss="alert">&times;</a>
-                                                                        <strong>{{EmailValidateMessage}}</strong> 
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                           
-                                                            <div class="form-group">
-                                                                <label class="control-label" for="inputUser">{{'HEAD.MODAL_SIGNIN.USERNAME' | translate}}</label>
-                                                                <div class="controls">
-                                                                    <input id="Username" ng-model="Username" placeholder="E.g. ashwinhegde" 
-                                                                    type="text" class="form-control" ng-blur="ValidateExistUsername()">
-                                                                </div>
-                                                                <div class="controls">
-                                                                    <div id="UsernameAlert" class="alert alert-warning fade in" style="display: none">
-                                                                        <a href="#" class="close" data-dismiss="alert">&times;</a>
-                                                                        <strong>{{UsernameValidateMessage}}</strong> 
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-           
-                                                            <div class="form-group">
-                                                                <label class="control-label" for="inputPassword">{{'HEAD.MODAL_SIGNIN.PASSWORD' | translate}}</label>
-                                                                <div class="controls">
-                                                                    <input id="Password" ng-model="Password" placeholder="Min. 8 Characters" type="password" 
-                                                                    class="form-control" >
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label class="control-label">{{'HEAD.MODAL_SIGNIN.STRENGTH' | translate}}</label>
-                                                                <div class="controls">
-                                                                    <div ng-password-strength="Password" strength="passStrength" inner-class="progress-bar" 
-                                                                    inner-class-prefix="progress-bar-"></div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                            <label class="control-label">{{'HEAD.MODAL_SIGNIN.RECAPTCHA' | translate}}</label>
-                                                                <!-- Call a method in the scope of your controller to handle data submit -->
-                                                                <form ng-submit="submit()">
-                                                                    <div
-                                                                        vc-recaptcha
-                                                                        theme="'light'"
-                                                                        key="model.key"
-                                                                        on-create="setWidgetId(widgetId)"
-                                                                        on-success="setResponse(response)"
-                                                                        on-expire="cbExpiration()"
-                                                                    ></div>
-                                                                </form>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="control-label"></label>
-                                                                <div class="controls" style="margin-left: 1.5em">
-                                                                    <label class="checkbox"><input type="checkbox" ng-model="IsAcceptCondition">
-                                                                    {{'HEAD.MODAL_SIGNIN.TERM_SERVICE_LABEL' | translate}} 
-                                                                    <a href="#">{{'HEAD.MODAL_SIGNIN.TERM_SERVICE' | translate}}</a></label> 
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-4 text-center"></div>
-                                                                <div class="col-md-4 text-center">
-                                                                    <button class="btn btn-primary" type="submit" ng-click="Signup()" 
-                                                                    ng-disabled="ExistUsername || ExistEmail || !ValidEmail || !IsHuman || !IsAcceptCondition">
-                                                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> {{'HEAD.MODAL_SIGNIN.BUTTON_SIGNUP' | translate}}
-                                                                    </button> 
-                                                                </div>
-                                                                <div class="col-md-4 text-center">
-                                                                    <div id="SignupDataNotReady" style="display: none"> 
-                                                                        <i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom"></i>
-                                                                        <span class="sr-only">Loading...</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                    </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="dropdown" class="head-menu" style="margin-top:-10px">
-                         <a href="" class="dropdown-toggle head-menu" data-toggle="dropdown"><span id="SelectedDropdownLanguage"><img src="/images/th.png">&nbsp;ไทย</span><b class="caret"></b></a>
-                          <ul id="DropdownLanguage" class="dropdown-menu">
-                            <li><a href="" ng-click="SelectedLocale('th')"><img src="/images/th.png">&nbsp;ไทย</a>
-                            </li>
-                            <li><a href="" ng-click="SelectedLocale('us')"><img src="/images/us.png">&nbsp;English</a>
-                            </li>
-                            <li><a href="" ng-click="SelectedLocale('cn')"><img src="/images/cn.png">&nbsp;中國</a>
-                            </li>
-                          </ul>
-                    </li>
-                    
-                    <li class="dropdown" class="head-menu" style="margin-top:5px">
-                        <div id="UserProfileImage">
-                            <img src="/images/noProfileImg.png"  class="img-circle" width="40" height="40" ng-show="!IsLogin || User.ProfileImage === undefined" style="margin-top:-5px">
-                        </div>
-                    </li>
-                    <li class="dropdown" class="head-menu" style="margin-top:5px">
-                        <div ng-show="IsAdmin && !IsGuest">
-                            <!-- code to render a large video block-->
-                            <a href="#" class="dropdown-toggle head-menu" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
-                             {{DataModelFactory.User.Username}}<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#account-section" ng-click="('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}} </a>
-                                </li>
-                                <li><a href="#customer-order-section" ng-click="SelectedHeadMenu('customer-order')"><span class="glyphicon glyphicon-tasks"></span> {{'HEAD.MENU.CUSTOMER' | translate}} </a>
-                                </li>
-                                <li><a ui-sref="history" ng-click="SelectedHeadMenu('history')"><span class="glyphicon glyphicon-time"></span> {{'HEAD.MENU.HISTORY' | translate}}</a>
-                                </li>
-                                <li><a href="#setting-section" ng-click="SelectedHeadMenu('setting')"><span class="glyphicon glyphicon-cog"></span> {{'HEAD.MENU.GENERAL' | translate}}</a>
-                                </li>
-                                <li class="divider"></li>
-                                <li><a href="#" ng-click="Logout()"><span class="glyphicon glyphicon-off"></span> {{'HEAD.MENU.LOGOUT' | translate}}</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div ng-show="!IsAdmin && !IsGuest">
-                            <!-- code to render the regular video block -->
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
-                             {{User.Username}}<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#account-section" ng-click="SelectedHeadMenu('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}}</a>
-                                </li>
-                                <li> <a href="#history-section" ng-click="SelectedHeadMenu('history')"><span class="glyphicon glyphicon-time"></span> {{'HEAD.MENU.HISTORY' | translate}}</a>
-                                </li>
-                                <li class="divider"></li>
-                                <li><a ng-href="#" ng-click="Logout()"><span class="glyphicon glyphicon-off"></span> {{'HEAD.MENU.LOGOUT' | translate}}</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div ng-show="!IsAdmin && IsGuest">
-                            <!-- code to render the regular video block -->
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
-                             {{User.Username}}<b class="caret"></b></a>
-                        </div>
-                    </li>
-            </div>
-          </div>
-        </nav>
-       
-    <hr class="footer-hr">
-       
-    <div ng-view></div>
-  
-
-        <hr class="footer-hr">
-        <div id="div-footer" class="footer" ng-controller="FooterController">
-    <div class="container" style="color:white;">
-        <div class="row">
-            <div class="col-sm-6 col-md-4">
-                <center>
-                  <img src="/images/tyre.png" width="64" height="64"  alt="the-brains" class="img-responsive">
-                  <br>
-                  <h4 class="footertext">{{'FOOTER.TYRE.HEAD' | translate}}</h4>
-                  <p class="footertext">{{'FOOTER.TYRE.REMARK' | translate}}<br>
-                </center>
-            </div>
-            <div class="col-sm-6 col-md-4">
-                <center>
-                  <img src="/images/lubricant.png" width="64" height="64" alt="..." class="img-responsive">
-                  <br>
-                  <h4 class="footertext">{{'FOOTER.LUBRICANT.HEAD' | translate}}</h4>
-                  <p class="footertext">{{'FOOTER.LUBRICANT.REMARK' | translate}}<br>
-                </center>
-            </div>
-            <div class="col-sm-6 col-md-4">
-                <center>
-                  <img src="/images/battery.png" width="64" height="64" alt="..." class="img-responsive">
-                  <br>
-                  <h4 class="footertext">{{'FOOTER.BATTERY.HEAD' | translate}}</h4>
-                  <p class="footertext">{{'FOOTER.BATTERY.REMARK' | translate}}<br>
-                </center>
-            </div>
-            <div class="col-sm-6 col-md-4">
-                <center>
-                  <img src="/images/brake.png" width="64" height="64"  alt="the-brains" class="img-responsive">
-                  <br>
-                  <h4 class="footertext">{{'FOOTER.BRAKE.HEAD' | translate}}</h4>
-                  <p class="footertext">{{'FOOTER.BRAKE.REMARK' | translate}}<br>
-                </center>
-            </div>
-            <div class="col-sm-6 col-md-4">
-                <center>
-                  <img src="/images/shock.png" width="64" height="64" alt="..." class="img-responsive">
-                  <br>
-                  <h4 class="footertext">{{'FOOTER.SHOCK.HEAD' | translate}}</h4>
-                  <p class="footertext">{{'FOOTER.SHOCK.REMARK' | translate}}<br>
-                </center>
-            </div>
-            <div class="col-sm-6 col-md-4">
-                <center>
-                  <img src="/images/wrench.png" width="64" height="64" alt="..." class="img-responsive">
-                  <br>
-                  <h4 class="footertext">{{'FOOTER.WRENCH.HEAD' | translate}}</h4>
-                  <p class="footertext">{{'FOOTER.WRENCH.REMARK' | translate}}<br>
-                </center>
-            </div>
-            <div class="row">
-                <p><center><a href="#contact-section" ng-click="SelectedBodyMenu('thai-post')">{{'FOOTER.CONTACT_US' | translate}}</a> <p class="footertext">{{'FOOTER.COPY_RIGHT' | translate}}</p></center></p>
-            </div>
-        </div>
-    <div>
-        <a href="#" class="scrollup">Scroll</a>
-        <textarea id="printing-css" style="display:none;">html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}body{font:normal normal .8125em/1.4 Arial,Sans-Serif;background-color:white;color:#333}strong,b{font-weight:bold}cite,em,i{font-style:italic}a{text-decoration:none}a:hover{text-decoration:underline}a img{border:none}abbr,acronym{border-bottom:1px dotted;cursor:help}sup,sub{vertical-align:baseline;position:relative;top:-.4em;font-size:86%}sub{top:.4em}small{font-size:86%}kbd{font-size:80%;border:1px solid #999;padding:2px 5px;border-bottom-width:2px;border-radius:3px}mark{background-color:#ffce00;color:black}p,blockquote,pre,table,figure,hr,form,ol,ul,dl{margin:1.5em 0}hr{height:1px;border:none;background-color:#666}h1,h2,h3,h4,h5,h6{font-weight:bold;line-height:normal;margin:1.5em 0 0}h1{font-size:200%}h2{font-size:180%}h3{font-size:160%}h4{font-size:140%}h5{font-size:120%}h6{font-size:100%}ol,ul,dl{margin-left:3em}ol{list-style:decimal outside}ul{list-style:disc outside}li{margin:.5em 0}dt{font-weight:bold}dd{margin:0 0 .5em 2em}input,button,select,textarea{font:inherit;font-size:100%;line-height:normal;vertical-align:baseline}textarea{display:block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}pre,code{font-family:"Courier New",Courier,Monospace;color:inherit}pre{white-space:pre;word-wrap:normal;overflow:auto}blockquote{margin-left:2em;margin-right:2em;border-left:4px solid #ccc;padding-left:1em;font-style:italic}table[border="1"] th,table[border="1"] td,table[border="1"] caption{border:1px solid;padding:.5em 1em;text-align:left;vertical-align:top}th{font-weight:bold}table[border="1"] caption{border:none;font-style:italic}.no-print{display:none}</textarea>
-        <iframe id="printing-frame" name="print_frame" src="about:blank" style="display:none;"></iframe>
     </div>
-    <hr class="footer-hr">
-    <div class="footer-container" style="color:white;">
-        <div class="row">
-            <div class="col-sm-12 col-md-12 col-md-offset-0 footer-brand">
-                <div class="col-sm-4 col-md-3">
-                    <center>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/parts/honda.png" max-width="90" max-height="90" alt="honda" class="img-responsive">
-                    </center>
-                </div>
-                <div class="col-sm-4 col-md-3">
-                    <center>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/parts/yamaha.png"  max-width="90" max-height="90"  alt="yamaha" class="img-responsive">
-                    </center>
-                </div>
-                <div class="col-sm-4 col-md-3">
-                    <center>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/parts/suzuki.png" max-width="90" max-height="90"  alt="suzuki" class="img-responsive">
-                    </center>
-                </div>
-                <div class="col-sm-4 col-md-3">
-                    <center>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/parts/kawasaki.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
-                    </center>
-                </div>
-            </div>
-            <div class="col-sm-12 col-md-12 col-md-offset-0 footer-brand">
-                  <div class="col-sm-6 col-md-4">
-                    <center>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/parts/jomthai.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
-                  
-                    </center>
-                  </div>
-                  <div class="col-sm-6 col-md-4">
-                    <center>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/parts/yaguso.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
-              
-                    </center>
-                  </div>
-                  <div class="col-sm-6 col-md-4">
-                    <center>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/parts/ngk.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
-              
-                    </center>
-                  </div>
-            </div>
-            <div class="col-sm-12 col-md-12 col-md-offset-0 footer-brand">
-                    <div class="col-sm-4 col-md-2">
-                    <center>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/lubricants/ptt.png" max-width="90" max-height="90" alt="honda" class="img-responsive">
-                      
-                    </center>
-                  </div>
-                  <div class="col-sm-4 col-md-2">
-                    <center>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/lubricants/shell.png"  max-width="90" max-height="90"  alt="yamaha" class="img-responsive">
-                    </center>
-                  </div>
-                  <div class="col-sm-4 col-md-2">
-                    <center>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/lubricants/castrol.png" max-width="90" max-height="90"  alt="suzuki" class="img-responsive">
-                    </center>
-                  </div>
-                  
-                  <div class="col-sm-4 col-md-2">
-                    <center>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/lubricants/caltex.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
-                     
-                    </center>
-                  </div>
-                  <div class="col-sm-4 col-md-2">
-                    <center>
-                       <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/lubricants/daikyo.png" max-width="90" max-height="90"  alt="daikyo" class="img-responsive">
-                  
-                    </center>
-                  </div>
-                  <div class="col-sm-4 col-md-2">
-                    <center>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/lubricants/trane.png" max-width="90" max-height="90"  alt="trane" class="img-responsive">
-                    </center>
-                  </div>
-            </div>
-            <div class="col-sm-12 col-md-12 col-md-offset-0 footer-brand">
-                    <div class="col-sm-4 col-md-2">
-                    <center>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/tyre/michelin.png" max-width="90" max-height="90" alt="honda" class="img-responsive">
-                      
-                    </center>
-                  </div>
-                  <div class="col-sm-4 col-md-2">
-                    <center>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/tyre/irc.png"  max-width="90" max-height="90"  alt="yamaha" class="img-responsive">
-                    </center>
-                  </div>
-                  <div class="col-sm-4 col-md-2">
-                    <center>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/tyre/dunlop.png" max-width="90" max-height="90"  alt="suzuki" class="img-responsive">
-                    </center>
-                  </div>
-                  
-                  <div class="col-sm-4 col-md-2">
-                    <center>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/tyre/veerubber.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
-                     
-                    </center>
-                  </div>
-                  <div class="col-sm-4 col-md-2">
-                    <center>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/tyre/camel.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
-                    </center>
-                  </div>
-                  <div class="col-sm-4 col-md-2">
-                    <center valign="center">
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/tyre/nd.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
-                     
-                    </center>
-                  </div>
-            </div>
-            <div class="col-sm-12 col-md-12 col-md-offset-0 footer-brand">
-                    <div class="col-sm-4 col-md-3">
-                    <center>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/battery/gs.png" max-width="90" max-height="90" alt="honda" class="img-responsive">
-                      
-                    </center>
-                  </div>
-                  <div class="col-sm-4 col-md-3">
-                    <center>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/battery/3k.png"  max-width="90" max-height="90"  alt="yamaha" class="img-responsive">
-                    </center>
-                  </div>
-                  <div class="col-sm-4 col-md-3">
-                    <center>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/battery/fb.png" max-width="90" max-height="90"  alt="suzuki" class="img-responsive">
-                    </center>
-                  </div>
-                  
-                  <div class="col-sm-4 col-md-3">
-                    <center>
-                      <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/battery/yuasa.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
-                     
-                    </center>
-                  </div>
-            </div>
-        </div>
-    </div>
-</div>
-<hr class="footer-hr">
-<div id="div-sub-footer" class="sub-footer">
-    <div class="container" style="color:white;">
-        <div class="row">
-            <div class="col-sm-4">
-                <div id="fb-root"></div>
-                <script>(function(d, s, id) {
-                  var js, fjs = d.getElementsByTagName(s)[0];
-                  if (d.getElementById(id)) return;
-                  js = d.createElement(s); js.id = id;
-                  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=174419525934936";
-                  fjs.parentNode.insertBefore(js, fjs);
-                }(document, 'script', 'facebook-jssdk'));</script>
-
-                <div class="fb-page" data-href="https://www.facebook.com/https://www.facebook.com/KZH-Parts-571156579574584/" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"></div>
-            </div>
-            <div class="col-sm-4">
-                <center>
-                  <blockquote>
-                    {{'FOOTER.AVAILABLE_ON_APPSTORE_PLAYSTORE' | translate}}...
-                    <br>
-                    <footer style="color:white;">KZH Parts</footer>
-                </blockquote>
-                </center>
-                <br>
-                <div class="row">
-                    <a href="https://goo.gl/SHaPTS" target="_blank">
-                        <div class="col-md-3 facebook"></div>
-                    </a>
-                    <a href="https://goo.gl/GYHJ6E" target="_blank">
-                        <div class="col-md-3 google"></div>
-                    </a>
-                    <a href="https://goo.gl/tlFCBT" target="_blank">
-                        <div class="col-md-3 twitter"></div>
-                    </a>
-                    <a href="https://goo.gl/orQMJe" target="_blank">
-                        <div class="col-md-3 instagram"></div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <center>
-                  <blockquote>
-                        {{'FOOTER.COMING_SOON' | translate}}...
-                    </blockquote>
-                </center>
-                <br>
-                <center>
-                  
-                    <img src="/images/dbappstore.png" width="180" height="75"  alt="KZHParts on AppStore" class="img-responsive">
-                  
-                </center>
-                <br>
-                <center>
-                 
-                    <img src="/images/dbplaystore.png" width="180" height="75"  alt="KZHParts on PlayStore" class="img-responsive">
-               
-                </center>
-                <br>
-            </div>
-            <div class="col-sm-2">
-                <center>
-                </center>
-            </div>
-        </div>
-    </div>
-</div>
-    </div>
+    <!--Start of Zopim Live Chat Script-->
+<script type="text/javascript">
+window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+_.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
+$.src="//v2.zopim.com/?3zNAygD3G4WcgPYEzNeAHJdXW7nVkkOi";z.t=+new Date;$.
+type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
+</script>
+<!--End of Zopim Live Chat Script-->
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -933,8 +563,7 @@
 
         ga('create', 'UA-72000276-1', 'auto');
         ga('send', 'pageview');
-
-     </script>
+    </script>
 
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
@@ -959,25 +588,16 @@
     <script src="bower_components/ng-password-strength/dist/scripts/ng-password-strength.js"></script>
     <script src="bower_components/ng-table/dist/ng-table.min.js"></script>
     <script src="bower_components/ngAutocomplete/src/ngAutocomplete.js"></script>
-    <script src="bower_components/ngDialog/js/ngDialog.js"></script>
     <script src="bower_components/platform/platform.js"></script>
     <script src="bower_components/oauth-js/dist/oauth.min.js"></script>
-    <script src="bower_components/pnotify/pnotify.core.js"></script>
-    <script src="bower_components/pnotify/pnotify.buttons.js"></script>
-    <script src="bower_components/pnotify/pnotify.callbacks.js"></script>
-    <script src="bower_components/pnotify/pnotify.confirm.js"></script>
-    <script src="bower_components/pnotify/pnotify.desktop.js"></script>
-    <script src="bower_components/pnotify/pnotify.history.js"></script>
-    <script src="bower_components/pnotify/pnotify.nonblock.js"></script>
     <script src="bower_components/sweetalert/dist/sweetalert.min.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="bower_components/aws-sdk/dist/aws-sdk.js"></script>
     <script src="bower_components/card/lib/js/card.js"></script>
-    <script src="bower_components/paypaljsbuttons/dist/paypal-button.min.js"></script>
-
     <script src="bower_components/angular-spinners/dist/angular-spinners.min.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-card/src/card.js"></script>
+    <script src="bower_components/angular-aside/dist/js/angular-aside.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.1/textAngular-rangy.min.js"></script>
@@ -997,6 +617,9 @@
     <script src="/controllers/contact-controller.js"></script>
     <script src="/controllers/cart-controller.js"></script>
     <script src="/controllers/login-controller.js"></script>
+    <script src="/controllers/shipment-controller.js"></script>
+    <script src="/controllers/payment-controller.js"></script>
+    <script src="/controllers/supplier-controller.js"></script>
     <script src="/configs/app-translate.js"></script>
     <script src="/configs/app-route.js"></script>
     <script src="/constants/constants.js"></script>
@@ -1005,6 +628,9 @@
     <script src="/directives/menu-item-directive.js"></script>
     <script src="/directives/focus-directive.js"></script>
     <script src="/directives/scroll-on-click-directive.js"></script>
+    <script src="/directives/product-type-directive.js"></script>
+    <script src="/directives/product-directive.js"></script>
+    <script src="/directives/article-directive.js"></script>
     <script src="/services/menu-service.js"></script>
     <script src="/services/locale-service.js"></script>
     <script src="/services/receipt-order-service.js"></script>
@@ -1028,10 +654,14 @@
     <script src="/services/paypal-service.js"></script>
     <script src="/services/feedback-service.js"></script>
     <script src="/services/article-service.js"></script>
-    <script src="/factories/data-model-factory.js"></script>
+    <script src="/services/utility-service.js"></script>
+    <script src="/services/subscribe-service.js"></script>
+    <script src="/services/technician-service.js"></script>
+    <script src="/services/entrepreneur-service.js"></script>
+    <script src="/filters/html-filter.js"></script>
+    <script src="/filters/cut-more-filter.js"></script>
     <script src="/scripts/main.js"></script>
     <script src="/scripts/step.js"></script>
-       
 </body>
 
 </html>

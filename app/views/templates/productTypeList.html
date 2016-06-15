@@ -1,0 +1,35 @@
+<div >
+    <a href="#{{ProductType.ProductTypeCode}}" class="list-group-item list-group-item-success" 
+    data-toggle="collapse" data-parent="#ProductType" ng-show="SelectedLocale=='th'" onclick="return false;">
+    {{ProductType.ProductTypeNameTh}}
+    <span class="label label-pill label-success pull-right span-side-menu">{{ProductType.ProductCategories.length}}</span>
+    </a>
+    <a href="#{{ProductType.ProductTypeCode}}" class="list-group-item list-group-item-success" 
+    data-toggle="collapse" data-parent="#ProductType" ng-show="SelectedLocale=='us'" onclick="return false;">
+    {{ProductType.ProductTypeNameEn}}
+    <span class="label label-pill label-success pull-right span-side-menu">{{ProductType.ProductCategories.length}}</span>
+    </a>
+    <a href="#{{ProductType.ProductTypeCode}}" class="list-group-item list-group-item-success" 
+    data-toggle="collapse" data-parent="#ProductType" ng-show="SelectedLocale=='cn'" onclick="return false;" >
+    {{ProductType.ProductTypeNameCn}} 
+    <span class="label label-pill label-success pull-right span-side-menu">{{ProductType.ProductCategories.length}}</span>
+    </a>
+    <div class="collapse" id="{{ProductType.ProductTypeCode}}" >
+        <div ng-repeat="ProductCategory in ProductType.ProductCategories" >
+            <div ng-init="GetProductLengthFromProductCategory(ProductCategory.ProductCategoryCode)">
+                <a href="" class="list-group-item" ng-show="SelectedLocale=='th'" 
+                ng-click="LoadProductByProductCategoryCode(ProductCategory.ProductCategoryCode)" >{{ProductCategory.ProductCategoryNameTh}}
+                <span class="label label-pill label-primary pull-right span-side-menu" id="{{ProductCategory.ProductCategoryCode}}"></span>
+                </a>
+                <a href="" class="list-group-item" ng-show="SelectedLocale=='us'" 
+                ng-click="LoadProductByProductCategoryCode(ProductCategory.ProductCategoryCode)" >{{ProductCategory.ProductCategoryNameEn}}
+               <span class="label label-pill label-primary pull-right span-side-menu" id="{{ProductCategory.ProductCategoryCode}}"></span>
+                </a>
+                <a href="" class="list-group-item" ng-show="SelectedLocale=='cn'" 
+                ng-click="LoadProductByProductCategoryCode(ProductCategory.ProductCategoryCode)">{{ProductCategory.ProductCategoryNameCn}}
+                <span class="label label-pill label-primary pull-right span-side-menu" id="{{ProductCategory.ProductCategoryCode}}"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

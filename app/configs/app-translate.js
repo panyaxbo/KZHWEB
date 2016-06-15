@@ -262,6 +262,7 @@ app.config(function ($translateProvider) {
                         STEP : 'ที่อยู่จัดส่งสินค้า',
                         BILL_STEP : 'ที่อยู่จัดส่งสินค้า',
                         BILL_NAME: 'ชื่อ',
+                        BILL_LASTNAME: 'นามสกุล',
                         BILL_EMAIL: 'อีเมล',
                         BILL_ADDRESS: 'ที่อยู่',
                         BILL_PROVINCE: 'จังหวัด',
@@ -730,6 +731,14 @@ app.config(function ($translateProvider) {
                 UPDATE_CART_BUY_QTY : "จำนวนต้องเป็นตัวเลข หรือ มากกว่า 0"
             }
         },
+        PAGE404 : {
+            TITLE : 'ไม่พบหน้าที่ท่านต้องการ :(',
+            SUBTITLE_1 : 'ขออภัย, แต่ระบบไม่พบหน้าที่ท่านพยายามเรียก',
+            SUBTITLE_2 : 'ดูเหมือนอาจจะเป็นสาเหตุมาจาก',
+            CONTENT_1 : '1. ที่อยู่ที่ผิดพลาด',
+            CONTENT_2 : '2. ลิงค์หมดอายุไปแล้ว',
+            CLOSE_BUTTON : 'ปิดหน้านี้'
+        }
     });
     $translateProvider.translations('us', {
         TITLE: {
@@ -979,7 +988,8 @@ app.config(function ($translateProvider) {
                     BILLING : {
                         STEP : 'Billing Address',
                         BILL_STEP : 'Billing Address',
-                        BILL_NAME: 'Name',
+                        BILL_NAME: 'First Name',
+                        BILL_LASTNAME: 'Last Name',
                         BILL_EMAIL: 'Email',
                         BILL_ADDRESS: 'Address',
                         BILL_PROVINCE: 'Province',
@@ -1368,6 +1378,14 @@ app.config(function ($translateProvider) {
             AVAILABLE_ON_APPSTORE_PLAYSTORE : 'We are also available on AppStore and PlayStore',
             COMING_SOON : 'Coming Soon...'
             
+        },
+        PAGE404 : {
+            TITLE : 'Not found :(',
+            SUBTITLE_1 : 'Sorry, but the page you were trying to view does not exist.',
+            SUBTITLE_2 : 'It looks like this was the result of either:',
+            CONTENT_1 : '1. a mistyped address',
+            CONTENT_2 : '2. an out-of-date link',
+            CLOSE_BUTTON : 'Close'
         }
     });
     $translateProvider.translations('cn', {
@@ -1629,6 +1647,7 @@ app.config(function ($translateProvider) {
                         STEP : '帳單地址',
                         BILL_STEP : '帳單地址',
                         BILL_NAME: '名稱',
+                        BILL_LASTNAME: '姓',
                         BILL_EMAIL: '電子郵件',
                         BILL_ADDRESS: '地址',
                         BILL_PROVINCE: '省',
@@ -1966,6 +1985,14 @@ app.config(function ($translateProvider) {
             CONTACT_US : '聯繫 KZHParts 隊這邊',
             AVAILABLE_ON_APPSTORE_PLAYSTORE : "我們也可在 AppStore 上和 PlayStore",
             COMING_SOON : '快來了...'
+        },
+        PAGE404 : {
+            TITLE : '未找到 :(',
+            SUBTITLE_1 : '很抱歉，但頁面您試圖查看不存在。',
+            SUBTITLE_2 : '看起來，這是任一結果：',
+            CONTENT_1 : '1. 輸入錯誤的地址',
+            CONTENT_2 : '2. 出過期的鏈接',
+            CLOSE_BUTTON : '關'
         }
     });
     $translateProvider.preferredLanguage('th');

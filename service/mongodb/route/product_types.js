@@ -7,7 +7,7 @@ router.get(mongodbConfig.url.product_type.home, function (req, res, next) {
 });
 
 router.get(mongodbConfig.url.product_type.loadAllProductType, function (req, res) {
-    db.collection(mongodbConfig.mongodb.product_type.name)
+    db.collection('ProductType')
         .find({
             $query: {},
             $orderby: { ProductTypeCode : 1 }
@@ -16,6 +16,7 @@ router.get(mongodbConfig.url.product_type.loadAllProductType, function (req, res
             if (err) {
                 console.log(err);
             } else {
+                console.log(items);
                 res.json(items);
             }
         });
@@ -76,7 +77,7 @@ router.get(mongodbConfig.url.product_type.loadProductTypeByObjId, function (req,
     console.log("type id " + req.params.ProductTypeId);
     var TypeId = req.params.ProductTypeId;
     var o_id = bson.BSONPure.ObjectID(TypeId.toString());
-    db.collection(mongodbConfig.mongodb.product_type.name)
+    db.collection('ProductType')
         .findOne({
             '_id': o_id
         }, function (err, doc) {
@@ -94,7 +95,7 @@ router.get(mongodbConfig.url.product_type.loadProductTypeByObjId, function (req,
 
 router.get(mongodbConfig.url.product_type.loadProductTypeById, function (req, res) {
     var TypeId = req.params.ProductTypeId;
-    db.collection(mongodbConfig.mongodb.product_type.name)
+    db.collection('ProductType')
         .find({
             'Id': parseInt(TypeId)
         })
@@ -108,7 +109,7 @@ router.get(mongodbConfig.url.product_type.loadProductTypeById, function (req, re
 router.get(mongodbConfig.url.product_type.loadProductTypeByCode, function (req, res) {
     console.log('producttypes.js');
     var ProductTypeCode = req.params.ProductTypeCode;
-    db.collection(mongodbConfig.mongodb.product_type.name)
+    db.collection('ProductType')
         .find({
             'ProductTypeCode': ProductTypeCode
         })
@@ -126,7 +127,7 @@ router.post(mongodbConfig.url.product_type.createProductType, function (req, res
     createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
     ProductType.CreateDate = createDate;
     ProductType.UpdateDate = createDate;
-    db.collection(mongodbConfig.mongodb.product_type.name)
+    db.collection('ProductType')
         .insert(ProductType,
             function (error, result) {
                 if (error) throw error
@@ -144,7 +145,7 @@ router.post(mongodbConfig.url.product_type.updateProductType, function (req, res
     var updateDate = new Date ();
     updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
     ProductType.UpdateDate = updateDate;
-    db.collection(mongodbConfig.mongodb.product_type.name)
+    db.collection('ProductType')
         .update({
                 '_id': o_id
             }, {
@@ -168,7 +169,7 @@ router.get(mongodbConfig.url.product_type.deleteProductTypeByProductTypeId, func
     var ProductTypeId = req.params.ProductTypeId;
 
     var o_id = bson.BSONPure.ObjectID(ProductTypeId.toString());
-    db.collection(mongodbConfig.mongodb.product_type.name)
+    db.collection('ProductType')
         .remove({
             _id: o_id
         }, function (err, result) {

@@ -4,3 +4,6 @@ dist
 .sass-cache
 bower_components
 /app/css/application.css
+*.crt
+*.csr
+*.key

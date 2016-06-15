@@ -1,21 +1,30 @@
-app.controller("LoginController", [ "$scope", "$http", "$state", "UserService", "DataModelFactory", "CredentialService",
-  function ($scope, $http,$state, UserService, DataModelFactory, CredentialService) {
+app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "ENV",
+  "UserService", "CredentialService", "UtilService", "CryptoService", "EmailService",
+  function ($scope, $http, $location, $filter, ENV,
+    UserService, CredentialService, UtilService, CryptoService, EmailService) {
     
-  	$scope.User = {
-        Id :"",
-        RoleNameEn: "",
-        Username: "",
-        Password: "",
-        Role: {
-            RoleCode: "",
-            RoleNameEn: "",
-            RoleNameTh: "",
-        },
-        Staff: {
-            Firstname: "Guest",
-            Lastname: ""
-        }
-    };
+  	// $scope.User = {
+   //      Id :"",
+   //      RoleNameEn: "",
+   //      Username: "",
+   //      Password: "",
+   //      Role: {
+   //          RoleCode: "",
+   //          RoleNameEn: "",
+   //          RoleNameTh: "",
+   //      },
+   //      Staff: {
+   //          Firstname: "Guest",
+   //          Lastname: ""
+   //      }
+   //  };
+    /* START - Initialize variable */
+    $scope.User = UserService.GetUser();
+    $scope.ForgetPasswordProgressValue = 0;
+    /* END - Initialize variable */
+
+    console.log($scope.User);
+
     $scope.Login = function () {
       document.getElementById('LoginDataNotReady').style.display = 'block';
       var appuser = {};
@@ -61,16 +70,20 @@ app.controller("LoginController", [ "$scope", "$http", "$state", "UserService", 
               $cookies.putObject('User', $scope.User);
             }
           }
+          console.log('after log', $scope.User);
           UserService.SetUser($scope.User);
-      //    DataModelFactory.User.setUser($scope.User);
-      //    console.log(DataModelFactory.User.getUser());
-          $state.go('home');
+          if ($scope.User.ComeFrom !== undefined && $scope.User.ComeFrom.length > 0) {
+            $location.path($scope.User.ComeFrom);
+          } else {
+            $location.path('/');
+          }
           $scope.$emit('handleUserEmit', {
               User: $scope.User
           });
           return UserService.DownloadUserProfileImage($scope.User.Id, $scope.User.Username);
       })
       .then(function(profile_image, status) {
+
         $scope.User.ProfileImage = profile_image;
           $('#UserProfileImage').children("img").remove();
           $('#UserProfileImage').append(profile_image);
@@ -81,7 +94,6 @@ app.controller("LoginController", [ "$scope", "$http", "$state", "UserService", 
       .then(function(thumbnail_image, status) {
           $('#ThumbnailProfileImage').children("img").remove();
           $('#ThumbnailProfileImage').append(thumbnail_image);
-
           //Clear value after login successfully
           $scope.username = "";
           $scope.password = "";
@@ -137,6 +149,7 @@ app.controller("LoginController", [ "$scope", "$http", "$state", "UserService", 
       var imageNoProfile = "<img src=\"/images/noProfileImg.png\"  class=\"img-circle\" width=\"40\" height=\"40\">";
       $('#UserProfileImage').append(imageNoProfile);
     }
+
   	$scope.LoginWithSocial = function (provider) {
         OAuth.popup(provider)
         .done(function(result) {
@@ -145,7 +158,11 @@ app.controller("LoginController", [ "$scope", "$http", "$state", "UserService", 
                 //this will display "John Doe" in the console                
                 $scope.$apply(function() {
                   $scope.PopulateValue(provider, response);
-                  $state.go('home');
+                  if ($scope.User.ComeFrom !== undefined) {
+                    $location.path($scope.User.ComeFrom);
+                  } else {
+                    $location.path('/');
+                  }
                 });
             })
             .fail(function (err) {
@@ -157,7 +174,7 @@ app.controller("LoginController", [ "$scope", "$http", "$state", "UserService", 
         });
     }
 	
-	$scope.PopulateValue = function(provider, response) {
+	  $scope.PopulateValue = function(provider, response) {
       //  console.log(response);
         if (provider === 'facebook') {
           $scope.User.Id = response.raw.id;
@@ -179,7 +196,6 @@ app.controller("LoginController", [ "$scope", "$http", "$state", "UserService", 
             var imageFacebookTag = "<img src='" + config.url + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
             $('#UserProfileImage').append(imageFacebookTag);
 
-            $("#LoginModal").modal("toggle");
           })
           .error(function(data, status, headers, config) {
             console.log("Oops!! error for loading profile pic from facebook ");
@@ -205,7 +221,6 @@ app.controller("LoginController", [ "$scope", "$http", "$state", "UserService", 
             var imageFacebookTag = "<img src='" + config.url + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
             $('#UserProfileImage').append(imageFacebookTag);
 
-            $("#LoginModal").modal("toggle");
           })
           .error(function(data, status, headers, config) {
             console.log("Oops!! error for loading profile pic from facebook ");
@@ -231,7 +246,6 @@ app.controller("LoginController", [ "$scope", "$http", "$state", "UserService", 
             var imageFacebookTag = "<img src='" + config.url + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
             $('#UserProfileImage').append(imageFacebookTag);
 
-            $("#LoginModal").modal("toggle");
           })
           .error(function(data, status, headers, config) {
             console.log("Oops!! error for loading profile pic from linkedin.");
@@ -255,7 +269,6 @@ app.controller("LoginController", [ "$scope", "$http", "$state", "UserService", 
             var imageLinkedinTag = "<img src='" + linkedinImageUrl + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
             $('#UserProfileImage').append(imageLinkedinTag);
 
-            $("#LoginModal").modal("toggle");
         }
         else if (provider === 'instagram') {
           $scope.User.Id = response.id;
@@ -277,7 +290,6 @@ app.controller("LoginController", [ "$scope", "$http", "$state", "UserService", 
             var imageInstagramTag = "<img src='" + config.url + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
             $('#UserProfileImage').append(imageInstagramTag);
 
-            $("#LoginModal").modal("toggle");
           })
           .error(function(data) {
             console.log("Oops!! error for loading profile pic from instagram ");
@@ -303,7 +315,6 @@ app.controller("LoginController", [ "$scope", "$http", "$state", "UserService", 
             var imageGithubTag = "<img src='" + config.url + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
             $('#UserProfileImage').append(imageGithubTag);
 
-            $("#LoginModal").modal("toggle");
           })
           .error(function(data) {
             console.log("Oops!! error for loading profile pic from github ");
@@ -322,7 +333,6 @@ app.controller("LoginController", [ "$scope", "$http", "$state", "UserService", 
           $scope.IsAdmin = false;
           $scope.IsGuest = false;
           response.id = response.raw.uid;
-          $("#LoginModal").modal("toggle");
         }
         else if (provider === 'foursquare') {
           $scope.User.Id = response.id;
@@ -341,7 +351,7 @@ app.controller("LoginController", [ "$scope", "$http", "$state", "UserService", 
             $('#UserProfileImage').children("img").remove();
             var imageFoursquareTag = "<img src='" + foursquareImageUrl + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
             $('#UserProfileImage').append(imageFoursquareTag);
-            $("#LoginModal").modal("toggle");
+
         }
         else if (provider === 'soundcloud') {
           $scope.User.Id = response.raw.id;
@@ -361,9 +371,9 @@ app.controller("LoginController", [ "$scope", "$http", "$state", "UserService", 
           var imageSoundcloudTag = "<img src='" + soundcloudImageUrl + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
           $('#UserProfileImage').append(imageSoundcloudTag);
 
-          $("#LoginModal").modal("toggle");
         }
         response.provider = provider;
+        UserService.SetUser($scope.User);
 
         var createAndCheckLofinSocialUrl = ENV.apiEndpoint + '/users/CreateAndUpdateWithSocial';
         
@@ -377,4 +387,145 @@ app.controller("LoginController", [ "$scope", "$http", "$state", "UserService", 
           console.log(config);
         });
     }
+
+    $scope.SendEmailForgetPassword = function () {
+      console.log('SendEmailForgetPassword..');
+      document.getElementById('ForgetPasswordProgress').style.display = 'block';
+      $scope.ForgetPasswordProgressValue = 23;
+      var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+      if (filter.test($scope.ForgetPasswordEmail) && $scope.ForgetPasswordEmail.length > 0) {
+        console.log('valid');
+        //check is email exist in system
+        UserService.IsExistEmail($scope.ForgetPasswordEmail)
+        .then(function(data, status) {
+            if(data) {
+              $scope.ForgetPasswordProgressValue = 56;
+              return CryptoService.GenerateForgetPasswordHashLink($scope.ForgetPasswordEmail)
+            } else {
+              swal("Error", "Cannot find your account.", "error");
+            }
+        },function (error, status) {
+            swal("Error", "The error has occur please contact admin", "error");
+        })
+        .then(function(data, status){
+            var hostWithPort = $location.host() + ':' +$location.port();
+            var mailForget = {
+              Email : $scope.ForgetPasswordEmail,
+              Host : hostWithPort,
+              BacktoUrl : data
+            };
+            EmailService.SendEmailForgetPassword(mailForget)
+        })
+
+        var IsExistEmail = ENV.apiEndpoint + "/users/IsExistEmail/" + $scope.ForgetPasswordEmail;
+        $scope.ForgetPasswordProgressValue = 67;
+        $http.get(IsExistEmail)
+        .success(function(data, status, headers, config) {
+            if(data) {
+              var genforgetLink = ENV.apiEndpoint + '/cryptojs/GenerateForgetPasswordHashLink/' + $scope.ForgetPasswordEmail;
+              $scope.ForgetPasswordProgressValue = 79;
+              $http.get(genforgetLink)
+              .success(function(data, status, headers, config) { 
+                  var hostWithPort = $location.host() + ':' +$location.port();
+                  $scope.ForgetPasswordProgressValue = 93;
+                  var forgetPasswordEmailUrl = ENV.apiEndpoint + "/mails/SendEmailForgetPassword";
+                  var mailForget = {
+                    Email : $scope.ForgetPasswordEmail,
+                    Host : hostWithPort,
+                    BacktoUrl : data
+                  };
+                  $http.post(forgetPasswordEmailUrl, mailForget)
+                  .success(function(data, status, headers, config) {
+                    var type = $filter('translate')('MESSAGE.TYPE_SUCCESS');
+                    var title = $filter('translate')('MESSAGE.TITLE_SUCCESS_DEFAULT');
+                    swal(title, "Please check your email", type);
+                    document.getElementById('ForgetPasswordProgress').style.display = 'none';
+                    $scope.ForgetPasswordProgressValue = 100;
+                    $('#ForgetPasswordModal').modal('toggle');
+                  })
+                  .error(function(data, status, headers, config) {
+                      swal("Error", "There is error occur, please contact administrator", "error");
+                  });
+              })
+              .error(function (data, status, headers, config) {
+
+              });
+              
+            } else {
+              swal("Error", "Cannot find your account.", "error");
+            }
+        })
+        .error(function(data, status, headers, config) {
+           swal("Error", "The error has occur please contact admin", "error");
+        })
+        
+      } else {
+        // Not valid
+        console.log('not valid');
+        swal("Warning", "Not valid Email", "warning");
+      }
+    }
+
+    $scope.InputPasswordProgressValue = 0;
+
+    $scope.ChangePassword = function() {
+      document.getElementById('InputPasswordProgress').style.display = 'block';
+      $scope.InputPasswordProgressValue = 33;
+      if ($scope.ChangeForgetPassword === $scope.ConfirmChangeForgetPassword) {
+        $scope.InputPasswordProgressValue = 69;
+        UserService.PerformChangePassword($scope.ForgetPasswordEmail, $scope.ChangeForgetPassword)
+        .then(function(data, status) {
+            swal("Change Password Success", "Your password has changed successfully.", "success");
+            $scope.InputPasswordProgressValue = 100;
+            document.getElementById('InputPasswordProgress').style.display = 'block';
+            $location.path('/');
+        }, function(error, status) {
+            swal("Error", "Cannot find your account.", "error");
+        });
+      } else {
+        swal("Warning", "Password and Confirm Password must be the same.", "warning");
+      }
+    }
+
+    $scope.Signup = function () {
+      document.getElementById('SignupDataNotReady').style.display = 'block';
+      console.log('sinn up ');
+      var email = $scope.Email;
+      $scope.User.Firstname = $scope.Firstname;
+      $scope.User.Lastname = $scope.Lastname;
+      var hashLink = '';
+      UserService.CreateUserEmailActivate($scope.Username, $scope.Password, email, $scope.User)
+      .then(function(data, status) {
+          return CryptoService.GenerateHashLink($scope.Username, $scope.Password, email)
+      }, function(err, status) {
+          console.log('err create app user ', err);
+      })
+      .then(function (data, status) {
+          console.log(data);
+          hashLink = data;
+          var hostPort = $location.host() + ':' +$location.port();
+          var mailActivate = {
+            Email : email,
+            Host : hostPort,
+            BacktoUrl : hashLink
+          };
+          return EmailService.SendEmailConfirmation(mailActivate)
+      })
+      .then(function(data, status){
+          swal("Sign up almost Success", "Please check your email to activate your account", "success");
+          document.getElementById('SignupDataNotReady').style.display = 'none';
+          $("#LoginModal").modal("toggle");
+      }, function(error, status) {
+          swal("Error", "There is error occur , please contact administrator", "error");
+      })
+      .finally(function() {
+          //Clear Fields after sign up successfully
+          $scope.Firstname = "";
+          $scope.Lastname = "";
+          $scope.Email = "";
+          $scope.Username = "";
+          $scope.Password = "";
+      });
+
+    };
 }]);

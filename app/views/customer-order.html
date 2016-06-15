@@ -1,0 +1,259 @@
+<div id="customer-order-section" name="customer-order-section" class="section" ng-show="SelectedMenu=='customer-order'">
+    <h1>{{'BODY.SECTION.CUSTOMER_ORDER.HEAD' | translate}}</h1> 
+     <div id="div-customer-order-detail" class="row">
+        <div class="col-md-12 col-sm-offset-0">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.CUSTOMER_ORDER.RO_NO' | translate}}</label>
+                <div class="col-sm-4">
+                    <input class="form-control" type="text" placeholder="{{'BODY.SECTION.CUSTOMER_ORDER.RO_NO_PLACEHOLDER' | translate}}">
+                </div>
+                <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.CUSTOMER_ORDER.CUSTOMER' | translate}}</label>
+                <div class="col-sm-4">
+                    <select id="SelectCustomerList" class="js-example-basic-single" ng-init="InitCustomerOrder()" style=
+                    "width:285px"></select>                                   
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.CUSTOMER_ORDER.FROM' | translate}}</label>
+                <div class="col-sm-4">
+                    <datepicker button-prev="<i class='fa fa-arrow-left'></i>"  button-next="<i class='fa fa-arrow-right'></i>"
+                       date-format="dd/MM/yyyy"  date-set="">
+                      <input ng-model="SearchCustomerOrderStartDate" type="text" style="color:black" class="form-control" />
+                    </datepicker>
+                </div>
+                <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.CUSTOMER_ORDER.TO' | translate}}</label>
+                <div class="col-sm-4">
+                    <datepicker button-prev="<i class='fa fa-arrow-left'></i>"  button-next="<i class='fa fa-arrow-right'></i>" 
+                           date-format="dd/MM/yyyy"  date-set="">
+                          <input ng-model="SearchCustomerOrderEndDate" type="text" style="color:black" class="form-control"/>
+                    </datepicker>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.CUSTOMER_ORDER.PAYMENT_STATUS' | translate}}</label>
+                <div class="col-sm-4">
+                    <select class="form-control" ng-model="SearchCustomerOrderPaymentStatus" required="required">
+                        <option value="N">{{'BODY.SECTION.CUSTOMER_ORDER.PAYMENT.OWED' | translate}}</option>
+                        <option value="Y">{{'BODY.SECTION.CUSTOMER_ORDER.PAYMENT.PAID' | translate}}</option>
+                    </select>
+                </div>
+                <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.CUSTOMER_ORDER.SHIPPING_STATUS' | translate}}</label>
+                <div class="col-sm-4">
+                    <select class="form-control" ng-model="SearchCustomerOrderShippingStatus" required="required">
+                        <option value="N">{{'BODY.SECTION.CUSTOMER_ORDER.SHIPPING.NOT_SHIPPING' | translate}}</option>
+                        <option value="Y">{{'BODY.SECTION.CUSTOMER_ORDER.SHIPPING.SHIPPING' | translate}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                
+                <label class="col-sm-2 control-label" for="textinput">&nbsp;</label>
+                <div class="col-sm-4">
+                    &nbsp;
+                </div>
+                <label class="col-sm-2 control-label" for="textinput">&nbsp;</label>
+                <div class="col-sm-4">
+                    &nbsp;
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-5 col-md-12">
+                    <div class="center-block">
+                        <button ng-click="SearchCustomerOrder()" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> {{'BODY.SECTION.CUSTOMER_ORDER.BUTTON.SEARCH' | translate}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    
+    <div id="div-customer-order-table">
+        <p><strong>Page:</strong> {{CustomerOrderTableParams.page()}}</p>
+        <p><strong>Count per page:</strong> {{CustomerOrderTableParams.count()}}</p>                        
+    </div>
+    <div class="modal fade" id="StaffROModal" style="color:black">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="CustomerRODataNotReady" style="display: block">
+                        <br>
+                        <center>
+                            <i class="fa fa-circle-o-notch fa-spin fa-5x fa-fw margin-bottom"></i>
+                            <span class="sr-only">Loading...</span>
+                        </center>
+                    </div>
+                    <div id="CustomerRODataReady" style="display: none">
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-4 col-md-4">
+                                <address>
+                                    <strong>{{ViewStaffRO.BillingName}}</strong>
+                                    <br>
+                                    {{ViewStaffRO.BillingAddress}}
+                                    <br>
+                                    <br>
+                                    {{ViewStaffRO.BillingSubDistrict.SubDistrict}}, {{ViewStaffRO.BillingDistrict.District}} 
+                                    <br>
+                                    {{ViewStaffRO.BillingProvince.Province}}, {{ViewStaffRO.BillingSubDistrict.ZipCode}}
+                                    <br>
+                                    <abbr title="Phone"> </abbr> 
+                                </address>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 text-center">
+                                <p>
+                                    <img src="/images/KZHLogo.png">
+                                </p>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 text-right">
+                                <p>
+                                    <em>Date: {{ViewStaffRO.RODate | date :'medium'}}</em>
+                                </p>
+                                <p>
+                                    <em>Receipt #: {{ViewStaffRO.RONo}}</em>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="text-center">
+                                <h1>Receipt</h1>
+                            </div>
+                            </span>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>#</th>
+                                        <th class="text-center">Price</th>
+                                        <th class="text-center">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="roLine in ViewStaffRO.ROLineList">
+                                        <td class="col-md-9"><em>{{roLine.ProductNameTh}}</em></h4></td>
+                                        <td class="col-md-1" style="text-align: center"> {{roLine.Quantity}} </td>
+                                        <td class="col-md-1 text-center">{{roLine.Price | number :2}}</td>
+                                        <td class="col-md-1 text-center">{{roLine.Amount | number :2}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>   </td>
+                                        <td>   </td>
+                                        <td class="text-right">
+                                            <p>
+                                                <strong>Subtotal: </strong>
+                                            </p>
+                                            <p>
+                                                <strong>Tax: </strong>
+                                            </p>
+                                            <p>
+                                                <strong>Discount: </strong>
+                                            </p>
+                                            <p>
+                                                <strong>Weight: </strong>
+                                            </p>
+                                        </td>
+                                        <td class="text-center">
+                                            <p>
+                                                <strong>{{ViewStaffRO.SumAmount | number :2}}</strong>
+                                            </p>
+                                            <p>
+                                                <strong>{{ViewStaffRO.SumVatAmount | number :2}}</strong>
+                                            </p>
+                                            <p>
+                                                <strong>{{ViewStaffRO.SumDiscountAmount | number :2}}</strong>
+                                            </p>
+                                            <p>
+                                                <strong>{{ViewStaffRO.SumWeightAmount | number :2}}</strong>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>   </td>
+                                        <td>   </td>
+                                        <td class="text-right"><h4><strong>Total: </strong></h4></td>
+                                        <td class="text-center text-danger"><h4><strong>{{ViewStaffRO.NetAmount | number :2}}</strong></h4></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </td>
+                        </div>
+                        <div class="row">
+                            <div class="text-center">
+                                <h1>{{'BODY.SECTION.VIEW_RO_MODAL.IMAGE_PAYMENT_DOCUMENT' | translate}}</h1>
+                            </div>
+                            <div class="col-md-12 text-center">
+                                <div id="ThumbnailStaffViewReceiptPayment" ></div>
+                            </div>
+                            <div id="ApprovePayment" class="col-md-12 text-center">
+                                <button type="submit" class="btn btn-success btn-lg" ng-disabled="ViewStaffRO.StaffApprovePaymentStatus === 'Y'" ng-click="PerformValidatePaymentDocument('Y')">
+                                    <span class="glyphicon glyphicon glyphicon-ok"  aria-hidden="true"></span> {{'BODY.SECTION.VIEW_RO_MODAL.APPROVE_BUTTON' | translate}}
+                                </button> 
+                                <button type="submit" class="btn btn-danger btn-lg" ng-disabled="ViewStaffRO.StaffApprovePaymentStatus === 'Y'" ng-click="PerformValidatePaymentDocument('N')">
+                                    <span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span> {{'BODY.SECTION.VIEW_RO_MODAL.REJECT_BUTTON' | translate}}
+                                </button> 
+                            </div>
+                            <hr class="featurette-divider">
+                            <div id="ApprovePayment" class="col-md-12 text-center">
+                                <button type="submit" class="class=btn btn-warning btn-lg" ng-disabled="ViewStaffRO.StaffApprovePaymentStatus === 'N'" ng-click="NotifyCustomerShipping(ViewStaffRO)">
+                                    <span class="glyphicon glyphicon glyphicon-plane" aria-hidden="true"></span> {{'BODY.SECTION.VIEW_RO_MODAL.SHIPPED_BUTTON' | translate}}
+                                </button> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <table ng-table="CustomerOrderTableParams" class="table">
+            <tr ng-repeat="roHead in SearchCustomerOrders">
+                <td data-title="'View'" class="text-center">
+                    <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#StaffROModal" ng-click="ViewRO(roHead._id, 'Customer')">
+                            <span class="glyphicon glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                    </button>                                        
+                </td>
+                <td data-title="'#'" class="text-center">{{$index+1}}</td>
+                <td data-title="'RONo'" class="text-center" >{{roHead.RONo}}</td>
+                <td data-title="'RODate'" class="text-center">{{roHead.RODate | date:'dd/MM/yyyy'}}</td>
+                <td data-title="'Customer'" class="text-left">{{roHead.BillingName}}</td>
+                <td data-title="'NetAmount'" class="text-right">{{roHead.NetAmount | number :2}}</td>
+                <td data-title="'Bank'" class="text-center">
+                    <img src="images/bbl.png" ng-show="roHead.PaymentBank == 'bbl'" width="32" height="32">
+                    <img src="images/kbank.png" ng-show="roHead.PaymentBank == 'kbank'" width="32" height="32">
+                    <img src="images/ktb.png" ng-show="roHead.PaymentBank == 'ktb'" width="32" height="32">
+                    <img src="images/kcc.png" ng-show="roHead.PaymentBank == 'kcc'" width="32" height="32">
+                    <img src="images/scb.png" ng-show="roHead.PaymentBank == 'scb'" width="32" height="32">
+                    <img src="images/tmb.png" ng-show="roHead.PaymentBank == 'tmb'" width="32" height="32">
+                    <img src="images/uob.png" ng-show="roHead.PaymentBank == 'uob'" width="32" height="32">
+                </td>
+                <td data-title="'Payment'" class="text-center">
+                    <img src="images/dpay_stat.png" ng-show="roHead.PaymentStatus == 'N'" title="No Payment">
+                    <img src="images/pay_stat.png" ng-show="roHead.PaymentStatus == 'Y'" title="Paid">
+                </td>
+                
+                <td data-title="'Shipping'" class="text-center">
+                    <img src="images/dship_stat.png" ng-show="roHead.ShippingStatus == 'N'" title="No Shipping">
+                    <img src="images/ship_stat.png" ng-show="roHead.ShippingStatus == 'Y'" title="Shipped">
+                </td>
+            </tr>
+        </table>
+        <script type="text/ng-template" id="custom/pager">
+            <ul class="pager ng-cloak">
+              <li ng-repeat="page in pages"
+                    ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}"
+                    ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+                <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">&laquo; Previous</a>
+                <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Next &raquo;</a>
+              </li>
+                <li> 
+                <div class="btn-group">
+                    <button type="button" ng-class="{'active':params.count() == 10}" ng-click="params.count(10)" class="btn btn-default">10</button>
+                    <button type="button" ng-class="{'active':params.count() == 25}" ng-click="params.count(25)" class="btn btn-default">25</button>
+                    <button type="button" ng-class="{'active':params.count() == 50}" ng-click="params.count(50)" class="btn btn-default">50</button>
+                    <button type="button" ng-class="{'active':params.count() == 100}" ng-click="params.count(100)" class="btn btn-default">100</button>
+                </div>
+                </li>
+            </ul>
+        </script>
+    </div>
+</div>

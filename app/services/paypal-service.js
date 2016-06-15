@@ -11,6 +11,12 @@ app.service("PaypalService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
                 defer.reject(err);
             });
 	        return defer.promise;
-    	}
+    	},
+        PaypalCheckout: function() {
+            
+        },
+        PaypalDummyCheckout: function() {
+            
+        }
     };
 }]);

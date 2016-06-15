@@ -92,7 +92,7 @@ module.exports = function (grunt) {
     // The actual grunt server settings
     connect: {
       options: {
-        port: 9090,
+        port: 9999,
         // Change this to '0.0.0.0' to access the server from outside.
         hostname: 'localhost',
         livereload: 35730
@@ -134,6 +134,25 @@ module.exports = function (grunt) {
         options: {
           open: true,
           base: '<%= yeoman.dist %>'
+        }
+      },
+      server: {
+        options: {
+          port: 9090,
+          base: 'build',
+          middleware: function(connect, options) {
+            // Return array of whatever middlewares you want
+            return [
+              // redirect all urls to index.html in build folder
+              urlRewrite('build', 'index.html'),
+
+              // Serve static files.
+              connect.static(options.base),
+
+              // Make empty directories browsable.
+              connect.directory(options.base)
+            ];
+          }
         }
       }
     },

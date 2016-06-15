@@ -1,0 +1,93 @@
+<div id="account-section" name="account-section" class="section" ng-show="SelectedMenu=='account'">
+                    <h1>{{'BODY.SECTION.ACCOUNT.HEAD' | translate}}</h1>
+                    <div id="div-account-detail" class="row">
+                        <div class="col-md-8 col-md-offset-1">
+                            <form class="form-horizontal" role="form" type="multipart/form-data" >
+                                <fieldset>
+                                    <!-- Form Name -->
+                                    <legend></legend>
+                                    <!-- Text input-->
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.FIRST_NAME' | translate}}</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" placeholder="{{'BODY.SECTION.ACCOUNT.FIRST_NAME' | translate}}" class="form-control" ng-model="ViewAppUserData.Firstname">
+                                        </div>
+                                    </div>
+                                    <!-- Text input-->
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.LAST_NAME' | translate}}</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" placeholder="{{'BODY.SECTION.ACCOUNT.LASTNAME' | translate}}" class="form-control" ng-model="ViewAppUserData.Lastname">
+                                        </div>
+                                    </div>
+                                    <!-- Text input-->
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.EMAIL' | translate}}</label>
+                                        <div class="col-sm-6">
+                                            <input type="email" placeholder="{{'BODY.SECTION.ACCOUNT.EMAIL' | translate}}" class="form-control" ng-model="ViewAppUserData.Email" />
+                                        </div>
+                                    </div>
+                                    <!-- Text input-->
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.USERNAME' | translate}}</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" placeholder="Username" class="form-control" ng-model="ViewAppUserData.Username">
+                                        </div>
+                                    </div>
+                                    <!-- Text input-->
+                                    <div class="form-group"> 
+                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.PASSWORD' | translate}}</label>
+                                        <div class="col-sm-6">
+                                            <input type="password" placeholder="Firstname" class="form-control" ng-model="ViewAppUserData.Password">
+                                        </div>
+                                    </div>
+                                    <!-- Text input-->
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label" for="filebutton" style="text-align: left">{{'BODY.SECTION.ACCOUNT.PROFILE_IMAGE' | translate}}</label>
+                                        <div class="col-md-4">
+                                       <!--     <input id="ProfileImage" name="filebutton" class="input-file" type="file" ng-Model="ViewAppUserData.ProfileImage">-->
+                                            <div>
+                                                <div class="button" ngf-select ngf-change="upload($files)" style="color:black">
+                                                Upload on file change</div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.DROP_FILE' | translate}} :</label>
+                                        <div class="col-sm-6">
+                                            <div ngf-drop ng-model="files" class="drop-box" 
+                                                    ngf-drag-over-class="dragover" ngf-allow-dir="true"
+                                                    ngf-accept="'image/*,application/pdf'">{{'BODY.SECTION.ACCOUNT.DROP_IMAGE_PDF' | translate}}</div>
+                                                <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.ACCOUNT.IMAGE_THUMBNAIL' | translate}} </label>
+                                        <div class="col-sm-6" id="ThumbnailProfileImage">
+                                        <!--   <img ngf-src="file" ngf-default-src="'placeholder.jpg'" ngf-accept="'.pdf,.jpg'"> -->
+                                           
+                                        </div>
+                                    </div>
+                                     
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <div class="pull-right">
+                                                <button type="submit" class="btn btn-default" ng-click="CancelUser()">
+                                                    <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> {{'BODY.SECTION.ACCOUNT.BUTTON.CANCEL' | translate}}
+                                                </button>
+                                                <button type="submit" class="btn btn-primary" ng-click="SaveUser()">
+                                                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> {{'BODY.SECTION.ACCOUNT.BUTTON.SAVE' | translate}}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                        <!-- /.col-lg-12 -->
+                    </div>
+                    <!-- /.row -->
+                </div>

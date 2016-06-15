@@ -2,22 +2,46 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
   "Upload", "$rootScope", "$http", "$translate", "$timeout", "MenuService", 
   "LocaleService", "ReceiptOrderService", "CompanyService", "CurrencyService", "ENV", "$cookies", 
   "vcRecaptchaService", "UserService", "ProductService", "CredentialService", "SocialService", "CryptoService", 
-  "EmailService", "WeightRateService", "AWSService", "UomService", "PaypalService", "DataModelFactory",
+  "EmailService", "WeightRateService", "AWSService", "UomService", "PaypalService", "UtilService",
   function ($scope, $location, $window, $filter, $anchorScroll, Upload,$rootScope, $http, $translate,$timeout, 
   MenuService, LocaleService, ReceiptOrderService, CompanyService, CurrencyService, ENV , $cookies, vcRecaptchaService, UserService, 
   ProductService, CredentialService, SocialService, CryptoService, EmailService, WeightRateService, AWSService, UomService, 
-  PaypalService, DataModelFactory) {
+  PaypalService, UtilService) {
 
   /*
     BEGIN Broadcast Variable Area
    */
   $scope.$on('handleUserBroadcast', function (event, args) {
       $scope.User = args.User;
+      console.log('in head ', $scope.User);
   });
+  $scope.User = UserService.GetUser();
   /*
     END Broadcast Variable Area
    */
+//  console.log($location.url());
+   var UserBackFromEmailUrl = $location.url();
+    if (UserBackFromEmailUrl.indexOf("confirm=") > -1 ) {
+        var asciiString = UtilService.replaceASCIICharacter(UserBackFromEmailUrl);
 
+        UserService.ActivateAppUser(asciiString)
+        .then(function(data, status) {
+            swal("Sign up Success", "Your account is now activated.", "success");
+        }, function(error, status) {
+            swal("Error", "Cannot find your account.", "error");
+        });
+    } else if (UserBackFromEmailUrl.indexOf("forget=") > -1 ) {
+      var asciiString = UtilService.replaceASCIICharacter(UserBackFromEmailUrl);
+        UserService.UpdateEmailForgetPassword(asciiString)
+        .then(function(data, status) {
+            $scope.ForgetPasswordEmail = data;
+            $location.path('/input-password');
+        }, function(error, status) {
+            console.log('error ', error);
+        });
+
+    };
+    
   // Arguments :
   //  verb : 'GET'|'POST'
   //  target : an optional opening target (a name, or "_blank"), defaults to "_self"
@@ -39,24 +63,6 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     form.submit();
   };
 
-  $translate('HEAD.MENU.PRODUCT')
-      .then(function (translatedValue) {
-          $scope.pageTitle = translatedValue;
-      });
-
-    $scope.TestPaypal = function() {
-    //  window.open("localhost:3000/paypal/PayWithPaypal", width = "20px", height = "20px");
-      open(
-        'POST', 
-        'localhost:3000/paypal/PayWithPaypal', 
-        { 
-          creditCard: {}, 
-          amount: 10000,
-          description: 'Test Test Test'
-        }, 
-        '_blank'
-      );
-    }
     $scope.Locale = "th";
     $scope.Currency = "thb";
     $scope.DisplayResult = false;
@@ -89,7 +95,9 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     $scope.UsernameValidateMessage = "";
     $scope.IsAcceptCondition = false;
     $scope.IsHuman = false;
- 
+    $scope.$emit('handleLocaleEmit', {
+            SelectedLocale: $scope.Locale
+        });
     var message_type_success = $filter('translate')('MESSAGE.TYPE_SUCCESS');
     var message_type_warning = $filter('translate')('MESSAGE.TYPE_WARNING');
     var message_type_error = $filter('translate')('MESSAGE.TYPE_ERROR');
@@ -97,7 +105,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
     var message_title_success = $filter('translate')('MESSAGE.TITLE_SUCCESS');
     var message_title_warning = $filter('translate')('MESSAGE.TITLE_WARNING');
     var message_title_error = $filter('translate')('MESSAGE.TITLE_ERROR');
-    console.log('head user ', $scope.User );
+//    console.log('head user ', $scope.User );
     $('#KZHPartsAdModal').modal('show');
     if ($cookies.getObject('User') !== undefined) {
         $scope.User = $cookies.getObject('User');
@@ -167,45 +175,12 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
       });*/
     }
 
-    $scope.LoginWithSocial = function (provider) {
-        //Let's say the /me endpoint on the provider API returns a JSON object
-        //with the field "name" containing the name "John Doe"
-      //  blockUI.start("Logging in " +provider + ", please wait");
-        OAuth.popup(provider)
-        .done(function(result) {
-            result.me()
-            .done(function (response) {
-                //this will display "John Doe" in the console                
-                $scope.$apply(function() {
-                  $scope.PopulateValue(provider, response);
-                });
-            })
-            .fail(function (err) {
-                //handle error with err
-                console.log(err.message + err.stack);
-            });
-        })
-        .fail(function (err) {
-            //handle error with err
-            console.log(err.message + err.stack);
-        });
-     //   blockUI.stop();
-    }
-
     CredentialService.LoadOAuth()
     .then(function(data, status) {
         OAuth.initialize(data);
     }, function(error, status) {
         console.log('oauth err ', error);
     });
-  /*  var oauthURL = ENV.apiEndpoint + "/oauths/GetPublicKey";
-    $http.get(oauthURL)
-    .success(function(data, status, headers, config) {
-        OAuth.initialize(data);
-    })
-    .error(function(data, status, headers, config) {
-    
-    });*/
 
     // Load Company
     $scope.Company = {};
@@ -220,35 +195,9 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
         console.log('company err ', error);
     });
     
-    $scope.ChangePostType = function() {
-      if ($scope.ROHead.SumWeight > 20000 && $scope.ROHead.PostType === 'EMS') {
-        $scope.ROHead.PostType = 'Normal';
-        swal("คำเตือน", "น้ำหนัก EMS ต้องไม่เกิน 20kg", "warning");
-      } else {
-        if ($scope.ROHead.PostType === 'Normal') {
-            var weight_rate = WeightRateService.GetWeightRateNormal($scope.ROHead.SumWeight);
-            $scope.ROHead.SumWeightAmount = weight_rate;
-            $scope.ROHead.NetAmount = $scope.ROHead.SumAmount + $scope.ROHead.SumVatAmount + $scope.ROHead.SumWeightAmount - $scope.ROHead.SumDiscountAmount;
-
-            $scope.$emit('UpdateROHeadROLine', $scope.ROHead );
-         
-        } else if ($scope.ROHead.PostType === 'EMS') {
-            WeightRateService.GetWeightRateByPostTypeAndWeight($scope.ROHead.PostType, $scope.ROHead.SumWeight)
-          .then(function(weightRate, status) {
-            $scope.ROHead.SumWeightAmount = parseInt(weightRate.Rate);
-            $scope.ROHead.NetAmount = $scope.ROHead.SumAmount + $scope.ROHead.SumVatAmount + $scope.ROHead.SumWeightAmount - $scope.ROHead.SumDiscountAmount;
-       
-            $scope.$emit('UpdateROHeadROLine', $scope.ROHead );
-         
-          }, function(error, status) {
-
-          });
-        }
-      }
-    }
 
     // Load Paypal
-    $scope.Paypal = {};
+  /*  $scope.Paypal = {};
     CredentialService.LoadPaypal()
     .then(function(data, status) {
         $scope.Paypal.MerchantId = data.MerchantId;
@@ -265,230 +214,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
         });
     }, function(error, status) {
         console.log('paypal error ', error);
-    });
-    
-    $scope.PopulateValue = function(provider, response) {
-      //  console.log(response);
-        if (provider === 'facebook') {
-          $scope.User.Id = response.raw.id;
-          $scope.User.Firstname = response.firstname;
-          $scope.User.Lastname = response.lastname;
-          $scope.User.Gender = response.gender;
-          $scope.User.Email = response.email;
-          $scope.User.DisplayName = response.name;
-          $scope.User.Terminal = "facebook";
-          $scope.User.UserType = "user";
-          $scope.IsLogin = true;
-          $scope.IsAdmin = false;
-          $scope.IsGuest = false;
-          //Load Facebook graph profile image picture
-          var facebookImageUrl = response.avatar;
-          $http.get(facebookImageUrl)
-          .success(function(data, status, headers, config) {
-            $('#UserProfileImage').children("img").remove();
-            var imageFacebookTag = "<img src='" + config.url + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
-            $('#UserProfileImage').append(imageFacebookTag);
-
-            $("#LoginModal").modal("toggle");
-          })
-          .error(function(data, status, headers, config) {
-            console.log("Oops!! error for loading profile pic from facebook ");
-          });
-        } 
-        else if (provider === 'google_plus') {
-          $scope.User.Id = response.raw.id;
-          $scope.User.Firstname = response.firstname;
-          $scope.User.Lastname = response.lastname;
-          $scope.User.Gender = response.gender;
-          $scope.User.Email = response.email;
-          $scope.User.DisplayName = response.name;
-          $scope.User.Terminal = "google+";
-          $scope.User.UserType = "user";
-          $scope.IsLogin = true;
-          $scope.IsAdmin = false;
-          $scope.IsGuest = false;
-          // Load Google+ graph profile image picture
-          var facebookImageUrl = response.avatar;
-          $http.get(facebookImageUrl)
-          .success(function(data, status, headers, config) {
-            $('#UserProfileImage').children("img").remove();
-            var imageFacebookTag = "<img src='" + config.url + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
-            $('#UserProfileImage').append(imageFacebookTag);
-
-            $("#LoginModal").modal("toggle");
-          })
-          .error(function(data, status, headers, config) {
-            console.log("Oops!! error for loading profile pic from facebook ");
-          });
-        }
-        else if (provider === 'twitter') {
-          $scope.User.Id = response.id;
-          $scope.User.Firstname = response.alias;
-          $scope.User.Lastname = response.last_name;
-          $scope.User.Gender = response.gender;
-          $scope.User.Email = response.email;
-          $scope.User.DisplayName = response.name;
-          $scope.User.Terminal = "twitter";
-          $scope.User.UserType = "user";
-          $scope.IsLogin = true;
-          $scope.IsAdmin = false;
-          $scope.IsGuest = false;
-
-          var twitterImageUrl = response.avatar;
-          $http.get(twitterImageUrl)
-          .success(function(data, status, headers, config) {
-            $('#UserProfileImage').children("img").remove();
-            var imageFacebookTag = "<img src='" + config.url + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
-            $('#UserProfileImage').append(imageFacebookTag);
-
-            $("#LoginModal").modal("toggle");
-          })
-          .error(function(data, status, headers, config) {
-            console.log("Oops!! error for loading profile pic from linkedin.");
-          });
-        } 
-        else if (provider === 'linkedin') {
-          $scope.User.Id = response.raw.id;
-          $scope.User.Firstname = response.firstname;
-          $scope.User.Lastname = response.lastname;
-          $scope.User.Gender = response.gender;
-          $scope.User.Email = response.email;
-          $scope.User.DisplayName = response.name;
-          $scope.User.Terminal = "linkedin";
-          $scope.User.UserType = "user";
-          $scope.IsLogin = true;
-          $scope.IsAdmin = false;
-          $scope.IsGuest = false;
-
-          var linkedinImageUrl = response.avatar;
-            $('#UserProfileImage').children("img").remove();
-            var imageLinkedinTag = "<img src='" + linkedinImageUrl + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
-            $('#UserProfileImage').append(imageLinkedinTag);
-
-            $("#LoginModal").modal("toggle");
-        }
-        else if (provider === 'instagram') {
-          $scope.User.Id = response.id;
-          $scope.User.Firstname = response.alias;
-          $scope.User.Lastname = response.lastname;
-          $scope.User.Gender = response.gender;
-          $scope.User.Email = response.email;
-          $scope.User.DisplayName = response.name;
-          $scope.User.Terminal = "instagram";
-          $scope.User.UserType = "user";
-          $scope.IsLogin = true;
-          $scope.IsAdmin = false;
-          $scope.IsGuest = false;
-
-          var instagramImageUrl = response.avatar;
-          $http.get(instagramImageUrl)
-          .success(function(data, status, headers, config) {
-            $('#UserProfileImage').children("img").remove();
-            var imageInstagramTag = "<img src='" + config.url + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
-            $('#UserProfileImage').append(imageInstagramTag);
-
-            $("#LoginModal").modal("toggle");
-          })
-          .error(function(data) {
-            console.log("Oops!! error for loading profile pic from instagram ");
-          });
-        }
-        else if (provider === 'github') {
-          $scope.User.Id = response.id;
-          $scope.User.Firstname = response.alias;
-          $scope.User.Lastname = response.lastname;
-          $scope.User.Gender = response.gender;
-          $scope.User.Email = response.email;
-          $scope.User.DisplayName = response.name;
-          $scope.User.Terminal = "github";
-          $scope.User.UserType = "user";
-          $scope.IsLogin = true;
-          $scope.IsAdmin = false;
-          $scope.IsGuest = false;
-
-          var githubImageUrl = response.avatar;
-          $http.get(githubImageUrl)
-          .success(function(data, status, headers, config) {
-            $('#UserProfileImage').children("img").remove();
-            var imageGithubTag = "<img src='" + config.url + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
-            $('#UserProfileImage').append(imageGithubTag);
-
-            $("#LoginModal").modal("toggle");
-          })
-          .error(function(data) {
-            console.log("Oops!! error for loading profile pic from github ");
-          });
-        }
-        else if (provider === 'dropbox') {
-          $scope.User.Id = response.id;
-          $scope.User.Firstname = response.name;
-          $scope.User.Lastname = response.lastname;
-          $scope.User.Gender = response.gender;
-          $scope.User.Email = response.email;
-          $scope.User.DisplayName = response.name;
-          $scope.User.Terminal = "dropbox";
-          $scope.User.UserType = "user";
-          $scope.IsLogin = true;
-          $scope.IsAdmin = false;
-          $scope.IsGuest = false;
-          response.id = response.raw.uid;
-          $("#LoginModal").modal("toggle");
-        }
-        else if (provider === 'foursquare') {
-          $scope.User.Id = response.id;
-          $scope.User.Firstname = response.name;
-          $scope.User.Lastname = response.lastname;
-          $scope.User.Gender = response.gender;
-          $scope.User.Email = response.email;
-          $scope.User.DisplayName = response.name;
-          $scope.User.Terminal = "foursquare";
-          $scope.User.UserType = "user";
-          $scope.IsLogin = true;
-          $scope.IsAdmin = false;
-          $scope.IsGuest = false;
-          response.id = response.raw.meta.requestId;
-          var foursquareImageUrl = response.avatar;
-            $('#UserProfileImage').children("img").remove();
-            var imageFoursquareTag = "<img src='" + foursquareImageUrl + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
-            $('#UserProfileImage').append(imageFoursquareTag);
-            $("#LoginModal").modal("toggle");
-        }
-        else if (provider === 'soundcloud') {
-          $scope.User.Id = response.raw.id;
-          $scope.User.Firstname = response.alias;
-          $scope.User.Lastname = response.lastname;
-          $scope.User.Gender = response.gender;
-          $scope.User.Email = response.email;
-          $scope.User.DisplayName = response.name;
-          $scope.User.Terminal = "soundcloud";
-          $scope.User.UserType = "user";
-          $scope.IsLogin = true;
-          $scope.IsAdmin = false;
-          $scope.IsGuest = false;
-          response.id = response.raw.id;
-          var soundcloudImageUrl = response.avatar;
-          $('#UserProfileImage').children("img").remove();
-          var imageSoundcloudTag = "<img src='" + soundcloudImageUrl + "' style='-webkit-user-select: none; margin-top:-10px;width:50px; height:50px;' class='img-responsive img-circle'/>"; ;
-          $('#UserProfileImage').append(imageSoundcloudTag);
-
-          $("#LoginModal").modal("toggle");
-        }
-        response.provider = provider;
-   //     console.log(response);
-        
-        var createAndCheckLofinSocialUrl = ENV.apiEndpoint + '/users/CreateAndUpdateWithSocial';
-        
-        $http.post(createAndCheckLofinSocialUrl, response)
-        .success(function (data, status, headers, config) {
-    //      console.log(data);
-        })
-        .error(function (data, status, headers, config) {
-          console.log(data);
-          console.log(status);
-          console.log(headers);
-          console.log(config);
-        });
-    }
+    });*/
 
     $scope.LoginErrorMessage = "";
   //  console.log('head ' + $scope.SelectedMenu);
@@ -619,195 +345,6 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
         });
         document.getElementsByTagName('title')[0].text = $filter('translate')('TITLE.NAME');
     }
-
-    var UserBackFromEmailUrl = $location.url();
-    if (UserBackFromEmailUrl.indexOf("confirm=") > -1 ) {
-    //    blockUI.start("Please wait ...");
-        console.log('UserBackFromEmailUrl ', UserBackFromEmailUrl);
-        var asciiString = ReplaceASCIICharacter(UserBackFromEmailUrl);
-        console.log('after  ', asciiString);
-       
-        UserService.ActivateAppUser(asciiString)
-        .then(function(data, status) {
-    //        blockUI.message("100%");
-    //        blockUI.stop();
-            swal("Sign up Success", "Your account is now activated.", "success");
-        }, function(error, status) {
-    //        blockUI.stop();
-            swal("Error", "Cannot find your account.", "error");
-        });
-     /*   var updateActivateUrl = ENV.apiEndpoint + "/users/ActivateAppUser/" + url;
-        blockUI.message("40%");
-        $http.get(updateActivateUrl)
-        .success(function(data, status, headers, config) {
-            blockUI.message("100%");
-            blockUI.stop();
-            swal("Sign up Success", "Your account is now activated.", "success");
-        })
-        .error(function(data, status, headers, config) {
-           blockUI.stop();
-           swal("Error", "Cannot find your account.", "error");
-        })*/
-    // 
-    } else if (UserBackFromEmailUrl.indexOf("forget=") > -1 ) {
-      var asciiString = ReplaceASCIICharacter(UserBackFromEmailUrl);
-        UserService.UpdateEmailForgetPassword(asciiString)
-        .then(function(data, status) {
-            $scope.ForgetPasswordEmail = data;
-            $('#InputPasswordModal').modal('show');
-        }, function(error, status) {
-            console.log('error ', error);
-        });
-    /*    var url = UserBackFromEmailUrl.substr(UserBackFromEmailUrl.indexOf("forget=") + 7);
-
-        var getemailfromencode = ENV.apiEndpoint + '/cryptojs/GetForgetEncodeUrl/' + url;
-        $http.get(getemailfromencode)
-        .success(function(data, status, headers, config ) {
-          
-          $scope.ForgetPasswordEmail = data;
-          $('#InputPasswordModal').modal('show');
-        })
-        .error(function(data, status, headers, config) {
-
-        });*/
-    }
-    function ReplaceASCIICharacter(encodeUrl) {
-     //   console.log(encodeUrl);
-        var asciiString = encodeUrl
-                            .replace(/%2F/g, "/")
-                            .replace(/%2B/g,"+")
-                            .replace(/%3D/g ,"=")
-                            .replace(/%24/g, "$")
-                            .replace(/%26/g,"&")
-                            .replace(/%2C/g ,",")
-                            .replace(/%3A/g ,":")
-                            .replace(/%3B/g, ";")
-                            .replace(/%3F/g,"?")
-                            .replace(/%20/g,"+")
-                            .replace(/%40/g ,"@");
-     //   console.log(asciiString);
-        return asciiString;
-    }
-
-    $scope.InputPasswordProgressValue = 0;
-
-    $scope.ChangePassword = function() {
-      document.getElementById('InputPasswordProgress').style.display = 'block';
-      $scope.InputPasswordProgressValue = 33;
-      if ($scope.ChangeForgetPassword === $scope.ConfirmChangeForgetPassword) {
-        $scope.InputPasswordProgressValue = 69;
-        UserService.PerformChangePassword($scope.ForgetPasswordEmail, $scope.ChangeForgetPassword)
-        .then(function(data, status) {
-            swal("Change Password Success", "Your password has changed successfully.", "success");
-            $scope.InputPasswordProgressValue = 100;
-            document.getElementById('InputPasswordProgress').style.display = 'block';
-            $('#InputPasswordModal').modal('toggle');
-        }, function(error, status) {
-            swal("Error", "Cannot find your account.", "error");
-        });
-        /*
-        var changePasswordUrl = ENV.apiEndpoint + "/users/PerformChangePassword/" + $scope.ForgetPasswordEmail 
-        + "/" + $scope.ChangeForgetPassword;
-        
-        $http.get(changePasswordUrl)
-        .success(function(data, status, headers, config) {
-            swal("Change Password Success", "Your password has changed successfully.", "success");
-            $('#InputPasswordModal').modal('toggle');
-        })
-        .error(function(data, status, headers, config) {
-           swal("Error", "Cannot find your account.", "error");
-        })*/
-      } else {
-        swal("Warning", "Password and Confirm Password must be the same.", "warning");
-      }
-    }
-
-    $scope.Signup = function () {
-      document.getElementById('SignupDataNotReady').style.display = 'block';
-      console.log('sinn up ');
-      var email = $scope.Email;
-      $scope.User.Firstname = $scope.Firstname;
-      $scope.User.Lastname = $scope.Lastname;
-      var hashLink = '';
-      UserService.CreateUserEmailActivate($scope.Username, $scope.Password, email, $scope.User)
-      .then(function(data, status) {
-   //       blockUI.message("25%");
-          return CryptoService.GenerateHashLink($scope.Username, $scope.Password, email)
-      }, function(err, status) {
-   //       blockUI.stop();
-          console.log('err create app user ', err);
-      })
-      .then(function (data, status) {
-          console.log(data);
-          hashLink = data;
-          var hostPort = $location.host() + ':' +$location.port();
-          var mailActivate = {
-            Email : email,
-            Host : hostPort,
-            BacktoUrl : hashLink
-          };
-          return EmailService.SendEmailConfirmation(mailActivate)
-      })
-      .then(function(data, status){
-          swal("Sign up almost Success", "Please check your email to activate your account", "success");
-          document.getElementById('SignupDataNotReady').style.display = 'none';
-          $("#LoginModal").modal("toggle");
-      }, function(error, status) {
-          swal("Error", "There is error occur , please contact administrator", "error");
-      })
-      .finally(function() {
-          //Clear Fields after sign up successfully
-          $scope.Firstname = "";
-          $scope.Lastname = "";
-          $scope.Email = "";
-          $scope.Username = "";
-          $scope.Password = "";
-      });
-
-/*
-      $http.post(createUserURL, $scope.User)
-        .success(function(data, status, headers, config) {
-          blockUI.message("25%");
-          var hostPort = $location.host() + ':' +$location.port();
-            var linkHashUrl = ENV.apiEndpoint + "/cryptojs/GenerateHashLink/"+ $scope.Username +"/" + $scope.Password +"/" + email;
-            
-            $http.get(linkHashUrl)
-            .success(function(data, status, headers, config) {
-               console.log(data);
-                var mailActivate = {
-                  Email : email,
-                  Host : hostPort,
-                  BacktoUrl : data
-                };
-          
-                var emailConfirmURL = ENV.apiEndpoint + "/mails/SendEmailConfirmation";
-                  blockUI.message("75%");
-                  $http.post(emailConfirmURL, mailActivate)
-                  .success(function (data, status, headers, config) {
-                    blockUI.message("100%");
-                      blockUI.stop();
-                      swal("Sign up almost Success", "Please check your email to activate your account", "success");
-                      $("#LoginModal").modal("toggle");
-                  })
-                  .error(function (data, status, headers, config) {
-       
-                  });
-            })
-            .error(function(data, status, headers, config) {
-
-            });      
-            //Clear Fields after sign up successfully
-            $scope.Firstname = "";
-            $scope.Lastname = "";
-            $scope.Email = "";
-            $scope.Username = "";
-            $scope.Password = "";
-        })
-        .error(function(data, status, headers, config) {
-            swal("Error", "Cannot sign up this time", "error");
-        });
-*/
-    };
 
     $scope.CheckSigninEmail = function () {
       console.log('CheckSigninEmail' + $scope.username);
@@ -1156,134 +693,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
               }
     }
 
-    $scope.UpdateCartBuyQty = function (index, qty) {
-      
-      var regexp = /^\d+(\.\d{1,2})?$/;
-
-      var isnum = regexp.test(qty.toString());
-      if (isnum) 
-      {
-          $scope.UpdateCartSummary();
-      } else {
-          var warn = $translate('MESSAGE.CONTENT.UPDATE_CART_BUY_QTY');
-          swal("Warning", warn, "warning");
-         // swal("Warning", "Must input quantity as a number or more than 0", "warning");
-       //   $translate('TITLE.DASHBOARD');
-          $('#BuyQty')[index].focus();
-      }
-    }
-
-    $scope.UpdateCartUom = function (ROLine,UomCode, index) {
-      UomService.LoadUomByUomCode(UomCode)
-      .then(function(uom, status) {
-      //    console.log('IsContainer ' + uom.IsContainer)
-          if (uom.IsContainer == true) {
-            ROLine.Price = ROLine.DrContainWholesalePrice;
-            ROLine.Amount = ROLine.Quantity * ROLine.DrContainWholesalePrice;
-            ROLine.Weight = ROLine.Quantity * ROLine.DrContainWeight;
-          } else if (uom.IsContainer == false) {
-            ROLine.Price = ROLine.DrRetailPrice;
-            ROLine.Amount = ROLine.Quantity * ROLine.DrRetailPrice;
-            ROLine.Weight = ROLine.Quantity * ROLine.DrWeight;
-          }
-          $scope.ROHead.ROLineList.splice(index, 1);
-          $scope.ROHead.ROLineList.splice(index, 0, ROLine);
-          $scope.UpdateCartSummary();
-      }, function(error, status) {
-          console.log('error ', error);
-      })
-    }
-    $scope.DeleteCartProduct = function (Row, ROLine, index) {
-        swal({
-          title: "Are you sure?",
-          text: "คุณต้องการลบรายการสินค้า " + ROLine.ProductNameTh + " !",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#DD6B55",
-          confirmButtonText: "Yes, delete it!",
-          cancelButtonText: "No, cancel please!",
-          closeOnConfirm: true,
-          closeOnCancel: true
-        },
-        function(isConfirm){
-          $scope.$apply(function() {
-             if (isConfirm) {
-              $('#CartRow'+index).remove();
-              $scope.ROHead.ROLineList.splice(index, 1);
-              $scope.ROLineList.splice(index, 1);
-              if ($scope.ROHead.ROLineList.length <= 0 || $scope.ROHead.ROLineList === undefined) {
-              //  $('#HideCartTable').show('slow');
-              //  $('#ShowCartTable').hide('slow');
-                document.getElementById('HideCartTable').style.display = 'block';
-                document.getElementById('ShowCartTable').style.display = 'none';
-              } else if ($scope.ROHead.ROLineList.length > 0) {
-              //  $('#HideCartTable').hide('slow');
-             //   $('#ShowCartTable').show('slow');
-                document.getElementById('HideCartTable').style.display = 'none';
-                document.getElementById('ShowCartTable').style.display = 'block';
-              }
-              $scope.UpdateCartSummary();
-            } else {
-            }
-            console.log($scope.ROHead.ROLineList.length);
-            console.log($scope.ROHead);
-          });
-        });
-    }
-
-    $scope.UpdateCartSummary = function () {
- //       console.log("UpdateCartSummary ..");
-        var roLineList = $scope.ROHead.ROLineList;
-        var roHead = $scope.ROHead;
-        var amt = 0;
-        var sumAmt = 0;
-        var sumDiscAmt = 0;
-        var sumVatAmt = 0;
-        var netAmt = 0; 
-        var sumWt = 0;
-
-        for (i = 0 ; i < roLineList.length ; i++) {
-   //       console.log(roLineList[i].Quantity);
-    //      console.log(roLineList[i].Price);
-          var roline = roLineList[i];
-    //      console.log(roline.UomCode);
-          roline.Amount = roline.Quantity * roline.Price;
-          roline.VatAmount = roline.Amount * $scope.Company.VatRate;
-          sumAmt += roline.Amount;
-          sumVatAmt += roline.VatAmount;
-          sumDiscAmt += roline.DiscountAmount;
-          sumWt += roline.Weight;
-        }
-  //      console.log("sumWt ",sumWt);
-        $scope.ROHead.SumWeight = sumWt;
-        if ($scope.ROHead.PostType === 'EMS' && sumWt > 20000) {
-        //  swal("Cancelled", "Your product data is safe :)", "success");
-          $scope.ROHead.PostType = 'Normal';
-          $scope.UpdateCartSummary();
-        } else {
-          if ($scope.ROHead.PostType === 'Normal') {
-            var weight_rate = WeightRateService.GetWeightRateNormal(sumWt);
-            console.log($scope.ROHead.SumWeight);
-              console.log(weight_rate);
-                $scope.ROHead.SumWeightAmount = parseInt(weight_rate);
-                
-          } else if ($scope.ROHead.PostType === 'EMS') {
-            WeightRateService.GetWeightRateByPostTypeAndWeight($scope.ROHead.PostType, sumWt)
-              .then(function(weightRate, status) {
-                $scope.ROHead.SumWeightAmount = parseInt(weightRate.Rate);
-                
-              }, function(error, status) {
-
-            });
-          }
-          netAmt = sumAmt - sumDiscAmt + sumVatAmt + $scope.ROHead.SumWeightAmount;
-          $scope.ROHead.SumAmount = sumAmt;
-          $scope.ROHead.SumVatAmount = sumVatAmt;
-          $scope.ROHead.SumDiscountAmount = sumDiscAmt;
-          $scope.ROHead.NetAmount = netAmt;
-          $scope.ROHead.SumWeight = sumWt;
-        }
-    }
+    
 
     function getBase64Image(img) {
       var canvas = document.createElement("canvas");
@@ -1310,40 +720,11 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
       });
       doc.save('sample-file.pdf');
     }
-    $scope.ContinueShopping = function () {
- //       console.log("continue shop ..");
-        $("#CartModal").modal("toggle");
-    }
+    
     $scope.SaveCart = function () {
   //      console.log("save cart ..");
     }
-    $scope.ClearCart = function () {
- //     console.log("ClearCart ..");
-        swal({
-          title: "Are you sure?",
-          text: "คุณต้องการล้างสินค้าในตะกร้า ใช่ หรือ ไม่?",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#dd6b55",
-          confirmButtonText: "Yes, clear it!",
-          cancelButtonText: "No, cancel please!",
-          closeOnConfirm: true,
-          closeOnCancel: true
-        },
-        function(isConfirm){
-          $scope.$apply(function() {
-            if (isConfirm) {
-              var list = $scope.ROHead.ROLineList;
-              var len = list.length;
-              $scope.ROHead.ROLineList.length = 0;
-            //    $("#CartModal").reload();
-            //  $scope.ROHead.ROLineList.length = 0;
-            } else {
-                  swal("Cancelled", "Your product data is safe :)", "success");
-            }
-          });
-        });
-    }
+    
 
     $scope.ShipmentProcess = function () {
         console.log("shipment..");
@@ -1464,94 +845,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
       }
     }
     
-    $scope.ForgetPasswordProgressValue = 0;
-    $scope.ForgetPassword = function () {
-      $("#LoginModal").modal('toggle');
-      $("#ForgetPasswordModal").modal('show');
-    }
-    $scope.SendEmailForgetPassword = function () {
-      document.getElementById('ForgetPasswordProgress').style.display = 'block';
-      $scope.ForgetPasswordProgressValue = 23;
-      var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-      if (filter.test($scope.ForgetPasswordEmail) && $scope.ForgetPasswordEmail.length > 0) {
-        console.log('valid');
-        //check is email exist in system
-        UserService.IsExistEmail($scope.ForgetPasswordEmail)
-        .then(function(data, status) {
-      //      blockUI.message("25%");
-            if(data) {
-              $scope.ForgetPasswordProgressValue = 56;
-              return CryptoService.GenerateForgetPasswordHashLink($scope.ForgetPasswordEmail)
-            } else {
-              swal("Error", "Cannot find your account.", "error");
-            }
-        },function (error, status) {
-            swal("Error", "The error has occur please contact admin", "error");
-        })
-        .then(function(data, status){
-            var hostWithPort = $location.host() + ':' +$location.port();
-       //     var forgetPasswordEmailUrl = ENV.apiEndpoint + "/mails/SendEmailForgetPassword";
-      //      blockUI.message("75%");
-            var mailForget = {
-              Email : $scope.ForgetPasswordEmail,
-              Host : hostWithPort,
-              BacktoUrl : data
-            };
-            EmailService.SendEmailForgetPassword(mailForget)
-        })
-
-        var IsExistEmail = ENV.apiEndpoint + "/users/IsExistEmail/" + $scope.ForgetPasswordEmail;
-        $scope.ForgetPasswordProgressValue = 67;
-        $http.get(IsExistEmail)
-        .success(function(data, status, headers, config) {
-          // exist email ,then send email
-        //    blockUI.message("25%");
-            if(data) {
-              var genforgetLink = ENV.apiEndpoint + '/cryptojs/GenerateForgetPasswordHashLink/' + $scope.ForgetPasswordEmail;
-              $scope.ForgetPasswordProgressValue = 79;
-              $http.get(genforgetLink)
-              .success(function(data, status, headers, config) { 
-                  var hostWithPort = $location.host() + ':' +$location.port();
-                  $scope.ForgetPasswordProgressValue = 93;
-                  var forgetPasswordEmailUrl = ENV.apiEndpoint + "/mails/SendEmailForgetPassword";
-        //          blockUI.message("75%");
-                  var mailForget = {
-                    Email : $scope.ForgetPasswordEmail,
-                    Host : hostWithPort,
-                    BacktoUrl : data
-                  };
-                  $http.post(forgetPasswordEmailUrl, mailForget)
-                  .success(function(data, status, headers, config) {
-          //          blockUI.stop();
-                    var type = $filter('translate')('MESSAGE.TYPE_SUCCESS');
-                    var title = $filter('translate')('MESSAGE.TITLE_SUCCESS_DEFAULT');
-                    swal(title, "Please check your email", type);
-                    document.getElementById('ForgetPasswordProgress').style.display = 'none';
-                    $scope.ForgetPasswordProgressValue = 100;
-                    $('#ForgetPasswordModal').modal('toggle');
-                  })
-                  .error(function(data, status, headers, config) {
-                      swal("Error", "There is error occur, please contact administrator", "error");
-                  });
-              })
-              .error(function (data, status, headers, config) {
-
-              });
-              
-            } else {
-              swal("Error", "Cannot find your account.", "error");
-            }
-        })
-        .error(function(data, status, headers, config) {
-           swal("Error", "The error has occur please contact admin", "error");
-        })
-        
-      } else {
-        // Not valid
-        console.log('not valid');
-        swal("Warning", "Not valid Email", "warning");
-      }
-    }
+    
 
     $scope.TestBcrypt = function () {
       var password_hash_url = ENV.apiEndpoint + "/bcrypts/encryptBcrypt/" + $scope.text2bcrypt;

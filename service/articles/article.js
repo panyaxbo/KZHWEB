@@ -4,12 +4,15 @@ var Q = require('q');
 
 router.get('/LoadArticle', function(req, res) {
     db.collection('Article')
-        .find({})
+        .find({
+            $query: {} ,
+            $orderby: { CreateDate : -1 } // Last create date show before if 1 Last createdate go to the bottom
+        })
         .toArray(function (err, items) {
         	if (err) {
 
         	} else {
-	            console.log(items);
+	        //    console.log(items);
 	            res.json(items);
 	        }
         });
@@ -18,20 +21,74 @@ router.get('/LoadArticle', function(req, res) {
 router.get('/LoadArticleById/:ArticleId', function(req, res) {
     var ArticleId = req.params.ArticleId;
     var o_id = bson.BSONPure.ObjectID(ArticleId.toString());
-    db.collection('Article')
+    var LoadArticleById = function() {
+        var defer = Q.defer();
+        db.collection('Article')
+        .findOne({
+            '_id': o_id
+        }, function (err, article) {
+            if (err) {
+                defer.reject(err);
+            } else {
+                defer.resolve(article);
+            }
+        });
+        return defer.promise;
+    }
+    var LoadUserById = function(userId) {
+        var defer = Q.defer();
+        var user_id = bson.BSONPure.ObjectID(userId.toString());
+        db.collection('AppUser')
+            .findOne({
+                $query: { '_id' : user_id} 
+            }, function (err, appuser) {
+                if (err) {
+                    defer.reject(err);
+                } else {
+                    defer.resolve(appuser);
+                }
+            });
+        return defer.promise;
+    };
+
+    var article = {};
+    LoadArticleById()
+    .then(function(data, status) {
+        if (!data) {
+            console.log('not found article');
+        } else {
+            article = data;
+            var userId = article.UserId;
+            return LoadUserById(userId);
+        }
+    }, function(err, status) {
+        console.log('1',err, err.stack.split("\n"));
+    })
+    .then(function(user, status) {
+        console.log('chain user ', user);
+        if (!user) {
+            res.json(article);
+        } else {
+            article.User = user;
+            console.log('artcile ', article);
+            res.json(article);
+        }
+    }, function(err, status) {
+        console.log('2', err, err.stack.split("\n"));
+    });
+   
+   /* db.collection('Article')
         .findOne({
             '_id': o_id
         }, function (err, doc) {
             if (err) {
                 console.log(err);
-                //       callback(err);
+ 
             } else {
-                // call your callback with no error and the data
-            //    console.log(doc);
-                //     callback(null, doc);
+
                 res.json(doc);
             }
-        });
+        });*/
 
 });
 router.post('/CreateArticle', function(req, res) {

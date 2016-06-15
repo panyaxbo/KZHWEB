@@ -17,7 +17,7 @@ app.service("ProductCategoryService", ["$q", "$http", "ENV", function ($q, $http
         LoadProductCategoryByProductType: function(ProductTypes) {
             var promises = [];
             angular.forEach(ProductTypes, function(ProductType){
-    //            console.log('service type ', ProductType);
+          //      console.log('service type ', ProductType);
                 var defer = $q.defer();
                 var categoryUrl = ENV.apiEndpoint + '/product_categories/LoadProductCategoryByProductType/' + ProductType.ProductTypeCode;
                 $http.get(categoryUrl)
@@ -26,7 +26,7 @@ app.service("ProductCategoryService", ["$q", "$http", "ENV", function ($q, $http
                     defer.resolve(data);
                 })
                 .error(function (err, status) {
-              //      console.log(err);
+                    console.log(err);
                     defer.reject(err);
                 });
                 promises.push(defer.promise);

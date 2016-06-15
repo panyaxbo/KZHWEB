@@ -1,64 +1,29 @@
 'use strict'
 app.config(function($routeProvider, $locationProvider) {
+  if (window.history && window.history.pushState) {
     $locationProvider.html5Mode({
         enabled: true,
         requireBase: false
     });
-  /*  
-    $stateProvider
-    // HOME STATES AND NESTED VIEWS ========================================
-    .state('home', {
-        url: '/home',
-        templateUrl: '/views/main.html'
-    })
-    .state('login', {
-        url: '/login',
-        templateUrl: '/views/login.html',
-        controller: 'LoginController'
-    })
-    .state('history', {
-        url: '/history',
-        templateUrl: '/views/history.html',
-        controller: 'HistoryController'
-    })
-    .state('contact', {
-        url: '/contact',
-        templateUrl: '/views/contact.html',
-        controller: 'ContactController'
-    })
-    .state('about', {
-        url: '/about',
-        templateUrl: '/views/about.html'
-    })
-    .state('payment-delivery', {
-        url: '/payment-delivery',
-        templateUrl: '/views/payment-delivery.html'
-    })
-    .state('cart', {
-        url: '/cart',
-        templateUrl: '/views/shopping-cart.html',
-        controller: 'CartController'
-    })
-    .state('article', {
-        url: '/article',
-        templateUrl: '/views/article.html',
-        controller: 'ArticleController'  
-    })
-    .state('article.detail', {
-        url: 'article/:articleId',
-        templateUrl: '/views/article.html',
-        controller: 'ArticleController' 
-      
-    });*/
-
-    $routeProvider
+  }
+  $routeProvider
       .when('/', {
-        templateUrl: '/views/main.html',
-        controller: 'MainController'
+        templateUrl: '/views/main.html'
+     //   controller: 'MainController'
       })
       .when('/login', {
         url: '/login',
         templateUrl: '/views/login.html',
+        controller: 'LoginController'
+      })
+      .when('/forget-password', {
+        url: '/forget-password',
+        templateUrl: '/views/forget-password.html',
+        controller: 'LoginController'
+      })
+      .when('/input-password', {
+        url: '/input-password',
+        templateUrl: '/views/input-password.html',
         controller: 'LoginController'
       })
       .when('/history', {
@@ -76,30 +41,53 @@ app.config(function($routeProvider, $locationProvider) {
       .when('/article/:articleId', {
         templateUrl: '/views/article-detail.html',
         controller: 'ArticleController',
-        mode: 'view',
-        resolve : {
-            Mode: function() {
-                return 'view';
-            }
-        }
+        mode: 'view'
       })
       .when('/payment-delivery', {
         templateUrl: '/views/payment-delivery.html'
       })
-      .when('/cart', {
-        templateUrl: '/views/shopping-cart.html',
-        controller: 'CartController'
+      .when('/about', {
+        templateUrl: '/views/about.html'
       })
       .when('/contact', {
         templateUrl: '/views/contact.html',
         controller: 'ContactController'
       })
-      .when('/about', {
-        templateUrl: '/views/about.html'
+      .when('/cart', {
+        templateUrl: '/views/shopping-cart.html',
+        controller: 'CartController'
+      })
+      .when('/shipment', {
+        templateUrl: '/views/shipment.html',
+        controller: 'ShipmentController'
+      })
+      .when('/payment', {
+        templateUrl: '/views/payment.html',
+        controller: 'PaymentController'
+      })
+      .when('/payment/payment-success', {
+        templateUrl: '/views/payment.html',
+        controller: 'PaymentController'
+      })
+      .when('/payment/payment-failure', {
+        templateUrl: '/views/payment-failure.html',
+        controller: 'PaymentController'
+      })
+      
+      /* Route for supplier */
+      .when('/supplier', {
+        templateUrl: '/views/supplier/supplier.html',
+        controller: 'SupplierController'
+      })
+      /* Route for setting */
+      .when('/setting', {
+        
+      })
+      .when('/404', {
+        templateUrl: '/404.html'
       })
       .otherwise({
-        redirectTo: '/404.html'
+        redirectTo: '/404'
       })
-
     
 });

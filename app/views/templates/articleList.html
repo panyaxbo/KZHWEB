@@ -1,0 +1,17 @@
+<div>
+	<div class="col-md-1">
+		<a href="/article/{{article._id}}" class="btn btn-success" >
+	        <span class="glyphicon glyphicon-list-alt"></span> 
+	    </a>
+	</div>
+	<div class="col-md-3 text-center row-img-thumbnail-articles" >
+		<img ng-src="{{article.SourceImageThumbnail}}" class="img-thumbnail-articles"></img>
+	</div>
+	<div class="col-md-8">
+		<h4>{{article.Title}} </h4>
+		<p class="line-height">{{(article.Content  | htmlToPlaintext) | cut:true:200:' ...' }} </p>
+		<div ta-bind ng-model="Article.Content"></div>
+		<i><span am-time-ago="article.CreateDate"></span></i>
+		<div class="pull-right"></div>
+	</div>
+</div>

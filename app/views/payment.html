@@ -1,0 +1,265 @@
+<div class="row animated fadeIn payment-section">
+    <div class="row" id="step-2">
+        <div class="col-xs-12">
+            <div class="col-md-12">
+                <h3>{{'BODY.SECTION.SHIPMENT.PAYMENT.STEP' | translate}}</h3>
+                <div class="row form-group">
+                    <!-- You can make it whatever width you want. I'm making it full width
+                         on <= small devices and 4/12 page width on >= medium devices -->  
+                    <div class="col-xs-12">
+                        <div class="col-xs-4">
+                             <label style="color:white">{{'BODY.SECTION.SHIPMENT.PAYMENT.PAYMENT_TYPE' | translate}}</label>
+                        </div>
+                        <div class="col-xs-8">
+                            <select class="form-control" ng-model="PaymentType" required="required" ng-change="ChangePaymentType()">
+                                <option value="">{{'BODY.SECTION.SHIPMENT.PAYMENT.SELECT_PAYMENT_TYPE' | translate}}</option>
+                                <option value="Transfer">{{'BODY.SECTION.SHIPMENT.PAYMENT.TRANSFER' | translate}}</option>
+                        <!--       <option value="Credit">{{'BODY.SECTION.SHIPMENT.PAYMENT.CREDIT' | translate}}</option> -->
+                                    <option value="Paypal">{{'BODY.SECTION.SHIPMENT.PAYMENT.PAYPAL' | translate}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                    </div>
+                    <div class="col-xs-12">
+                    </div>
+                    <div class="col-xs-12"> 
+                         <div class="col-xs-2">
+                         </div>
+                         <div class="col-xs-12" ng-show="PaymentType == 'Transfer'">
+                        <!-- TRANSFER FORM STARTS HERE -->
+                        <div class="panel panel-default transfer-box">
+                            <div class="panel-heading display-table">
+                                <div class="row display-tr" >
+                                    <h3 class="panel-title display-td">Payment Details</h3>
+                                    <div class="display-td" >                            
+                                    </div>
+                                </div>                    
+                            </div>
+                            <div class="panel-body">
+                                <form role="form" id="transfer-form">
+                                    <div class="row">
+                                        <table class="table table-condense">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center" style="color:black">{{'HEAD.MODAL_CART.SEQ' | translate}}</th>
+                                                    <th class="text-center" style="color:black">Bank</th>
+                                                    <th class="text-left" style="color:black">Account No</th>
+                                                    <th class="text-left" style="color:black">Account Type</th>
+                                                    <th class="text-left" style="color:black">Branch</th>
+                                                    <th class="text-left" style="color:black">Account Name</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-center">
+                                                        <input type="radio" name="bank" ng-model="PaymentBank" value="bbl" required="required"/>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <img src="/images/bbl.png" width="40" height="40">
+                                                    </td>
+                                                    <td>
+                                                        <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.BBL.ACCOUNT_NO' | translate}}</label>
+                                                    </td>
+                                                    <td>
+                                                       <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.BBL.ACCOUNT_TYPE' | translate}}</label>
+                                                    </td>
+                                                    <td>
+                                                       <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.BBL.ACCOUNT_BRANCH' | translate}}</label>
+                                                    </td>
+                                                    <td>
+                                                        <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.BBL.ACCOUNT_NAME' | translate}}</label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center">
+                                                        <input type="radio" name="bank" ng-model="PaymentBank" value="kbank" required="required"/>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <img src="/images/kbank.png" width="40" height="40">
+                                                    </td>
+                                                    <td>
+                                                        <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KBANK.ACCOUNT_NO' | translate}}</label>
+                                                    </td>
+                                                    <td>
+                                                       <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KBANK.ACCOUNT_TYPE' | translate}}</label>
+                                                    </td>
+                                                    <td>
+                                                       <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KBANK.ACCOUNT_BRANCH' | translate}}</label>
+                                                    </td>
+                                                    <td>
+                                                        <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KBANK.ACCOUNT_NAME' | translate}}</label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center">
+                                                          <input type="radio" name="bank" ng-model="PaymentBank" value="scb" required="required"/>
+                                                      
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <img src="/images/scb.png" width="40" height="40">
+                                                    </td>
+                                                    <td>
+                                                        <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.SCB.ACCOUNT_NO' | translate}}</label>
+                                                    </td>
+                                                    <td>
+                                                       <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.SCB.ACCOUNT_TYPE' | translate}}</label>
+                                                    </td>
+                                                    <td>
+                                                       <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.SCB.ACCOUNT_BRANCH' | translate}}</label>
+                                                    </td>
+                                                    <td>
+                                                        <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.SCB.ACCOUNT_NAME' | translate}}</label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center">
+                                                          <input type="radio" name="bank" ng-model="PaymentBank" value="ktb" required="required"/>
+                                                    </td >
+                                                    <td class="text-center">
+                                                        <img src="/images/ktb.png" width="40" height="40">
+                                                    </td>
+                                                    <td>
+                                                        <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KTB.ACCOUNT_NO' | translate}}</label>
+                                                    </td>
+                                                    <td>
+                                                       <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KTB.ACCOUNT_TYPE' | translate}}</label>
+                                                    </td>
+                                                    <td>
+                                                       <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KTB.ACCOUNT_BRANCH' | translate}}</label>
+                                                    </td>
+                                                    <td>
+                                                        <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KTB.ACCOUNT_NAME' | translate}}</label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center">
+                                                          <input type="radio" name="bank" ng-model="PaymentBank" value="kcc" required="required"/>
+                                                    </td >
+                                                    <td class="text-center">
+                                                        <img src="/images/kcc.png" width="40" height="40">
+                                                    </td>
+                                                    <td>
+                                                        <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KCC.ACCOUNT_NO' | translate}}</label>
+                                                    </td>
+                                                    <td>
+                                                       <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KCC.ACCOUNT_TYPE' | translate}}</label>
+                                                    </td>
+                                                    <td>
+                                                       <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KCC.ACCOUNT_BRANCH' | translate}}</label>
+                                                    </td>
+                                                    <td>
+                                                        <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.KCC.ACCOUNT_NAME' | translate}}</label>
+                                                    </td>
+                                                </tr>
+                                                <!--
+                                                <tr>
+                                                    <td class="text-center">
+                                                        <input type="radio" name="bank" ng-model="PaymentBank" value="tmb" required="required"/>
+                                                    </td class="text-center">
+                                                    <td>
+                                                        <img src="/images/tmb.png" width="60" height="35">
+                                                    </td>
+                                                    <td>
+                                                        <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.TMB.ACCOUNT_NO'}}</label>
+                                                    </td>
+                                                    <td>
+                                                       <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.TMB.ACCOUNT_TYPE'}}</label>
+                                                    </td>
+                                                    <td>
+                                                       <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.TMB.ACCOUNT_ฺBRANCH'}}</label>
+                                                    </td>
+                                                    <td>
+                                                        <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.TMB.ACCOUNT_NAME'}}</label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center">
+                                                          <input type="radio" name="bank" ng-model="PaymentBank" value="uob" required="required" />
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <img src="/images/uob.png" width="60" height="30">
+                                                    </td>
+                                                    <td>
+                                                        <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.UOB.ACCOUNT_NO'}}</label>
+                                                    </td>
+                                                    <td>
+                                                       <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.UOB.ACCOUNT_TYPE'}}</label>
+                                                    </td>
+                                                    <td>
+                                                       <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.UOB.ACCOUNT_ฺBRANCH'}}</label>
+                                                    </td>
+                                                    <td>
+                                                        <label style="color:black">{{'BODY.SECTION.SHIPMENT.PAYMENT.UOB.ACCOUNT_NAME'}}</label>
+                                                    </td>
+                                                </tr>-->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>            
+                        <!-- TRANSFER FORM ENDS HERE -->
+                         </div>  
+                    </div>  
+                    <div class="col-xs-12"> 
+                         <div class="col-xs-2">
+                         </div>
+                         <div class="col-xs-12" ng-show="PaymentType == 'Paypal'">
+                            <!-- PAYPAL FORM STARTS HERE -->
+                            <div class="panel panel-default transfer-box">
+                                <div class="panel-heading display-table">
+                                    <div class="row display-tr" >
+                                        <h3 class="panel-title display-td">Payment with Paypal</h3>
+                                        <div class="row text-center paypal-header-panel">
+                                            <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_74x46.jpg" border="0" alt="PayPal Logo">
+                                        </div>
+                                        <div class="row text-center">
+                                            <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/cc-badges-ppmcvdam.png" alt="Buy now with PayPal" />
+                                        </div>
+                                        
+                                    </div>                    
+                                </div>
+                                <div class="panel-body text-center">
+
+                                    <a style="cursor:pointer" ng-click="PaypalCheckout()"><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!"></a>
+
+                                </div>
+                            </div>            
+                        <!-- PAYPAL FORM ENDS HERE -->
+                         </div>  
+                    </div>
+                    <div class="row col-xs-12"> 
+                        
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button class="btn btn-primary btn-lg center-block" type="button" ng-if="PaymentType != 'Paypal'" ng-click="ValidatePayment()">
+                        <span class="glyphicon glyphicon-play" aria-hidden="true"></span> {{'BODY.SECTION.SHIPMENT.PAYMENT.BUTTON_NEXT' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="ProcessingPayment" >
+        <div class="col-xs-12">
+            <div class="col-md-12">
+                <h3> Step 3</h3>
+            <!--    <button class="btn btn-success btn-lg center-block" ng-click="ValidateFinish()">Finish!</button> -->
+                <br><br>
+                <div id="ProcessingPurchaseOrder" style="display: block">
+                    <center>
+                        <i class="fa fa-refresh fa-spin fa-3x fa-fw margin-bottom"></i>
+                        <span class="sr-only">Loading...</span>
+                    </center>
+                    <br>
+                    <center><h3>{{'BODY.SECTION.SHIPMENT.FINISH.PROCESSING' | translate}}</h3></center>
+                </div>
+                <div id="ProcessedPurchaseOrder" style="display: none" >
+                    <center><h4><i class="fa fa-flag-checkered fa-3x"></i></h4></center>
+                    <center>{{'BODY.SECTION.SHIPMENT.FINISH.THANK_MESSAGE' | translate}}</center>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

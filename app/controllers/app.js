@@ -1,10 +1,10 @@
 'use strict';
 
 var app = angular.module('KZHWEB', ['ngRoute', 'ngAnimate', 'ui.bootstrap', 'ngFileUpload', '720kb.datepicker',
-    'ngDialog', 'ngPasswordStrength', 'ngTable','pascalprecht.translate', 'vcRecaptcha',
-    'ngCookies', 'CONFIG','angularMoment', 'textAngular', 'ngTagsInput']);
+    'ngPasswordStrength', 'ngTable','pascalprecht.translate', 'vcRecaptcha', 
+    'ngCookies', 'CONFIG','angularMoment', 'textAngular', 'ngTagsInput', 'ngAside']);
 
-app.run(function ($rootScope) {
+app.run(function ($rootScope, $location) {
     /*
         Receive emitted message and broadcast it.
         Event names must be distinct or browser will blow up!
@@ -25,6 +25,7 @@ app.run(function ($rootScope) {
     });
     // For update Receipt Order
     $rootScope.$on('handleReceiptOrderEmit', function (event, args) {
+        console.log('root ro emit ', args.ROHead);
         $rootScope.$broadcast('handleReceiptOrderBroadcast', args);
     });
     //For update locale
@@ -66,4 +67,7 @@ app.run(function ($rootScope) {
     $("#DataNotReady").hide();
     $("#DataReady").show('fade slow');
 
+    $rootScope.$on('$routeChangeStart',function(event, next, current){
+        next.templateUrl = $location.protocol() + '://' +$location.host() + ':' + $location.port() + next.templateUrl;
+    });
 });

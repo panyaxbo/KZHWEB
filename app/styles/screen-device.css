@@ -1,0 +1,141 @@
+@media screen and (-webkit-min-device-pixel-ratio:0) {  /*safari and chrome*/
+    select {
+        height:50px;
+        line-height:50px;
+        background:#f4f4f4;
+    }
+    .nav-header {
+        margin-top: 1.3em;
+    } 
+
+    .aside-div {
+      position:absolute;
+      margin-top: 1.2em;
+      margin-left: 0.5em;
+      margin-right: 0.5em;
+      width: 100%;
+    }
+    .aside-left {
+      margin-left: 0.5em;
+    }
+    .aside-right {
+      float: right;
+      margin-top: -2.4em;
+      margin-right: 1.0em;
+    }
+    span.sale {
+        margin-top: -1.8em;
+        right: 7.0em;
+        position: absolute;
+        z-index: 400;
+    }
+    .label-hot {
+        margin-bottom: 1em;
+        position: absolute;
+        right: 7.8em;
+        z-index: 450;
+    }
+     .modal-dialog {
+        width: 745px;
+        margin: 30px auto;
+      }
+      .modal-content {
+        -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+      }
+      .modal-sm {
+        width: 300px;
+      }
+    .container {
+        max-width: 1170px;
+    }
+    /* Remove the padding we set earlier */
+    
+    .header,
+    .marketing,
+    .footer {
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 10px;
+    }
+    /* Space out the masthead */
+    
+    .header {
+        margin-bottom: 30px;
+    }
+    /* Remove the bottom border on the jumbotron for visual effect */
+    
+    .jumbotron {
+        border-bottom: 0;
+    }
+}
+
+/* ----------- Start iPhone 5 and 5S ----------- */
+
+/* Portrait and Landscape */
+@media (min-device-width: 320px) 
+    and (max-device-width: 568px)
+    and (-webkit-min-device-pixel-ratio: 2) {
+    
+    .label-hot {
+        margin-bottom: 1em;
+        position: absolute;
+        right: 7.0em;
+        z-index: 450;
+    }
+    .nav-header {
+        margin-top: 4.2em;
+    }
+    .aside-right {
+      float: right;
+      margin-top: -2.3em;
+      margin-right: 1.0em;
+    }
+    span.sale {
+        margin-top: -1.8em;
+        right: 6.3em;
+        position: absolute;
+        z-index: 400;
+    }
+}
+/* ----------- End iPhone 5 and 5S ----------- */
+
+/* ----------- Start iPhone 6 and 6S ----------- */
+
+/* Portrait and Landscape */
+@media  (min-device-width: 375px) 
+    and (max-device-width: 667px)
+    and (-webkit-min-device-pixel-ratio: 2) {
+    
+    .label-hot {
+        margin-bottom: 1em;
+        position: absolute;
+        right: 8.7em;
+        z-index: 450;
+    }
+    .nav-header {
+        margin-top: 4.0em;
+    }
+    .aside-right {
+      float: right;
+      margin-top: -2.3em;
+      margin-right: 1.0em;
+    }
+    span.sale {
+        margin-top: -1.8em;
+        right: 8.0em;
+        position: absolute;
+        z-index: 400;
+    }
+}
+/* ----------- End iPhone 6 and 6S ----------- */
+
+/* ----------- Start iPad ----------- */
+/* Portrait and Landscape */
+@media  (min-device-width: 768) 
+    and (max-device-width: 1024px)
+    and (-webkit-min-device-pixel-ratio: 2) {
+    
+    
+}
+/* ----------- End iPhone 6 and 6S ----------- */

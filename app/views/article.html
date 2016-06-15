@@ -1,35 +1,36 @@
 <div style="color:whitesmoke" ng-controller="ArticleController" ng-init="LoadArticles()">
-	<a href="/article" class="btn btn-primary" ng-click="CreateArticle()"> 
-		<span class="glyphicon glyphicon-plus"></span> new article</a>
-	<div class="animated fadeIn text-center" ng-if="!ArticlesDataReady">
-		<i class="fa fa-refresh fa-spin fa-3x fa-fw margin-bottom"></i>
+	<a href="" class="btn btn-lg btn-block btn-default" ng-click="CreateArticle()"> 
+		<i class="fa fa-share-alt"></i> แบ่งปันเรื่องราว, เทคนิค, ความรู้, ประสบการณ์ ของท่าน
+	</a>
+	<div class="animated fadeIn text-center load-data-articles" ng-if="!ArticlesDataReady">
+		<i class="fa fa-refresh fa-spin fa-4x fa-fw margin-bottom"></i>
         <span class="sr-only">Loading...</span>
 	</div>
 	<div class="animated fadeIn" ng-if="ArticlesDataReady">
 		<div id="ViewArticle" class="animated fadeIn" style="display: block">
 			<div class="row">
-				<div class="col-md-12"><h3><i class="fa fa-thumb-tack"></i> กระทู้ปักหมุด</h3></div>
-				<div class="col-md-12" class="table-responsive">
-					<table class="table table-condensed">
-					</table>
+				<div class="col-md-12"><h3><i class="fa fa-thumb-tack"></i> เรื่องราว, ประสบการณ์, เทคนิค ยอดเยี่ยม</h3></div>
+				<div class="text-center" ng-if="GreatArticles.length <= 0">
+					<i class="fa fa-comments-o fa-4x"></i>
+				</div>
+				<div ng-if="GreatArticles.length > 0">
+					<div class="col-md-12 row-articles" ng-repeat="GreatArticle in GreatArticles">
+						
+					</div>
 				</div>
 			</div>
+			<hr class="footer-hr">
 			<div class="row">
-				<div class="col-md-12"><h3><i class="fa fa-thumb-tack"></i> กระทู้</h3></div>
-				<div class="col-md-12" ng-repeat="Article in Articles">
-					<div class="col-md-2">
-						<a href="/article/{{Article._id}}" ng-click="ViewArticle(Article._id)" class="btn btn-success"  >
-	                        <span class="glyphicon glyphicon-list-alt"></span> 
-	                    </a>
-					</div>
-					<div class="col-md-10">
-						<h4>{{Article.Title}} </h4>
-						<p class="line-height">{{Article.Content | limitTo: 20 }}</p>
-						<i><span am-time-ago="Article.CreateDate"></span></i>
+				<div class="col-md-12"><h3><i class="fa fa-pencil"></i> เรื่องราว, ประสบการณ์, เทคนิค</h3></div>
+				<div class="text-center" ng-if="Articles.length <= 0">
+					<i class="fa fa-comment-o fa-4x"></i>
+				</div>
+				<div ng-if="Articles.length > 0">
+					<div class="col-md-12 row-articles" ng-repeat="Article in Articles">
+						<article-list article="Article"></article-list>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
 </div>

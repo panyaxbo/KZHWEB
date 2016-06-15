@@ -5,6 +5,8 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var jsonParser = bodyParser.json();
 var requestify = require('requestify');
+var braintree = require('braintree');
+
 global.mongodbConfig = require('../mongodb_config.json');
 global.serverConfig = require('../server-config.js');
 global.appRoot = require('app-root-path');
@@ -24,6 +26,7 @@ global.collection;
 app.use(express.static('./app'));
 app.use(express.static(path.resolve(__dirname, '../../')));
 app.use(express.static('./bower_components'));
+
 //app.use(express.static(appRoot + '/controllers'));
 
 var oauthConfig = require('../oauth/oauth-config.js');
@@ -61,6 +64,7 @@ var paypal = require('../paypal/paypal');
 var weight = require('./route/weight-rate');
 var feedbacks = require('./route/feedback');
 var articles = require('../articles/article');
+var subscribes = require('./route/subscribes');
 
 //app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -101,6 +105,17 @@ app.use('/paypal', paypal);
 app.use('/weight', weight);
 app.use('/feedbacks', feedbacks);
 app.use('/articles', articles);
+app.use('/subscribes', subscribes);
+
+app.use('/js', express.static(path.resolve(__dirname, '../../') + '/app/scripts'));
+app.use('/dist', express.static(path.resolve(__dirname, '../../') + '/dist'));
+app.use('/css', express.static(path.resolve(__dirname, '../../') + '/app/styles'));
+app.use('/partials', express.static(path.resolve(__dirname, '../../') +  '/app/views'));
+
+app.all('/*', function(req, res, next) {
+    // Just send the index.html for other files to support HTML5Mode
+    res.sendFile('index.html', { root: path.resolve(__dirname, '../../')+'/app' });
+});
 
 var environment = process.env.NODE_ENV || '';
 var port = process.env.PORT || 3000;
@@ -108,15 +123,21 @@ var mongolab_uri = process.env.MONGOLAB_URI || 'mongodb://aaa:bbb@ds033123.mongo
 var heroku_mongolab_uri = process.env.MONGOLAB_URI || 'mongodb://heroku_dmj53qsq:snsjuqkbr1cp1unjoibhem0iob@ds033915.mongolab.com:33915/heroku_dmj53qsq';
 
 app.set('', port);
+console.log('appRoot ', appRoot.path + '/app/index.html');
+console.log('path.resolve(__dirname) ', path.resolve(__dirname, '../../') + 'app/index.html');
 
 app.get('/', function(req, res) {
+  console.log('app.get / ');
     if (environment !== 'production') {
-      res.sendFile(appRoot + '/app/index.html');
+      res.sendFile(appRoot.path + '/app/index.html');
+
     } else {
-     
-      res.sendFile(path.resolve(__dirname, '../../') + '/index.html');
+      res.sendFile(appRoot.path + '/app/index.html');
+  //    res.sendFile(path.resolve(__dirname, '../../') + '/index.html');
     }
+
 });
+
 
 app.listen(port, function () {
 	console.log("Start server port " + port + " is OK...");
@@ -173,6 +194,7 @@ process.on('uncaughtException', function (err) {
     console.log(err, err.stack.split("\n"));
 }); 
 
+/*
 app.use(function(err, req, res, next){
   console.error(err.stack);
   console.error(appRoot +'/app/');
@@ -190,9 +212,9 @@ app.use(function(err, req, res, next){
         //      console.log(holiday);
         //      res.sendFile(path.resolve(__dirname, '../../') + '/404.html');
           }
-      });*/
+      });
 });
-
+*/
 app.get('/getpost/:countrycode/:weightgram', function(req, res) {
   var country = req.params.countrycode;
   var weightgram = req.params.weightgram;

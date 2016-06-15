@@ -1,18 +1,38 @@
 <div class="article-section">
-{{Page.Mode}}
 	<div id="ViewArticle" class="animated fadeIn article-section" ng-if="Page.Mode == 'view'">
 		<div class="row">
+			<div class="col-md-12"><a href="/articles" class="btn btn-default"><i class="fa fa-long-arrow-left"></i> กลับ</a></div>
+		</div>
+		<div class="row">
 			<div class="col-md-12">
-				<h3>Article.Title</h3>
-
-
+				<h3>{{Article.Title}}</h3>
 			</div>
 			<div class="col-md-12">
-				Article.Content
+				<div class="row">
+					<div class="col-md-1" ng-repeat="tag in Article.Tags">{{tag.text}}</div>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div ta-bind ng-model="Article.Content"></div>
+			</div>
+			<div class="col-md-12 article-footer">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="col-md-1 article-vote-number">0</div>
+						<div id="voted" class="col-md-1">
+							<!--<img id="voted" src="/images/unvote.png" width="32" height="32">-->
+						</div>
+						<div class="col-md-2"><img id="" src="/images/noProfileImg.png" class="img-circle" width="48" height="48"></div>
+						<div class="col-md-10">
+							{{Article.User.Username}}
+							<i><span am-time-ago="Article.UpdateDate"></span></i>
+						</div>
+						
+					</div>
+				</div>
 			</div>
 		</div>
-
-		<div id="disqus_thread" styl></div>
+		<div id="disqus_thread"></div>
 		<script>
 		/**
 		* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
@@ -38,28 +58,28 @@
 	</div>
 	<div id="NewArticle" class="animated fadeIn article-section" ng-if="Page.Mode == 'new'" >
 		<div class="row">
-			<div class="col-md-12"><h3 class="article-header">การสร้างหัวข้อ</h3></div>
+			<div class="col-md-12"><h3 class="article-header"><i class="fa fa-pencil-square-o"></i> สร้างเรื่องราว</h3></div>
 			<div class="col-md-12">
 				<div class="col-md-2">หัวข้อ : </div>
 				<div class="col-md-10">
-					<input type="text" class="article-input form-control" ng-model="Title">
+					<input type="text" class="article-input form-control" ng-model="Article.Title">
 				</div>
 			</div>
 			<div class="col-md-12">
 				<div class="col-md-2">เนื้อหา : </div>
 				<div class="col-md-10">
-					<div text-angular ng-model="Content"></div>
+					<div text-angular ng-model="Article.Content"></div>
 				</div>
 			</div>
 			<div class="col-md-12">
 				<div class="col-md-2">แท็ก : </div>
 				<div class="col-md-10">
-					<tags-input ng-model="Tags" class="article-input"></tags-input>
+					<tags-input ng-model="Article.Tags" class="article-input"></tags-input>
 				</div>
 			</div>
 			
 			<div class="col-md-12 text-center">
-				<a ng-click="SaveArticle()" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> ตั้งกระทู้</a>
+				<a ng-click="SaveArticle()" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> บันทึก</a>
 				<a ng-click="CancelArticle()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> ยกเลิก</a>
 			</div>
 		</div>
