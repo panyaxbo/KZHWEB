@@ -25,9 +25,10 @@
 				<div class="text-center" ng-if="Articles.length <= 0">
 					<i class="fa fa-comment-o fa-4x"></i>
 				</div>
-				<div ng-if="Articles.length > 0">
-					<div class="col-md-12 row-articles" ng-repeat="Article in Articles">
-						<article-list article="Article"></article-list>
+				
+				<div class="row" >
+					<div ng-repeat="Article in Articles">
+						<article-card-list article="Article"></article-card-list> 
 					</div>
 				</div>
 			</div>

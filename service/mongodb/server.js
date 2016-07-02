@@ -21,7 +21,6 @@ global.url = require('url');
 global.db;
 global.collection;
 
-
 //app.use(express.static(__dirname));
 app.use(express.static('./app'));
 app.use(express.static(path.resolve(__dirname, '../../')));
@@ -65,6 +64,9 @@ var weight = require('./route/weight-rate');
 var feedbacks = require('./route/feedback');
 var articles = require('../articles/article');
 var subscribes = require('./route/subscribes');
+var technicians = require('./route/technicians');
+var services = require('./route/services');
+var entrepreneurs = require('./route/entrepreneurs');
 
 //app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -106,21 +108,23 @@ app.use('/weight', weight);
 app.use('/feedbacks', feedbacks);
 app.use('/articles', articles);
 app.use('/subscribes', subscribes);
-
-app.use('/js', express.static(path.resolve(__dirname, '../../') + '/app/scripts'));
-app.use('/dist', express.static(path.resolve(__dirname, '../../') + '/dist'));
-app.use('/css', express.static(path.resolve(__dirname, '../../') + '/app/styles'));
-app.use('/partials', express.static(path.resolve(__dirname, '../../') +  '/app/views'));
-
-app.all('/*', function(req, res, next) {
-    // Just send the index.html for other files to support HTML5Mode
-    res.sendFile('index.html', { root: path.resolve(__dirname, '../../')+'/app' });
-});
+app.use('/technicians', technicians);
+app.use('/services', services);
+app.use('/entrepreneurs', entrepreneurs);
 
 var environment = process.env.NODE_ENV || '';
 var port = process.env.PORT || 3000;
+
+var local_uri = process.env.MONGOLAB_URI || 'mongodb://127.0.0.1:27017/kzhparts';
 var mongolab_uri = process.env.MONGOLAB_URI || 'mongodb://aaa:bbb@ds033123.mongolab.com:33123/kzhparts';
 var heroku_mongolab_uri = process.env.MONGOLAB_URI || 'mongodb://heroku_dmj53qsq:snsjuqkbr1cp1unjoibhem0iob@ds033915.mongolab.com:33915/heroku_dmj53qsq';
+
+mongodb.MongoClient.connect(local_uri, function (err, database) {
+    if (err) console.log(err, err.stack.split("\n"));
+ //   console.log(database);
+    db = database;
+   
+});
 
 app.set('', port);
 console.log('appRoot ', appRoot.path + '/app/index.html');
@@ -163,12 +167,6 @@ mongodb.MongoClient.connect(mongodbConfig.connection_url + mongodbConfig.collect
 });
 */
 
-mongodb.MongoClient.connect(mongolab_uri, function (err, database) {
-    if (err) console.log(err, err.stack.split("\n"));
- //   console.log(database);
-    db = database;
-   
-});
 
 
 //Using Mongodb-Promise
@@ -215,6 +213,7 @@ app.use(function(err, req, res, next){
       });
 });
 */
+
 app.get('/getpost/:countrycode/:weightgram', function(req, res) {
   var country = req.params.countrycode;
   var weightgram = req.params.weightgram;

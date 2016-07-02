@@ -9,14 +9,16 @@ router.get(mongodbConfig.url.product_type.home, function (req, res, next) {
 router.get(mongodbConfig.url.product_type.loadAllProductType, function (req, res) {
     db.collection('ProductType')
         .find({
-            $query: {},
-            $orderby: { ProductTypeCode : 1 }
+            
+        })
+        .sort({ 
+            ProductTypeCode : 1 
         })
         .toArray(function (err, items) {
             if (err) {
                 console.log(err);
             } else {
-                console.log(items);
+            //    console.log(items);
                 res.json(items);
             }
         });

@@ -20,7 +20,10 @@ router.get(mongodbConfig.url.subdistrict.loadSubDistrictByDistrictId, function (
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.subdistrict.name)
             .find({
-                "$query":{'DistrictId' : o_id}, "$orderby":{ "SubDistrict": 1 }
+                DistrictId : o_id
+            })
+            .sort({
+                SubDistrict: 1
             })
             .toArray(function (err, subdistricts) {
                 if (err) {
@@ -55,7 +58,10 @@ router.get(mongodbConfig.url.subdistrict.loadSubDistrictBySubDistrictId, functio
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.subdistrict.name)
             .find({
-                "$query":{'_id' : o_id}, "$orderby":{ "SubDistrict": 1 }
+                _id : o_id
+            })
+            .sort({
+                SubDistrict : 1
             })
             .toArray(function (err, subdistricts) {
                 if (err) {

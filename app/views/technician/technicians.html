@@ -1,0 +1,60 @@
+<div class="row" ng-init="LoadTechnicians()">
+    <div class="row head-control">
+        <div class="text-center col-md-6">
+        <a href="" class="btn btn-default" ng-click="GetCurrentClientGeoLocation()" > <i class="fa fa-map-marker" aria-hidden="true"></i> ดูรายชื่อช่างที่อยู่ใกล้คุณ</a>
+        </div>
+        <div class="text-center col-md-6">
+            <select class="technician-distance" ng-change="SelectNearestDistance()" ng-model="NearestDistance">
+              <option value="100" selected>100 m</option>
+              <option value="500">500 m</option>
+              <option value="1000">1 km</option>
+              <option value="5000">5 km</option>
+              <option value="10000">10 km</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="map-canvas" class="row animated fadeIn google-map-container">
+
+    </div>
+
+	<div class="col-lg-3 col-sm-6" ng-repeat="Technician in Technicians track by $index" >
+        <div class="card hovercard">
+        <button type="button" class="btn btn-primary btn-xs pull-left" >Id:12334</button><button class="btn btn-primary btn-xs pull-right">19-05-2015</button>
+            <div class="cardheader" style="background: url('http://www.justprop.com/components/com_djclassifieds/images/id_images/68.jpg');background-size: cover;height: 135px;">
+
+            </div>
+            <div class="avatar">
+                <img alt="" src="http://www.justprop.com/components/com_djclassifieds/images/id_images/51.jpg">
+            </div>
+            <div class="info">
+                <div class="title">
+                    <a href="/technician/{{Technician._id}}">{{Technician.Name}}</a>
+                </div>
+                <div class="desc">Antriksh Golf View 1 / Noida 7X for Sale 2BHK (1140 sq.ft.) Around 15th floor with transfer @4750 /sq.ft. All inclusive.</div>
+            </div>
+            <div class="technician-address">
+            {{Technician.Address}}
+            </div>
+            <div class="technician-rating">
+                <div class="star-ratings-css">
+              <div class="star-ratings-css-top" style="width: 84%"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+              <div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+            </div>
+            </div>
+            <div class="bottom">
+                <a class="btn btn-primary btn-sm" href="https://twitter.com/webmaniac">
+                    Rent
+                </a>
+                <a class="btn btn-primary btn-sm" href="https://twitter.com/webmaniac">
+                    2BHK
+                </a>
+                <a class="btn btn-primary btn-sm" href="https://twitter.com/webmaniac">
+                    Lower Floor
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+</div>

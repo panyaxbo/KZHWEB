@@ -4,7 +4,9 @@
     width: 50px;
     line-height: 50px;
 }
-
+.input-readonly {
+    background-color: #bdbdbd;
+}
 .elevator {
 
     height: 20px;

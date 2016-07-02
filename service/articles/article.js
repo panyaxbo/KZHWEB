@@ -5,12 +5,15 @@ var Q = require('q');
 router.get('/LoadArticle', function(req, res) {
     db.collection('Article')
         .find({
-            $query: {} ,
-            $orderby: { CreateDate : -1 } // Last create date show before if 1 Last createdate go to the bottom
+         //   $query: {} ,
+       //     $sort: { CreateDate : -1 } // Last create date show before if 1 Last createdate go to the bottom
+        })
+        .sort({
+            CreateDate : -1
         })
         .toArray(function (err, items) {
         	if (err) {
-
+                console.log('2', err, err.stack.split("\n"));
         	} else {
 	        //    console.log(items);
 	            res.json(items);
@@ -40,7 +43,7 @@ router.get('/LoadArticleById/:ArticleId', function(req, res) {
         var user_id = bson.BSONPure.ObjectID(userId.toString());
         db.collection('AppUser')
             .findOne({
-                $query: { '_id' : user_id} 
+                '_id' : user_id
             }, function (err, appuser) {
                 if (err) {
                     defer.reject(err);

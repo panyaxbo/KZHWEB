@@ -5,36 +5,50 @@
     <title>โค้ว ซุ่น เฮง - ศูนย์รวมอะไหล่มอเตอร์ไซค์, ยาง และ น้ำมันเครื่อง</title>
     <meta name="description" content="ค้าปลีก-ส่ง น้ำมันเครื่อง,ยางนอก,ยางใน,อะไหล่มอเตอร์ไซค์,รถยนต์,รถไถ, ไฟฟ้า, การเกษตร, ประปา สินค้าราคาถูก น่าเชื่อถือ">
     <meta name="keywords" content="น้ำมันเครื่อง,ยางนอก,ยางใน,อะไหล่มอเตอร์ไซค์,รถยนต์,รถไถ, ไฟฟ้า, การเกษตร, ประปา, ฮอนด้า, ยามาฮ่า, ซูซุกิ">
-    <meta name="author" content="Panya Boonyakulsrirung">
+    <meta name="author" content="ipatz">
     <meta name="viewport" content="width=device-width">
+    <meta property="fb:pages" content="571156579574584" />
     <link rel="shortcut icon" href="/images/favicon.ico">
-
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/BrandButtons/dist/brand-buttons.min.css" />
-    <link rel="stylesheet" href="bower_components/allmighty-autocomplete/style/autocomplete.css" />
-    <link rel="stylesheet" href="bower_components/angular-block-ui/dist/angular-block-ui.css" />
     <link rel="stylesheet" href="bower_components/angularjs-datepicker/dist/angular-datepicker.min.css" />
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css" />
     <link rel="stylesheet" href="bower_components/bootstrap-social/bootstrap-social.css" />
     <link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.min.css" />
     <link rel="stylesheet" href="bower_components/sweetalert/dist/sweetalert.css" />
-    <link rel="stylesheet" href="bower_components/animate.css/animate.min.css" />
-    <link rel="stylesheet" href="bower_components/angular-aside/dist/css/angular-aside.min.css" />
-    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
+    <link rel="stylesheet" href="bower_components/sweetalert2/dist/sweetalert2.css" />
+    <link rel="stylesheet" href="bower_components/textAngular/dist/textAngular.css" />
+    <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.css" />
+    <link rel="stylesheet" href="bower_components/hover/css/hover.css" />
+    <link rel="stylesheet" href="bower_components/angular-growl-v2/build/angular-growl.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-star-rating/css/star-rating.min.css" />
+    <link rel="stylesheet" href="bower_components/select2/select2.css" />
+    <link rel="stylesheet" href="bower_components/select2-bootstrap-css/select2-bootstrap.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.0.2/css/hover-min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-css/1.4.6/select2-bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.1/textAngular.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ng-tags-input/3.0.0/ng-tags-input.min.css">
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/search.css">
     <link rel="stylesheet" href="styles/step.css">
-    <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/screen-device.css">
     <link rel="stylesheet" href="styles/kzh-navbar.css">
     <link rel="stylesheet" href="styles/kzh-side-menu.css">
+    <link rel="stylesheet" href="styles/kzh-technician.css">
+    <link rel="stylesheet" href="styles/kzh-google-map.css">
+    <!-- endbuild -->
     <base href="/" >
 </head>
 
 <body ng-controller="MainController" id="main"> <!--onselectstart="return false;" ondragstart="return false;" oncontextmenu="return false;"-->
+<!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
     <div ng-show="i18nLoaded" class="loading-screen" ng-cloak="">
         <i class="fa fa-refresh fa-spin fa-5x fa-fw margin-bottom"></i>
         <span class="sr-only">Loading...</span>
@@ -167,16 +181,18 @@
                             </li>
                             <li>
                                 <div>
-                                    <a href="/login" class="btn btn-primary">
-                                    <span class="glyphicon glyphicon-log-in"></span> {{'HEAD.SIGNIN' | translate}}</a>
-                                    <button id="LogoutButton" class="btn btn-danger" ng-click="Logout()" ng-show="IsLogin" ng-hide="!IsLogin">
+                                    <a href="/login" class="btn btn-primary" ng-if="!IsLogin || (IsLogin === undefined)">
+                                        <span class="glyphicon glyphicon-log-in"></span> {{'HEAD.SIGNIN' | translate}}
+                                    </a>
+                                    <a href="" class="btn btn-danger" ng-if="IsLogin && (IsLogin !== undefined)" ng-click="Logout()"> 
                                         <span class="glyphicon glyphicon-log-out"></span> {{'HEAD.SIGNOUT' | translate}}
-                                    </button>
+                                    </a>
+                                   
                                 </div>
                             </li>
 
                             <li class="dropdown" class="head-menu" style="margin-top:-10px">
-                                 <a href="" class="dropdown-toggle head-menu" data-toggle="dropdown"><span id="SelectedDropdownLanguage"><img src="/images/th.png">&nbsp;ไทย</span><b class="caret"></b></a>
+                                 <a href=""  class="dropdown-toggle head-menu" data-toggle="dropdown"><span id="SelectedDropdownLanguage"><img src="/images/th.png">&nbsp;ไทย</span><b class="caret"></b></a>
                                   <ul id="DropdownLanguage" class="dropdown-menu">
                                     <li><a href="" ng-click="SelectedLocale('th')"><img src="/images/th.png">&nbsp; ไทย</a>
                                     </li>
@@ -546,14 +562,14 @@
         </div>
     </div>
     <!--Start of Zopim Live Chat Script-->
-<script type="text/javascript">
-window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
-d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
-_.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
-$.src="//v2.zopim.com/?3zNAygD3G4WcgPYEzNeAHJdXW7nVkkOi";z.t=+new Date;$.
-type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
-</script>
-<!--End of Zopim Live Chat Script-->
+<!--    <script type="text/javascript">
+    window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+    d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+    _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
+    $.src="//v2.zopim.com/?3zNAygD3G4WcgPYEzNeAHJdXW7nVkkOi";z.t=+new Date;$.
+    type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
+    </script>
+    <!--End of Zopim Live Chat Script-->
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -564,104 +580,122 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
         ga('create', 'UA-72000276-1', 'auto');
         ga('send', 'pageview');
     </script>
-
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/angucomplete/angucomplete.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
-    <script src="bower_components/angular-block-ui/dist/angular-block-ui.js"></script>
     <script src="bower_components/angular-facebook/lib/angular-facebook.js"></script>
     <script src="bower_components/lodash/lodash.js"></script>
-    <script src="bower_components/angular-google-maps/dist/angular-google-maps.js"></script>
-    <script src="bower_components/angular-google-plus/dist/angular-google-plus.js"></script>
-    <script src="bower_components/angular-mass-autocomplete/massautocomplete.min.js"></script>
     <script src="bower_components/angular-recaptcha/release/angular-recaptcha.js"></script>
     <script src="bower_components/angular-translate/angular-translate.js"></script>
     <script src="bower_components/angularjs-datepicker/dist/angular-datepicker.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="bower_components/bootstrap3-typeahead/bootstrap3-typeahead.js"></script>
     <script src="bower_components/chartjs/Chart.js"></script>
+    <script src="bower_components/layzr.js/dist/layzr.js"></script>
     <script src="bower_components/less/dist/less.js"></script>
     <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
     <script src="bower_components/ng-file-upload-shim/ng-file-upload-shim.js"></script>
     <script src="bower_components/ng-password-strength/dist/scripts/ng-password-strength.js"></script>
     <script src="bower_components/ng-table/dist/ng-table.min.js"></script>
-    <script src="bower_components/ngAutocomplete/src/ngAutocomplete.js"></script>
     <script src="bower_components/platform/platform.js"></script>
     <script src="bower_components/oauth-js/dist/oauth.min.js"></script>
+    <script src="bower_components/requirejs-bower/require.js"></script>
     <script src="bower_components/sweetalert/dist/sweetalert.min.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="bower_components/aws-sdk/dist/aws-sdk.js"></script>
     <script src="bower_components/card/lib/js/card.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-spinners/dist/angular-spinners.min.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-card/src/card.js"></script>
-    <script src="bower_components/angular-aside/dist/js/angular-aside.min.js"></script>
+    <script src="bower_components/es6-promise/promise.js"></script>
+    <script src="bower_components/sweetalert2/dist/sweetalert2.js"></script>
+    <script src="bower_components/rangy/rangy-core.js"></script>
+    <script src="bower_components/rangy/rangy-classapplier.js"></script>
+    <script src="bower_components/rangy/rangy-highlighter.js"></script>
+    <script src="bower_components/rangy/rangy-selectionsaverestore.js"></script>
+    <script src="bower_components/rangy/rangy-serializer.js"></script>
+    <script src="bower_components/rangy/rangy-textrange.js"></script>
+    <script src="bower_components/textAngular/dist/textAngular.js"></script>
+    <script src="bower_components/textAngular/dist/textAngular-sanitize.js"></script>
+    <script src="bower_components/textAngular/dist/textAngularSetup.js"></script>
+    <script src="bower_components/ng-tags-input/ng-tags-input.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/angular-moment/angular-moment.js"></script>
+    <script src="bower_components/ngGeolocation/ngGeolocation.js"></script>
+    <script src="bower_components/angular-growl-v2/build/angular-growl.js"></script>
+    <script src="bower_components/angular-loading-overlay/dist/angular-loading-overlay.js"></script>
+    <script src="bower_components/bootstrap-star-rating/js/star-rating.min.js"></script>
+    <script src="bower_components/select2/select2.js"></script>
+    <script src="bower_components/angular-select2/dist/angular-select2.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.1/textAngular-rangy.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.1/textAngular-sanitize.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.1/textAngular.min.js"></script>
-    <script src="https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit" async defer></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-moment/0.10.3/angular-moment.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ng-tags-input/3.0.0/ng-tags-input.min.js"></script>
-    <script src="/controllers/app.js"></script>
-    <script src="/controllers/main-controller.js"></script>
-    <script src="/controllers/header-controller.js"></script>
-    <script src="/controllers/body-controller.js"></script>
-    <script src="/controllers/footer-controller.js"></script>
-    <script src="/controllers/article-controller.js"></script>
-    <script src="/controllers/history-controller.js"></script>
-    <script src="/controllers/contact-controller.js"></script>
-    <script src="/controllers/cart-controller.js"></script>
-    <script src="/controllers/login-controller.js"></script>
-    <script src="/controllers/shipment-controller.js"></script>
-    <script src="/controllers/payment-controller.js"></script>
-    <script src="/controllers/supplier-controller.js"></script>
-    <script src="/configs/app-translate.js"></script>
-    <script src="/configs/app-route.js"></script>
-    <script src="/constants/constants.js"></script>
-    <script src="/directives/enter-directive.js"></script>
-    <script src="/directives/menu-directive.js"></script>
-    <script src="/directives/menu-item-directive.js"></script>
-    <script src="/directives/focus-directive.js"></script>
-    <script src="/directives/scroll-on-click-directive.js"></script>
-    <script src="/directives/product-type-directive.js"></script>
-    <script src="/directives/product-directive.js"></script>
-    <script src="/directives/article-directive.js"></script>
-    <script src="/services/menu-service.js"></script>
-    <script src="/services/locale-service.js"></script>
-    <script src="/services/receipt-order-service.js"></script>
-    <script src="/services/user-service.js"></script>
-    <script src="/services/currency-service.js"></script>
-    <script src="/services/company-service.js"></script>
-    <script src="/services/product-service.js"></script>
-    <script src="/services/credential-service.js"></script>
-    <script src="/services/social-service.js"></script>
-    <script src="/services/email-service.js"></script>
-    <script src="/services/crypto-service.js"></script>
-    <script src="/services/product-type-service.js"></script>
-    <script src="/services/product-category-service.js"></script>
-    <script src="/services/uom-service.js"></script>
-    <script src="/services/province-service.js"></script>
-    <script src="/services/district-service.js"></script>
-    <script src="/services/weight-rate-service.js"></script>
-    <script src="/services/sub-district-service.js"></script>
-    <script src="/services/app-config-service.js"></script>
-    <script src="/services/aws-service.js"></script>
-    <script src="/services/paypal-service.js"></script>
-    <script src="/services/feedback-service.js"></script>
-    <script src="/services/article-service.js"></script>
-    <script src="/services/utility-service.js"></script>
-    <script src="/services/subscribe-service.js"></script>
-    <script src="/services/technician-service.js"></script>
-    <script src="/services/entrepreneur-service.js"></script>
-    <script src="/filters/html-filter.js"></script>
-    <script src="/filters/cut-more-filter.js"></script>
-    <script src="/scripts/main.js"></script>
-    <script src="/scripts/step.js"></script>
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="/scripts/app.js"></script>
+    <script src="/scripts/controllers/main-controller.js"></script>
+    <script src="/scripts/controllers/header-controller.js"></script>
+    <script src="/scripts/controllers/body-controller.js"></script>
+    <script src="/scripts/controllers/footer-controller.js"></script>
+    <script src="/scripts/controllers/article-controller.js"></script>
+    <script src="/scripts/controllers/history-controller.js"></script>
+    <script src="/scripts/controllers/contact-controller.js"></script>
+    <script src="/scripts/controllers/cart-controller.js"></script>
+    <script src="/scripts/controllers/login-controller.js"></script>
+    <script src="/scripts/controllers/shipment-controller.js"></script>
+    <script src="/scripts/controllers/payment-controller.js"></script>
+    <script src="/scripts/controllers/supplier-controller.js"></script>
+    <script src="/scripts/controllers/technician-controller.js"></script>
+    <script src="/scripts/controllers/entrepreneur-controller.js"></script>
+    <script src="/scripts/configs/app-translate.js"></script>
+    <script src="/scripts/configs/app-route.js"></script>
+    <script src="/scripts/configs/app-google-map.js"></script>
+    <script src="/scripts/constants/constants.js"></script>
+    <script src="/scripts/directives/enter-directive.js"></script>
+    <script src="/scripts/directives/menu-directive.js"></script>
+    <script src="/scripts/directives/menu-item-directive.js"></script>
+    <script src="/scripts/directives/focus-directive.js"></script>
+    <script src="/scripts/directives/scroll-on-click-directive.js"></script>
+    <script src="/scripts/directives/product-type-directive.js"></script>
+    <script src="/scripts/directives/product-directive.js"></script>
+    <script src="/scripts/directives/article-directive.js"></script>
+    <script src="/scripts/directives/technician-directive.js"></script>
+    <script src="/scripts/services/menu-service.js"></script>
+    <script src="/scripts/services/locale-service.js"></script>
+    <script src="/scripts/services/receipt-order-service.js"></script>
+    <script src="/scripts/services/user-service.js"></script>
+    <script src="/scripts/services/currency-service.js"></script>
+    <script src="/scripts/services/company-service.js"></script>
+    <script src="/scripts/services/product-service.js"></script>
+    <script src="/scripts/services/credential-service.js"></script>
+    <script src="/scripts/services/social-service.js"></script>
+    <script src="/scripts/services/email-service.js"></script>
+    <script src="/scripts/services/crypto-service.js"></script>
+    <script src="/scripts/services/product-type-service.js"></script>
+    <script src="/scripts/services/product-category-service.js"></script>
+    <script src="/scripts/services/uom-service.js"></script>
+    <script src="/scripts/services/province-service.js"></script>
+    <script src="/scripts/services/district-service.js"></script>
+    <script src="/scripts/services/weight-rate-service.js"></script>
+    <script src="/scripts/services/sub-district-service.js"></script>
+    <script src="/scripts/services/app-config-service.js"></script>
+    <script src="/scripts/services/aws-service.js"></script>
+    <script src="/scripts/services/paypal-service.js"></script>
+    <script src="/scripts/services/feedback-service.js"></script>
+    <script src="/scripts/services/article-service.js"></script>
+    <script src="/scripts/services/utility-service.js"></script>
+    <script src="/scripts/services/subscribe-service.js"></script>
+    <script src="/scripts/services/technician-service.js"></script>
+    <script src="/scripts/services/entrepreneur-service.js"></script>
+    <script src="/scripts/services/geolocation-service.js"></script>
+    <script src="/scripts/services/service-service.js"></script>
+    <script src="/scripts/filters/html-filter.js"></script>
+    <script src="/scripts/filters/cut-more-filter.js"></script>
+    <script src="/scripts/factories/data-model-factory.js"></script>
+    <script src="/scripts/scripts/main.js"></script>
+    <script src="/scripts/scripts/google-map.js"></script>
+    <script src="/scripts/scripts/step.js"></script>
+    <!-- endbuild -->
 </body>
 
 </html>

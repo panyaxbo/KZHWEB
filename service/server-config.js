@@ -5,4 +5,8 @@ config.app = {
 	passphrase : 'KZHWEB'
 };
 
+config.browser = {
+	key : 'AIzaSyDTee4bgz7iWRFTldB3upIjbv0YYUqSP8o'
+}
+
 module.exports = config;

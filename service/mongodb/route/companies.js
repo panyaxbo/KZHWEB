@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Q = require('q');
+var serverConfig = require('../../server-config.js');
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -10,9 +11,9 @@ router.get('/', function (req, res, next) {
 router.get('/LoadCompany', function(req, res) {
     var findCompanyPromise = function () {
         var defer =  Q.defer();
-        db.collection(mongodbConfig.mongodb.company.name)
+        db.collection('Company')
             .findOne({
-                "$query" : {}
+               
             }, function (err, company) {
                 if( err ) {
                     defer.reject(err);
@@ -36,8 +37,10 @@ router.get('/LoadCompany', function(req, res) {
         res.sendStatus(500);
         return;
     });
+});
 
-    
+router.get('/LoadBrowserAPIKey', function(req, res) {
+    res.json(serverConfig.browser.key);
 });
 
 module.exports = router;

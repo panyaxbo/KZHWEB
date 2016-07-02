@@ -957,4 +957,9 @@ router.get('/downloadReceiptPaymentThumbnail/:RONo', function(req, res) {
   });
 });
 
+
+router.get('/uploadTechnicianProfileImgae', function(req, res) {
+
+});
+
 module.exports = router;

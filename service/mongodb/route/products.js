@@ -90,7 +90,10 @@ router.get('/LoadProductByCondition/:ProductCode/:ProductName/:ProductCategoryCo
  //   console.log(searchquery);
     db.collection(mongodbConfig.mongodb.product.name)
         .find({
-            $query: searchquery ,
+            $query: searchquery 
+            
+        })
+        .sort({
             $orderby: { ProductCode : 1 }
         })
         .toArray(function (err, items) {
@@ -105,10 +108,11 @@ router.get('/LoadProductByCondition/:ProductCode/:ProductName/:ProductCategoryCo
 router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
     db.collection(mongodbConfig.mongodb.product.name)
         .find({
-            $query: {Weight: { $gt: 0 }} ,
-            $orderby: { 
-                IsHot : -1 
-            }
+            Weight: { $gt: 0 },
+            
+        })
+        .sort({
+            IsHot : -1 
         })
         .limit(100)
         .toArray(function (err, items) {

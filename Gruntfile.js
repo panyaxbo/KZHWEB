@@ -14,7 +14,12 @@ module.exports = function (grunt) {
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
-
+  // Automatically load required Grunt tasks
+  require('jit-grunt')(grunt, {
+    useminPrepare: 'grunt-usemin',
+    ngtemplates: 'grunt-angular-templates',
+    cdnify: 'grunt-google-cdn'
+  });
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
@@ -266,13 +271,13 @@ module.exports = function (grunt) {
       dist: {
         src: [
           '<%= yeoman.dist %>/scripts/{,*/}*.js',
-          '<%= yeoman.dist %>/controllers/{,*/}*.js',
-          '<%= yeoman.dist %>/configs/{,*/}*.js',
-          '<%= yeoman.dist %>/constants/{,*/}*.js',
-          '<%= yeoman.dist %>/directives/{,*/}*.js',
-          '<%= yeoman.dist %>/services/{,*/}*.js',
+     //     '<%= yeoman.dist %>/controllers/{,*/}*.js',
+      //    '<%= yeoman.dist %>/configs/{,*/}*.js',
+     //     '<%= yeoman.dist %>/constants/{,*/}*.js',
+     //     '<%= yeoman.dist %>/directives/{,*/}*.js',
+    //      '<%= yeoman.dist %>/services/{,*/}*.js',
           '<%= yeoman.dist %>/styles/{,*/}*.css',
-     //     '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
       //    '<%= yeoman.dist %>/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= yeoman.dist %>/styles/fonts/*'
         ]
@@ -283,9 +288,10 @@ module.exports = function (grunt) {
     // concat, minify and revision files. Creates configurations in memory so
     // additional tasks can operate on them
     useminPrepare: {
-      html: '<%= yeoman.app %>/index.html',
+      html: '<%= yeoman.app %>/{,*/}*.html',
       options: {
         dest: '<%= yeoman.dist %>',
+        root: './',
         flow: {
           html: {
             steps: {
@@ -300,36 +306,17 @@ module.exports = function (grunt) {
 
     // Performs rewrites based on filerev and the useminPrepare configuration
     usemin: {
-      html: ['<%= yeoman.dist %>/index.html'],
+      html: ['<%= yeoman.dist %>/{,*/}*.html'],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
-      js: ['<%= yeoman.dist %>/scripts/{,*/}*.js'
-      , 
-      '<%= yeoman.dist %>/controllers/{,*/}*.js',
-      '<%= yeoman.dist %>/configs/{,*/}*.js',
-      '<%= yeoman.dist %>/constants/{,*/}*.js',
-      '<%= yeoman.dist %>/directives/{,*/}*.js',
-      '<%= yeoman.dist %>/services/{,*/}*.js'
-      ],
+      js: ['<%= yeoman.dist %>/scripts/{,*/}*.js'],
       options: {
         assetsDirs: [
           '<%= yeoman.dist %>',
           '<%= yeoman.dist %>/images',
-          '<%= yeoman.dist %>/styles',
-          '<%= yeoman.dist %>/scripts'
-          ,
-          '<%= yeoman.dist %>/controllers',
-          '<%= yeoman.dist %>/configs',
-          '<%= yeoman.dist %>/constants',
-          '<%= yeoman.dist %>/directives', 
-          '<%= yeoman.dist %>/services'
+          '<%= yeoman.dist %>/styles'
         ],
         patterns: {
-          js: [[/(images\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg))/g, 'Replacing references to images']],
-          css: [
-            [/(\/bower_components\/bootstrap\/dist\/fonts)/g, 'god help me', function(match) {
-              return match.replace('/bower_components/bootstrap/dist/fonts', '../fonts');
-            }]
-          ]
+          js: [[/(images\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg))/g, 'Replacing references to images']]
         }
       }
     },
@@ -418,70 +405,191 @@ module.exports = function (grunt) {
        }
      },
      uglify: {
-    //   dist: {
-      //   files: {
-    //       '<%= yeoman.dist %>/scripts/scripts.js': ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-      //     '<%= yeoman.dist %>/controllers/controllers.js': ['<%= yeoman.app %>/controllers/{,*/}*.js'],
-      //     '<%= yeoman.dist %>/constants/constants.js': ['<%= yeoman.app %>/constants/{,*/}*.js'],
-      //     '<%= yeoman.dist %>/directives/directives.js': ['<%= yeoman.app %>/directives/{,*/}*.js'],
-     //      '<%= yeoman.dist %>/services/services.js': ['<%= yeoman.app %>/services/{,*/}*.js']
-     //    }
-    //   },
-    
-       options : {
-        mangle: false
-        },
-       build: {
-            src: ['<%= yeoman.app %>/scripts/{,*/}*.js'
-            ],
-            dest: '<%= yeoman.dist %>/scripts/script.min.js'
-        },
-        build2: {
-            src: ['<%= yeoman.app %>/controllers/app.js'
-            ],
-            dest: '<%= yeoman.dist %>/controllers/app.min.js'
-        },
-        build21: {
-            src: ['<%= yeoman.app %>/controllers/main-controller.js'
-            ],
-            dest: '<%= yeoman.dist %>/controllers/main-controller.min.js'
-        },
-        build22: {
-            src: ['<%= yeoman.app %>/controllers/header-controller.js'
-            ],
-            dest: '<%= yeoman.dist %>/controllers/header-controller.min.js'
-        },
-        build23: {
-            src: ['<%= yeoman.app %>/controllers/body-controller.js'
-            ],
-            dest: '<%= yeoman.dist %>/controllers/body-controller.min.js'
-        },
-        build24: {
-            src: ['<%= yeoman.app %>/controllers/footer-controller.js'
-            ],
-            dest: '<%= yeoman.dist %>/controllers/footer-controller.min.js'
-        },
-        build3: {
-            src: ['<%= yeoman.app %>/configs/{,*/}*.js'
-            ],
-            dest: '<%= yeoman.dist %>/configs/config.min.js'
-        },
-        build4: {
-            src: ['<%= yeoman.app %>/constants/{,*/}*.js'
-            ],
-            dest: '<%= yeoman.dist %>/constants/constant.min.js'
-        },
-        build5: {
-            src: ['<%= yeoman.app %>/directives/{,*/}*.js'
-            ],
-            dest: '<%= yeoman.dist %>/directives/directive.min.js'
-        },
-        build6: {
-            src: ['<%= yeoman.app %>/services/{,*/}*.js'
-            ],
-            dest: '<%= yeoman.dist %>/services/service.min.js'
-        }
+
+      // options: {compress: true},
+      //  dist: {
+      //    files: {
+      //      '<%= yeoman.dist %>/scripts/scripts.js': [
+      //       '<%= yeoman.app %>/scripts/{,*/}*.js'
+      //     ]
+      //    }
+      //  }
+      generated: 
+   { files: 
+      [ { dest: '<%= yeoman.dist %>/scripts/vendor.js',
+          src: [ '.tmp/concat/scripts/vendor.js' ] },
+        { dest: '<%= yeoman.dist %>/scripts/scripts.js',
+          src: [ '.tmp/concat/scripts/scripts.js' ] } ] } 
      },
+
+     concat:
+      { generated: 
+       { files: 
+          [ { dest: '.tmp/concat/styles/vendor.css',
+              src: 
+              [ 
+                'bower_components/BrandButtons/dist/brand-buttons.min.css' ,
+                'bower_components/angularjs-datepicker/dist/angular-datepicker.min.css',
+                'bower_components/bootstrap/dist/css/bootstrap.css',
+                'bower_components/fontawesome/css/font-awesome.css',
+                'bower_components/bootstrap-social/bootstrap-social.css',
+                'bower_components/ng-table/dist/ng-table.min.css',
+                'bower_components/sweetalert/dist/sweetalert.css',
+                'bower_components/animate.css/animate.css',
+                'bower_components/sweetalert2/dist/sweetalert2.css',
+                'bower_components/textAngular/dist/textAngular.css',
+                'bower_components/ng-tags-input/ng-tags-input.css',
+                'bower_components/hover/css/hover.css',
+                'bower_components/angular-growl-v2/build/angular-growl.css',
+                'bower_components/bootstrap-star-rating/css/star-rating.min.css',
+                'bower_components/select2/select2.css',
+                'bower_components/select2-bootstrap-css/select2-bootstrap.css'
+              ] 
+            },
+
+            { dest: '.tmp/concat/styles/main.css',
+              src: [ '{.tmp,app}/styles/main.css' ] 
+            },
+
+            { dest: '.tmp/concat/styles/style.css',
+              src: 
+              [ 
+                '{.tmp,app}/styles/search.css',
+                '{.tmp,app}/styles/step.css',
+                '{.tmp,app}/styles/screen-device.css',
+                '{.tmp,app}/styles/kzh-navbar.css',
+                '{.tmp,app}/styles/kzh-side-menu.css',
+                '{.tmp,app}/styles/kzh-technician.css',
+                '{.tmp,app}/styles/kzh-google-map.css',
+              ] 
+            },
+
+            { dest: '.tmp/concat/scripts/vendor.js',
+              src: 
+               [ 'bower_components/jquery/dist/jquery.js',
+                 'bower_components/angular/angular.js',
+                 'bower_components/angular-animate/angular-animate.js',
+                 'bower_components/angular-facebook/lib/angular-facebook.js',
+                 'bower_components/lodash/lodash.js',
+                 'bower_components/angular-recaptcha/release/angular-recaptcha.js',
+                 'bower_components/angular-translate/angular-translate.js',
+                 'bower_components/angularjs-datepicker/dist/angular-datepicker.min.js' ,
+                 'bower_components/bootstrap/dist/js/bootstrap.js',
+                 'bower_components/chartjs/Chart.js',
+                 'bower_components/layzr.js/dist/layzr.js',
+                 'bower_components/less/dist/less.js',
+                 'bower_components/ng-file-upload/ng-file-upload.js',
+                 'bower_components/ng-file-upload-shim/ng-file-upload-shim.js',
+                 'bower_components/ng-password-strength/dist/scripts/ng-password-strength.js',
+                 'bower_components/ng-table/dist/ng-table.min.js',
+                 'bower_components/platform/platform.js',
+                 'bower_components/oauth-js/dist/oauth.min.js',
+                 'bower_components/requirejs-bower/require.js',
+                 'bower_components/sweetalert/dist/sweetalert.min.js',
+                 'bower_components/angular-cookies/angular-cookies.js',
+                 'bower_components/card/lib/js/card.js',
+                 'bower_components/angular-route/angular-route.js',
+                 'bower_components/angular-spinners/dist/angular-spinners.min.js',
+                 'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+                 'bower_components/angular-card/src/card.js',
+                 'bower_components/es6-promise/promise.js',
+                 'bower_components/sweetalert2/dist/sweetalert2.js',
+                 'bower_components/rangy/rangy-core.js',
+                 'bower_components/rangy/rangy-classapplier.js',
+                 'bower_components/rangy/rangy-highlighter.js',
+                 'bower_components/rangy/rangy-selectionsaverestore.js',
+                 'bower_components/rangy/rangy-serializer.js',
+                 'bower_components/rangy/rangy-textrange.js',
+                 'bower_components/textAngular/dist/textAngular.js',
+                 'bower_components/textAngular/dist/textAngular-sanitize.js',
+                 'bower_components/textAngular/dist/textAngularSetup.js',
+                 'bower_components/ng-tags-input/ng-tags-input.js',
+                 'bower_components/moment/moment.js',
+                 'bower_components/angular-moment/angular-moment.j',
+                 'bower_components/ngGeolocation/ngGeolocation.js',
+                 'bower_components/angular-growl-v2/build/angular-growl.js',
+                 'bower_components/angular-loading-overlay/dist/angular-loading-overlay.js'
+                ] 
+            },
+
+            { dest: '.tmp/concat/scripts/scripts.js',
+              src: 
+                [ 
+                  'app/scripts/app.js',
+                  'app/scripts/controllers/main-controller.js',
+                  'app/scripts/controllers/header-controller.js',
+                  'app/scripts/controllers/body-controller.js',
+                  'app/scripts/controllers/footer-controller.js',
+                  'app/scripts/controllers/article-controller.js',
+                  'app/scripts/controllers/history-controller.js',
+                  'app/scripts/controllers/contact-controller.js',
+                  'app/scripts/controllers/cart-controller.js',
+                  'app/scripts/controllers/login-controller.js',
+                  'app/scripts/controllers/shipment-controller.js',
+                  'app/scripts/controllers/payment-controller.js',
+                  'app/scripts/controllers/supplier-controller.js',
+                  'app/scripts/controllers/technician-controller.js',
+                  'app/scripts/controllers/entrepreneur-controller.js',
+
+                  'app/scripts/configs/app-translate.js',
+                  'app/scripts/configs/app-route.js',
+                  'app/scripts/configs/app-google-map.js',
+
+                  'app/scripts/constants/constants.js',
+
+                  'app/scripts/directives/enter-directive.js',
+                  'app/scripts/directives/menu-directive.js',
+                  'app/scripts/directives/menu-item-directive.js',
+                  'app/scripts/directives/focus-directive.js',
+                  'app/scripts/directives/scroll-on-click-directive.js',
+                  'app/scripts/directives/product-type-directive.js',
+                  'app/scripts/directives/product-directive.js',
+                  'app/scripts/directives/article-directive.js',
+                  'app/scripts/directives/technician-directive.js',
+
+                  'app/scripts/services/menu-service.js', 
+                  'app/scripts/services/locale-service.js', 
+                  'app/scripts/services/receipt-order-service.js', 
+                  'app/scripts/services/user-service.js', 
+                  'app/scripts/services/currency-service.js', 
+                  'app/scripts/services/company-service.js', 
+                  'app/scripts/services/product-service.js', 
+                  'app/scripts/services/credential-service.js', 
+                  'app/scripts/services/social-service.js', 
+                  'app/scripts/services/email-service.js', 
+                  'app/scripts/services/crypto-service.js', 
+                  'app/scripts/services/product-type-service.js', 
+                  'app/scripts/services/product-category-service.js', 
+                  'app/scripts/services/uom-service.js', 
+                  'app/scripts/services/province-service.js', 
+                  'app/scripts/services/district-service.js', 
+                  'app/scripts/services/sub-district-service.js', 
+                  'app/scripts/services/weight-rate-service.js', 
+                  'app/scripts/services/app-config-service.js', 
+                  'app/scripts/services/aws-service.js', 
+                  'app/scripts/services/paypal-service.js', 
+                  'app/scripts/services/feedback-service.js', 
+                  'app/scripts/services/article-service.js', 
+                  'app/scripts/services/utility-service.js', 
+                  'app/scripts/services/subscribe-service.js',
+                  'app/scripts/services/technician-service.js',
+                  'app/scripts/services/entrepreneur-service.js', 
+                  'app/scripts/services/geolocation-service.js',
+                  'app/scripts/services/service-service.js',
+
+                  'app/scripts/filters/html-filter.js',
+                  'app/scripts/filters/cut-more-filter.js',
+                  'app/scripts/factories/data-model-factory.js',
+
+                  'app/scripts/scripts/main.js',
+                  'app/scripts/scripts/google-map.js',
+                  'app/scripts/scripts/step.js'
+              
+                ] 
+            } 
+          ] 
+        } 
+      },
   //   concat: {
   //      options: {
           // define a string to put between each file in the concatenated output
@@ -674,6 +782,8 @@ module.exports = function (grunt) {
     'ngconstant:production',
     'wiredep',
     'useminPrepare',
+    'concat',
+    'copy:dist',
 //    'concurrent:dist',
     'copy:styles',
     'copy:nodejs',
@@ -681,9 +791,8 @@ module.exports = function (grunt) {
         'imagemin',
         'svgmin',
     'autoprefixer',
- //   'concat',
+    
  //   'ngAnnotate',
-    'copy:dist',
     'cssmin',
     'uglify',
     'filerev',

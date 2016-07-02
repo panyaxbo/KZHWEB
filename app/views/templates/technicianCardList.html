@@ -1,0 +1,24 @@
+<div class="col-md-4">
+    <div class="card ">
+        <div class="card-image">
+            <img class="img-responsive" ng-src="{{technician.SourceImageThumbnail}}" ng-if="technician.SourceImageThumbnail !== undefined">
+            <img class="img-responsive" 
+            src="http://placehold.it/400x200" 
+            ng-if="(technician.SourceImageThumbnail === undefined || technician.SourceImageThumbnail.length <= 0)">
+            <span class="card-title">{{technician.JourneyTitle}}</span>
+        </div>
+        
+        <div class="card-content">
+            <p>{{(technician.JourneyContent | htmlToPlaintext) |  limitText:true:200:' ...'  }}</p>
+        </div>
+        
+        <div class="card-action">
+            <a href="#/technician/{{technician._id}}" ><i class="fa fa-eye" aria-hidden="true"></i> View</a>
+            <a href="#/technician/{{technician._id}}" ><i class="fa fa-commenting-o" aria-hidden="true"></i> COMMENTS</a>
+        <!--    <a href="#" target="new_blank">Link</a>
+            <a href="#" target="new_blank">Link</a>
+            <a href="#" target="new_blank">Link</a>
+            <a href="#" target="new_blank">Link</a>-->
+        </div>
+    </div>
+</div>

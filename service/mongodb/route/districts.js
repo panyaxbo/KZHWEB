@@ -20,7 +20,10 @@ router.get(mongodbConfig.url.district.loadDistrictByProvinceId, function (req, r
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.district.name)
             .find({
-                "$query":{'ProvinceId' : o_id}, "$orderby":{ "District": 1 }
+               ProvinceId : o_id
+            })
+            .sort({
+                District: 1
             })
             .toArray(function (err, districts) {
              //   res.json(districts);
