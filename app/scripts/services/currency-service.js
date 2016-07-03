@@ -1,3 +1,4 @@
+"use strict";
 app.service("CurrencyService", function () {
 	// 1.00 THB	=	0.18 CNY
 	// 1 THB    =   0.0299579 USD

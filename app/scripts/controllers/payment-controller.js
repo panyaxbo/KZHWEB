@@ -1,3 +1,4 @@
+"use strict";
 app.controller("PaymentController", [ "$scope", "$http", "$rootScope", "$location", 
 	"ReceiptOrderService", "CredentialService", "UserService", 'UtilService', 'DataModelFactory',
   function ($scope, $http, $rootScope, $location,

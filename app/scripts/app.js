@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 var app = angular.module('KZHWEB', ['ngRoute', 'ngAnimate', 'ui.bootstrap', 'ngFileUpload', '720kb.datepicker',
-    'ngPasswordStrength', 'ngTable','pascalprecht.translate', 'vcRecaptcha', 'ngGeolocation', 'uiGmapgoogle-maps',
-    'ngCookies', 'CONFIG','angularMoment', 'textAngular', 'ngTagsInput', 'ngAside', 'bsLoadingOverlay']);
+    'ngPasswordStrength', 'ngTable','pascalprecht.translate', 'vcRecaptcha', 'ngGeolocation', 
+    'ngCookies', 'CONFIG','angularMoment', 'textAngular', 'ngTagsInput','bsLoadingOverlay']);
 
 app.run(function ($rootScope, $location, bsLoadingOverlayService) {
     /*

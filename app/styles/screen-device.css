@@ -9,7 +9,7 @@
     } 
 
     .aside-div {
-      position:absolute;
+      position:fixed;
       margin-top: 1.2em;
       margin-left: 0.5em;
       margin-right: 0.5em;

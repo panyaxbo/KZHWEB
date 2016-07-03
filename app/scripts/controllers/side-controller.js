@@ -1,3 +1,4 @@
+"use strict";
 app.controller("SideController", function($scope, $rootScope) {
     $scope.leftVisible = false;
     $scope.rightVisible = false;

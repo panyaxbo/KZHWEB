@@ -1,3 +1,4 @@
+"use strict";
 app.directive('loadProduct', function() {
 	return {
 		restrict : 'E',

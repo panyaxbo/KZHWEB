@@ -1,3 +1,4 @@
+"use strict";
 app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "ENV",
   "UserService", "CredentialService", "UtilService", "CryptoService", "EmailService",
   function ($scope, $http, $location, $filter, ENV,

@@ -1,4 +1,4 @@
-'use strict'
+"use strict";
 app.config(function($routeProvider, $locationProvider) {
   if (window.history && window.history.pushState) {
     $locationProvider.html5Mode({

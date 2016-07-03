@@ -1,3 +1,4 @@
+"use strict";
 app.service("TechnicianService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
     return {
     	

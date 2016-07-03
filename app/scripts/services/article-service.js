@@ -1,3 +1,4 @@
+"use strict";
 app.service("ArticleService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
     var Articles = [];
     var Article = {};

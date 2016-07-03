@@ -1,3 +1,4 @@
+"use strict";
 app.service("ProductTypeService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
     var ProductTypes = [];
     return {

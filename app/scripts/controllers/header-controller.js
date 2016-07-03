@@ -1,3 +1,4 @@
+"use strict";
 app.controller('HeaderController', ["$scope", "$location", "$window", "$filter", "$anchorScroll", 
   "Upload", "$rootScope", "$http", "$translate", "$timeout", "MenuService", 
   "LocaleService", "ReceiptOrderService", "CompanyService", "CurrencyService", "ENV", "$cookies", 
@@ -16,7 +17,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
       $scope.User = args.User;
       console.log('in head ', $scope.User);
   });
-  $scope.User = UserService.GetUser();
+  $scope.User = DataModelFactory.getUser();
   /*
     END Broadcast Variable Area
    */

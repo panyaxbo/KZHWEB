@@ -1,3 +1,4 @@
+"use strict";
 app.service("AppConfigService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
     return {
     	GetNewCode: function(Module) {

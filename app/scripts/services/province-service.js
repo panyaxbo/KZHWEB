@@ -1,3 +1,4 @@
+"use strict";
 app.service("ProvinceService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
     return {
     	LoadProvince: function() {

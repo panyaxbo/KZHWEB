@@ -1,3 +1,4 @@
+"use strict";
 app.service("EmailService", ["$q","$http", "ENV", function ($q, $http, ENV) {
     return {
         SendEmailConfirmation: function(mailActivateObject) {

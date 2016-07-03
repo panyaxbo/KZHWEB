@@ -1,3 +1,4 @@
+"use strict";
 app.service("AWSService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
     return {
     	DownloadReceiptPaymentThumbnail: function(RONo) {

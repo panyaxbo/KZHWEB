@@ -1,3 +1,4 @@
+"use strict";
 app.directive('productTypeList', function() {
 	return {
 		restrict : 'E',

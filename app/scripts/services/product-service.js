@@ -1,3 +1,4 @@
+"use strict";
 app.service("ProductService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
     return {
     	LoadProduct: function() {

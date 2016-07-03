@@ -1,3 +1,4 @@
+"use strict";
 app.service("UtilService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
 	return {
 		isEmpty : function(obj) {
@@ -55,7 +56,7 @@ app.service("UtilService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
         	return asciiString;
 		},
 		generateServiceHTMLStrFromTechnicianServices: function(Services) {
-			html_str = '';
+			var html_str = '';
 			if (Services !== undefined || Services.length > 0) {
 				html_str += '<ul>';
 				angular.forEach(Services, function(Service) {

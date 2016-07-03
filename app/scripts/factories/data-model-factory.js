@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 app.factory('DataModelFactory', ['$q', '$http', 'ENV', 
     function ($q, $http, ENV) {

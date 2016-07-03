@@ -1,14 +1,15 @@
+"use strict";
 app.controller("ArticleController", ['$scope', '$route', '$routeParams', '$location', 
-	'ArticleService', 'UtilService', 'UserService', 
+	'ArticleService', 'UtilService', 'UserService', 'DataModelFactory', 
 	function ($scope, $route, $routeParams, $location, 
-	ArticleService, UtilService, UserService) {
+	ArticleService, UtilService, UserService, DataModelFactory) {
 	/*
 	  BEGIN Broadcast Variable Area
 	 */
 	  $scope.$on('handleUserBroadcast', function (event, args) {
 	      $scope.User = args.User;
 	  });
-	  $scope.User = UserService.GetUser();
+	  $scope.User = DataModelFactory.getUser();
 	  
 	  $scope.$on('$routeChangeSuccess', function() {
         // $routeParams should be populated here

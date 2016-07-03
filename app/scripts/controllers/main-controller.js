@@ -1,3 +1,4 @@
+"use strict";
 app.controller("MainController", [ "$scope", "$http" , "$timeout", 
     "ProductTypeService", "ProductCategoryService", "ProductService", "WeightRateService", "UtilService", "SubscribeService",
     "DataModelFactory",

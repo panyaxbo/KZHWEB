@@ -1,3 +1,4 @@
+"use strict";
 app.service("PaypalService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
     return {
     	GetPayWithPaypal: function() {

@@ -1,3 +1,4 @@
+"use strict";
 app.directive('file', function() {
   return {
     restrict: 'AE',

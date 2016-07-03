@@ -1,3 +1,4 @@
+"use strict";
 app.service("SubscribeService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
     return {
     	CreateSubscribe: function(Email) {

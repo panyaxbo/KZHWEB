@@ -1,3 +1,4 @@
+"use strict";
 app.service("FeedbackService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
     return {
     	CreateFeedback: function(Name, Email, Subject, Message) {

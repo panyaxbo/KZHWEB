@@ -1,9 +1,10 @@
+"use strict";
 app.controller('HistoryController', [ "$scope", "$location", "$window", "$timeout", "$anchorScroll", "$filter", "ngTableParams", "Upload", 
 	"$rootScope", "$http", 
-    "$filter", "MenuService", "ReceiptOrderService", "UserService", "CompanyService", "ENV", "ProductService", "ProductTypeService",
+     "MenuService", "ReceiptOrderService", "UserService", "CompanyService", "ENV", "ProductService", "ProductTypeService",
     "ProductCategoryService", "ProvinceService", "DistrictService", "SubDistrictService", "AppConfigService" ,"WeightRateService",
     "AWSService", "EmailService", "FeedbackService",
-    function ($scope, $location, $window, $timeout, $anchorScroll, $filter, ngTableParams, Upload, $rootScope, $http, $filter, 
+    function ($scope, $location, $window, $timeout, $anchorScroll, $filter, ngTableParams, Upload, $rootScope, $http, 
         MenuService, ReceiptOrderService, UserService, CompanyService, ENV, ProductService, ProductTypeService, ProductCategoryService,
         ProvinceService, DistrictService, SubDistrictService, AppConfigService, WeightRateService, AWSService, EmailService,FeedbackService) {
  	

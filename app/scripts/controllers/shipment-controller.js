@@ -1,3 +1,4 @@
+"use strict";
 app.controller("ShipmentController", [ "$scope", "$http", "$rootScope", "$location", 
 	"ReceiptOrderService", "CredentialService", "ProvinceService", "DistrictService", "SubDistrictService", "UserService",
     "UtilService", 'DataModelFactory',

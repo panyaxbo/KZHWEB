@@ -1,3 +1,4 @@
+"use strict";
 app.controller("SupplierController", ['$scope', '$route', '$routeParams', '$location', 
 	'UserService', 'UtilService',
 	function ($scope, $route, $routeParams, $location, 

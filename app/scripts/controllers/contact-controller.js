@@ -1,3 +1,4 @@
+"use strict";
 app.controller("ContactController", [ "$scope", "$http", "CredentialService", 
 	function ($scope, $http, CredentialService) {
 

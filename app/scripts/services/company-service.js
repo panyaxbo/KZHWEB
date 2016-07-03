@@ -1,3 +1,4 @@
+"use strict";
 app.service("CompanyService", function () {
     this.Company = {};
 

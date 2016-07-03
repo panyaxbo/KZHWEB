@@ -1,3 +1,4 @@
+"use strict";
 app.controller("FooterController", [ "$scope", "$http",  function ($scope, $http) {
 
 

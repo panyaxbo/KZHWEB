@@ -1,3 +1,4 @@
+"use strict";
 var map;
 function initMap() {
 	var latlng = new google.maps.LatLng(-34.397, 150.644);

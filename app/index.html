@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.min.css" />
     <link rel="stylesheet" href="bower_components/sweetalert/dist/sweetalert.css" />
     <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
+    <link rel="stylesheet" href="bower_components/angular-aside/dist/css/angular-aside.css" />
     <link rel="stylesheet" href="bower_components/sweetalert2/dist/sweetalert2.css" />
     <link rel="stylesheet" href="bower_components/textAngular/dist/textAngular.css" />
     <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.css" />
@@ -32,7 +33,7 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-    <!-- build:css(.tmp) styles/main.css -->
+    <!-- build:css(.tmp) styles/styles.css -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/search.css">
     <link rel="stylesheet" href="styles/step.css">
@@ -61,11 +62,6 @@
                     <span class="glyphicon glyphicon-align-justify"></span> 
                 </button>
             </div>
-        <!--    <div class="aside-right">
-                <button type="button" class="btn btn-default" ng-click="openAside('right', false)">
-                   <span class="glyphicon glyphicon-align-justify"></span>
-                </button>
-            </div> -->
         </div>
         <div id="mySidenav" class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
@@ -120,353 +116,189 @@
             </div>
         </div>
         <div class="container">
-            <!--    <div class="modal fade " id="KZHPartsAdModal">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                                </button>
-                                <h4 class="modal-title"></h4>
+            <nav class="navbar navbar-default" role="navigation" ng-controller="HeaderController">
+              <div class="container-fluid nav-header">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="/" class="text-center">
+                        <img src="/images/KZHLogo.png" width="150px" height="50px">
+                    </a> 
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav nav-pills pull-right">    
+                        <li>
+                            <a href="/articles" ng-click="SelectedHeadMenu('article')" class="head-menu">{{'HEAD.MENU.ARTICLE' | translate}}</a>
+                        </li>               
+                        <li>
+                            <a href="/product" ng-click="SelectedHeadMenu('product')" class="head-menu">{{'HEAD.MENU.PRODUCT' | translate}}</a>
+                        </li>
+                        <li>
+                            <a href="/payment-delivery" ng-click="SelectedHeadMenu('payment')" class="head-menu">{{'HEAD.MENU.PAYMENT_N_DELIVERY' | translate}}</a>
+                        </li>
+                        <li>
+                            <a href="/about" ng-click="SelectedHeadMenu('about')" class="head-menu">{{'HEAD.MENU.ABOUT' | translate}}</a>
+                        </li>
+                        <li>
+                            <a href="/contact" ng-click="SelectedHeadMenu('contact')" class="head-menu">{{'HEAD.MENU.CONTACT' | translate}}</a>
+                        </li>
+                        <li>
+                            <div>
+                                <a href="/cart" class="btn btn-success">
+                                <span class="glyphicon glyphicon-shopping-cart"></span> ({{ROHead.ROLineList.length}}) {{'HEAD.CART' | translate}}</a>
+                       
                             </div>
-                            <div class="modal-body">
-                                <div class="container">                        
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-12 col-md-offset-0">
-                                        <div class="fb-page" data-href="https://www.facebook.com/https://www.facebook.com/KZH-Parts-571156579574584/" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"></div>
-                                    </div>
-                                </div>
+                        </li>
+                        <li>
+                            <div>
+                                <a href="/login" class="btn btn-primary" ng-if="!IsLogin || (IsLogin === undefined)">
+                                    <span class="glyphicon glyphicon-log-in"></span> {{'HEAD.SIGNIN' | translate}}
+                                </a>
+                                <a href="" class="btn btn-danger" ng-if="IsLogin && (IsLogin !== undefined)" ng-click="Logout()"> 
+                                    <span class="glyphicon glyphicon-log-out"></span> {{'HEAD.SIGNOUT' | translate}}
+                                </a>
+                               
                             </div>
-                        </div>
-                    </div>
-                </div> -->
-                <nav class="navbar navbar-default" role="navigation" ng-controller="HeaderController">
-                  <div class="container-fluid nav-header">
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a href="/" class="text-center">
-                            <img src="/images/KZHLogo.png" width="150px" height="50px">
-                        </a> 
-                    </div>
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav nav-pills pull-right">    
-                            <li>
-                                <a href="/articles" ng-click="SelectedHeadMenu('article')" class="head-menu">{{'HEAD.MENU.ARTICLE' | translate}}</a>
-                            </li>               
-                            <li>
-                                <a href="/product" ng-click="SelectedHeadMenu('product')" class="head-menu">{{'HEAD.MENU.PRODUCT' | translate}}</a>
-                            </li>
-                            <li>
-                                <a href="/payment-delivery" ng-click="SelectedHeadMenu('payment')" class="head-menu">{{'HEAD.MENU.PAYMENT_N_DELIVERY' | translate}}</a>
-                            </li>
-                            <li>
-                                <a href="/about" ng-click="SelectedHeadMenu('about')" class="head-menu">{{'HEAD.MENU.ABOUT' | translate}}</a>
-                            </li>
-                            <li>
-                                <a href="/contact" ng-click="SelectedHeadMenu('contact')" class="head-menu">{{'HEAD.MENU.CONTACT' | translate}}</a>
-                            </li>
-                            <li>
-                                <div>
-                                    <a href="/cart" class="btn btn-success">
-                                    <span class="glyphicon glyphicon-shopping-cart"></span> ({{ROHead.ROLineList.length}}) {{'HEAD.CART' | translate}}</a>
-                           
-                                </div>
-                            </li>
-                            <li>
-                                <div>
-                                    <a href="/login" class="btn btn-primary" ng-if="!IsLogin || (IsLogin === undefined)">
-                                        <span class="glyphicon glyphicon-log-in"></span> {{'HEAD.SIGNIN' | translate}}
-                                    </a>
-                                    <a href="" class="btn btn-danger" ng-if="IsLogin && (IsLogin !== undefined)" ng-click="Logout()"> 
-                                        <span class="glyphicon glyphicon-log-out"></span> {{'HEAD.SIGNOUT' | translate}}
-                                    </a>
-                                   
-                                </div>
-                            </li>
+                        </li>
 
-                            <li class="dropdown" class="head-menu" style="margin-top:-10px">
-                                 <a href=""  class="dropdown-toggle head-menu" data-toggle="dropdown"><span id="SelectedDropdownLanguage"><img src="/images/th.png">&nbsp;ไทย</span><b class="caret"></b></a>
-                                  <ul id="DropdownLanguage" class="dropdown-menu">
-                                    <li><a href="" ng-click="SelectedLocale('th')"><img src="/images/th.png">&nbsp; ไทย</a>
+                        <li class="dropdown" class="head-menu" style="margin-top:-10px">
+                             <a href=""  class="dropdown-toggle head-menu" data-toggle="dropdown"><span id="SelectedDropdownLanguage"><img src="/images/th.png">&nbsp;ไทย</span><b class="caret"></b></a>
+                              <ul id="DropdownLanguage" class="dropdown-menu">
+                                <li><a href="" ng-click="SelectedLocale('th')"><img src="/images/th.png">&nbsp; ไทย</a>
+                                </li>
+                                <li><a href="" ng-click="SelectedLocale('us')"><img src="/images/us.png">&nbsp; English</a>
+                                </li>
+                                <li><a href="" ng-click="SelectedLocale('cn')"><img src="/images/cn.png">&nbsp; 中國</a>
+                                </li>
+                              </ul>
+                        </li>
+                        
+                        <li class="dropdown" class="head-menu" style="margin-top:5px">
+                            <div id="UserProfileImage">
+                                <img src="/images/noProfileImg.png"  class="img-circle" width="40" height="40" ng-show="!IsLogin || User.ProfileImage === undefined" style="margin-top:-5px">
+                            </div>
+                        </li>
+                        <li class="dropdown" class="head-menu" style="margin-top:5px">
+                            <div ng-show="IsAdmin && !IsGuest">
+                                <!-- code to render a large video block-->
+                                <a href="#" class="dropdown-toggle head-menu" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
+                                 {{DataModelFactory.User.Username}}<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#account-section" ng-click="('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}} </a>
                                     </li>
-                                    <li><a href="" ng-click="SelectedLocale('us')"><img src="/images/us.png">&nbsp; English</a>
+                                    <li><a href="#customer-order-section" ng-click="SelectedHeadMenu('customer-order')"><span class="glyphicon glyphicon-tasks"></span> {{'HEAD.MENU.CUSTOMER' | translate}} </a>
                                     </li>
-                                    <li><a href="" ng-click="SelectedLocale('cn')"><img src="/images/cn.png">&nbsp; 中國</a>
+                                    <li><a ui-sref="history" ng-click="SelectedHeadMenu('history')"><span class="glyphicon glyphicon-time"></span> {{'HEAD.MENU.HISTORY' | translate}}</a>
                                     </li>
-                                  </ul>
-                            </li>
-                            
-                            <li class="dropdown" class="head-menu" style="margin-top:5px">
-                                <div id="UserProfileImage">
-                                    <img src="/images/noProfileImg.png"  class="img-circle" width="40" height="40" ng-show="!IsLogin || User.ProfileImage === undefined" style="margin-top:-5px">
-                                </div>
-                            </li>
-                            <li class="dropdown" class="head-menu" style="margin-top:5px">
-                                <div ng-show="IsAdmin && !IsGuest">
-                                    <!-- code to render a large video block-->
-                                    <a href="#" class="dropdown-toggle head-menu" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
-                                     {{DataModelFactory.User.Username}}<b class="caret"></b></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#account-section" ng-click="('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}} </a>
-                                        </li>
-                                        <li><a href="#customer-order-section" ng-click="SelectedHeadMenu('customer-order')"><span class="glyphicon glyphicon-tasks"></span> {{'HEAD.MENU.CUSTOMER' | translate}} </a>
-                                        </li>
-                                        <li><a ui-sref="history" ng-click="SelectedHeadMenu('history')"><span class="glyphicon glyphicon-time"></span> {{'HEAD.MENU.HISTORY' | translate}}</a>
-                                        </li>
-                                        <li><a href="#setting-section" ng-click="SelectedHeadMenu('setting')"><span class="glyphicon glyphicon-cog"></span> {{'HEAD.MENU.GENERAL' | translate}}</a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li><a href="#" ng-click="Logout()"><span class="glyphicon glyphicon-off"></span> {{'HEAD.MENU.LOGOUT' | translate}}</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div ng-show="!IsAdmin && !IsGuest">
-                                    <!-- code to render the regular video block -->
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
-                                     {{User.Username}}<b class="caret"></b></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#account-section" ng-click="SelectedHeadMenu('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}}</a>
-                                        </li>
-                                        <li> <a href="#history-section" ng-click="SelectedHeadMenu('history')"><span class="glyphicon glyphicon-time"></span> {{'HEAD.MENU.HISTORY' | translate}}</a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li><a ng-href="#" ng-click="Logout()"><span class="glyphicon glyphicon-off"></span> {{'HEAD.MENU.LOGOUT' | translate}}</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div ng-show="!IsAdmin && IsGuest">
-                                    <!-- code to render the regular video block -->
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
-                                     {{User.Username}}<b class="caret"></b></a>
-                                </div>
-                            </li>
-                    </div>
-                  </div>
-                </nav>
+                                    <li><a href="#setting-section" ng-click="SelectedHeadMenu('setting')"><span class="glyphicon glyphicon-cog"></span> {{'HEAD.MENU.GENERAL' | translate}}</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li><a href="#" ng-click="Logout()"><span class="glyphicon glyphicon-off"></span> {{'HEAD.MENU.LOGOUT' | translate}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div ng-show="!IsAdmin && !IsGuest">
+                                <!-- code to render the regular video block -->
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
+                                 {{User.Username}}<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#account-section" ng-click="SelectedHeadMenu('account')"><span class="glyphicon glyphicon-user"></span> {{'HEAD.MENU.ACCOUNT' | translate}}</a>
+                                    </li>
+                                    <li> <a href="#history-section" ng-click="SelectedHeadMenu('history')"><span class="glyphicon glyphicon-time"></span> {{'HEAD.MENU.HISTORY' | translate}}</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li><a ng-href="#" ng-click="Logout()"><span class="glyphicon glyphicon-off"></span> {{'HEAD.MENU.LOGOUT' | translate}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div ng-show="!IsAdmin && IsGuest">
+                                <!-- code to render the regular video block -->
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'HEAD.WELCOME' | translate}},
+                                 {{User.Username}}<b class="caret"></b></a>
+                            </div>
+                        </li>
+                </div>
+              </div>
+            </nav>
            
-                <hr class="header-hr">
+        <hr class="header-hr">
 
-                <div ng-view></div>
+        <div ng-view></div>
 
-                <hr class="footer-hr">
-                <div id="div-footer" class="footer" ng-controller="FooterController">
-                    <div class="container" style="color:white;">
-                        <div class="row">
-                            <div class="col-sm-6 col-md-4">
-                                <center>
-                                  <img src="/images/tyre.png" width="64" height="64"  alt="the-brains" class="img-responsive">
-                                  <br>
-                                  <h4 class="footertext">{{'FOOTER.TYRE.HEAD' | translate}}</h4>
-                                  <p class="footertext">{{'FOOTER.TYRE.REMARK' | translate}}<br>
-                                </center>
-                            </div>
-                            <div class="col-sm-6 col-md-4">
-                                <center>
-                                  <img src="/images/lubricant.png" width="64" height="64" alt="..." class="img-responsive">
-                                  <br>
-                                  <h4 class="footertext">{{'FOOTER.LUBRICANT.HEAD' | translate}}</h4>
-                                  <p class="footertext">{{'FOOTER.LUBRICANT.REMARK' | translate}}<br>
-                                </center>
-                            </div>
-                            <div class="col-sm-6 col-md-4">
-                                <center>
-                                  <img src="/images/battery.png" width="64" height="64" alt="..." class="img-responsive">
-                                  <br>
-                                  <h4 class="footertext">{{'FOOTER.BATTERY.HEAD' | translate}}</h4>
-                                  <p class="footertext">{{'FOOTER.BATTERY.REMARK' | translate}}<br>
-                                </center>
-                            </div>
-                            <div class="col-sm-6 col-md-4">
-                                <center>
-                                  <img src="/images/brake.png" width="64" height="64"  alt="the-brains" class="img-responsive">
-                                  <br>
-                                  <h4 class="footertext">{{'FOOTER.BRAKE.HEAD' | translate}}</h4>
-                                  <p class="footertext">{{'FOOTER.BRAKE.REMARK' | translate}}<br>
-                                </center>
-                            </div>
-                            <div class="col-sm-6 col-md-4">
-                                <center>
-                                  <img src="/images/shock.png" width="64" height="64" alt="..." class="img-responsive">
-                                  <br>
-                                  <h4 class="footertext">{{'FOOTER.SHOCK.HEAD' | translate}}</h4>
-                                  <p class="footertext">{{'FOOTER.SHOCK.REMARK' | translate}}<br>
-                                </center>
-                            </div>
-                            <div class="col-sm-6 col-md-4">
-                                <center>
-                                  <img src="/images/wrench.png" width="64" height="64" alt="..." class="img-responsive">
-                                  <br>
-                                  <h4 class="footertext">{{'FOOTER.WRENCH.HEAD' | translate}}</h4>
-                                  <p class="footertext">{{'FOOTER.WRENCH.REMARK' | translate}}<br>
-                                </center>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-5">
-                                <img class="pull-right" src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/kzhapp-100x100.png" width="32px" height="32px">
-                            </div>
-                            <div class="col-md-7">
-                                <a href="/contact" ng-click="SelectedBodyMenu('thai-post')">{{'FOOTER.CONTACT_US' | translate}}</a> 
-                                <p class="footertext">{{'FOOTER.COPY_RIGHT' | translate}}</p>
-                            </div>
-                        </div>
-                    </div>
-                <div>
-                <a href="#" class="scrollup">Scroll</a>
-               
-            </div>
-            <hr class="footer-hr">
-            <div class="footer-container" style="color:white;">
+        <hr class="footer-hr">
+        <div id="div-footer" class="footer" ng-controller="FooterController">
+            <div class="container" style="color:white;">
                 <div class="row">
-                    <div class="col-sm-12 col-md-12 col-md-offset-0 footer-brand">
-                        <div class="col-sm-4 col-md-3">
-                            <center>
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/parts/honda.png" max-width="90" max-height="90" alt="honda" class="img-responsive">
-                            </center>
-                        </div>
-                        <div class="col-sm-4 col-md-3">
-                            <center>
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/parts/yamaha.png"  max-width="90" max-height="90"  alt="yamaha" class="img-responsive">
-                            </center>
-                        </div>
-                        <div class="col-sm-4 col-md-3">
-                            <center>
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/parts/suzuki.png" max-width="90" max-height="90"  alt="suzuki" class="img-responsive">
-                            </center>
-                        </div>
-                        <div class="col-sm-4 col-md-3">
-                            <center>
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/parts/kawasaki.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
-                            </center>
-                        </div>
+                    <div class="col-sm-6 col-md-4">
+                        <center>
+                          <img src="/images/tyre.png" width="64" height="64"  alt="the-brains" class="img-responsive">
+                          <br>
+                          <h4 class="footertext">{{'FOOTER.TYRE.HEAD' | translate}}</h4>
+                          <p class="footertext">{{'FOOTER.TYRE.REMARK' | translate}}<br>
+                        </center>
                     </div>
-                    <div class="col-sm-12 col-md-12 col-md-offset-0 footer-brand">
-                          <div class="col-sm-6 col-md-4">
-                            <center>
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/parts/jomthai.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
-                          
-                            </center>
-                          </div>
-                          <div class="col-sm-6 col-md-4">
-                            <center>
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/parts/yaguso.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
-                      
-                            </center>
-                          </div>
-                          <div class="col-sm-6 col-md-4">
-                            <center>
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/parts/ngk.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
-                      
-                            </center>
-                          </div>
+                    <div class="col-sm-6 col-md-4">
+                        <center>
+                          <img src="/images/lubricant.png" width="64" height="64" alt="..." class="img-responsive">
+                          <br>
+                          <h4 class="footertext">{{'FOOTER.LUBRICANT.HEAD' | translate}}</h4>
+                          <p class="footertext">{{'FOOTER.LUBRICANT.REMARK' | translate}}<br>
+                        </center>
                     </div>
-                    <div class="col-sm-12 col-md-12 col-md-offset-0 footer-brand">
-                            <div class="col-sm-4 col-md-2">
-                            <center>
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/lubricants/ptt.png" max-width="90" max-height="90" alt="honda" class="img-responsive">
-                              
-                            </center>
-                          </div>
-                          <div class="col-sm-4 col-md-2">
-                            <center>
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/lubricants/shell.png"  max-width="90" max-height="90"  alt="yamaha" class="img-responsive">
-                            </center>
-                          </div>
-                          <div class="col-sm-4 col-md-2">
-                            <center>
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/lubricants/castrol.png" max-width="90" max-height="90"  alt="suzuki" class="img-responsive">
-                            </center>
-                          </div>
-                          
-                          <div class="col-sm-4 col-md-2">
-                            <center>
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/lubricants/caltex.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
-                             
-                            </center>
-                          </div>
-                          <div class="col-sm-4 col-md-2">
-                            <center>
-                               <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/lubricants/daikyo.png" max-width="90" max-height="90"  alt="daikyo" class="img-responsive">
-                          
-                            </center>
-                          </div>
-                          <div class="col-sm-4 col-md-2">
-                            <center>
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/lubricants/trane.png" max-width="90" max-height="90"  alt="trane" class="img-responsive">
-                            </center>
-                          </div>
+                    <div class="col-sm-6 col-md-4">
+                        <center>
+                          <img src="/images/battery.png" width="64" height="64" alt="..." class="img-responsive">
+                          <br>
+                          <h4 class="footertext">{{'FOOTER.BATTERY.HEAD' | translate}}</h4>
+                          <p class="footertext">{{'FOOTER.BATTERY.REMARK' | translate}}<br>
+                        </center>
                     </div>
-                    <div class="col-sm-12 col-md-12 col-md-offset-0 footer-brand">
-                            <div class="col-sm-4 col-md-2">
-                            <center>
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/tyre/michelin.png" max-width="90" max-height="90" alt="honda" class="img-responsive">
-                              
-                            </center>
-                          </div>
-                          <div class="col-sm-4 col-md-2">
-                            <center>
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/tyre/irc.png"  max-width="90" max-height="90"  alt="yamaha" class="img-responsive">
-                            </center>
-                          </div>
-                          <div class="col-sm-4 col-md-2">
-                            <center>
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/tyre/dunlop.png" max-width="90" max-height="90"  alt="suzuki" class="img-responsive">
-                            </center>
-                          </div>
-                          
-                          <div class="col-sm-4 col-md-2">
-                            <center>
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/tyre/veerubber.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
-                             
-                            </center>
-                          </div>
-                          <div class="col-sm-4 col-md-2">
-                            <center>
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/tyre/camel.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
-                            </center>
-                          </div>
-                          <div class="col-sm-4 col-md-2">
-                            <center valign="center">
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/tyre/nd.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
-                             
-                            </center>
-                          </div>
+                    <div class="col-sm-6 col-md-4">
+                        <center>
+                          <img src="/images/brake.png" width="64" height="64"  alt="the-brains" class="img-responsive">
+                          <br>
+                          <h4 class="footertext">{{'FOOTER.BRAKE.HEAD' | translate}}</h4>
+                          <p class="footertext">{{'FOOTER.BRAKE.REMARK' | translate}}<br>
+                        </center>
                     </div>
-                    <div class="col-sm-12 col-md-12 col-md-offset-0 footer-brand">
-                            <div class="col-sm-4 col-md-3">
-                            <center>
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/battery/gs.png" max-width="90" max-height="90" alt="honda" class="img-responsive">
-                              
-                            </center>
-                          </div>
-                          <div class="col-sm-4 col-md-3">
-                            <center>
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/battery/3k.png"  max-width="90" max-height="90"  alt="yamaha" class="img-responsive">
-                            </center>
-                          </div>
-                          <div class="col-sm-4 col-md-3">
-                            <center>
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/battery/fb.png" max-width="90" max-height="90"  alt="suzuki" class="img-responsive">
-                            </center>
-                          </div>
-                          
-                          <div class="col-sm-4 col-md-3">
-                            <center>
-                              <img src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/brand/battery/yuasa.png" max-width="90" max-height="90"  alt="kawasaki" class="img-responsive">
-                             
-                            </center>
-                          </div>
+                    <div class="col-sm-6 col-md-4">
+                        <center>
+                          <img src="/images/shock.png" width="64" height="64" alt="..." class="img-responsive">
+                          <br>
+                          <h4 class="footertext">{{'FOOTER.SHOCK.HEAD' | translate}}</h4>
+                          <p class="footertext">{{'FOOTER.SHOCK.REMARK' | translate}}<br>
+                        </center>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <center>
+                          <img src="/images/wrench.png" width="64" height="64" alt="..." class="img-responsive">
+                          <br>
+                          <h4 class="footertext">{{'FOOTER.WRENCH.HEAD' | translate}}</h4>
+                          <p class="footertext">{{'FOOTER.WRENCH.REMARK' | translate}}<br>
+                        </center>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <img class="pull-right" src="https://s3-ap-southeast-1.amazonaws.com/kzhweb/kzhapp-100x100.png" width="32px" height="32px">
+                    </div>
+                    <div class="col-md-7">
+                        <a href="/contact" ng-click="SelectedBodyMenu('thai-post')">{{'FOOTER.CONTACT_US' | translate}}</a> 
+                        <p class="footertext">{{'FOOTER.COPY_RIGHT' | translate}}</p>
                     </div>
                 </div>
             </div>
-
+        <div>
+        <a href="#" class="scrollup">Scroll</a>
+               
+            </div>
+           
             <hr class="footer-hr">
             <div id="div-sub-footer" class="sub-footer">
                 <div class="container" style="color:white;">
@@ -561,15 +393,7 @@
             </div>
         </div>
     </div>
-    <!--Start of Zopim Live Chat Script-->
-<!--    <script type="text/javascript">
-    window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
-    d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
-    _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
-    $.src="//v2.zopim.com/?3zNAygD3G4WcgPYEzNeAHJdXW7nVkkOi";z.t=+new Date;$.
-    type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
-    </script>
-    <!--End of Zopim Live Chat Script-->
+
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -586,7 +410,6 @@
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-facebook/lib/angular-facebook.js"></script>
-    <script src="bower_components/lodash/lodash.js"></script>
     <script src="bower_components/angular-recaptcha/release/angular-recaptcha.js"></script>
     <script src="bower_components/angular-translate/angular-translate.js"></script>
     <script src="bower_components/angularjs-datepicker/dist/angular-datepicker.min.js"></script>
@@ -596,18 +419,19 @@
     <script src="bower_components/less/dist/less.js"></script>
     <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
     <script src="bower_components/ng-file-upload-shim/ng-file-upload-shim.js"></script>
+    <script src="bower_components/lodash/lodash.js"></script>
     <script src="bower_components/ng-password-strength/dist/scripts/ng-password-strength.js"></script>
     <script src="bower_components/ng-table/dist/ng-table.min.js"></script>
     <script src="bower_components/platform/platform.js"></script>
     <script src="bower_components/oauth-js/dist/oauth.min.js"></script>
-    <script src="bower_components/requirejs-bower/require.js"></script>
     <script src="bower_components/sweetalert/dist/sweetalert.min.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="bower_components/card/lib/js/card.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/paypaljsbuttons/dist/paypal-button.min.js"></script>
+    <script src="bower_components/magnifier/magnifier.js"></script>
     <script src="bower_components/angular-spinners/dist/angular-spinners.min.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="bower_components/angular-card/src/card.js"></script>
+    <script src="bower_components/angular-aside/dist/js/angular-aside.js"></script>
     <script src="bower_components/es6-promise/promise.js"></script>
     <script src="bower_components/sweetalert2/dist/sweetalert2.js"></script>
     <script src="bower_components/rangy/rangy-core.js"></script>
@@ -632,6 +456,7 @@
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTee4bgz7iWRFTldB3upIjbv0YYUqSP8o"></script>
     <script src="/scripts/app.js"></script>
     <script src="/scripts/controllers/main-controller.js"></script>
     <script src="/scripts/controllers/header-controller.js"></script>
@@ -649,7 +474,6 @@
     <script src="/scripts/controllers/entrepreneur-controller.js"></script>
     <script src="/scripts/configs/app-translate.js"></script>
     <script src="/scripts/configs/app-route.js"></script>
-    <script src="/scripts/configs/app-google-map.js"></script>
     <script src="/scripts/constants/constants.js"></script>
     <script src="/scripts/directives/enter-directive.js"></script>
     <script src="/scripts/directives/menu-directive.js"></script>

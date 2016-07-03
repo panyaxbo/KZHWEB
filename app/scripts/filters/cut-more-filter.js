@@ -1,3 +1,4 @@
+"use strict";
 app.filter('limitText', function () {
     return function (value, wordwise, max, tail) {
         if (!value) return '';

@@ -1,3 +1,4 @@
+"use strict";
 app.directive('ngHasfocus', function() {
     return function(scope, element, attrs) {
         scope.$watch(attrs.ngHasfocus, function (nVal, oVal) {

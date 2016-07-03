@@ -404,23 +404,33 @@ module.exports = function (grunt) {
         }
        }
      },
-     uglify: {
-
-      // options: {compress: true},
-      //  dist: {
-      //    files: {
-      //      '<%= yeoman.dist %>/scripts/scripts.js': [
-      //       '<%= yeoman.app %>/scripts/{,*/}*.js'
-      //     ]
-      //    }
-      //  }
-      generated: 
-   { files: 
-      [ { dest: '<%= yeoman.dist %>/scripts/vendor.js',
-          src: [ '.tmp/concat/scripts/vendor.js' ] },
-        { dest: '<%= yeoman.dist %>/scripts/scripts.js',
-          src: [ '.tmp/concat/scripts/scripts.js' ] } ] } 
-     },
+    uglify: {
+      
+      options: {mangle: false },
+       dist: {
+         files: 
+         [ 
+               { dest: '<%= yeoman.dist %>/scripts/vendor.js',
+                src: [ '.tmp/concat/scripts/vendor.js' ] },
+              { dest: '<%= yeoman.dist %>/scripts/scripts.js',
+                src: [ '.tmp/concat/scripts/scripts.js' ] } 
+          ] 
+       }
+        // generated: 
+        // { 
+        //   options: {
+        //     mangle: false,
+        //     compress: true
+        //   },
+        //   files: 
+        //     [ 
+        //       { dest: '<%= yeoman.dist %>/scripts/vendor.js',
+        //         src: [ '.tmp/concat/scripts/vendor.js' ] },
+        //       { dest: '<%= yeoman.dist %>/scripts/scripts.js',
+        //         src: [ '.tmp/concat/scripts/scripts.js' ] } 
+        //     ] 
+        // } 
+    },
 
      concat:
       { generated: 
@@ -443,22 +453,25 @@ module.exports = function (grunt) {
                 'bower_components/angular-growl-v2/build/angular-growl.css',
                 'bower_components/bootstrap-star-rating/css/star-rating.min.css',
                 'bower_components/select2/select2.css',
-                'bower_components/select2-bootstrap-css/select2-bootstrap.css'
+                'bower_components/select2-bootstrap-css/select2-bootstrap.css',
+                'bower_components/angular-aside/dist/css/angular-aside.css'
               ] 
             },
 
-            { dest: '.tmp/concat/styles/main.css',
-              src: [ '{.tmp,app}/styles/main.css' ] 
-            },
+            // { dest: '.tmp/concat/styles/main.css',
+            //   src: [ '{.tmp,app}/styles/main.css' ] 
+            // },
 
-            { dest: '.tmp/concat/styles/style.css',
+            { dest: '.tmp/concat/styles/styles.css',
               src: 
               [ 
+                '{.tmp,app}/styles/main.css' ,
                 '{.tmp,app}/styles/search.css',
                 '{.tmp,app}/styles/step.css',
                 '{.tmp,app}/styles/screen-device.css',
                 '{.tmp,app}/styles/kzh-navbar.css',
                 '{.tmp,app}/styles/kzh-side-menu.css',
+                '{.tmp,app}/styles/kzh-footer.css',
                 '{.tmp,app}/styles/kzh-technician.css',
                 '{.tmp,app}/styles/kzh-google-map.css',
               ] 
@@ -484,14 +497,12 @@ module.exports = function (grunt) {
                  'bower_components/ng-table/dist/ng-table.min.js',
                  'bower_components/platform/platform.js',
                  'bower_components/oauth-js/dist/oauth.min.js',
-                 'bower_components/requirejs-bower/require.js',
                  'bower_components/sweetalert/dist/sweetalert.min.js',
                  'bower_components/angular-cookies/angular-cookies.js',
-                 'bower_components/card/lib/js/card.js',
                  'bower_components/angular-route/angular-route.js',
                  'bower_components/angular-spinners/dist/angular-spinners.min.js',
                  'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-                 'bower_components/angular-card/src/card.js',
+                 'bower_components/angular-aside/dist/js/angular-aside.js',
                  'bower_components/es6-promise/promise.js',
                  'bower_components/sweetalert2/dist/sweetalert2.js',
                  'bower_components/rangy/rangy-core.js',
@@ -533,7 +544,6 @@ module.exports = function (grunt) {
 
                   'app/scripts/configs/app-translate.js',
                   'app/scripts/configs/app-route.js',
-                  'app/scripts/configs/app-google-map.js',
 
                   'app/scripts/constants/constants.js',
 
@@ -630,6 +640,11 @@ module.exports = function (grunt) {
           cwd: 'bower_components/bootstrap/dist',
           src: 'fonts/*',
           dest: '<%= yeoman.dist %>'
+        }, {
+          expand: true,
+          cwd: 'bower_components/fontawesome',
+          src: 'fonts/*',
+          dest: '<%= yeoman.dist %>'
         }]
       },
       styles: {
@@ -676,9 +691,10 @@ module.exports = function (grunt) {
     },
     buildcontrol: {
       options: {
-        dir: 'dist',
+        dir: '<%= yeoman.dist %>',
         commit: true,
         push: true,
+        connectCommits: false,
         message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
       },
       pages: {
@@ -719,7 +735,7 @@ module.exports = function (grunt) {
       // Environment targets
       development: {
         options :{
-          dest: '<%= yeoman.app %>/constants/constants.js'
+          dest: '<%= yeoman.app %>/scripts/constants/constants.js'
         },
         constants: {
           ENV: {
@@ -730,7 +746,7 @@ module.exports = function (grunt) {
       },
       production: {
         options: {
-          dest: '<%= yeoman.app %>/constants/constants.js'
+          dest: '<%= yeoman.app %>/scripts/constants/constants.js'
         },
         constants: {
           ENV: {

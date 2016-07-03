@@ -1,8 +1,9 @@
-app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout", "$anchorScroll", "$filter", "ngTableParams", "Upload", 
+"use strict";
+app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout", "$anchorScroll", "ngTableParams", "Upload", 
     "$rootScope", "$http", "$filter", "MenuService", "ReceiptOrderService", "UserService", "CompanyService", "ENV", "ProductService", 
     "ProductTypeService", "ProductCategoryService", "ProvinceService", "DistrictService", "SubDistrictService", "AppConfigService" ,
     "WeightRateService", "AWSService", "EmailService", "FeedbackService", 'DataModelFactory',
-    function ($scope, $location, $window, $timeout, $anchorScroll, $filter, ngTableParams, Upload, $rootScope,
+    function ($scope, $location, $window, $timeout, $anchorScroll, ngTableParams, Upload, $rootScope,
      $http, $filter, MenuService, ReceiptOrderService, UserService, CompanyService, ENV, ProductService, ProductTypeService, 
      ProductCategoryService, ProvinceService, DistrictService, SubDistrictService, AppConfigService, WeightRateService, AWSService, 
      EmailService,FeedbackService, DataModelFactory) {
@@ -388,7 +389,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
 
                 });
             }
-            ReceiptOrderService.SetReceiptOrder($scope.ROHead);
             DataModelFactory.setReceipt($scope.ROHead);
             $timeout(function() {
                 $rootScope.$emit('handleReceiptOrderEmit', {

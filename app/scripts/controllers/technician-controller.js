@@ -1,8 +1,8 @@
-'use strict'
+"use strict";
 app.controller("TechnicianController", [ "$scope", "$http", "$location", "$filter", "$routeParams", "$geolocation","$timeout", "bsLoadingOverlayService",
-	"Upload", "DataModelFactory", "TechnicianService", "GeolocationService", "UtilService", "uiGmapGoogleMapApi", "ServiceService",
+	"Upload", "DataModelFactory", "TechnicianService", "GeolocationService", "UtilService", "ServiceService",
   function ($scope, $http, $location, $filter, $routeParams, $geolocation,$timeout,bsLoadingOverlayService,
-  	Upload, DataModelFactory, TechnicianService,GeolocationService ,UtilService, uiGmapGoogleMapApi, ServiceService) {
+  	Upload, DataModelFactory, TechnicianService,GeolocationService ,UtilService, ServiceService) {
   
   	$scope.Technicians = [];
   	$scope.Technician = {
@@ -33,14 +33,6 @@ app.controller("TechnicianController", [ "$scope", "$http", "$location", "$filte
               Lat : 0,
               Long: 0
             }
-      /*      var latlng = new google.maps.LatLng(-34.397, 150.644);
-            var myOptions = {
-                zoom: 8,
-                center: latlng,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-            var map = new google.maps.Map(document.getElementById("map_canvas"),
-                    myOptions);*/
 
             var newLatLng = new google.maps.LatLng(14.0840727, 100.8126563);
             var newOptions = {

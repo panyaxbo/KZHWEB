@@ -1,3 +1,4 @@
+"use strict";
 app.service("CryptoService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
     return {
     	GenerateHashLink: function(Username, Password, Email) {

@@ -1,3 +1,4 @@
+"use strict";
 app.service("SubDistrictService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
     return {
     	LoadSubDistrictByDistrict: function(DistrictId) {

@@ -1,3 +1,4 @@
+"use strict";
 app.service("GeolocationService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
 	return {
 		GetAddressFromGeolocation: function(lat, long) {

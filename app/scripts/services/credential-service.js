@@ -1,12 +1,5 @@
+"use strict";
 app.service("CredentialService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
-	var Company = {};
-	var SetCompany = function(data) {
-	    Company = data
-	};
-
-	var GetCompany = function(){
-	    return Company;
-    };
     return {
     	LoadOAuth: function() {
     		var defer = $q.defer();
@@ -26,10 +19,7 @@ app.service("CredentialService", ["$q", "$http", "ENV", function ($q, $http, ENV
     		var compnyaURL = ENV.apiEndpoint + "/companies/LoadCompany";
 		    $http.get(compnyaURL)
 		    .success(function (data, status) {
-		    //  $scope.Company = data;
-		    //  $scope.$emit('handleCompanyEmit', {
-		    //      Company: CompanyService.Company
-		    //  });
+		    
 		    	defer.resolve(data);
 		    })
 		    .error(function (error, status) {
@@ -44,18 +34,6 @@ app.service("CredentialService", ["$q", "$http", "ENV", function ($q, $http, ENV
 		    $http.get(paypalUrl)
 		    .success(function(data, status) {
 		    	defer.resolve(data);
-		    /*    $scope.Paypal.MerchantId = data.MerchantId;
-		        $scope.Paypal.Name = data.Name;
-		        $scope.Paypal.Quantity = data.Quantity;
-		        $scope.Paypal.Amount = data.Amount;
-		        $scope.Paypal.Currency = data.Currency;
-		        $scope.Paypal.Shipping = data.Shipping;
-		        $scope.Paypal.Tax = data.Tax;
-		        $scope.Paypal.CallbackUrl = data.CallbackUrl;
-		        $scope.Paypal.EnvironmentSandbox = data.EnvironmentSandbox;
-		        $scope.$emit('handlePaypalEmit', {
-		            Paypal: $scope.Paypal
-		        });*/
 		    })
 		    .error(function (error, status) {
 		    	defer.reject(error);
@@ -67,11 +45,7 @@ app.service("CredentialService", ["$q", "$http", "ENV", function ($q, $http, ENV
     		var recaptchaURL = ENV.apiEndpoint + "/recaptchas/GetRecaptchaKey";
 		    $http.get(recaptchaURL)
 		    .success(function(data, status) {
-		    /*  $scope.response = null;
-		      $scope.widgetId = null;
-		      $scope.model = {
-		          key: data
-		      };*/
+		    
 		      	defer.resolve(data);
 		    })
 		    .error(function(error, status) {
@@ -90,9 +64,6 @@ app.service("CredentialService", ["$q", "$http", "ENV", function ($q, $http, ENV
 		    	defer.reject(error);
 		    });
     		return defer.promise;
-    	},
-    	GetCompany: GetCompany
-    	,
-    	SetCompany: SetCompany
+    	}
     };
 }]);

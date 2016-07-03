@@ -1,3 +1,4 @@
+"use strict";
 app.directive('scrollOnClick', function() {
   return {
     restrict: 'A',

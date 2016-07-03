@@ -1,3 +1,4 @@
+"use strict";
 app.controller("CartController", [ "$scope", "$http", "$rootScope", "$location", "$timeout", 
  "UserService", "ReceiptOrderService", "CredentialService", "UtilService", "UomService", "WeightRateService", "DataModelFactory",
   function ($scope, $http, $rootScope, $location, $timeout, 

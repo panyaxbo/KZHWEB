@@ -1,3 +1,4 @@
+"use strict";
 app.service("WeightRateService", ["$q","$http", "ENV", function ($q, $http, ENV) {
     return {
         
