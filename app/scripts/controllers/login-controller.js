@@ -1,31 +1,13 @@
 "use strict";
-app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "ENV",
-  "UserService", "CredentialService", "UtilService", "CryptoService", "EmailService",
-  function ($scope, $http, $location, $filter, ENV,
-    UserService, CredentialService, UtilService, CryptoService, EmailService) {
-    
-  	// $scope.User = {
-   //      Id :"",
-   //      RoleNameEn: "",
-   //      Username: "",
-   //      Password: "",
-   //      Role: {
-   //          RoleCode: "",
-   //          RoleNameEn: "",
-   //          RoleNameTh: "",
-   //      },
-   //      Staff: {
-   //          Firstname: "Guest",
-   //          Lastname: ""
-   //      }
-   //  };
-    /* START - Initialize variable */
-    $scope.User = UserService.GetUser();
+app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "ENV", "$window", "$timeout",
+  "UserService", "CredentialService", "UtilService", "CryptoService", "EmailService", "DataModelFactory", 
+  function ($scope, $http, $location, $filter, ENV, $window, $timeout,
+    UserService, CredentialService, UtilService, CryptoService, EmailService, DataModelFactory) {
+    $scope.User = DataModelFactory.getUser();
     $scope.ForgetPasswordProgressValue = 0;
     $scope.IsAdmin = false;
     $scope.IsGuest = true;
     $scope.IsLogin = false;
-    /* END - Initialize variable */
 
     console.log($scope.User);
 
@@ -49,13 +31,14 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
           if (!data || data === undefined) {
             swal("Error", "Sorry, your account is not activated yet, please check your email.", "error");
           } else {
-            $scope.User = appuser;
             $scope.User.Id = appuser._id;
             $scope.User.Username = appuser.Username;
             $scope.User.Password = appuser.Password;
-            $scope.User.Role.RoleCode = appuser.Role.RoleCode;
-            $scope.User.Role.RoleNameEn = appuser.Role.RoleNameEn;
-            $scope.User.Role.RoleNameTh = appuser.Role.RoleNameTh;
+            $scope.User.Role = {
+              RoleCode: appuser.Role.RoleCode,
+              RoleNameEn: appuser.Role.RoleCode,
+              RoleNameTh: appuser.Role.RoleNameTh
+            }
             $scope.Firstname = appuser.Firstname;
             $scope.Lastname = appuser.Lastname;
             $scope.User.Email = appuser.Email;
@@ -74,16 +57,15 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
               $cookies.putObject('User', $scope.User);
             }
           }
-          console.log('after log', $scope.User);
-          UserService.SetUser($scope.User);
+          DataModelFactory.setUser($scope.User);
+          console.log('log in ', $scope.User);
           if ($scope.User.ComeFrom !== undefined && $scope.User.ComeFrom.length > 0) {
             $location.path($scope.User.ComeFrom);
+         
           } else {
             $location.path('/');
           }
-          $scope.$emit('handleUserEmit', {
-              User: $scope.User
-          });
+          
           return UserService.DownloadUserProfileImage($scope.User.Id, $scope.User.Username);
       })
       .then(function(profile_image, status) {
@@ -98,7 +80,6 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
       .then(function(thumbnail_image, status) {
           $('#ThumbnailProfileImage').children("img").remove();
           $('#ThumbnailProfileImage').append(thumbnail_image);
-          //Clear value after login successfully
           $scope.username = "";
           $scope.password = "";
           $scope.$emit('handleUserEmit', {
@@ -159,7 +140,7 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
         .done(function(result) {
             result.me()
             .done(function (response) {
-                //this will display "John Doe" in the console                
+              console.log(response);
                 $scope.$apply(function() {
                   $scope.PopulateValue(provider, response);
                   if ($scope.User.ComeFrom !== undefined) {
@@ -179,7 +160,6 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
     }
 	
 	  $scope.PopulateValue = function(provider, response) {
-      //  console.log(response);
         if (provider === 'facebook') {
           $scope.User.Id = response.raw.id;
           $scope.User.Firstname = response.firstname;
@@ -192,7 +172,6 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
           $scope.IsLogin = true;
           $scope.IsAdmin = false;
           $scope.IsGuest = false;
-          //Load Facebook graph profile image picture
           var facebookImageUrl = response.avatar;
           $http.get(facebookImageUrl)
           .success(function(data, status, headers, config) {
@@ -217,7 +196,6 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
           $scope.IsLogin = true;
           $scope.IsAdmin = false;
           $scope.IsGuest = false;
-          // Load Google+ graph profile image picture
           var facebookImageUrl = response.avatar;
           $http.get(facebookImageUrl)
           .success(function(data, status, headers, config) {
@@ -377,7 +355,7 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
 
         }
         response.provider = provider;
-        UserService.SetUser($scope.User);
+        DataModelFactory.setUser($scope.User);
 
         var createAndCheckLofinSocialUrl = ENV.apiEndpoint + '/users/CreateAndUpdateWithSocial';
         
@@ -399,7 +377,6 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
       var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
       if (filter.test($scope.ForgetPasswordEmail) && $scope.ForgetPasswordEmail.length > 0) {
         console.log('valid');
-        //check is email exist in system
         UserService.IsExistEmail($scope.ForgetPasswordEmail)
         .then(function(data, status) {
             if(data) {
@@ -464,7 +441,6 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
         })
         
       } else {
-        // Not valid
         console.log('not valid');
         swal("Warning", "Not valid Email", "warning");
       }
@@ -523,7 +499,6 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
           swal("Error", "There is error occur , please contact administrator", "error");
       })
       .finally(function() {
-          //Clear Fields after sign up successfully
           $scope.Firstname = "";
           $scope.Lastname = "";
           $scope.Email = "";
@@ -531,5 +506,39 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
           $scope.Password = "";
       });
 
+    };
+    CredentialService.LoadRecaptcha()
+    .then(function(data, status) {
+        $scope.response = null;
+        $scope.widgetId = null;
+        $scope.model = {
+            key: data
+        };  
+    }, function(error, status){
+
+    });
+
+    $scope.setResponse = function (response) {
+        $scope.response = response;
+        if ($scope.response) {
+          $scope.IsHuman = true;
+        }
+    };
+    $scope.setWidgetId = function (widgetId) {
+        $scope.widgetId = widgetId;
+    };
+    $scope.cbExpiration = function() {
+        console.info('Captcha expired. Resetting response object');
+        $scope.response = null;
+    };
+    $scope.submit = function () {
+        var valid;
+        console.log('sending the captcha response to the server', $scope.response);
+        if (valid) {
+          console.log('Success');
+        } else {
+          console.log('Failed validation');
+          vcRecaptchaService.reload($scope.widgetId);
+        }
     };
 }]);

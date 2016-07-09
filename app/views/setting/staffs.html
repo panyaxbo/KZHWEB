@@ -1,0 +1,75 @@
+<div id="div-staff-table">
+    <legend></legend>
+    <button ng-click="NewStaff()" class="btn btn-warning">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.NEW' | translate}}
+    </button>
+    <div class="spacer"></div>
+    <fieldset class="search-table">
+        <div class="row">
+            <div class="col-md-14 col-md-offset-0">
+                <form class="form-horizontal" role="form">
+                    <legend class="search-table" style="color:white">{{'BODY.SECTION.SETTING.STAFF.SEARCH_STAFF_CRITERIA_LABEL' | translate}}</legend>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.SETTING.STAFF.STAFF_CODE_LABEL' | translate}}</label>
+                        <div class="col-sm-3">
+                            <input type="text" placeholder="Product Type Code" class="form-control" ng-model="SearchCustomerTypeData.CustomerTypeCode"> 
+                        </div>
+
+                        <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.SETTING.STAFF.STAFF_NAME_LABEL' | translate}}</label>
+                        <div class="col-sm-3">
+                            <input type="text" placeholder="Product Type Name" class="form-control" ng-model="SearchProductTypeData.CustomerTypeName"> 
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-14 text-center">
+                            <button ng-click="SearchCustomerType()" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.SEARCH' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </fieldset>
+    <button ng-click="NewStaff()" class="btn btn-warning">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.NEW' | translate}}
+    </button>
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>
+                    <a href="" ng-click="orderFieldName='StaffCode'; isASC=!isASC"></a>{{'BODY.SECTION.SETTING.STAFF.STAFF_CODE' | translate}}</th>
+                <th><a href="" ng-click="orderFieldName='Firstname'; isASC=!isASC">{{'BODY.SECTION.SETTING.STAFF.FIRST_NAME' | translate}}</th>
+                <th><a href="" ng-click="orderFieldName='Lastname'; isASC=!isASC">{{'BODY.SECTION.SETTING.STAFF.LAST_NAME' | translate}}</th>
+                <th><a href="" ng-click="orderFieldName='Age'; isASC=!isASC" >{{'BODY.SECTION.SETTING.CUSTOMER.AGE' | translate}}</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="st in SearchStaffs | orderBy : orderStaffFieldName : isASC | filter : SearchStaffText">
+                <td>{{$index+1}}</td>
+                <td>{{st.StaffCode}}</td>
+                <td>{{st.Firstname}}</td>
+                <td>{{st.Lastname}}</td>
+                <td>{{st.Age}}</td>
+                <td>
+                    <button ng-click="ViewStaff(st._id)" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
+                    </button>
+                </td>
+                <td>
+                    <button ng-click="DeleteStaff()" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </button>
+                </td>
+
+            </tr>
+        </tbody>
+       <tfoot>
+            <td colspan="8">
+            Record Count : {{SearchStaffs.length}}
+           </td>
+       </tfoot>
+    </table>
+</div>

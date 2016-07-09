@@ -1,15 +1,10 @@
 "use strict";
 
 var app = angular.module('KZHWEB', ['ngRoute', 'ngAnimate', 'ui.bootstrap', 'ngFileUpload', '720kb.datepicker',
-    'ngPasswordStrength', 'ngTable','pascalprecht.translate', 'vcRecaptcha', 'ngGeolocation', 
+    'ngPasswordStrength', 'ngTable','pascalprecht.translate', 'vcRecaptcha', 'ngGeolocation', 'updateMeta', 
     'ngCookies', 'CONFIG','angularMoment', 'textAngular', 'ngTagsInput','bsLoadingOverlay']);
 
 app.run(function ($rootScope, $location, bsLoadingOverlayService) {
-    /*
-        Receive emitted message and broadcast it.
-        Event names must be distinct or browser will blow up!
-    */
-    // For update Menu
     $rootScope.$on('handleHeadMenuEmit', function (event, args) {
         $rootScope.$broadcast('handleHeadMenuBroadcast', args);
     });
@@ -19,30 +14,22 @@ app.run(function ($rootScope, $location, bsLoadingOverlayService) {
     $rootScope.$on('handleFooterMenuEmit', function (event, args) {
         $rootScope.$broadcast('handleFooterMenuBroadcast', args);
     });
-    //For update curency
     $rootScope.$on('handleCurrencyEmit', function (event, args) {
         $rootScope.$broadcast('handleCurrencyBroadcast', args);
     });
-    // For update Receipt Order
     $rootScope.$on('handleReceiptOrderEmit', function (event, args) {
-        console.log('root ro emit ', args.ROHead);
         $rootScope.$broadcast('handleReceiptOrderBroadcast', args);
     });
-    //For update locale
     $rootScope.$on('handleLocaleEmit', function (event, args) {
         $rootScope.$broadcast('handleLocaleBroadcast', args);
     });
-    //For update User
     $rootScope.$on('handleUserEmit', function (event, args) {
-        console.log('root ', args.User);
         $rootScope.$broadcast('handleUserBroadcast', args);
     });
     
     $rootScope.$on('handleCompanyEmit', function (event, args) {
         $rootScope.$broadcast('handleCompanyBroadcast', args);
     });
-
-    //For update User
     $rootScope.$on('handlePaypalEmit', function (event, args) {
         $rootScope.$broadcast('handlePaypalBroadcast', args);
     });

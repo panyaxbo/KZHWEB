@@ -27,7 +27,6 @@ app.controller("TechnicianController", [ "$scope", "$http", "$location", "$filte
           $scope.SelectServiceList = data;
         });
         if (UtilService.isEmpty($routeParams)) {
-        //    $scope.CreateArticle();
             $scope.Page.Mode = 'new';
             $scope.Technician = {
               Lat : 0,
@@ -44,12 +43,6 @@ app.controller("TechnicianController", [ "$scope", "$http", "$location", "$filte
                $scope.map = new google.maps.Map(document.getElementById('new-technician-map-canvas'),
                     newOptions);
             });
-            
-        /*    $scope.TechnicianMap = new google.maps.Map($.find('#new-technician-map-canvas')[0], {
-                center: new google.maps.LatLng(13.21, 94.38),
-                zoom: 5,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            });*/
         } else {
           console.log( $routeParams.technicianId);
             var technicianId = $routeParams.technicianId;
@@ -93,7 +86,6 @@ app.controller("TechnicianController", [ "$scope", "$http", "$location", "$filte
             zoom: 17,
             mapTypeId: google.maps.MapTypeId.ROADMAP
           });
-          // Setting marker for currenct position
           var current_marker = new google.maps.Marker({
             position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
             animation: google.maps.Animation.DROP,
@@ -103,8 +95,6 @@ app.controller("TechnicianController", [ "$scope", "$http", "$location", "$filte
           $scope.Technician.Lat = position.coords.latitude;
             $scope.Technician.Long = position.coords.longitude;
           google.maps.event.addListener(current_marker, 'dragend', function (data) {
-           //   updateMarkerStatus('Drag ended');
-          //    geocodePosition(marker.getPosition());
           console.log('dragend', data.latLng.lat(), data.latLng.lng());
             new_lat = data.latLng.lat();
             new_lng = data.latLng.lng();
@@ -130,7 +120,6 @@ app.controller("TechnicianController", [ "$scope", "$http", "$location", "$filte
               zoom: 17,
               mapTypeId: google.maps.MapTypeId.ROADMAP
             });
-            // Setting marker for currenct position
             var current_marker = new google.maps.Marker({
               position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
               animation: google.maps.Animation.DROP,
@@ -175,23 +164,8 @@ app.controller("TechnicianController", [ "$scope", "$http", "$location", "$filte
                 })(marker, i));
                 i++;
             });
-        //    $scope.map.zoom = 15;
             $scope.map = $scope.markers;
       });
-            
-/*
-            $scope.map = new google.maps.Map($.find('#map-canvas')[0], {
-                center: new google.maps.LatLng(latitude, longitude),
-                zoom: 17,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            });
-
-            $scope.marker = new google.maps.Marker({
-                animation: google.maps.Animation.DROP,
-                title: 'Your location',
-                position: new google.maps.LatLng(latitude, longitude),
-                map: $scope.map
-            });*/
 
   	};
 
@@ -210,9 +184,6 @@ app.controller("TechnicianController", [ "$scope", "$http", "$location", "$filte
             zoom: 15,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         });
-    
-       
-        // Setting marker for currenct position
         var technician_marker = new google.maps.Marker({
           position: new google.maps.LatLng(data.Lat, data.Long),
           animation: google.maps.Animation.DROP,
@@ -221,17 +192,11 @@ app.controller("TechnicianController", [ "$scope", "$http", "$location", "$filte
         });
         var new_lat = 0;
         var new_lng = 0;
-        // Add dragging event listeners.
         google.maps.event.addListener(technician_marker, 'dragstart', function (data) {
-        //    updateMarkerAddress('Dragging...');
         });
         google.maps.event.addListener(technician_marker, 'drag', function (data) {
-          //  updateMarkerStatus('Dragging...');
-          //  updateMarkerPosition(marker.getPosition());
         });
         google.maps.event.addListener(technician_marker, 'dragend', function (data) {
-           //   updateMarkerStatus('Drag ended');
-          //    geocodePosition(marker.getPosition());
           console.log('dragend', data.latLng.lat(), data.latLng.lng());
           new_lat = data.latLng.lat();
           new_lng = data.latLng.lng();

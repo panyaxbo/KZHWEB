@@ -5,8 +5,17 @@
     <title>โค้ว ซุ่น เฮง - ศูนย์รวมอะไหล่มอเตอร์ไซค์, ยาง และ น้ำมันเครื่อง</title>
     <meta name="description" content="ค้าปลีก-ส่ง น้ำมันเครื่อง,ยางนอก,ยางใน,อะไหล่มอเตอร์ไซค์,รถยนต์,รถไถ, ไฟฟ้า, การเกษตร, ประปา สินค้าราคาถูก น่าเชื่อถือ">
     <meta name="keywords" content="น้ำมันเครื่อง,ยางนอก,ยางใน,อะไหล่มอเตอร์ไซค์,รถยนต์,รถไถ, ไฟฟ้า, การเกษตร, ประปา, ฮอนด้า, ยามาฮ่า, ซูซุกิ">
-    <meta name="author" content="ipatz">
+    <meta property="fb:app_id" content="320977548070994" />
+    <meta property="og:type" content="" > 
+    <meta property="og:url" content="" />
+    <meta property="og:title" content="" > 
+    <meta property="og:image" content="" >  
+    <meta property="og:site_name" content="KZH Parts" > 
+    <meta property="og:description" content="" > 
+    <meta property="og:locale" content="th_TH" >
+    <meta name="author" content="KZHParts.com">
     <meta name="viewport" content="width=device-width">
+    <meta property="fb:likes_and_comments" content="enable">
     <meta property="fb:pages" content="571156579574584" />
     <link rel="shortcut icon" href="/images/favicon.ico">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -19,7 +28,6 @@
     <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css" />
     <link rel="stylesheet" href="bower_components/bootstrap-social/bootstrap-social.css" />
     <link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.min.css" />
-    <link rel="stylesheet" href="bower_components/sweetalert/dist/sweetalert.css" />
     <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
     <link rel="stylesheet" href="bower_components/angular-aside/dist/css/angular-aside.css" />
     <link rel="stylesheet" href="bower_components/sweetalert2/dist/sweetalert2.css" />
@@ -33,8 +41,11 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-    <!-- build:css(.tmp) styles/styles.css -->
+    <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+
+    <!-- build:css(.tmp) styles/styles.css -->
     <link rel="stylesheet" href="styles/search.css">
     <link rel="stylesheet" href="styles/step.css">
     <link rel="stylesheet" href="styles/screen-device.css">
@@ -404,6 +415,28 @@
         ga('create', 'UA-72000276-1', 'auto');
         ga('send', 'pageview');
     </script>
+
+    <!-- Start Facebook Comment Plugin -->
+    <script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '320977548070994',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+    <!-- End Facebook Comment Plugin -->
+
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -414,7 +447,6 @@
     <script src="bower_components/angular-translate/angular-translate.js"></script>
     <script src="bower_components/angularjs-datepicker/dist/angular-datepicker.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="bower_components/chartjs/Chart.js"></script>
     <script src="bower_components/layzr.js/dist/layzr.js"></script>
     <script src="bower_components/less/dist/less.js"></script>
     <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
@@ -424,7 +456,6 @@
     <script src="bower_components/ng-table/dist/ng-table.min.js"></script>
     <script src="bower_components/platform/platform.js"></script>
     <script src="bower_components/oauth-js/dist/oauth.min.js"></script>
-    <script src="bower_components/sweetalert/dist/sweetalert.min.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/paypaljsbuttons/dist/paypal-button.min.js"></script>
@@ -452,11 +483,15 @@
     <script src="bower_components/bootstrap-star-rating/js/star-rating.min.js"></script>
     <script src="bower_components/select2/select2.js"></script>
     <script src="bower_components/angular-select2/dist/angular-select2.js"></script>
+    <script src="bower_components/Chart.js/dist/Chart.js"></script>
+    <script src="bower_components/angular-update-meta/dist/update-meta.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTee4bgz7iWRFTldB3upIjbv0YYUqSP8o"></script>
+    <script src="https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit"
+  async defer></script>
     <script src="/scripts/app.js"></script>
     <script src="/scripts/controllers/main-controller.js"></script>
     <script src="/scripts/controllers/header-controller.js"></script>
@@ -472,6 +507,18 @@
     <script src="/scripts/controllers/supplier-controller.js"></script>
     <script src="/scripts/controllers/technician-controller.js"></script>
     <script src="/scripts/controllers/entrepreneur-controller.js"></script>
+
+    <script src="/scripts/controllers/setting/account-controller.js"></script>
+    <script src="/scripts/controllers/setting/customer-controller.js"></script>
+    <script src="/scripts/controllers/setting/customer-type-controller.js"></script>
+    <script src="/scripts/controllers/setting/product-controller.js"></script>
+    <script src="/scripts/controllers/setting/product-category-controller.js"></script>
+    <script src="/scripts/controllers/setting/product-type-controller.js"></script>
+    <script src="/scripts/controllers/setting/promotion-controller.js"></script>
+    <script src="/scripts/controllers/setting/role-controller.js"></script>
+    <script src="/scripts/controllers/setting/staff-controller.js"></script>
+    <script src="/scripts/controllers/setting/uom-controller.js"></script>
+
     <script src="/scripts/configs/app-translate.js"></script>
     <script src="/scripts/configs/app-route.js"></script>
     <script src="/scripts/constants/constants.js"></script>

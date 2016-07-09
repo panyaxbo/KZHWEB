@@ -1,21 +1,15 @@
 "use strict";
-app.controller("ArticleController", ['$scope', '$route', '$routeParams', '$location', 
+app.controller("ArticleController", ['$scope', '$route', '$routeParams', '$location', '$filter',
 	'ArticleService', 'UtilService', 'UserService', 'DataModelFactory', 
-	function ($scope, $route, $routeParams, $location, 
+	function ($scope, $route, $routeParams, $location, $filter, 
 	ArticleService, UtilService, UserService, DataModelFactory) {
-	/*
-	  BEGIN Broadcast Variable Area
-	 */
 	  $scope.$on('handleUserBroadcast', function (event, args) {
 	      $scope.User = args.User;
 	  });
 	  $scope.User = DataModelFactory.getUser();
 	  
 	  $scope.$on('$routeChangeSuccess', function() {
-        // $routeParams should be populated here
-     //   console.log('change success ' , $routeParams);
         if (UtilService.isEmpty($routeParams)) {
-        //    $scope.CreateArticle();
             $scope.Page.Mode = 'new';
         } else {
             var articleId = $routeParams.articleId;
@@ -23,13 +17,6 @@ app.controller("ArticleController", ['$scope', '$route', '$routeParams', '$locat
             $scope.ViewArticle(articleId);
         }
     });
-	/*
-	  END Broadcast Variable Area
-	 */
-
-	/*
-	  BEGIN initialize varialble
-	 */
 	$scope.Article = {};
 	$scope.Articles = [];
 	$scope.GreatArticles = [];
@@ -38,27 +25,19 @@ app.controller("ArticleController", ['$scope', '$route', '$routeParams', '$locat
 		Mode: 'new'
 	}
 	$scope.ArticlesDataReady = false;
-	/*
-	  END initialize varialble
-	 */
 	
 	$scope.LoadArticles = function() {
-	//	console.log('load articles ');
 		ArticleService.LoadArticles()
 		.then(function(data, status) {
 			angular.forEach(data, function(article) {
 				var div = document.createElement('div');
 				div.innerHTML = article.Content;
-			//	console.log('article ' + article.Content);
 				var firstImage = div.getElementsByTagName('img')[0];
 				var imgSrc = firstImage ? firstImage.src : "";
-			//	console.log('firstImage', firstImage);
-			//	console.log('imgSrc', imgSrc);
 				article.SourceImageThumbnail = imgSrc;
 				$scope.Articles.push(article);
 			})
-		//	$scope.Articles = data;
-		//	console.log('data ' + data);
+	
 			$scope.ArticlesDataReady = true;
 		}, function(error, status) {
 			console.log('error');
@@ -79,24 +58,19 @@ app.controller("ArticleController", ['$scope', '$route', '$routeParams', '$locat
 	          cancelButtonText: "ไม่ใช่",
 	          closeOnConfirm: true,
 	          closeOnCancel: true
-	        },
-	        function(isConfirm){
-	            $scope.$apply(function() {
-		            if (isConfirm) {
-		            	$scope.User = {};
-		                $scope.User.ComeFrom = '/articles';
-		                $location.path('/login');
-		            } else {
-		                console.log('cancel');
-		            //    $location.path('/404');
-		            }
-		            UserService.SetUser($scope.User);
-		        });
+	        }).then(function() {
+                $scope.User.ComeFrom = '/articles';
+                DataModelFactory.setUser($scope.User);
+                $scope.$apply(function() {
+                	$location.path('/login');
+                });
+	        }, function(dismiss) {
+
 	        });
 		} else {
 			console.log('user NOT empty ');
-			 $location.path('/article');
-			 $scope.Page.Mode = 'new';
+			$scope.Page.Mode = 'new';
+			$location.path('/article');
 		}
 		$scope.Article = {};
 		$scope.Page.Mode = 'new';
@@ -133,17 +107,11 @@ app.controller("ArticleController", ['$scope', '$route', '$routeParams', '$locat
           	});
             
           } else {
-            //    swal("Cancelled", "Your data is safe :)", "error");
           }
         });
 	}
 
 	$scope.CancelArticle = function() {
-	//	document.getElementById('ViewArticle').style.display = 'block';
-	//	document.getElementById('NewArticle').style.display = 'none';
-	//	
-		
-
 		if (!UtilService.isEmpty($scope.Article.Title) || !UtilService.isEmpty($scope.Article.Content) || !UtilService.isEmpty($scope.Article.Tags)) 
 		{
 			swal({
@@ -174,10 +142,20 @@ app.controller("ArticleController", ['$scope', '$route', '$routeParams', '$locat
 			ArticleService.LoadArticleById(articleId)
 			.then(function(data, status) {
 				$scope.Article = data;
-				
+				var div = document.createElement('div');
+				div.innerHTML = $scope.Article.Content;
+				var firstImage = div.getElementsByTagName('img')[0];
+				var imgSrc = firstImage ? firstImage.src : "";
+				$scope.Article.SourceImageThumbnail = imgSrc;
+
+				var strhtmlToplain = $filter('htmlToPlaintext') ($scope.Article.Content);
+				$scope.Article.OGContent = $filter('limitText') (strhtmlToplain);
+				$scope.UrlEndpoint = $location.absUrl();
+				console.log($scope.UrlEndpoint);
 			}, function(err, status) {
 
 			});
 		} 
 	}
+
 }]);

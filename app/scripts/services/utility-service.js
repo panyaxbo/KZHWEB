@@ -17,12 +17,6 @@ app.service("UtilService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
 			var re =/\d\-/g;
         	return re.test(telNo);
 		},
-		/**
-		 * Adds two numbers
-		 * @param {Number} a 
-		 * @param {Number} b
-		 * @return {Number} sum
-		 */
 		zeroPad: function(num, places) {
 			var zero = places - num.toString().length + 1;
       		return Array(+(zero > 0 && zero)).join("0") + num;

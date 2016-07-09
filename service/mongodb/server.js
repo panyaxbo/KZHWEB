@@ -119,7 +119,7 @@ var local_uri = process.env.MONGOLAB_URI || 'mongodb://127.0.0.1:27017/kzhparts'
 var mongolab_uri = process.env.MONGOLAB_URI || 'mongodb://aaa:bbb@ds033123.mongolab.com:33123/kzhparts';
 var heroku_mongolab_uri = process.env.MONGOLAB_URI || 'mongodb://heroku_dmj53qsq:snsjuqkbr1cp1unjoibhem0iob@ds033915.mongolab.com:33915/heroku_dmj53qsq';
 
-mongodb.MongoClient.connect(local_uri, function (err, database) {
+mongodb.MongoClient.connect(mongolab_uri, function (err, database) {
     if (err) console.log(err, err.stack.split("\n"));
  //   console.log(database);
     db = database;
@@ -192,39 +192,28 @@ process.on('uncaughtException', function (err) {
     console.log(err, err.stack.split("\n"));
 }); 
 
-/*
-app.use(function(err, req, res, next){
-  console.error(err.stack);
-  console.error(appRoot +'/app/');
-  /*res.send(500, 'Something broke!');
-    db.collection('Holiday')
-          .findOne({
-              $and : [{
-                  'StartDate' : { $lte : new Date() },
-                  'EndDate' : { $gte: new Date() }
-              }]
-          }, function (err, holiday) {
-          if (err) {
-        //      console.log(err);
-          } else {
-        //      console.log(holiday);
-        //      res.sendFile(path.resolve(__dirname, '../../') + '/404.html');
-          }
-      });
-});
-*/
+// Add headers
+app.use(function (req, res, next) {
 
-app.get('/getpost/:countrycode/:weightgram', function(req, res) {
-  var country = req.params.countrycode;
-  var weightgram = req.params.weightgram;
-  requestify.get('http://example.com/api/resource')
-    .then(function(response) {
-        // Get the response body (JSON parsed or jQuery object for XMLs)
-        response.getBody();
-    }
-  );
+    // Website you wish to allow to connect
+  //  if (environment !== 'production') {
+  //    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:9999');
+  //  } else {
+      res.setHeader('Access-Control-Allow-Origin', 'https://www.kzhparts.com');
+  //  }
   
-});
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+});
 
 module.exports = app;

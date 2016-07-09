@@ -41,9 +41,6 @@ app.service("UserService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
           }
           $http.post(getemailfromencode, encodeObj)
 	        .success(function(data, status, headers, config ) {
-	          
-	      //    $scope.ForgetPasswordEmail = data;
-	      //    $('#InputPasswordModal').modal('show');
 	          	defer.resolve(data);
 	        })
 	        .error(function(error, status, headers, config) {
@@ -58,12 +55,9 @@ app.service("UserService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
 	        $http.get(changePasswordUrl)
 	        .success(function(data, status) {
 	        	defer.resolve(data);
-	        //    swal("Change Password Success", "Your password has changed successfully.", "success");
-	        //    $('#InputPasswordModal').modal('toggle');
 	        })
 	        .error(function(error, status) {
 	        	defer.reject(error);
-	         //  swal("Error", "Cannot find your account.", "error");
 	        });
 		    return defer.promise;
     	},
@@ -144,7 +138,6 @@ app.service("UserService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
     	},
     	DownloadUserThumbnailImage: function(UserId, Username) {
     		var defer = $q.defer();
-    		// Download Image for User Thumbnail
 	        var downloadThumbnailUrl = ENV.apiEndpoint + '/aws/downloadUserImageThumbnail/'+ UserId + '/'+ Username;
 	        $http.get(downloadThumbnailUrl)
 	        .success(function (data, status) {

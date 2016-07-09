@@ -1,0 +1,87 @@
+<div id="div-customer-detail" class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <form class="form-horizontal" role="form">
+            <fieldset>
+                <!-- Form Name -->
+                <legend></legend>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.CUSTOMER.CUSTOMER_TYPE_CODE' | translate}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" placeholder="Customer Code" class="form-control" ng-model="ViewCustomerData.CustomerCode" readonly>
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.CUSTOMER.FIRST_NAME' | translate}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" placeholder="Customer Name En" class="form-control" ng-model="ViewCustomerData.CustomerNameEn">
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.CUSTOMER.LAST_NAME' | translate}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" placeholder="Customer Name Th" class="form-control" ng-model="ViewCustomerData.CustomerNameTh">
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.CUSTOMER.KNOWN_NAME' | translate}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" placeholder="Customer Known Name" class="form-control" ng-model="ViewCustomerData.CustomerKnownName">
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.CUSTOMER.TEL_NO' | translate}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" placeholder="TelNo" class="form-control" ng-model="ViewCustomerData.TelNo">
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.CUSTOMER.FAX_NO' | translate}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" placeholder="FaxNo" class="form-control" ng-model="ViewCustomerData.FaxNo">
+                    </div>
+                </div>
+                 <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.CUSTOMER.MOBILE_NO' | translate}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" placeholder="Mobile No" class="form-control" ng-model="ViewCustomerData.MobileNo">
+                    </div>
+                </div>
+                 <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.CUSTOMER.EMAIL' | translate}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" placeholder="Email" class="form-control" ng-model="ViewCustomerData.Email">
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.CUSTOMER.DESCRIPTION' | translate}}</label>
+                    <div class="col-sm-6">
+                        <textarea placeholder="Description" row="4" class="form-control" ng-model="ViewCustomerData.Description"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="pull-right">
+                            <button type="submit" class="btn btn-warning" ng-click="NewCustomer()">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.NEW' | translate}}</button>
+                            <button type="submit" class="btn btn-primary" ng-click="SaveCustomer()">
+                                <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.SAVE' | translate}}</button>
+                            <button type="submit" class="btn btn-danger" ng-click="DeleteCustomer()">
+                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.DELETE' | translate}}</button>
+                            <button type="submit" class="btn btn-default" ng-click="CancelCustomer()">
+                                <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.CANCEL' | translate}}</button>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

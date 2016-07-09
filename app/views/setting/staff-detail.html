@@ -1,0 +1,46 @@
+<div id="div-staff-detail" class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <form class="form-horizontal" role="form">
+            <fieldset>
+                <!-- Form Name -->
+                <legend></legend>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.STAFF.STAFF_CODE' | translate}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" placeholder="Staff Code" class="form-control" ng-model="ViewStaffData.StaffCode" readonly>
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.STAFF.FIRST_NAME' | translate}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" placeholder="Firstname" class="form-control" ng-model="ViewStaffData.Firstname">
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="textinput">{{'BODY.SECTION.SETTING.STAFF.LAST_NAME' | translate}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" placeholder="Lastname" class="form-control" ng-model="ViewStaffData.Lastname">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="pull-right">
+                            <button type="submit" class="btn btn-warning" ng-click="NewStaff()">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.NEW' | translate}}</button>
+                            <button type="submit" class="btn btn-primary" ng-click="SaveStaff()">
+                                <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.SAVE' | translate}}</button>
+                            <button type="submit" class="btn btn-danger" ng-click="DeleteStaff()">
+                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.DELETE' | translate}}</button>
+                            <button type="submit" class="btn btn-default" ng-click="CancelStaff()">
+                                <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.CANCEL' | translate}}</button>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

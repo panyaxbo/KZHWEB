@@ -1,5 +1,6 @@
 <div class="article-section">
 	<div id="ViewArticle" class="animated fadeIn article-section" ng-if="Page.Mode == 'view'">
+	<link rel="image_src" href="http://domain.com/images/logo.gif" />
 		<div class="row">
 			<div class="col-md-12"><a href="/articles" class="btn btn-default"><i class="fa fa-long-arrow-left"></i> กลับ</a></div>
 		</div>
@@ -32,7 +33,15 @@
 				</div>
 			</div>
 		</div>
-		<div id="disqus_thread"></div>
+		<update-meta name="title" content="{{ Article.Title }}"></update-meta>
+		<update-meta name="description" content="{{ Article.OGContent }}"></update-meta>
+		<update-meta property="og:title" content="{{ Article.Title }}"></update-meta>
+		<update-meta property="og:type" content="article"></update-meta>
+		<update-meta property="og:locale" content="th_TH"></update-meta>
+		<update-meta property="og:url" content="{{ UrlEndpoint }}"></update-meta>
+		<update-meta property="og:image" content="{{ Article.SourceImageThumbnail }}"></update-meta>
+		<update-meta property="og:description" content="{{ Article.OGContent }}"></update-meta>
+	<!--	<div id="disqus_thread"></div>
 		<script>
 		/**
 		* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
@@ -54,7 +63,15 @@
 		})();
 		</script>
 		<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
-		</noscript>
+		</noscript> -->
+<div
+  class="fb-comments" 
+  data-share="true"
+  data-width="450"
+  data-show-faces="true"
+  data-href="http://localhost:9999/article/574fe1c1f284f93c27716949" data-numposts="5">
+</div>
+	
 	</div>
 	<div id="NewArticle" class="animated fadeIn article-section" ng-if="Page.Mode == 'new'" >
 		<div class="row">

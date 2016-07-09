@@ -57,9 +57,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
 
     
     $scope.IsProductDataReady = false;
-    //    $scope.ROLineList = $rootScope.ROLineList;
-
-    // Initialize General Setting Module
     $scope.ViewProductTypeData = { CreateDate : new Date(), UpdateDate : new Date() };
     $scope.SearchProductTypeData = {};
     
@@ -99,22 +96,18 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     $scope.Provinces = [];
     $scope.Districts = [];
     $scope.SubDistricts = [];
-
-    // Param Pay
     $scope.PaymentBank = false;
     $scope.PaymentType= "";
 
     $scope.Paypal = {};
     $scope.$on('handlePaypalBroadcast', function (event, args) {
         $scope.Paypal = args.Paypal;
-    //    console.log($scope.Paypal);
     });
 
     $scope.$on('handleFooterMenuBroadcast', function (event, args) {
         $scope.SelectedMenu = args.SelectedMenu;
     });
     $scope.$on('handleHeadMenuBroadcast', function (event, args) {
-    //    console.log('broadcast from head to body '+args.SelectedMenu);
         $scope.SelectedMenu = args.SelectedMenu;
         if ($scope.SelectedMenu == 'history') {
             $scope.StartDate = new Date().getDate() +"/" + (new Date().getMonth() + 1) +"/" + new Date().getFullYear() ;
@@ -137,18 +130,12 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         else if ($scope.SelectedMenu == 'payment') {
             $scope.InitPaymentAndDeliveryMethod();
         }
-    //    else if ($scope.SelectedMenu  == 'shipment') {
-    //        $('html, body').animate({ scrollTop: $('#shipment-section').offset().top }, 'slow');
-    //    } 
-    //    
-    //    console.log('body $scope.SelectedMenu ' + $scope.SelectedMenu);
      
     });
 
     var tid = setInterval( function () {
         if ( document.readyState !== 'complete' ) return;
         clearInterval( tid );       
-        // do your work
         if ($scope.SelectedLocale === 'th') {
           (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
         } else if ($scope.SelectedLocale === 'us') {
@@ -164,14 +151,13 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     });
 
      $scope.Company = DataModelFactory.getCompany();
-  //  $scope.$on('handleCompanyBroadcast', function (event, args) {
- //       $scope.Company = args.Company;
-    //    console.log('f head 2 line ' + args.Company);
- //   });
+     $scope.$on('handleCompanyBroadcast', function (event, args) {
+        $scope.Company = args.Company;
+        console.log('f head 2 line ' + args.Company);
+     });
 
     $scope.$on('handleCurrencyBroadcast', function (event, args) {
         $scope.SelectedCurrency = args.SelectedCurrency;
-    //    console.log('body ctrl from head $scope.SelectedCurrency ' + $scope.SelectedCurrency);
         if ($scope.SelectedCurrency == 'thb') {
             $scope.CurrencySymbol = '฿';
             $scope.Multiplier = 1;
@@ -189,15 +175,11 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             $scope.Multiplier = args.MultiplierTHB2CNY;
         }
     }); 
-
-    // Broadcast from head controller
     $scope.$on('handleLocaleBroadcast', function (event, args) {
         $scope.SelectedLocale = args.SelectedLocale;
-    //    console.log('$scope.SelectedLocale ' + $scope.SelectedLocale);
     });
 
     $scope.SelectedBodyMenu = function (menu) {
-    //    console.log("body ctrl " + menu);
         if (menu == "google-map") {
             MenuService.Menu.SelectedMenu = "google-map";
             $scope.SelectedMenu = "google-map";
@@ -218,12 +200,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         });    
     }
     $scope.LoadProductCategory = function () {
-    /*    var url = ENV.apiEndpoint  + '/product_categories/LoadProductCategory';
-        $http.get(url)
-            .success(function (data) {
-                $scope.ProductCategory = data;
-            })
-            .error(function () {});*/
 
         ProductCategoryService.LoadProductCategory()
         .then(function(data, status) {
@@ -243,7 +219,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
 
     ProductService.LoadProduct()
     .then(function(data, status) {
-  //      console.log('LoadProduct');
 
         $scope.Products = data;
         $scope.totalItems = $scope.Products.length;
@@ -269,7 +244,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     };
 
     $scope.pageChanged = function() {
-     //   console.log('Page changed to: ' + $scope.currentPage);
     };
 
     $scope.setItemsPerPage = function(num) {
@@ -278,7 +252,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     }
 
     $scope.Search = function() {
- //     console.log($scope.SearchAllText);
       document.getElementById('ProductDataReady').style.display = 'none';
       document.getElementById('ProductDataNotReady').style.display = 'block';
       ProductService.SearchProductWithCondition($scope.SearchAllText)
@@ -292,16 +265,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
       }, function(error, status) {
           console.log('error', error);
       });
-      /*
-      var searchProductURL = ENV.apiEndpoint + "/products/SearchProductWithCondition/" + $scope.SearchAllText;
-      $http.get(searchProductURL)
-      .success(function(data, status, headers, config) {
-          $scope.Product = data;
-          $scope.SelectedHeadMenu("product");
-      })
-      .error(function(error, status, headers, config) {
-
-      });*/
     }
 
     
@@ -326,7 +289,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 Amount: 0
             };
             console.log($scope.Company, $scope.Company.VatRate);
-            // Set value 
             ROLine.ProductCode = SelectedProduct.ProductCode;
             ROLine.ProductNameTh = SelectedProduct.ProductNameTh;
             ROLine.Quantity = BuyQty;
@@ -336,7 +298,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             ROLine.VatAmount = ($scope.Company.VatRate / 100) * ROLine.Amount;
             ROLine.Uoms = SelectedProduct.Uom;
             ROLine.UomCode = SelectedProduct.UomCode;
-        //    console.log(SelectedProduct.Weight);
             ROLine.Weight = SelectedProduct.Weight * BuyQty;
             
             ROLine.DrRetailPrice = SelectedProduct.RetailPrice;
@@ -354,9 +315,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
 
             $scope.ROHead.SumAmount += ROLine.Amount;
             $scope.ROHead.SumWeight += ROLine.Weight;
-            
-
-            // In BodyController occur only Normal PostType
             if ($scope.ROHead.PostType === 'Normal') {
                 var weight_rate = WeightRateService.GetWeightRateNormal($scope.ROHead.SumWeight);
                 $scope.ROHead.SumWeightAmount = parseInt(weight_rate);
@@ -381,8 +339,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                       
                 
                     $scope.ROHead.ROLineList.push(ROLine);
-                  
-                //    $scope.ROHead.ROLineList.push(ROLine);
                    
                     
                 }, function(error, status) {
@@ -395,17 +351,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                     ROHead: $scope.ROHead
                 });
             }, 100);
-        /*      sweetAlert({"สำเร็จ", "ใส่รายการ " + SelectedProduct.ProductNameTh + " จำนวน " + BuyQty + " ในตะกร้าสำเร็จ !!", "success"
-            }, function({
-                $scope.$apply(function(){
-                    var someimage = document.getElementById('ThumbnailProductImage_'+SelectedProduct.ProductCode);
-                    var myimg = someimage.getElementsByTagName('img')[2]; //[0] stripe-new [1] stripe-sale
-                    console.log(someimage);    
-                    console.log(myimg);
-                    $('#CartProduct_'+SelectedProduct.ProductCode).append(myimg);
-
-                });
-            });*/
             swal({
               title: "สำเร็จ",
               text: "ใส่รายการ " + SelectedProduct.ProductNameTh + " จำนวน " + BuyQty + " ในตะกร้าสำเร็จ !!",
@@ -434,22 +379,14 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
               }
             });
         } else {
-            //alert("จำนวนต้องเป็นตัวเลข และ มากกว่า 0");
             sweetAlert("เกิดข้อผิดพลาด", "จำนวนต้องเป็นตัวเลข และ มากกว่า 0", "warning");
-            //      ROHead.ROLineList[Index].BuyQty = 0;
         }
         }
         $scope.AddImageToCart = function() {
             var someimage = document.getElementById('ThumbnailProductImage_'+SelectedProduct.ProductCode);
             var myimg = someimage.getElementsByTagName('img')[2]; //[0] stripe-new [1] stripe-sale
-    //        console.log(someimage);    
-    //        console.log(myimg);
             $('#CartProduct_'+SelectedProduct.ProductCode).append(myimg);
         }
-    
-    
-
-    // Function for Product Type Module
     $scope.SearchProductType = function () {
         var typecode = '';
         var typename = '';
@@ -502,7 +439,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         var url = ENV.apiEndpoint + "/product_types/LoadProductTypeByObjId/" + id;
         $http.get(url)
             .success(function (data) {
-        //        console.log('success ' + data._id + data.ProductTypeCode);
                 $scope.ViewProductTypeData._id = data._id;
                 $scope.ViewProductTypeData.ProductTypeCode = data.ProductTypeCode;
                 $scope.ViewProductTypeData.ProductTypeNameTh = data.ProductTypeNameTh;
@@ -531,7 +467,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             })
             .error(function (err) {
                 console.log('err ' + err);
-                //     alert(err);
             });
         $("#div-product-type-table").hide("slow");
         $("#div-product-type-detail").show("slow");
@@ -617,7 +552,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewProductTypeCode = data;
-        //            console.log('get new code ' + NewProductTypeCode);
                     $scope.ViewProductTypeData.ProductTypeCode = NewProductTypeCode;
                     $scope.ViewProductTypeData.CreateBy = $scope.User.Username;
                     $scope.ViewProductTypeData.UpdateBy = $scope.User.Username;
@@ -670,14 +604,10 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
           }
         });
     }
-    // End Function for Product Type Module
-
-    // Start Function for Product Category Module
     $scope.SearchProductCategory = function () {
         var catcode = '';
         var catname = '';
         var typecode = '';
-    //    console.log($scope.SearchProductType);
         if ($scope.SearchProductCategoryData.ProductCategoryCode === undefined || $scope.SearchProductCategoryData.ProductCategoryCode.length <= 0) {
             catcode = '$';
         } else {
@@ -696,7 +626,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         var url = ENV.apiEndpoint + "/product_categories/LoadProductCategoryByCondition/" + catcode + '/' + catname + '/' + typecode;
         $http.get(url)
         .success(function (data) {
-            //    console.log(data.length);
                 $scope.ProductCategoryTableParams = new ngTableParams({
                     page: 1,            // show first page
                     count: 10           // count per page
@@ -706,11 +635,9 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                         $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                     }
                 });
-                // Load Product types
                 type_list_url = ENV.apiEndpoint + "/product_types/LoadProductType";
                 $http.get(type_list_url)
                 .success(function (types) {
-            //        console.log(types.length);
                     $scope.SearchProductTypeList = types;
                 })
                 .error(function (error) {
@@ -718,7 +645,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 });
             })
             .error(function (data) {
-             //   alert(data);
             });
         $("#div-product-category-table").show("slow");
         $("#div-product-category-detail").hide("slow");
@@ -750,7 +676,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     }
     $scope.ViewProductCategory = function (id) {
         var url = ENV.apiEndpoint + "/product_categories/LoadProductCategoryByObjId/" + id;
-    //    console.log(id);
         $http.get(url)
             .success(function (data) {
                 $scope.ViewProductCategoryData = data;
@@ -780,7 +705,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 } else {
                     $scope.ViewProductCategoryData.UpdateDate = data.UpdateDate;
                 }
-        //        console.log('data.ProductTypeCode ' + data.ProductTypeCode);
                 
                 var productTypeURL = ENV.apiEndpoint + "/product_types/LoadProductType";
                 $http.get(productTypeURL)
@@ -817,9 +741,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         }
     }
     $scope.DeleteProductCategory = function (ProductCategoryData) {
-        //#55dd6b : green
-        //#dd6b55: red
-        //#5583dd : blue
         swal({
           title: "Are you sure?",
           text: "คุณต้องการลบรายการ ประเภทสินค้า " + ProductCategoryData.ProductCategoryNameTh + " ใช่ หรือ ไม่?",
@@ -880,7 +801,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewProductCategoryCode = data;
-            //        console.log('get new code ' + NewProductCategoryCode);
                     $scope.ViewProductCategoryData.ProductCategoryCode = NewProductCategoryCode;
                     $scope.ViewProductCategoryData.CreateBy = $scope.User.Username;
                     $scope.ViewProductCategoryData.UpdateBy = $scope.User.Username;
@@ -945,14 +865,11 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         $("#div-product-category-table").show("slow");
         $("#div-product-category-detail").hide("slow");
     }
-    // Upload Product Category Image
     $scope.uploadProductCategoryImage = function (files, ProductCategoryId, ProductCategoryCode) {
         document.getElementById('ViewProductCategoryImageNotReady').style.display = 'block';
-    //    console.log(" Product Category Id " + ProductCategoryId + ProductCategoryCode);
         if (files && files.length) {
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
-            //    console.log(file);
                 Upload
                 .upload({
                     url: ENV.apiEndpoint + '/aws/uploadProductCategoryImage/' + ProductCategoryId + '/' + ProductCategoryCode + '/admin',
@@ -960,11 +877,8 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 })
                 .progress(function (evt) {
                     var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-           //         console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
                 })
                 .success(function (data, status, headers, config) {
-                    // Download Image for Product
-           //         console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
 
                     var downloadUrl = ENV.apiEndpoint + '/aws/downloadProductCategoryImageThumbnail/' + ProductCategoryId + '/' + ProductCategoryCode;
                     $http.get(downloadUrl)
@@ -986,19 +900,14 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         }
         
     };
-    // End Function for Product Category Module
-    
-    // Prevent Load All Product When click Product Tab
     $scope.SearchProductTab = function () {
         $("#div-product-table").show("slow");
         $("#div-product-detail").hide("slow");
     }
-    // Start Function for Product Module
     $scope.SearchProduct = function () {
         var code = '';
         var name = '';
         var catcode = '';
-    //    console.log($scope.SearchProductCategory);
         if ($scope.SearchProductData.ProductCode === undefined || $scope.SearchProductData.ProductCode.length <= 0) {
             code = '$';
         } else {
@@ -1017,7 +926,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         var url = ENV.apiEndpoint + "/products/LoadProductByCondition/" + code + "/" + name + "/" + catcode;
         $http.get(url)
         .success(function (data) {
-        //    console.log(data);
                 $scope.SearchProducts = data;
 
                 $scope.ProductTableParams = new ngTableParams({
@@ -1029,8 +937,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                         $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                     }
                 });
-
-                // Load Product Category
                 category_list_url = ENV.apiEndpoint + "/product_categories/LoadProductCategory";
                 $http.get(category_list_url)
                 .success(function (categories) {
@@ -1147,31 +1053,25 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 if (isEmpty(data.IsDeactive)) {
                     $scope.ViewProductData.IsDeactive = false;
                 }
-                //Load Product Category
                 var category_url = ENV.apiEndpoint + "/product_categories/LoadProductCategory";
                 $http.get(category_url)
                 .success(function(data) {
-        //            console.log(data);
                     $scope.SelectProductCategoryList = data;
                 })
                 .error(function(data) {
 
                 });
-                //Load Uom
                 var uom_url = ENV.apiEndpoint + "/uoms/LoadNotContainUom";
                 $http.get(uom_url)
                 .success(function(data) {
-        //            console.log(data);
                     $scope.SelectUomList = data;
                 })
                 .error(function(data) {
 
                 });
-                //Load Contain Uom
                 var containuom_url = ENV.apiEndpoint + "/uoms/LoadContainUom";
                 $http.get(containuom_url)
                 .success(function(data) {
-         //           console.log(data);
                     $scope.SelectContainUomList = data;
                 })
                 .error(function(data) {
@@ -1179,12 +1079,9 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 });
                 
                 $('#ThumbnailProductImage').children("img").remove();
-                
-                // Download Image for User Thumbnail
                 var downloadUrl = ENV.apiEndpoint + '/aws/downloadProductImageThumbnail/' + data._id + '/' + data.ProductCode;
                 $http.get(downloadUrl)
                 .success(function (data, status, headers, config) {
-                //    $scope.User.ProfileImage = data;
                     $('#ThumbnailProductImage').children("img").remove();
                     $('#ThumbnailProductImage').append(data);
                 })
@@ -1273,7 +1170,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             $http.get(GenCodeURL)
                 .success(function(data) {
                     NewProductCode = data;
-            //        console.log('get new code ' + NewProductCode);
                     $scope.ViewProductData.ProductCode = NewProductCode;
                     $scope.ViewProductData.CreateBy = $scope.User.Username;
                     $scope.ViewProductData.UpdateBy = $scope.User.Username;
@@ -1299,9 +1195,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     }
     $scope.UpdateProduct = function () {
         swal({
-            //#55dd6b : green
-//#dd6b55: red
-//#5583dd : blue
           title: "Are you sure?",
           text: "คุณต้องการแก้ไขรายการ สินค้า " + $scope.ViewProductData.ProductNameTh + " ใช่หรือไม่ ?",
           type: "warning",
@@ -1338,15 +1231,13 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     }
 
     $scope.LoadProductImageByProductCode = function(refId, id, code) {
-        // Download Image for Product Thumbnail
         var downloadUrl = ENV.apiEndpoint + '/aws/downloadProductImageShop/' + id + '/' + code;
         $http.get(downloadUrl)
         .success(function (data, status, headers, config) {
             $('#ThumbnailProductImage_'+code).children("img").remove();
             $('#ThumbnailProductImage_'+code).append(data);
             
-            if (document.getElementById('ImageDataReady_'+code) !== undefined 
-                || document.getElementById('ImageDataReady_'+code) != null) {
+            if (document.getElementById('ImageDataReady_'+code) != null) {
                 document.getElementById('ImageDataReady_'+code).style.display = 'none';
             }
             
@@ -1361,14 +1252,11 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     }
     $scope.CheckPromotionIsExpire = function(expireDate) {
         if (Date.parse(expireDate) > new Date()) {
-         //   console.log("Date.parse(expireDate) > new Date() " + Date.parse(expireDate) > new Date());
             return true;
         } else if (Date.parse(expireDate) <= new Date()) {
-        //    console.log("Date.parse(expireDate) <= new Date()" + Date.parse(expireDate) <= new Date());
             return false;
         }
     }
-    // Start Function for Promotion Module
     $scope.SearchPromotion = function () {
         var url = ENV.apiEndpoint + "/promotions/LoadAllPromotion";
         $http.get(url)
@@ -1449,16 +1337,12 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     $scope.$watch('ViewPromotionData.EndDate', function (newValue) {
         $scope.ViewPromotionData.EndDate = $filter('date')(newValue, 'dd/MM/yyyy'); 
     });
-
-    //Search 
     $scope.$watch('SearchPromotionData.StartDate', function (newValue) {
         $scope.SearchPromotionData.StartDate = $filter('date')(newValue, 'dd/MM/yyyy'); 
     });
     $scope.$watch('SearchPromotionData.EndDate', function (newValue) {
         $scope.SearchPromotionData.EndDate = $filter('date')(newValue, 'dd/MM/yyyy'); 
     });
-   
-//Search 
     $scope.$watch('ViewPromotionData.CreateDate', function (newValue) {
         $scope.ViewPromotionData.CreateDate = $filter('date')(newValue, 'dd/MM/yyyy HH:mm'); 
     });
@@ -1491,8 +1375,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                             , params.page() * params.count()));
                     }
                 });
-
-                //After insert Promotion Table
                 $('#SelectProductPromotionList').val('');
                 $('#AddProductDiscount').val('');
 
@@ -1677,7 +1559,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                     console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
                 })
                 .success(function (data, status, headers, config) {
-                    // Download Image for User Profile
                     console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
                     var downloadUrl = ENV.apiEndpoint + '/aws/downloadUserImageProfile/'+$scope.User.Id + '/'+ $scope.User.Username;
                     $http.get(downloadUrl)
@@ -1690,11 +1571,9 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                     .error(function (data, status, headers, config) {
                         console.log(data);
                     });
-                    // Download Image for User Thumbnail
                     var downloadThumbnailUrl = ENV.apiEndpoint + '/aws/downloadUserImageThumbnail/'+$scope.User.Id + '/'+ $scope.User.Username;
                     $http.get(downloadThumbnailUrl)
                     .success(function (data, status, headers, config) {
-                    //    $scope.User.ProfileImage = data;
                         var img = $('#ThumbnailProfileImage').closest('div').find('img').first();
                         img.remove();
                         $('#ThumbnailProfileImage').append(data);
@@ -1710,10 +1589,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         }
         
     };
-
-    // Upload Product Image
     $scope.uploadProductImage = function (files, ProductId, ProductCode) {
-        // console.log(" Product Id " + ProductId + ProductCode);
         document.getElementById('ViewProductImageNotReady').style.display = 'block';
         if (files && files.length) {
             for (var i = 0; i < files.length; i++) {
@@ -1729,7 +1605,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                     console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
                 })
                 .success(function (data, status, headers, config) {
-                    // Download Image for Product
                     console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
 
                     var downloadUrl = ENV.apiEndpoint + '/aws/downloadProductImageThumbnail/' + ProductId + '/' + ProductCode;
@@ -1752,7 +1627,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         }
         
     };
-    // End Function for Product Module
 
     $scope.UploadPaymentDocument = function (files, RONo) {
         if (files && files.length) {
@@ -1769,8 +1643,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                     console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
                 })
                 .success(function (data, status, headers, config) {
-                   
-                    // Download Image for User Thumbnail
                     var downloadThumbnailUrl = ENV.apiEndpoint + '/aws/downloadReceiptPaymentThumbnail/'+ RONo;
                     $http.get(downloadThumbnailUrl)
                     .success(function (data, status, headers, config) {
@@ -1791,13 +1663,10 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         }
         
     };
-
-    // Start Function for Customer Type Module
     $scope.SearchCustomerType = function () {
         var url = ENV.apiEndpoint + "/customer_types/LoadCustomerType";
         $http.get(url)
         .success(function (data) {
-            //    $scope.SearchCustomerTypes = data;
                 $scope.CustomerTypeTableParams = new ngTableParams({
                     page: 1,            // show first page
                     count: 10           // count per page
@@ -1967,9 +1836,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         });
     }
     $scope.UpdateCustomerType = function () {
-        //#55dd6b : green
-//#dd6b55: red
-//#5583dd : blue
         swal({
           title: "Are you sure?",
           text: "คุณต้องการแก้ไขรายการ ชนิดลูกค้า " + $scope.ViewCustomerTypeData.CustomerTypeNameTh + " ใช่หรือไม่ ?",
@@ -2005,14 +1871,10 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             $scope.UpdateCustomerType();
         }
     }
-    // End Function for Customer Type Module
-
-    // Start Function for Customer Module
     $scope.SearchCustomer = function () {
         var url = ENV.apiEndpoint + "/customers/LoadCustomer";
         $http.get(url)
         .success(function (data) {
-            //    $scope.SearchCustomers = data;
                 $scope.CustomerTableParams = new ngTableParams({
                     page: 1,            // show first page
                     count: 10           // count per page
@@ -2057,7 +1919,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             UpdateBy: $scope.User.Username,
             UpdateDate: new Date()
         };
-        //Load Customer Type
         var type_url = ENV.apiEndpoint + "/customer_types/LoadCustomerType";
         $http.get(type_url)
         .success(function(data) {
@@ -2249,9 +2110,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             $scope.UpdateCustomer();
         }
     }
-    // End Function for Customer Module
-
-    // Start Function for AppUser Module
     $scope.SearchAppUser = function () {
         var url = ENV.apiEndpoint + "/users/LoadAppUser";
         $http.get(url)
@@ -2307,7 +2165,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     }
     $scope.ViewAppUser = function (id) {
         var url = ENV.apiEndpoint + "/users/LoadAppUserByObjId/" + id;
-    //    console.log(id);
         $http.get(url)
             .success(function (data) {
                 $scope.ViewAppUserData = data;
@@ -2501,14 +2358,10 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
 
         return TerminalList;
     }
-    // End Function for AppUser Module
-    
-    // Start Function for Supplier Module
     $scope.SearchSupplier = function () {
         var url = ENV.apiEndpoint + "/suppliers/LoadSupplier";
         $http.get(url)
         .success(function (data) {
-            //    $scope.SearchSuppliers = data;
                 $scope.SupplierTableParams = new ngTableParams({
                     page: 1,            // show first page
                     count: 10           // count per page
@@ -2570,7 +2423,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 } else {
                     $scope.ViewSupplierData.CreateDate = data.CreateDate;
                 }
-                //Set Value to Select <option>
                 console.log('data.SupplierCode ' + data.SupplierCode);
      
             })
@@ -2588,9 +2440,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         }
     }
     $scope.DeleteSupplier = function (SupplierData) {
-        //#55dd6b : green
-        //#dd6b55: red
-        //#5583dd : blue
         swal({
           title: "Are you sure?",
           text: "คุณต้องการลบรายการ ผู้ขาย " + SupplierData.SupplierNameTh + " ใช่ หรือ ไม่?",
@@ -2714,9 +2563,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         $("#div-supplier-table").show("slow");
         $("#div-supplier-detail").hide("slow");
     }
-    // End Function for Supplier Module
-    
-    // Start Function for Uom Module
     $scope.SearchUom = function () {
         var url = ENV.apiEndpoint + "/uoms/LoadUom";
         $http.get(url)
@@ -2923,14 +2769,10 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         $("#div-uom-table").show("slow");
         $("#div-uom-detail").hide("slow");
     }
-    // End Function for Uom Module
-
-    // Start Function for Staff Module
     $scope.SearchStaff = function () {
         var url = ENV.apiEndpoint + "/staffs/LoadStaff";
         $http.get(url)
         .success(function (data) {
-        //    $scope.SearchStaffs = data;
             $scope.StaffTableParams = new ngTableParams({
                     page: 1,            // show first page
                     count: 10           // count per page
@@ -3018,7 +2860,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             
             })
             .error(function (data) {
-             //   console.log(data);
             });
         $("#div-staff-table").fadeOut();
         $("#div-staff-detail").fadeIn();
@@ -3123,14 +2964,10 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             $scope.UpdateStaff();
         }
     }
-    // End Function for Staff Module
-
-    // Start Function for Role Module
     $scope.SearchRole = function () {
         var url = ENV.apiEndpoint + "/roles/LoadRole";
         $http.get(url)
         .success(function (data) {
-            //    $scope.SearchRoles = data;
                 $scope.RoleTableParams = new ngTableParams({
                     page: 1,            // show first page
                     count: 10           // count per page
@@ -3326,9 +3163,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             $scope.UpdateRole();
         }
     }
-    // End Function for Role Module
-
-    // Start Function for Receipt Module
     $scope.SearchReceipt = function () {
         var url = ENV.apiEndpoint + "/receipts/LoadReceipt";
         $http.get(url)
@@ -3414,7 +3248,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         if (isUpdate) {
             var url = ENV.apiEndpoint + "/roles/UpdateReceipt/";
             console.log('update receipt ' + $scope.ViewReceiptData);
-      //      $scope.ViewCustomerTypeData.ProductTypeCode = $scope.SelectedProductTypeCodeValue.ProductTypeCode;
             $http.post(url, $scope.ViewReceiptData)
                 .success(function (data) {
                     console.log('update success');
@@ -3436,30 +3269,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
 
 
     $scope.SearchHistoryReceipt = function() {
-    /*    var historyReceiptUrl = ENV.apiEndpoint + "/receipts/LoadROHeadByUserIdAndStatus/"+$scope.User.Id+"/"+$scope.SearchPaymentStatus
-        +"/"+$scope.SearchShippingStatus+"/"+$scope.StartDate+"/"+$scope.EndDate;
-        console.log(historyReceiptUrl);
-        $http.get(historyReceiptUrl)
-        .success(function (data) {
-            if (data.length > 0 ) {
-                $scope.SearchHistoryReceipts = data;
-                $scope.HistoryReceiptTableParams = new ngTableParams({
-                    page: 1,            // show first page
-                    count: 10           // count per page
-                }, {
-                    total: data.length, // length of data
-                    getData: function($defer, params) {
-                        $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                    }
-                });
-            } else {
-                swal("Your data not found", "Cannot find your purchase order data.", "warning");
-            }
-        })
-        .error(function (data) {
-            console.log(data);
-        });
-*/
         ReceiptOrderService.LoadROHeadByUserIdAndStatus($scope.User.Id, $scope.SearchPaymentStatus, $scope.SearchShippingStatus, 
             $scope.StartDate, $scope.EndDate)
         .then(function(data, status) {
@@ -3493,31 +3302,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         } else {
             $scope.SearchCustomerName = $('#SelectCustomerList').val();
         }
-/*
-        var customerOrderUrl = ENV.apiEndpoint + "/receipts/LoadROHeadByStaff/"+ $scope.SearchCustomerRONo+"/"+ $scope.SearchCustomerName
-        +"/"+$scope.SearchCustomerOrderPaymentStatus+"/"+$scope.SearchCustomerOrderShippingStatus
-        +"/"+$scope.SearchCustomerOrderStartDate+"/"+$scope.SearchCustomerOrderEndDate;
-        console.log(customerOrderUrl);
-        $http.get(customerOrderUrl)
-        .success(function (data) {
-            if (data.length > 0 ) {
-                $scope.SearchCustomerOrders = data;
-                $scope.CustomerOrderTableParams = new ngTableParams({
-                    page: 1,            // show first page
-                    count: 10           // count per page
-                }, {
-                    total: data.length, // length of data
-                    getData: function($defer, params) {
-                        $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                    }
-                });
-            } else {
-                swal("Your data not found", "Cannot find customer order data.", "warning");
-            }
-        })
-        .error(function (data) {
-            console.log(data);
-        });*/
 
         ReceiptOrderService.LoadROHeadByStaff($scope.SearchCustomerRONo, $scope.SearchCustomerName, $scope.SearchCustomerOrderPaymentStatus, 
             $scope.SearchCustomerOrderShippingStatus, $scope.SearchCustomerOrderStartDate, $scope.SearchCustomerOrderEndDate)
@@ -3607,46 +3391,9 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         
     }
     $scope.ViewRO = function (roHeadId, mode) {
-     /*    
-     var loadROHeadLineUrl = ENV.apiEndpoint + "/receipts/LoadROHeadROLineByObjId/" + roHeadId;
-       $http.get(loadROHeadLineUrl)
-        .success(function (data, status, headers, config) {
-            console.log(data);
-            if (mode === 'History') {
-                $scope.ViewHistoryRO = data;
-                var downloadPaymentUrl = ENV.apiEndpoint + '/aws/downloadReceiptPaymentThumbnail/'+$scope.ViewHistoryRO.RONo;
-                $http.get(downloadPaymentUrl)
-                .success(function (data, status, headers, config) {
-                    var img = $('#ThumbnailReceiptPayment').closest('div').find('img').first();
-                    img.remove();
-                    $('#ThumbnailReceiptPayment').append(data);
-                })
-                .error(function (data, status, headers, config) {
-                    console.log(data);
-                });
-            } else if (mode === 'Customer') {
-                $scope.ViewStaffRO = data;
-                var downloadPaymentUrl = ENV.apiEndpoint + '/aws/downloadReceiptPaymentThumbnail/'+$scope.ViewStaffRO.RONo;
-                $http.get(downloadPaymentUrl)
-                .success(function (data, status, headers, config) {
-                    var img = $('#ThumbnailStaffViewReceiptPayment').closest('div').find('img').first();
-                    img.remove();
-                    $('#ThumbnailStaffViewReceiptPayment').append(data);
-                })
-                .error(function (data, status, headers, config) {
-                    console.log(data);
-                });
-
-            }
-        })
-        .error(function (data, status, headers, config) {
-
-        });
-*/
         
         ReceiptOrderService.LoadROHeadROLineByROHeadId(roHeadId)
         .then(function(data, status) {
-        //    console.log(data);
             if (mode === 'History') {
                 $scope.ViewHistoryRO = data;
                 document.getElementById('HistoryRODataNotReady').style.display = 'none';
@@ -3677,60 +3424,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     }
 
      $scope.PerformValidatePaymentDocument = function (IsApprove) {
-    //    console.log($scope.ViewStaffRO.UserId);
         var UserId = $scope.ViewStaffRO.UserId;
-/*        if (IsApprove === 'Y') {
-            var approveMailUrl = ENV.apiEndpoint + '/mails/ApprovePaymentDocument/' + UserId;
-            $http.get(approveMailUrl)
-            .success(function (data, status, headers, config) {
-                var approvePaymentUrl = ENV.apiEndpoint + '/receipts/ApprovePayment/' + $scope.ViewStaffRO.RONo;
-                $http.get(approvePaymentUrl)
-                .success(function (data, status, headers, config){
-                    swal("สำเร็จ", "อนุมัติเอกสารการจ่ายเงินเรียบร้อย", "success"); 
-                }).error(function (data, status, headers, config){
-                    swal("เกิดข้อผิดพลาด", data, "error");
-                });
-            })
-            .error(function (data, status, headers, config) {
-
-            });
-        } else if (IsApprove === 'N') {
-            console.log($scope.ViewStaffRO.UserId);
-            swal({   
-                title: "Reject Payment Document",   
-                text: "Reason",   
-                type: "input",   
-                showCancelButton: true,   
-                closeOnConfirm: false,   
-                animation: "slide-from-top",   
-                inputPlaceholder: "Reject reason" }
-                , function(inputValue) {   
-                    if (inputValue === false) return false;      
-                    if (inputValue === "") {     
-                        swal.showInputError("You need to write something!");     
-                        return false   
-                    }      
-                 //   swal("OK!", "You wrote: " + inputValue, "success"); 
-                    // Then send email to inform customer
-                    $scope.ValidateForm = {
-                        UserId : '',
-                        RejectReason : ''
-                    };
-                    $scope.ValidateForm.UserId = UserId;
-                    $scope.ValidateForm.RejectReason = inputValue;
-                    var rejectMailUrl = ENV.apiEndpoint + '/mails/RejectPaymentDocument';
-                    $http.post(rejectMailUrl, $scope.ValidateForm)
-                    .success(function (data, status, headers, config) {
-                        console.log('reject success');
-                        $('#ThumbnailReceiptPayment').modal('toggle');
-                    })
-                    .error(function (data, status, headers, config) {
-                        swal("เกิดข้อผิดพลาด", data, "error");
-                    });
-            });
-            
-        }
-*/
         if (IsApprove === 'Y') {
             EmailService.SendEmailApprovePayment(UserId)
             .then(function(data, status) {
@@ -3748,7 +3442,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             });
 
         } else if (IsApprove === 'N') {
-    //        console.log($scope.ViewStaffRO.UserId);
             swal({   
                 title: "Reject Payment Document",   
                 text: "Reason",   
@@ -3758,7 +3451,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 animation: "slide-from-top",   
                 inputPlaceholder: "Reject reason" }
                 , function(inputValue) {   
-        //            console.log('inputValue' + inputValue);
                     if (inputValue === false) return false;      
                     if (inputValue === "") {     
                         swal.showInputError("You need to write something!");     
@@ -3784,27 +3476,23 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     }
 
     $scope.ReviewPaymentDocument = function(RONo) {
-    //    console.log('RONo', RONo);
         var mailObj = {
             RONo : RONo
         };
         EmailService.SendEmailReviewPayment(mailObj)
         .then(function(data, status) {
-    //        console.log(data);
         }, function(err, status) {
             console.log('err ', err);
         });
     }
 
     $scope.NotifyCustomerShipping = function(ViewStaffRO) {
-    //    console.log('ViewStaffRO', ViewStaffRO);
         var mailObj = {
             Email : ViewStaffRO.BillingEmail,
             RONo : ViewStaffRO.RONo
         };
         EmailService.SendEmailNotifyCustomerShipping(mailObj)
         .then(function(data, status) {
-     //       console.log(data);
             swal("สำเร็จ !!!", "ส่งอีเมลแจ้งลูกค้าสำเร็จ !!!", "success");
 
             $scope.SearchCustomerOrder();

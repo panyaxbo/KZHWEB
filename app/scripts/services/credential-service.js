@@ -6,7 +6,6 @@ app.service("CredentialService", ["$q", "$http", "ENV", function ($q, $http, ENV
 			var oauthURL = ENV.apiEndpoint + "/oauths/GetPublicKey";
 		    $http.get(oauthURL)
 		    .success(function(data, status) {
-		    //    OAuth.initialize(data);
 		    	  defer.resolve(data);
 		    })
 		    .error(function(error, status) {

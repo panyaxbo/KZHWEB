@@ -1,8 +1,8 @@
 "use strict";
-app.controller("MainController", [ "$scope", "$http" , "$timeout", 
+app.controller("MainController", [ "$scope", "$http" , "$timeout", "ngTableParams", 
     "ProductTypeService", "ProductCategoryService", "ProductService", "WeightRateService", "UtilService", "SubscribeService",
     "DataModelFactory",
-	 function ($scope, $http, $timeout, 
+	 function ($scope, $http, $timeout, ngTableParams, 
         ProductTypeService, ProductCategoryService, ProductService, WeightRateService, UtilService, SubscribeService,
         DataModelFactory) {
 
@@ -27,14 +27,9 @@ app.controller("MainController", [ "$scope", "$http" , "$timeout",
     
     ProductTypeService.LoadProductType()
         .then(function(types, status) {
-      //      console.log(types, $scope.IsProductTypeDataReady);
             $scope.ProductTypes = types;
             ProductTypeService.ProductTypes = types;
             $scope.IsProductTypeDataReady = true;
-    /*
-            $scope.$emit('handleDataReadyEmit', {
-                IsDataReady: true
-            });*/
             return ProductCategoryService.LoadProductCategoryByProductType(ProductTypeService.ProductTypes);
             
         }, function(err, status) {
@@ -42,9 +37,6 @@ app.controller("MainController", [ "$scope", "$http" , "$timeout",
         })
         .then(function(data, status) {
             $timeout(function() {
-     //           console.log('data.ProductTypes ', data);
-            //    $scope.ProductTypes = data;
-            //    return ProductService.LoadProductByProductCategory()
             }, 2000);
         }, function(err, status) {
              console.log(err);
@@ -59,10 +51,8 @@ app.controller("MainController", [ "$scope", "$http" , "$timeout",
             } 
             $('#'+ProductCategoryCode).text(data);
         }, function(err, status) {
-        //    console.log(err);
         });
     };
-    // Load Product by ProductCategoryCode
     $scope.LoadProductByProductCategoryCode = function (ProductCategoryCode) {
         $scope.IsProductDataReady = false;
         document.getElementById('ProductDataReady').style.display = 'none';

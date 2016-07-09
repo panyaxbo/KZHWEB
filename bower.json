@@ -1,6 +1,6 @@
 {
   "name": "kzhweb",
-  "version" : "0.0.1",
+  "version": "0.0.1",
   "private": true,
   "dependencies": {
     "BrandButtons": "~0.2.1",
@@ -12,7 +12,6 @@
     "angularjs-datepicker": "~0.2.5",
     "bootstrap": "~3.2.0",
     "bootstrap-social": "~4.9.1",
-    "chartjs": "~1.0.2",
     "fontawesome": "~4.3.0",
     "layzr.js": "~1.4.3",
     "less": "less.js#~2.5.1",
@@ -22,7 +21,6 @@
     "ng-table": "~0.8.3",
     "number-format": "*",
     "oauth-js": "~0.5.0",
-    "sweetalert": "~1.0.1",
     "angular-cookies": "~1.4.8",
     "angular-route": "~1.4.8",
     "lodash": "^4.13.1",
@@ -44,17 +42,17 @@
     "bootstrap-star-rating": "^4.0.1",
     "angular-select2": "^1.5.2",
     "select2": "^4.0.3",
-    "select2-bootstrap-css": "^1.4.6"
+    "select2-bootstrap-css": "^1.4.6",
+    "Chart.js": "chartjs#^2.1.6",
+    "angular-update-meta": "^1.9.0",
+    "es6-promise": "^3.2.2"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "appPath": "app",
   "moduleName": "kzhweb",
   "resolutions": {
     "select2": "~3.5.2",
     "angular": "1.4.8",
-    "jspdf": "^1.2.61",
-    "card": "~1.2.2",
     "moment": "^2.13.0",
     "lodash": "^4.13.1"
   }

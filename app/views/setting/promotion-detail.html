@@ -1,0 +1,105 @@
+<div id="div-promotion-detail" class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <form class="form-horizontal" role="form">
+            <fieldset>
+                <!-- Form Name -->
+                <legend></legend>
+
+                <!-- Text input-->
+                <div class="form-group"> 
+                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PROMOTION.PROMOTION_CODE' | translate}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" background-color="#FFCBCBCB" readonly placeholder="{{'BODY.SECTION.SETTING.PROMOTION.PROMOTION_CODE' | translate}}" class="form-control" ng-model="ViewPromotionData.PromotionCode"></input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PROMOTION.PROMOTION_DATE_LABEL' | translate}}</label>
+                    <div class="col-sm-6">
+                        <datepicker button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>"
+                               date-format="dd/MM/yyyy" date-set="">
+                              <input ng-model="ViewPromotionData.PMDate" type="text" style="color:black" class="form-control" />
+                            </datepicker> 
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PROMOTION.PROMOTION_NAME_TH' | translate}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_TH' | translate}}" class="form-control" ng-model="ViewPromotionData.PromotionNameTh"></input>
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PROMOTION.PROMOTION_NAME_EN_LABEL' | translate}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_EN' | translate}}" class="form-control" ng-model="ViewPromotionData.PromotionNameEn"></input>
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PROMOTION.PROMOTION_NAME_CN' | translate}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT_TYPE.PRODUCT_TYPE_NAME_CN' | translate}}" class="form-control" ng-model="ViewPromotionData.PromotionNameCn"></input>
+                    </div>
+                    
+                </div>
+                 <div class="form-group">
+                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PROMOTION.START_DATE_LABEL' | translate}}</label>
+                    <div class="col-sm-6">
+                        <datepicker button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>"
+                               date-format="dd/MM/yyyy"  date-set="">
+                              <input ng-model="ViewPromotionData.StartDate" type="text" style="color:black" class="form-control" />
+                            </datepicker> 
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PROMOTION.END_DATE_LABEL' | translate}}</label>
+                    <div class="col-sm-6">
+                        <datepicker button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>" date-format="dd/MM/yyyy"  date-set="">
+                              <input ng-model="ViewPromotionData.EndDate" type="text" style="color:black" class="form-control" />
+                            </datepicker> 
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="pull-right">
+                            <button type="submit" class="btn btn-warning" ng-click="NewPromotion()">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.NEW' | translate}}</button>
+                            <button type="submit" class="btn btn-primary" ng-click="SavePromotion()">
+                                <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.SAVE' | translate}}</button>
+                            <button type="submit" class="btn btn-danger" ng-click="DeletePromotion()">
+                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.DELETE' | translate}}</button>
+                            <button type="submit" class="btn btn-default" ng-click="CancelPromotion()">
+                                <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.CANCEL' | translate}}</button>
+
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="col-md-10 col-md-offset-1">
+    <label class="col-sm-2 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PROMOTION.SEARCH_PRODUCT' | translate}}</label>
+        <div class="col-sm-9">
+            
+            <select id="SelectProductPromotionList" style="width:250px"> </select>
+            <button type="submit" class="btn btn-success" ng-click="AddProductPromotion()">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.PROMOTION.ADD_PRODUCT_BUTTON' | translate}}</button>
+      
+        </div>
+        <table ng-table="PromotionTableParams" class="table table-condense">
+            <tr ng-repeat="pm in $data">
+                <td data-title="'#'">{{$index + 1}}</td>
+                <td data-title="'Product Code'">{{pm.ProductCode}}</td>
+                <td data-title="'Product Name En'">{{pm.ProductNameEn}}</td>
+                <td data-title="'Product Name Th'">{{pm.ProductNameTh}}</td>
+                <td data-title="'Product Name Cn'">{{pm.ProductNameCn}}</td>
+                
+                <td data-title="''">
+                    <button ng-click="DeletePromotion(pm._id)" class="btn btn-danger" alt="Delete">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

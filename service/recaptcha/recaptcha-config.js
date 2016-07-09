@@ -1,7 +1,7 @@
 var config = {};
 
 config.recaptcha = {
-	key : '6Lf0JSITAAAAAFaPkRTnwg7lp1VK3IgIDh1gwawL'
+	key : '6Lf0JSITAAAAANkc5E1_scb1arzyAtgVpdBGnupv'
 };
 
 module.exports = config;

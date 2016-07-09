@@ -9,34 +9,18 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/LoadCompany', function(req, res) {
-    var findCompanyPromise = function () {
-        var defer =  Q.defer();
-        db.collection('Company')
-            .findOne({
-               
-            }, function (err, company) {
-                if( err ) {
-                    defer.reject(err);
-                } else {
-                    defer.resolve(company); 
-            }
-        });
-        return defer.promise;
-    };
 
-    findCompanyPromise()
-    .then(function(data, status) {
-        if(!data) {
-            res.sendStatus(404);
-            return;
-        } else {
-            res.json(data); 
+    db.collection('Company')
+        .findOne({
+        }, function (err, company) {
+            if( err ) {
+                console.log(err);
+            } else {
+                console.log(company)
+                res.json(company); 
         }
-    }, function(err) {
-        console.log(err, err.stack.split("\n"));
-        res.sendStatus(500);
-        return;
     });
+
 });
 
 router.get('/LoadBrowserAPIKey', function(req, res) {

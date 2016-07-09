@@ -9,25 +9,20 @@ app.config(function($routeProvider, $locationProvider) {
   $routeProvider
       .when('/', {
         templateUrl: '/views/main.html'
-     //   controller: 'MainController'
       })
       .when('/product', {
-        url: '/login',
         templateUrl: '/views/main.html',
         controller: 'MainController'
       })
       .when('/login', {
-        url: '/login',
         templateUrl: '/views/login.html',
         controller: 'LoginController'
       })
       .when('/forget-password', {
-        url: '/forget-password',
         templateUrl: '/views/forget-password.html',
         controller: 'LoginController'
       })
       .when('/input-password', {
-        url: '/input-password',
         templateUrl: '/views/input-password.html',
         controller: 'LoginController'
       })
@@ -36,20 +31,20 @@ app.config(function($routeProvider, $locationProvider) {
         controller: 'HistoryController'
       })
       .when('/articles', {
-        templateUrl: '/views/article.html',
+        templateUrl: '/views/article/article.html',
         controller: 'ArticleController'
       })
       .when('/article', {
-        templateUrl: '/views/article-detail.html',
+        templateUrl: '/views/article/article-detail.html',
         controller: 'ArticleController'
       })
       .when('/article/:articleId', {
-        templateUrl: '/views/article-detail.html',
+        templateUrl: '/views/article/article-detail.html',
         controller: 'ArticleController',
         mode: 'view'
       })
       .when('/payment-delivery', {
-        templateUrl: '/views/payment-delivery.html'
+        templateUrl: '/views/payment-method.html'
       })
       .when('/about', {
         templateUrl: '/views/about.html'
@@ -59,7 +54,7 @@ app.config(function($routeProvider, $locationProvider) {
         controller: 'ContactController'
       })
       .when('/cart', {
-        templateUrl: '/views/shopping-cart.html',
+        templateUrl: '/views/cart.html',
         controller: 'CartController'
       })
       .when('/shipment', {
@@ -70,6 +65,10 @@ app.config(function($routeProvider, $locationProvider) {
         templateUrl: '/views/payment.html',
         controller: 'PaymentController'
       })
+      .when('/payment-process', {
+        templateUrl: '/views/payment-process.html',
+        controller: 'PaymentController'
+      })
       .when('/payment/payment-success', {
         templateUrl: '/views/payment.html',
         controller: 'PaymentController'
@@ -78,17 +77,78 @@ app.config(function($routeProvider, $locationProvider) {
         templateUrl: '/views/payment-failure.html',
         controller: 'PaymentController'
       })
-      
-      /* Route for supplier */
-      .when('/supplier', {
-        templateUrl: '/views/supplier/supplier.html',
-        controller: 'SupplierController'
+      .when('/setting/accounts', {
+        templateUrl: '/views/setting/accounts.html',
+        controller: 'AccountController'
       })
-      /* Route for setting */
-      .when('/setting', {
-        
+      .when('/setting/account', {
+        templateUrl: '/views/setting/account-detail.html',
+        controller: 'AccountController'
       })
-      /* Route for Technician */
+      .when('/setting/account/:accountId', {
+        templateUrl: '/views/setting/account-detail.html',
+        controller: 'AccountController'
+      })
+      .when('/setting/customer-types', {
+        templateUrl: '/views/setting/customer-types.html',
+        controller: 'CustomerTypeController'
+      })
+      .when('/setting/customer-type', {
+        templateUrl: '/views/setting/account-detail.html',
+        controller: 'CustomerTypeController'
+      })
+      .when('/setting/customer-type/:customerTypeId', {
+        templateUrl: '/views/setting/account-detail.html',
+        controller: 'CustomerTypeController'
+      })
+      .when('/setting/customers', {
+        templateUrl: '/views/setting/customers.html',
+        controller: 'CustomerController'
+      })
+      .when('/setting/customer', {
+        templateUrl: '/views/setting/customer-detail.html',
+        controller: 'CustomerController'
+      })
+      .when('/setting/customer/:customerId', {
+        templateUrl: '/views/setting/customer-detail.html',
+        controller: 'CustomerController'
+      })
+      .when('/setting/products', {
+        templateUrl: '/views/setting/products.html',
+        controller: 'SettingController'
+      })
+      .when('/setting/product', {
+        templateUrl: '/views/setting/product-detail.html',
+        controller: 'SettingController'
+      })
+      .when('/setting/product/:productId', {
+        templateUrl: '/views/setting/product-detail.html',
+        controller: 'SettingController'
+      })
+      .when('/setting/product-categories', {
+        templateUrl: '/views/setting/product-categories.html',
+        controller: 'ProductCategoryController'
+      })
+      .when('/setting/product-category', {
+        templateUrl: '/views/setting/product-category-detail.html',
+        controller: 'ProductCategoryController'
+      })
+      .when('/setting/product-category/:productCategoryId', {
+        templateUrl: '/views/setting/product-category-detail.html',
+        controller: 'ProductCategoryController'
+      })
+      .when('/setting/product-types', {
+        templateUrl: '/views/setting/product-types.html',
+        controller: 'ProductTypeController'
+      })
+      .when('/setting/product-type', {
+        templateUrl: '/views/setting/product-type-detail.html',
+        controller: 'ProductTypeController'
+      })
+      .when('/setting/product-type/:productTypeId', {
+        templateUrl: '/views/setting/product-type-detail.html',
+        controller: 'ProductTypeController'
+      })
       .when('/technicians', {
         templateUrl: '/views/technician/technicians.html',
         controller: 'TechnicianController'
@@ -101,7 +161,6 @@ app.config(function($routeProvider, $locationProvider) {
         templateUrl: '/views/technician/technician-detail.html',
         controller: 'TechnicianController'
       })
-      /* Route for Entrepreneur */
       .when('/entrepreneurs', {
         templateUrl: '/views/entrepreneur/entrepreneur.html',
         controller: 'EntrepreneurController'
@@ -119,6 +178,5 @@ app.config(function($routeProvider, $locationProvider) {
       })
       .otherwise({
         redirectTo: '/404'
-      })
-    
+      });
 });

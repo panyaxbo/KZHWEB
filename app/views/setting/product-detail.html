@@ -1,0 +1,180 @@
+<div id="div-product-detail" class="row">
+    <div class="col-md-8 col-md-offset-2">
+    <form class="form-horizontal" role="form">
+        <fieldset>
+            <legend></legend>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_CODE' | translate}} :</label>
+                <div class="col-sm-6">
+                    <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_CODE' | translate}}" class="form-control" ng-model="ViewProductData.ProductCode" readonly>
+                </div>
+                <div class="col-sm-2">
+                    <input type="checkbox" ng-model="IsAutoGenCode" checked> {{'BODY.SECTION.SETTING.PRODUCT.IS_GEN_CODE' | translate}}
+                </div>
+            </div>
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_TH' | translate}} :</label>
+                <div class="col-sm-8">
+                    <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_TH' | translate}}" class="form-control" ng-model="ViewProductData.ProductNameTh" required>
+                </div>
+
+            </div>
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_EN' | translate}} :</label>
+                <div class="col-sm-8">
+                    <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_EN' | translate}}" class="form-control" ng-model="ViewProductData.ProductNameEn">
+                </div>
+            </div>
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_CN' | translate}} :</label>
+                <div class="col-sm-8">
+                    <input type="text" placeholder="{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_NAME_CN' | translate}}" class="form-control" ng-model="ViewProductData.ProductNameCn">
+                </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="selectbasic" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.PRODUCT_CATEGORY' | translate}} :</label>
+                <div class="col-md-4">
+                    <select id="SelectProductCategory" class="form-control" ng-model="ViewProductData.ProductCategoryCode" ng-options="ProductCategory.ProductCategoryCode as ProductCategory.ProductCategoryNameTh for ProductCategory in SelectProductCategoryList">
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Input Weight -->
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.WEIGHT' | translate}} :</label>
+                <div class="col-sm-4">
+                    <input type="text" placeholder="0.00" class="form-control text-right" ng-model="ViewProductData.Weight">
+                </div>
+            </div>
+            <!-- Input Contain Weight -->
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.CONTAIN_WEIGHT' | translate}} :</label>
+                <div class="col-sm-4">
+                    <input type="text" placeholder="0.00" class="form-control text-right" ng-model="ViewProductData.ContainWeight">
+                </div>
+            </div>
+            <!-- Input Cost Price -->
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.COST_PRICE' | translate}} :</label>
+                <div class="col-sm-4">
+                    <input type="text" placeholder="0.00" class="form-control text-right" ng-model="ViewProductData.CostPrice">
+                </div>
+            </div>
+            <!-- Input Retail Price -->
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.RETAIL_PRICE' | translate}} :</label>
+                <div class="col-sm-4">
+                    <input type="text" placeholder="0.00" class="form-control text-right" ng-model="ViewProductData.RetailPrice">
+                </div>
+            </div>
+            <!-- Input Wholesale Price -->
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.WHOLESALE_PRICE' | translate}} :</label>
+                <div class="col-sm-4">
+                    <input type="text" placeholder="0.00" class="form-control text-right" ng-model="ViewProductData.WholesalePrice">
+                </div>
+            </div>
+            <!-- Input Uom -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="selectbasic" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.UOM' | translate}}</label>
+                <div class="col-md-4">
+                     <select id="SelectUom" class="form-control" ng-model="ViewProductData.UomCode" ng-options="Uom.UomCode as Uom.UomNameTh for Uom in SelectUomList">
+                    </select>
+                </div>
+            </div>
+            <!-- Input Contain Uom -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="selectbasic" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.CONTAIN_UOM' | translate}}</label>
+                <div class="col-md-4">
+                    <select id="SelectContainUom" name="selectbasic" class="form-control" ng-model="ViewProductData.ContainUomCode" ng-options="Uom.UomCode as Uom.UomNameTh for Uom in SelectContainUomList">
+                    </select>
+                </div>
+            </div>
+            <!-- Input Contain Quantity -->
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.CONTAIN_QUANTITY' | translate}}</label>
+                <div class="col-sm-4">
+                    <input type="text" placeholder="0.00" class="form-control text-right" ng-model="ViewProductData.ContainQuantity">
+                </div>
+            </div>
+            <!-- Input Contain Cost Price -->
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.CONTAIN_COST_PRICE' | translate}}</label>
+                <div class="col-sm-4">
+                    <input type="text" placeholder="0.00" class="form-control text-right" ng-model="ViewProductData.ContainCostPrice">
+                </div>
+            </div>
+            <!-- Input Contain Wholesale Price -->
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.CONTAIN_WHOLESALE_PRICE' | translate}}</label>
+                <div class="col-sm-4">
+                    <input type="text" placeholder="0.00" class="form-control text-right" ng-model="ViewProductData.ContainWholesalePrice">
+                </div>
+            </div>
+            <!-- Input Is Hot -->
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="textinput" style="text-align: left"></label>
+                <div class="col-sm-6 checkbox">
+                    <label>
+                      <input type="checkbox" ng-model="ViewProductData.IsHot"> {{'BODY.SECTION.SETTING.PRODUCT.IS_HOT' | translate}}
+                    </label>
+                </div>
+            </div>
+            <!-- Input Is Active -->
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="textinput" style="text-align: left"></label>
+                <div class="col-sm-6 checkbox">
+                    <label>
+                      <input type="checkbox" ng-model="ViewProductData.IsDeactive"> {{'BODY.SECTION.SETTING.PRODUCT.IS_DEACTIVE' | translate}}
+                    </label>
+                </div>
+            </div>
+            
+            <!--Product Image Upload -->
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.IMAGE' | translate}} :</label>
+                <div class="col-sm-6">
+                    <div>
+                        <div ng-disabled="ViewProductData._id.length <= 0 || ViewProductData._id === undefined" class="button" multiple="true" ngf-select ngf-change="uploadProductImage($files, ViewProductData._id, ViewProductData.ProductCode)" style="color:black">
+                        Upload on file change</div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="textinput" style="text-align: left">{{'BODY.SECTION.SETTING.PRODUCT.IMAGE_THUMBNAIL' | translate}} </label>
+                <div class="col-sm-6" id="ThumbnailProductImage">
+                
+                </div>
+                <div class="col-sm-6" id="ViewProductImageNotReady" style="display: none;color:white">
+                        <center>
+                            <i class="fa fa-spinner fa-pulse fa-5x fa-fw margin-bottom"></i>
+                            <span class="sr-only">Loading...</span>
+                        </center>
+                    </div>
+            </div>
+           
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-warning" ng-click="NewProduct()">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.NEW' | translate}}</button>
+                        
+                        <button type="submit" class="btn btn-primary" ng-click="SaveProduct()">
+                        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.SAVE' | translate}}</button>
+
+                        <button type="submit" class="btn btn-danger" ng-click="ConsiderDeleteProduct('edit', ViewProductData)">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.SAVE' | translate}}</button>
+
+                        <button type="submit" class="btn btn-default" ng-click="CancelProduct()">
+                        <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.CANCEL' | translate}}</button>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+    </div>
+</div>

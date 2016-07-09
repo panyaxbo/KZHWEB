@@ -1,19 +1,13 @@
 "use strict";
-app.controller("CartController", [ "$scope", "$http", "$rootScope", "$location", "$timeout", 
+app.controller("CartController", [ "$scope", "$http", "$rootScope", "$location", "$timeout", "$window",
  "UserService", "ReceiptOrderService", "CredentialService", "UtilService", "UomService", "WeightRateService", "DataModelFactory",
-  function ($scope, $http, $rootScope, $location, $timeout, 
+  function ($scope, $http, $rootScope, $location, $timeout, $window,
     UserService, ReceiptOrderService, CredentialService, UtilService, UomService, WeightRateService, DataModelFactory) {
-  	console.log('in cart con');
-
-  /** START - Initialize Variable */
      $scope.Multiplier = 1;
      $scope.CurrencySymbol = "฿";
-     $scope.User = UserService.GetUser();
+     $scope.User = DataModelFactory.getUser();
      $scope.ROHead = DataModelFactory.getReceipt();
     console.log('$scope.ROHead ', $scope.ROHead);
-  /** END - Initialize Variable */
-     
-  /** START - Broadcast Variable Area */
   	$rootScope.$on('handleReceiptOrderBroadcast', function (event, args) {
         $scope.ROHead = args.ROHead;
         console.log('args.ROHead ', args.ROHead);
@@ -42,32 +36,27 @@ app.controller("CartController", [ "$scope", "$http", "$rootScope", "$location",
     $scope.$on('handleLocaleBroadcast', function(event, args) {
 
     });
-  	/** END Broadcast Variable Area */
 
     $scope.ClearCart = function () {
         swal({
-          title: "Are you sure?",
+          title: "Are you sure ?",
           text: "คุณต้องการล้างสินค้าในตะกร้า ใช่ หรือ ไม่?",
           type: "warning",
           showCancelButton: true,
           confirmButtonColor: "#dd6b55",
-          confirmButtonText: "Yes, clear it!",
-          cancelButtonText: "No, cancel please!",
-          closeOnConfirm: true,
-          closeOnCancel: true
-        },
-        function(isConfirm){
+          confirmButtonText: "ล้างตะกร้า",
+          cancelButtonText: "ยกเลิก!"
+        }).then(function() {
+          var list = $scope.ROHead.ROLineList;
+          var len = list.length;
+          $scope.ROHead.ROLineList.length = 0;
+          DataModelFactory.setReceipt($scope.ROHead);
           $scope.$apply(function() {
-            if (isConfirm) {
-              var list = $scope.ROHead.ROLineList;
-              var len = list.length;
-              $scope.ROHead.ROLineList.length = 0;
-              ReceiptOrderService.SetReceiptOrder($scope.ROHead);
-              $location.path('/');
-            } else {
-                  swal("Cancelled", "Your product data is safe :)", "success");
-            }
+            $location.path('/');
           });
+        }, function(dismiss) {
+          if (dismiss === 'cancel') {
+          }
         });
     };
 
@@ -80,23 +69,18 @@ app.controller("CartController", [ "$scope", "$http", "$rootScope", "$location",
             var weight_rate = WeightRateService.GetWeightRateNormal($scope.ROHead.SumWeight);
             $scope.ROHead.SumWeightAmount = weight_rate;
             $scope.ROHead.NetAmount = $scope.ROHead.SumAmount + $scope.ROHead.SumVatAmount + $scope.ROHead.SumWeightAmount - $scope.ROHead.SumDiscountAmount;
-
-       //     $scope.$emit('UpdateROHeadROLine', $scope.ROHead );
             
         } else if ($scope.ROHead.PostType === 'EMS') {
             WeightRateService.GetWeightRateByPostTypeAndWeight($scope.ROHead.PostType, $scope.ROHead.SumWeight)
           .then(function(weightRate, status) {
             $scope.ROHead.SumWeightAmount = parseInt(weightRate.Rate);
             $scope.ROHead.NetAmount = $scope.ROHead.SumAmount + $scope.ROHead.SumVatAmount + $scope.ROHead.SumWeightAmount - $scope.ROHead.SumDiscountAmount;
-       
-      //      $scope.$emit('UpdateROHeadROLine', $scope.ROHead );
          
           }, function(error, status) {
 
           });
         }
-
-        ReceiptOrderService.SetReceiptOrder($scope.ROHead);
+        DataModelFactory.setReceipt($scope.ROHead);
       }
     };
 
@@ -118,7 +102,6 @@ app.controller("CartController", [ "$scope", "$http", "$rootScope", "$location",
     $scope.UpdateCartUom = function (ROLine,UomCode, index) {
       UomService.LoadUomByUomCode(UomCode)
       .then(function(uom, status) {
-      //    console.log('IsContainer ' + uom.IsContainer)
           if (uom.IsContainer == true) {
             ROLine.Price = ROLine.DrContainWholesalePrice;
             ROLine.Amount = ROLine.Quantity * ROLine.DrContainWholesalePrice;
@@ -154,21 +137,15 @@ app.controller("CartController", [ "$scope", "$http", "$rootScope", "$location",
               $scope.ROHead.ROLineList.splice(index, 1);
               $scope.ROLineList.splice(index, 1);
               if ($scope.ROHead.ROLineList.length <= 0 || $scope.ROHead.ROLineList === undefined) {
-              //  $('#HideCartTable').show('slow');
-              //  $('#ShowCartTable').hide('slow');
                 document.getElementById('HideCartTable').style.display = 'block';
                 document.getElementById('ShowCartTable').style.display = 'none';
               } else if ($scope.ROHead.ROLineList.length > 0) {
-              //  $('#HideCartTable').hide('slow');
-             //   $('#ShowCartTable').show('slow');
                 document.getElementById('HideCartTable').style.display = 'none';
                 document.getElementById('ShowCartTable').style.display = 'block';
               }
               $scope.UpdateCartSummary();
             } else {
             }
-            console.log($scope.ROHead.ROLineList.length);
-            console.log($scope.ROHead);
           });
         });
     }
@@ -234,25 +211,19 @@ app.controller("CartController", [ "$scope", "$http", "$rootScope", "$location",
           cancelButtonText: "ไม่ใช่",
           closeOnConfirm: true,
           closeOnCancel: false
-        },
-        function(isConfirm){
-            $scope.$apply(function() {
-              if (isConfirm) {
-                $scope.User.ComeFrom = '/cart';
+        }).then(function(){
+          $scope.User.ComeFrom = '/cart';
+          DataModelFactory.setUser($scope.User);
+          $scope.$apply(function () {
+            $location.path('/login');
+          })
+        },function(dismiss) {
 
-                $location.path('/login');
-              } else {
-                console.log('cancel');
-              }
-              UserService.SetUser($scope.User);
-          });
         });
 
       } else {
         DataModelFactory.setReceipt($scope.ROHead);
-        $location.path('/shipment');
-
-
+          $location.path('/shipment');
       }
     }
    

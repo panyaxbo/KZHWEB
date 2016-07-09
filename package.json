@@ -10,6 +10,7 @@
     "postinstall": "bower cache clean && bower install"
   },
   "devDependencies": {
+    "grunt-angular-templates": "^1.0.4",
     "grunt-autoprefixer": "^1.0.1",
     "grunt-build-control": "^0.6.3",
     "grunt-concurrent": "^0.5.0",
@@ -18,10 +19,14 @@
     "grunt-contrib-htmlmin": "^0.3.0",
     "grunt-contrib-imagemin": "^1.0.1",
     "grunt-contrib-uglify": "^0.5.1",
+    "grunt-ng-annotate": "^1.0.1",
     "grunt-ng-constant": "^1.1.0",
     "grunt-ngmin": "0.0.3",
     "grunt-postcss": "^0.7.1",
-    "grunt-usemin": "^2.6.2"
+    "grunt-remove-logging": "^0.2.0",
+    "grunt-stripcomments": "^0.6.0",
+    "grunt-usemin": "^2.6.2",
+    "jit-grunt": "^0.10.0"
   },
   "dependencies": {
     "apache-server-configs": "^2.7.1",
@@ -86,6 +91,7 @@
     "mv": "^2.1.1",
     "nodemailer": "^0.7.1",
     "paypal-rest-sdk": "^1.6.8",
+    "prerender-node": "^2.3.0",
     "q": "^1.4.1",
     "requestify": "^0.1.17",
     "s3": "^4.4.0",

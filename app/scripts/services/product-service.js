@@ -6,7 +6,6 @@ app.service("ProductService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
     		var url = ENV.apiEndpoint + '/products/LoadProduct';
         	$http.get(url)
             .success(function (data, status) {
-             //   $scope.Product = data;
                 defer.resolve(data);
             })
             .error(function (err, status) {

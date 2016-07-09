@@ -4,7 +4,7 @@ app.config(function ($translateProvider) {
         TITLE: {
             NAME: 'โค้ว ซุ่น เฮง - ศูนย์รวมอะไหล่มอเตอร์ไซค์, ยาง และ น้ำมันเครื่อง',
             KEYWORD: 'น้ำมันเครื่อง,ยางนอก,ยางใน,อะไหล่มอเตอร์ไซค์,รถยนต์,รถไถ, ไฟฟ้า, การเกษตร, ประปา',
-            DESCRIPTION: 'ค้าปลีก-ส่ง น้ำมันเครื่อง,ยางนอก,ยางใน,อะไหล่มอเตอร์ไซค์,รถยนต์,รถไถ, ไฟฟ้า, การเกษตร, ประปา สินค้าราคาถูก น่าเชื่อถือ',
+            DESCRIPTION: 'โค้ว ซุ่น เฮง - ค้าปลีก-ส่ง น้ำมันเครื่อง,ยางนอก,ยางใน,อะไหล่มอเตอร์ไซค์,รถยนต์,รถไถ, ไฟฟ้า, การเกษตร, ประปา สินค้าราคาถูก น่าเชื่อถือ',
             AUTHOR: 'ปัญญา บุญยกุลศรีรุ่ง'
         },
         HEAD: {
@@ -30,7 +30,6 @@ app.config(function ($translateProvider) {
             SIGNIN: 'เข้าสู่ระบบ',
             SIGNOUT: 'ออกจากระบบ',
             MODAL_SIGNIN: {
-                //login
                 HEAD: 'เข้าสู่ระบบ/ลงทะเบียน',
                 LABEL_USERNAME: 'รหัสผู้ใช้',
                 PLACEHOLDER_USERNAME: 'อีเมล',
@@ -50,7 +49,6 @@ app.config(function ($translateProvider) {
                 DROPBOX_SIGNIN: 'เข้าสู่ระบบด้วยบัญชี Dropbox',
                 FOURSQUARE_SIGNIN: 'เข้าสู่ระบบด้วยบัญชี Foursquare',
                 SOUNDCLOUD_SIGNIN: 'เข้าสู่ระบบด้วยบัญชี Soundcloud',
-                //sign up
                 FIRST_NAME : "ชื่อ",
                 LAST_NAME : "นามสกุล",
                 EMAIL : "อีเมล",
@@ -577,7 +575,6 @@ app.config(function ($translateProvider) {
                         MOBILE_NO_LABEL : "มือถือ :"
                     },
                     APP_USER : {
-                        // View Page
                         TAB : "ผู้ใช้ระบบ",
                         USERNAME : "รหัสผู้ใช้",
                         PASSWORD : "รหัสผ่าน้",
@@ -591,8 +588,6 @@ app.config(function ($translateProvider) {
                         CREATE_DATE : "วันที่สร้าง :",
                         UPDATE_BY : "อัพเดทโดย :",
                         UPDATE_DATE : "วันที่อัพเดท :",
-
-                        // Search Page
                         SEARCH_APP_USER_CRITERIA_LABEL : "เงื่อนไขการค้นหาผู้ใช้ระบบ",
                         USERNAME_LABEL : "ผู้ใช้ระบบ :",
                         NAME_LABEL : "ชื่อ :",
@@ -804,7 +799,6 @@ app.config(function ($translateProvider) {
                 EVERNOTE_SIGNIN: 'Sign in with Evernote',
                 FOURSQUARE_SIGNIN: 'Sign in with Foursquare',
                 SOUNDCLOUD_SIGNIN: 'Sign in with Soundcloud',
-                //sign up
                 FIRST_NAME : "Firstname",
                 LAST_NAME : "Lastname",
                 EMAIL : "Email",
@@ -1253,7 +1247,6 @@ app.config(function ($translateProvider) {
                         MOBILE_NO_LABEL : "มือถือ :"
                     },
                     APP_USER : {
-                        // View Page
                         TAB : "User",
                         USERNAME : "รหัสผู้ใช้",
                         PASSWORD : "รหัสผ่าน้",
@@ -1267,8 +1260,6 @@ app.config(function ($translateProvider) {
                         CREATE_DATE : "วันที่สร้าง :",
                         UPDATE_BY : "อัพเดทโดย :",
                         UPDATE_DATE : "วันที่อัพเดท :",
-
-                        // Search Page
                         SEARCH_APP_USER_CRITERIA_LABEL : "เงื่อนไขการค้นหาผู้ใช้ระบบ",
                         USERNAME_LABEL : "ผู้ใช้ระบบ :",
                         NAME_LABEL : "ชื่อ :",
@@ -1450,7 +1441,6 @@ app.config(function ($translateProvider) {
                 DROPBOX_SIGNIN: '通過 Dropbox 登錄',
                 FOURSQUARE_SIGNIN: '通過 Foursquare 登錄',
                 SOUNDCLOUD_SIGNIN: '通過 Soundcloud 登錄',
-                //sign up
                 FIRST_NAME : "名字",
                 LAST_NAME : "姓",
                 EMAIL : "電子郵件",
@@ -1861,7 +1851,6 @@ app.config(function ($translateProvider) {
                         MOBILE_NO_LABEL : "มือถือ :"
                     },
                     APP_USER : {
-                        // View Page
                         TAB : "用戶",
                         USERNAME : "รหัสผู้ใช้",
                         PASSWORD : "รหัสผ่าน้",
@@ -1875,8 +1864,6 @@ app.config(function ($translateProvider) {
                         CREATE_DATE : "วันที่สร้าง :",
                         UPDATE_BY : "อัพเดทโดย :",
                         UPDATE_DATE : "วันที่อัพเดท :",
-
-                        // Search Page
                         SEARCH_APP_USER_CRITERIA_LABEL : "เงื่อนไขการค้นหาผู้ใช้ระบบ",
                         USERNAME_LABEL : "ผู้ใช้ระบบ :",
                         NAME_LABEL : "ชื่อ :",

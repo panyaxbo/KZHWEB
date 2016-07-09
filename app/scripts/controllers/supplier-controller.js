@@ -3,10 +3,7 @@ app.controller("SupplierController", ['$scope', '$route', '$routeParams', '$loca
 	'UserService', 'UtilService',
 	function ($scope, $route, $routeParams, $location, 
 	UserService, UtilService) {
-
-	/* START - Initialize variable */
 	$scope.User = UserService.GetUser();
-	/* END - Initialize variable */
 
 	if (UtilService.isEmpty($scope.User)) {
 		swal({
@@ -23,12 +20,10 @@ app.controller("SupplierController", ['$scope', '$route', '$routeParams', '$loca
         function(isConfirm){
             $scope.$apply(function() {
 	            if (isConfirm) {
-	             //   swal("Success", "Log out success", "success");
 	             	$location.path('/login');
 	            } else {
 	                console.log('cancel');
 	                $location.path('/404');
-	            //    swal("Cancelled", "Stay in system :)", "success");
 	            }
 	        });
 	    });

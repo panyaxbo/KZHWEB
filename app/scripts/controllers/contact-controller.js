@@ -1,31 +1,20 @@
 "use strict";
-app.controller("ContactController", [ "$scope", "$http", "CredentialService", 
-	function ($scope, $http, CredentialService) {
+app.controller("ContactController", [ "$scope", "$http", "CredentialService", "UtilService", "DataModelFactory",
+	function ($scope, $http, CredentialService, UtilService, DataModelFactory) {
 
-	$scope.Company = CredentialService.GetCompany();
-	console.log(CredentialService.GetCompany());
+	$scope.Company = DataModelFactory.getCompany();
 	console.log($scope.Company);
 
 	$scope.ValidateFeedback = function() {
         if ($scope.Feedback.Name === undefined || $scope.Feedback.Name.length <= 0) {
-        //    swal("คำเตือน !!!", "ท่านต้องใส่ชื่อ", "warning");
-         //    return;
         }
         else if ($scope.Feedback.Email === undefined || $scope.Feedback.Email.length <= 0) {
-        //    swal("คำเตือน !!!", "ท่านต้องใส่อีเมล", "warning");
-        //     return;
         }
-         else if (!validateEmail($scope.Feedback.Email)) {
-        //    swal("คำเตือน", "อีเมลไม่ถูกต้อง", "warning");
-        //    return;
+         else if (UtilService.validateEmail($scope.Feedback.Email)) {
         }
          else if ($scope.Feedback.Subject === undefined || $scope.Feedback.Subject.length <= 0) {
-        //    swal("คำเตือน !!!", "ท่านต้องเลือกหัวข้อ", "warning");
-        //    return;
         }
         else  if ($scope.Feedback.Message === undefined || $scope.Feedback.Message.length <= 0) {
-         //   swal("คำเตือน !!!", "ท่านต้องใส่ชื่อ", "warning");
-        //    return;
         }
         else {
           FeedbackService.CreateFeedback($scope.Feedback.Name, $scope.Feedback.Email,$scope.Feedback.Subject,$scope.Feedback.Message)

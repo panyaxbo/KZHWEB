@@ -9,7 +9,6 @@ app.directive('articleCardList', function() {
 		templateUrl: '/views/templates/articleCardList.html',
 		replace: true,
 		constroller: function($scope) {
-			//	console.log('a direc ', $scope.article);
 		}
 	};
 });

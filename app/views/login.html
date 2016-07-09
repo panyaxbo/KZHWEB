@@ -1,4 +1,4 @@
-<div class="row animated fadeIn" ng-controller="LoginController">
+<div class="row animated fadeIn">
     <div class="col-md-2"></div>
     <div class="col-sm-12 col-xs-12 col-md-4">
         <div class="well">
@@ -14,7 +14,7 @@
                     <input type="password" class="form-control" id="password" name="password" value="" required ng-model="password">
                     <span class="help-block"></span>
                 </div>
-                 <div class="controls">
+                 <div class="form-controls">
                     <div id="LoginErrorAlert" class="alert alert-danger fade in" style="display: none">
                         <!--<a href="#" class="close" data-dismiss="alert">&times;</a>-->
                         <strong>{{LoginErrorMessage}}</strong> 
@@ -97,11 +97,11 @@
                 </div>-->
                 <div class="form-group">
                     <label class="control-label" for="inputEmail">{{'HEAD.MODAL_SIGNIN.EMAIL' | translate}}</label>
-                    <div class="controls">
+                    <div class="form-controls">
                         <input id="Email" ng-model="Email" placeholder="E.g. ashwinh@cybage.com" 
                         type="text" class="form-control" ng-keydown="ValidateEmail()"/>
                     </div>
-                    <div class="controls">
+                    <div class="form-controls">
                     <!--    <img id="ValidateSignupEmail" src="" width="30" height="30">-->
                         <div id="EmailAlert" class="alert alert-warning fade in" style="display: none">
                             <a href="#" class="close" data-dismiss="alert">&times;</a>
@@ -112,11 +112,11 @@
                
                 <div class="form-group">
                     <label class="control-label" for="inputUser">{{'HEAD.MODAL_SIGNIN.USERNAME' | translate}}</label>
-                    <div class="controls">
+                    <div class="form-controls">
                         <input id="Username" ng-model="Username" placeholder="E.g. ashwinhegde" 
                         type="text" class="form-control" ng-blur="ValidateExistUsername()">
                     </div>
-                    <div class="controls">
+                    <div class="form-controls">
                         <div id="UsernameAlert" class="alert alert-warning fade in" style="display: none">
                             <a href="#" class="close" data-dismiss="alert">&times;</a>
                             <strong>{{UsernameValidateMessage}}</strong> 
@@ -126,7 +126,7 @@
 
                 <div class="form-group">
                     <label class="control-label" for="inputPassword">{{'HEAD.MODAL_SIGNIN.PASSWORD' | translate}}</label>
-                    <div class="controls">
+                    <div class="form-controls">
                         <input id="Password" ng-model="Password" placeholder="Min. 8 Characters" type="password" 
                         class="form-control" >
                     </div>
@@ -134,7 +134,7 @@
 
                 <div class="form-group">
                     <label class="control-label">{{'HEAD.MODAL_SIGNIN.STRENGTH' | translate}}</label>
-                    <div class="controls">
+                    <div class="form-controls">
                         <div ng-password-strength="Password" strength="passStrength" inner-class="progress-bar" 
                         inner-class-prefix="progress-bar-"></div>
                     </div>
@@ -152,12 +152,12 @@
                             on-success="setResponse(response)"
                             on-expire="cbExpiration()"
                         ></div>
-                        <div class="g-recaptcha" data-sitekey="6Lf0JSITAAAAANkc5E1_scb1arzyAtgVpdBGnupv"></div>
+                       
                     </form>
                 </div>
                 <div class="form-group">
                     <label class="control-label"></label>
-                    <div class="controls" style="margin-left: 1.5em">
+                    <div class="form-controls" style="margin-left: 1.5em">
                         <label class="checkbox"><input type="checkbox" ng-model="IsAcceptCondition">
                         {{'HEAD.MODAL_SIGNIN.TERM_SERVICE_LABEL' | translate}} 
                         <a href="#">{{'HEAD.MODAL_SIGNIN.TERM_SERVICE' | translate}}</a></label> 

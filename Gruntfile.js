@@ -364,11 +364,20 @@ module.exports = function (grunt) {
     htmlmin: {
       dist: {
         options: {
-          collapseWhitespace: true,
-          conservativeCollapse: true,
-          collapseBooleanAttributes: true,
-          removeCommentsFromCDATA: true,
-          removeOptionalTags: true
+          // collapseWhitespace: true,
+          // conservativeCollapse: true,
+          // collapseBooleanAttributes: true,
+          // removeCommentsFromCDATA: true,
+          // removeOptionalTags: true
+
+          collapseBooleanAttributes:      true,
+          collapseWhitespace:             true,
+          removeAttributeQuotes:          true,
+          removeComments:                 true, // Only if you don't use comment directives!
+          removeEmptyAttributes:          true,
+          removeRedundantAttributes:      true,
+          removeScriptTypeAttributes:     true,
+          removeStyleLinkTypeAttributes:  true
         },
         files: [{
           expand: true,
@@ -444,7 +453,6 @@ module.exports = function (grunt) {
                 'bower_components/fontawesome/css/font-awesome.css',
                 'bower_components/bootstrap-social/bootstrap-social.css',
                 'bower_components/ng-table/dist/ng-table.min.css',
-                'bower_components/sweetalert/dist/sweetalert.css',
                 'bower_components/animate.css/animate.css',
                 'bower_components/sweetalert2/dist/sweetalert2.css',
                 'bower_components/textAngular/dist/textAngular.css',
@@ -458,14 +466,13 @@ module.exports = function (grunt) {
               ] 
             },
 
-            // { dest: '.tmp/concat/styles/main.css',
-            //   src: [ '{.tmp,app}/styles/main.css' ] 
-            // },
+            { dest: '.tmp/concat/styles/main.css',
+              src: [ '{.tmp,app}/styles/main.css' ] 
+            },
 
             { dest: '.tmp/concat/styles/styles.css',
               src: 
               [ 
-                '{.tmp,app}/styles/main.css' ,
                 '{.tmp,app}/styles/search.css',
                 '{.tmp,app}/styles/step.css',
                 '{.tmp,app}/styles/screen-device.css',
@@ -488,7 +495,6 @@ module.exports = function (grunt) {
                  'bower_components/angular-translate/angular-translate.js',
                  'bower_components/angularjs-datepicker/dist/angular-datepicker.min.js' ,
                  'bower_components/bootstrap/dist/js/bootstrap.js',
-                 'bower_components/chartjs/Chart.js',
                  'bower_components/layzr.js/dist/layzr.js',
                  'bower_components/less/dist/less.js',
                  'bower_components/ng-file-upload/ng-file-upload.js',
@@ -519,7 +525,9 @@ module.exports = function (grunt) {
                  'bower_components/angular-moment/angular-moment.j',
                  'bower_components/ngGeolocation/ngGeolocation.js',
                  'bower_components/angular-growl-v2/build/angular-growl.js',
-                 'bower_components/angular-loading-overlay/dist/angular-loading-overlay.js'
+                 'bower_components/angular-loading-overlay/dist/angular-loading-overlay.js',
+                 'bower_components/Chart.js/dist/Chart.js',
+                 'bower_components/angular-update-meta/dist/update-meta.js'
                 ] 
             },
 
@@ -682,6 +690,32 @@ module.exports = function (grunt) {
       ]
     },
 
+    ngtemplates: {
+      dist: {
+        options: {
+          module: 'KZHWEB',
+          htmlmin: '<%= htmlmin.dist.options %>',
+          usemin: 'scripts/scripts.js'
+        },
+        cwd: '<%= yeoman.app %>',
+        src: 'views/{,*/}*.html',
+        dest: '.tmp/templateCache.js'
+      }
+    },
+
+    // ng-annotate tries to make the code safe for minification automatically
+    // by using the Angular long form for dependency injection.
+    ngAnnotate: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '.tmp/concat/scripts',
+          src: '*.js',
+          dest: '.tmp/concat/scripts'
+        }]
+      }
+    },
+
     // Test settings
     karma: {
       unit: {
@@ -744,6 +778,17 @@ module.exports = function (grunt) {
           }
         }
       },
+      test: {
+        options: {
+          dest: '<%= yeoman.app %>/scripts/constants/constants.js'
+        },
+        constants: {
+          ENV: {
+            name: 'test',
+            apiEndpoint: 'https://test-kzh-parts.herokuapp.com'
+          }
+        }
+      },
       production: {
         options: {
           dest: '<%= yeoman.app %>/scripts/constants/constants.js'
@@ -751,9 +796,34 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             name: 'production',
-            apiEndpoint: 'https://kzh-parts.herokuapp.com'
+            apiEndpoint: 'https://www.kzhparts.com'
           }
         }
+      }
+    },
+
+    comments: {
+      html: {
+        // Target-specific file lists and/or options go here. 
+        options: {
+            singleline: true,
+            multiline: true
+        },
+        src: [ '<%= yeoman.app %>/{,*/}*.html'] // files to remove comments from 
+      },
+      js: {
+        // Target-specific file lists and/or options go here. 
+        options: {
+            singleline: true,
+            multiline: true
+        },
+        src: [ '<%= yeoman.app %>/scripts/{,*/}*.js'] // files to remove comments from 
+      }
+    },
+
+    removelogging: {
+      dist: {
+        src: ".tmp/concat/scripts/*.js" // Each file will be overwritten with the output!
       }
     }
 
@@ -793,12 +863,17 @@ module.exports = function (grunt) {
     'karma'
   ]);
 
-  grunt.registerTask('build', [
+  grunt.registerTask('test-build', [
     'clean:dist',
-    'ngconstant:production',
+    'ngconstant:test',
     'wiredep',
+  //  'comments:html',
+  //  'comments:js',
     'useminPrepare',
+    'ngtemplates',
     'concat',
+    'removelogging',
+     'ngAnnotate',
     'copy:dist',
 //    'concurrent:dist',
     'copy:styles',
@@ -807,8 +882,32 @@ module.exports = function (grunt) {
         'imagemin',
         'svgmin',
     'autoprefixer',
-    
- //   'ngAnnotate',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin'
+  ]);
+
+  grunt.registerTask('build', [
+    'clean:dist',
+    'ngconstant:production',
+    'wiredep',
+  //  'comments:html',
+  //  'comments:js',
+    'useminPrepare',
+    'ngtemplates',
+    'concat',
+    'removelogging',
+    'ngAnnotate',
+    'copy:dist',
+//    'concurrent:dist',
+    'copy:styles',
+    'copy:nodejs',
+    'copy:configfile',
+        'imagemin',
+        'svgmin',
+    'autoprefixer',
     'cssmin',
     'uglify',
     'filerev',
@@ -835,6 +934,7 @@ module.exports = function (grunt) {
         'imagemin',
         'svgmin',
     'autoprefixer',
+    'ngtemplates',
     'concat',
     'ngAnnotate',
     'copy:dist',

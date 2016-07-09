@@ -11,7 +11,6 @@ app.filter('limitText', function () {
         if (wordwise) {
             var lastspace = value.lastIndexOf(' ');
             if (lastspace != -1) {
-              //Also remove . and , so its gives a cleaner result.
               if (value.charAt(lastspace-1) == '.' || value.charAt(lastspace-1) == ',') {
                 lastspace = lastspace - 1;
               }

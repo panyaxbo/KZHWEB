@@ -1,16 +1,12 @@
 "use strict";
 app.controller("PaymentController", [ "$scope", "$http", "$rootScope", "$location", 
-	"ReceiptOrderService", "CredentialService", "UserService", 'UtilService', 'DataModelFactory',
+	"ReceiptOrderService", "CredentialService", "UserService", 'UtilService', 'AppConfigService', 'EmailService', 'DataModelFactory',
   function ($scope, $http, $rootScope, $location,
-  	ReceiptOrderService, CredentialService, UserService, UtilService, DataModelFactory) {
+  	ReceiptOrderService, CredentialService, UserService, UtilService, AppConfigService,EmailService, DataModelFactory) {
   	console.log('in payment con');
-
-	/* START - Initialize Variable */
-	$scope.User = UserService.GetUser();
+	$scope.User = DataModelFactory.getUser();
 	$scope.ROHead = DataModelFactory.getReceipt();
 	$scope.Company = DataModelFactory.getCompany();
-	/* END - Initialize Variable */
-
 	
 	$scope.PaypalCheckout = function() {
     console.log($scope.ROHead);
@@ -27,17 +23,10 @@ app.controller("PaymentController", [ "$scope", "$http", "$rootScope", "$locatio
         data["quantity_" + ctr] = item.Quantity; 
         data["amount_" + ctr] = item.Price; 
       }
-/*
-      data["currency_code"] = "THB"; 
-      data["item_name"] = $scope.ROHead.BillingFirstName + ' ' + $scope.ROHead.BillingLastName + "'s Cart";
       data["tax"] = $scope.ROHead.SumVatAmount;
       data["shipping"] = $scope.ROHead.WeightAmount;
       data["amount"] = $scope.ROHead.NetAmount;
-      data["return"] = "/#/payment-success";
-  //    data["add"] = "1";
-  //    data["upload"] = "1";
-   //   data["display"] = "1";
-      data["address_override"] = "1";*/
+      data["currency_code"] = "THB"; 
       data["country_code"] = "TH";
       data["first_name"] = $scope.ROHead.BillingFirstName;
       data["last_name"] = $scope.ROHead.BillingLastName;
@@ -56,10 +45,7 @@ app.controller("PaymentController", [ "$scope", "$http", "$rootScope", "$locatio
       var imgHidden = $("<input></input>").attr("type", "image").attr("src", "http://www.paypal.com/en_US/i/btn/x-click-but01.gif")
       .attr("name", "submit").attr("alt","Make payments with PayPal - it's fast, free and secure!").val('');
       form.append(imgHidden);
-    //  this.addFormFields(form, parms.options); 
       $("body").append(form); 
-      // submit the form to PayPal servers 
-    //  this.clearCart = clearCart == null || clearCart; 
       form.submit(); 
       form.remove();
 
@@ -80,17 +66,12 @@ app.controller("PaymentController", [ "$scope", "$http", "$rootScope", "$locatio
         data["amount_" + ctr] = item.Price; 
       }
 
+      data["tax"] = 1;
+      data["shipping"] = 1;
+      data["amount"] = 1;
       data["currency_code"] = "THB"; 
-      data["item_name"] = $scope.ROHead.BillingFirstName + ' ' + $scope.ROHead.BillingLastName + "'s Cart";
-      data["tax"] = $scope.ROHead.SumVatAmount;
-      data["shipping"] = $scope.ROHead.WeightAmount;
-      data["amount"] = 10.00;
-      data["return"] = "/#/payment-success";
-      data["add"] = "1";
-      data["upload"] = "1";
-      data["display"] = "1";
-      data["address_override"] = "1";
       data["country_code"] = "TH";
+
       data["first_name"] = $scope.ROHead.BillingFirstName;
       data["last_name"] = $scope.ROHead.BillingLastName;
       data["address1"] = $scope.ROHead.BillingAddress + ' ' + $scope.ROHead.BillingSubDistrictName;
@@ -108,13 +89,118 @@ app.controller("PaymentController", [ "$scope", "$http", "$rootScope", "$locatio
       var imgHidden = $("<input></input>").attr("type", "image").attr("src", "http://www.paypal.com/en_US/i/btn/x-click-but01.gif")
       .attr("name", "submit").attr("alt","Make payments with PayPal - it's fast, free and secure!").val('');
       form.append(imgHidden);
-    //  this.addFormFields(form, parms.options); 
       $("body").append(form); 
-      // submit the form to PayPal servers 
-    //  this.clearCart = clearCart == null || clearCart; 
       form.submit(); 
       form.remove();
   }
-    
+    $scope.ChangePaymentType = function() {
+        if ($scope.PaymentType == 'Paypal') {
 
+        }
+    }
+    $scope.ValidatePayment =  function() {
+        if ($scope.PaymentType == '') {
+            swal("เตือน", "คุณต้องเลือกประเภทการชำระเงิน", "warning");
+            return;
+        } 
+        if ($scope.PaymentType == 'Transfer') {
+            if ($scope.PaymentBank == '') {
+                swal("เตือน", "คุณต้องเลือกธนาคาร", "warning");
+                return;
+            } 
+        } else if ($scope.PaymentType == 'Paypal') {
+            
+        } else if ($scope.PaymentType == 'Credit') {
+            if (!$scope.cardNumber || 0 === $scope.cardNumber) {
+                swal("เตือน", "คุณต้องใส่หมายเลขบัตร", "warning");
+                return;
+            } 
+            if (!$scope.cardExpiry || 0 === $scope.cardNumber) {
+                swal("เตือน", "คุณต้องใส่หมายเลขบัตร", "warning");
+                return;
+            } 
+            if (!$scope.cardCVC || 0 === $scope.cardNumber) {
+                swal("เตือน", "คุณต้องใส่หมายเลขบัตร", "warning");
+                return;
+            } 
+        }
+         
+        $scope.step = 3;
+        $("#nav-step3").removeAttr("disabled");
+        $("#nav-step3").addClass("btn-primary");
+        $("#nav-step1").addClass("btn-default");
+        $("#nav-step2").addClass("btn-default");
+
+        $scope.ValidateFinish();
+    }
+
+    $scope.card = {
+        name: 'Mike Brown',
+        number: '5555 4444 3333 1111',
+        expiry: '11 / 2020',
+        cvc: '123'
+    };
+
+    $scope.cardPlaceholders = {
+        name: 'Your Full Name',
+        number: 'xxxx xxxx xxxx xxxx',
+        expiry: 'MM/YY',
+        cvc: 'xxx'
+    };
+
+    $scope.cardMessages = {
+        validDate: 'valid\nthru',
+        monthYear: 'MM/YYYY',
+    };
+
+    $scope.cardOptions = {
+        debug: false,
+        formatting: true
+    };
+
+    $scope.ValidateFinish = function() {
+      $location.path('/payment-process');
+        console.log('ValidateFinish');
+        var newcode = '';
+        AppConfigService.GetNewCode("RO")
+        .then(function(data, status) {
+            newcode = data;
+
+            $scope.ROHead.RODate = new Date(); //(new Date()).toISOString();
+            $scope.ROHead.RONo = newcode;
+            $scope.ROHead.ROLineList = $scope.ROLineList;
+            $scope.ROHead.PaymentType = $scope.PaymentType;
+            $scope.ROHead.PaymentBank = $scope.PaymentBank;
+            $scope.ROHead.UserId = $scope.User.Id;
+            $scope.ROHead.PaymentStatus = "N";
+            $scope.ROHead.ShippingStatus = "N";
+            $scope.ROHead.StaffApprovePaymentStatus = "N";
+            return ReceiptOrderService.CreateReceiptOrder($scope.ROHead);
+        }, function(err, status) {
+            console.log('err create receipt ', err);
+        })
+        .then(function(data, status) {
+          console.log('send staff email');
+            return EmailService.SendEmailStaffNewOrder(newcode);
+        }, function(err, status) {
+            console.log('create ro head ', err);
+        })
+        .then(function(data, status) {
+          console.log('send customer email');
+            return EmailService.SendEmailCustomerNewOrder($scope.User.Email, newcode);
+        }, function(err, status) {
+            console.log('error sending email staff ', err);
+        })
+        .then(function(data, status) {
+            console.log('payment success');
+            document.getElementById('ProcessingPurchaseOrder').style.display = 'none';
+            document.getElementById('ProcessedPurchaseOrder').style.display = 'block';
+            $ROHead.ROLineList.length = 0;
+            
+            $location.path('payment-success');
+        }, function(err, status) {
+            $location.path('payment-failure');
+            console.log('error sending email customer ', err);
+        });
+    }
 }]);

@@ -1,0 +1,81 @@
+<div id="div-customer-table">
+    <legend></legend>
+    <button ng-click="NewCustomer()" class="btn btn-warning">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.NEW' | translate}}
+    </button>
+    <div class="spacer"></div>
+    <fieldset class="search-table">
+        <div class="row">
+            <div class="col-md-14 col-md-offset-0">
+                <form class="form-horizontal" role="form">
+                    <legend class="search-table" style="color:white">{{'BODY.SECTION.SETTING.CUSTOMER.SEARCH_CUSTOMER_CRITERIA_LABEL' | translate}}</legend>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.SETTING.CUSTOMER.CUSTOMER_CODE_LABEL' | translate}}</label>
+                        <div class="col-sm-3">
+                            <input type="text" placeholder="Product Type Code" class="form-control" ng-model="SearchProductTypeData.ProductTypeCode"> 
+                        </div>
+
+                        <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.SETTING.CUSTOMER.CUSTOMER_NAME_LABEL' | translate}}</label>
+                        <div class="col-sm-3">
+                            <input type="text" placeholder="Product Type Name" class="form-control" ng-model="SearchProductTypeData.ProductTypeName"> 
+                        </div>
+                    </div>
+                   <div class="form-group">
+                        <label class="col-sm-2 control-label" for="textinput">{{'BODY.SECTION.SETTING.CUSTOMER.CUSTOMER_TYPE_LABEL' | translate}}</label>
+                        <div class="col-sm-3">
+                            <input type="text" placeholder="Product Type" class="form-control" ng-model="SearchProductTypeData.ProductTypeCode"> 
+                          
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-14 text-center">
+                            <button ng-click="SearchProductType()" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.SEARCH' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </fieldset>
+    <button ng-click="NewCustomer()" class="btn btn-warning">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'BODY.SECTION.SETTING.BUTTON.NEW' | translate}}
+    </button>
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th><a href="" ng-click="orderFieldName='CustomerCode'; isASC=!isASC">{{'BODY.SECTION.SETTING.CUSTOMER.CUSTOMER_CODE' | translate}}</a></th>
+                <th><a href="" ng-click="orderFieldName='Firstname'; isASC=!isASC">{{'BODY.SECTION.SETTING.CUSTOMER.FIRST_NAME' | translate}}</a></th>
+                <th><a href="" ng-click="orderFieldName='Lastname'; isASC=!isASC">{{'BODY.SECTION.SETTING.CUSTOMER.LAST_NAME' | translate}}</a></th>
+                <th><a href="" ng-click="orderFieldName='CustomerTypeName'; isASC=!isASC" >{{'BODY.SECTION.SETTING.CUSTOMER.CUSTOMER_TYPE' | translate}}</a></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+    <tbody>
+        <tr ng-repeat="cm in SearchCustomers | orderBy : orderCustomerFieldName : isASC | filter : SearchCustomerText">
+            <td>{{$index+1}}</td>
+            <td>{{cm.CustomerCode}}</td>
+            <td>{{cm.CustomerNameEn}}</td>
+            <td>{{cm.CustomerNameTh}}</td>
+            <td>{{cm.CustomerTypeName}}</td>
+            <td>
+                <button ng-click="ViewCustomer(cm._id)" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
+                </button>
+            </td>
+            <td>
+                <button ng-click="DeleteCustomer()" class="btn btn-danger">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </button>
+            </td>
+        </tr>
+    </tbody>
+       <tfoot>
+            <td colspan="8">
+            Record Count : {{SearchCustomers.length}}
+           </td>
+       </tfoot>
+    </table>
+</div>

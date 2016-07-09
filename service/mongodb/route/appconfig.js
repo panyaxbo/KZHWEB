@@ -119,9 +119,7 @@ router.get(mongodbConfig.url.appconfig.getNewCodeByModule, function (req, res) {
         
             db.collection(mongodbConfig.mongodb.rohead.name)
             .findOne({
-                $query:{},
-                $orderby:{_id:-1}}
-                ,function(err, result) { 
+                }, function(err, result) { 
                     if (err) throw err 
                     callback(null, result);
                  });

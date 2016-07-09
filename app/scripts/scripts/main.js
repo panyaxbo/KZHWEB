@@ -18,11 +18,6 @@ $(document).ready(function () {
     });
 
 });
-/*
-$(document).ready(function() {
-  $(".js-example-basic-single").select2();
-});
-*/
 $(".technician-distance").select2();
 $("#TechnicianServiceList").select2({
     placeholder: "เลือกบริการของท่าน",
@@ -34,9 +29,7 @@ $('a[href^="#"]').on('click', function(event) {
 
     if( target.length ) {
         event.preventDefault();
-    //  $('html,body').animate({scrollTop: target.offset().top}, 500);
       $('html,body').animate({scrollTop: 750}, 600);
-   //     $('html,body').animate({scrollTop:$('[name="'+this.hash.substring(1)+'"]').offset().top}, 500);
     }
 
 });
@@ -50,24 +43,19 @@ $('#DropdownCurrency li').on('click', function () {
 });
 
  function formatLangResult (state) {
-   //   if (!state.id) { return state.text; }
      
       if (state.text == 'th' || state.text == 'us' || state.text == 'cn') {
         var $state = $(
           '<span><img src="/images/' + state.text + '.png"/></span>'
-     
-            //      '<span><img src="/images/' + state.element.value.toLowerCase() + '.png"/> </span>'
         );
         return $state;
       }
     };
     function formatLangSelection (state) {
-   //   if (!state.id) { return state.text; }
 
       if (state.text == 'th' || state.text == 'us' || state.text == 'cn') {
           var $state = $(
             '<span><img src="/images/' + state.text + '.png"/> </span>'
-        //      '<span><img src="/images/' + state.element.value.toLowerCase() + '.png"/> </span>'
           );
           return $state;
         }
@@ -86,8 +74,6 @@ $('#DropdownCurrency li').on('click', function () {
         doc.text("โค้ว ซุ่น เฮง", 35, 25);
 
         doc.text(20, 20, 'This PDF has a title, subject, author, keywords and a creator.');
-
-        // Optional - set properties on the document
         doc.setProperties({
             title: 'Title',
             subject: 'This is the subject',
@@ -95,8 +81,6 @@ $('#DropdownCurrency li').on('click', function () {
             keywords: 'generated, javascript, web 2.0, ajax',
             creator: 'MEEE'
         });
-
-        // Output as Data URI
         doc.save('Test.pdf');
     }
     
@@ -105,15 +89,11 @@ $('#DropdownCurrency li').on('click', function () {
 function isEmpty(val){
     return (val === undefined || val == null || val.length <= 0) ? true : false;
 }
-
-/* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
     document.getElementById("main").style.marginLeft = "250px";
     document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
 }
-
-/* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
     document.getElementById("main").style.marginLeft = "0";
