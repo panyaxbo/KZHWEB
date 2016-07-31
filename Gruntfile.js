@@ -11,7 +11,7 @@ module.exports = function (grunt) {
 
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
-
+var modRewrite = require('connect-modrewrite');
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
   // Automatically load required Grunt tasks
@@ -100,7 +100,12 @@ module.exports = function (grunt) {
         port: 9999,
         // Change this to '0.0.0.0' to access the server from outside.
         hostname: 'localhost',
-        livereload: 35730
+        // Modrewrite rule, connect.static(path) for each path in target's base
+        middleware: function (connect, options) {
+          var optBase = (typeof options.base === 'string') ? [options.base] : options.base;
+          return [require('connect-modrewrite')(['!(\\..+)$ / [L]'])].concat(
+            optBase.map(function(path){ return connect.static(path); }));
+        }
       },
       livereload: {
         options: {
@@ -111,8 +116,10 @@ module.exports = function (grunt) {
           },
           middleware: function (connect) {
             return [
+              modRewrite(['^[^\\.]*$ /index.html [L]']),
               connect.static('.tmp'),
-              connect().use('/bower_components', connect.static('./bower_components')),
+              connect().use('/bower_components', 
+              connect.static('./bower_components')),
               connect().use('/app/styles', connect.static('./app/styles')),
               connect.static(appConfig.app)
             ];
@@ -823,11 +830,9 @@ module.exports = function (grunt) {
 
     removelogging: {
       dist: {
-        src: ".tmp/concat/scripts/*.js" // Each file will be overwritten with the output!
+        src: ".tmp/concat/scripts/script.js" // Each file will be overwritten with the output!
       }
     }
-
-
   });
 
 
@@ -867,12 +872,10 @@ module.exports = function (grunt) {
     'clean:dist',
     'ngconstant:test',
     'wiredep',
-  //  'comments:html',
-  //  'comments:js',
     'useminPrepare',
     'ngtemplates',
     'concat',
-    'removelogging',
+  //  'removelogging',
      'ngAnnotate',
     'copy:dist',
 //    'concurrent:dist',
@@ -893,12 +896,10 @@ module.exports = function (grunt) {
     'clean:dist',
     'ngconstant:production',
     'wiredep',
-  //  'comments:html',
-  //  'comments:js',
     'useminPrepare',
     'ngtemplates',
     'concat',
-    'removelogging',
+ //   'removelogging',
     'ngAnnotate',
     'copy:dist',
 //    'concurrent:dist',

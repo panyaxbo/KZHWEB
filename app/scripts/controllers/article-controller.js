@@ -45,9 +45,9 @@ app.controller("ArticleController", ['$scope', '$route', '$routeParams', '$locat
 	}
 	
 	$scope.CreateArticle = function() {
-		console.log($scope.User);
+	//	console.log($scope.User);
 		if ($scope.User === undefined || UtilService.isEmpty($scope.User)) {
-			console.log('user empty ');
+	//		console.log('user empty ');
 			swal({
 	          title: "ท่านยังไม่ได้เข้าสู่ระบบ?",
 	          text: "คุณต้องการเข้าสู่ระบบ ใช่ หรือ ไม่?",
@@ -68,7 +68,7 @@ app.controller("ArticleController", ['$scope', '$route', '$routeParams', '$locat
 
 	        });
 		} else {
-			console.log('user NOT empty ');
+//			console.log('user NOT empty ');
 			$scope.Page.Mode = 'new';
 			$location.path('/article');
 		}
@@ -124,13 +124,10 @@ app.controller("ArticleController", ['$scope', '$route', '$routeParams', '$locat
 	          cancelButtonText: "ไม่เป็นไร",
 	          closeOnConfirm: true,
 	          closeOnCancel: true
-	        },
-	        function(isConfirm){
-	            $scope.$apply(function() {
-		            if (Confirm) {
-		           		$location.path('/articles');
-		            } 
-		        });
+	        }).then(function() {
+	        	$location.path('/articles');
+	        }, function(dismiss) {
+
 	        });
 		} else {
 			$location.path('/articles');
@@ -158,4 +155,5 @@ app.controller("ArticleController", ['$scope', '$route', '$routeParams', '$locat
 		} 
 	}
 
+	$scope.htmlReady();
 }]);

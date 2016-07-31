@@ -9,7 +9,7 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
     $scope.IsGuest = true;
     $scope.IsLogin = false;
 
-    console.log($scope.User);
+ //   console.log($scope.User);
 
     $scope.Login = function () {
       document.getElementById('LoginDataNotReady').style.display = 'block';
@@ -58,7 +58,7 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
             }
           }
           DataModelFactory.setUser($scope.User);
-          console.log('log in ', $scope.User);
+    //      console.log('log in ', $scope.User);
           if ($scope.User.ComeFrom !== undefined && $scope.User.ComeFrom.length > 0) {
             $location.path($scope.User.ComeFrom);
          

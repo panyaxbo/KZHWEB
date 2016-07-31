@@ -13,10 +13,10 @@ router.get(mongodbConfig.url.product_category.loadAllProductCategory, function (
         .toArray(function (err, items) {
             if (err){
                 console.log(error, error.stack.split("\n"));
-                res.sendStatus(500);
+                res.status(500).send('error occur when load all product category');
                 return;
             } else if (!items) {
-                res.sendStatus(404);
+                res.status(404).send('not found all product category');
                 return;
             } else if (items){
                 res.json(items);
@@ -71,7 +71,11 @@ router.get('/LoadProductCategoryByCondition/:ProductCategoryCode/:ProductCategor
             $orderby: { ProductCategoryCode : 1 }
         })
         .toArray(function (err, items) {
-            res.json(items);
+            if (err) {
+                res.status(500).send('cannot find product category ');
+            } else {
+                res.json(items);
+            }
         });
 });
 
@@ -86,7 +90,6 @@ router.get('/LoadProductCategoryByProductType/:ProductTypeCode/', function (req,
                 'ProductTypeCode' : TypeCode
             })
             .toArray(function (err, items) {
-       //         console.log(TypeCode, items);
                 if (err) {
                     defer.reject(err)
                 } else {
@@ -98,16 +101,14 @@ router.get('/LoadProductCategoryByProductType/:ProductTypeCode/', function (req,
 
     LoadProductCategoryByProductTypePromise()
     .then(function(data, status) {   
-//        console.log(data);  
         if (!data) {
-            res.SendStatus(404);
+            res.status(404).send('not found product category by product type');
         } else {
-               
             res.json(data);
         }
     },function(err, status) {
         console.log(err,status);     
-        res.SendStatus(500);
+        res.status(500).send('err occur ');
         return;
     });
     
@@ -121,15 +122,11 @@ router.get(mongodbConfig.url.product_category.loadProductCategoryByObjId, functi
             '_id': o_id
         }, function (err, ProductCategory) {
             if (err) {
-                console.log(err);
-                //       callback(err);
+                res.status(500).send('err has occur : cannot load product category by id ');
             } else {
-                // call your callback with no error and the data
-               // console.log(ProductCategory);
-
+               
                 FindProductTypeByProductTypeCode(ProductCategory.ProductTypeCode, function (err, ProductType) {
                     ProductCategory.ProductType = ProductType;
-                //    console.log(ProductCategory);
                     res.json(ProductCategory);
                 });
                 
@@ -144,7 +141,6 @@ router.get(mongodbConfig.url.product_category.loadProductCategoryByObjId, functi
                 if (err) {
                     callback(err);
                 } else {
-               //     console.log(ProductType);
                     callback(null, ProductType);
                 }
             });
@@ -159,8 +155,12 @@ router.get(mongodbConfig.url.product_category.loadProductCategoryById, function 
             'Id': parseInt(ProductCategoryId)
         })
         .toArray(function (err, items) {
-//            console.log(items);
-            res.json(items);
+            if (err) {
+                console.log(err, err.stack.split("\n"));
+                res.status(500).send('error occur ');
+            } else {
+                res.json(items);
+            }
         });
 });
 
@@ -172,24 +172,31 @@ router.get(mongodbConfig.url.product_category.loadProductCategoryByProductCatego
             'ProductCategoryCode': ProductCategoryCode
         })
         .toArray(function (err, items) {
-//            console.log(items);
-            res.json(items);
+            if (err) {
+                console.log(err, err.stack.split("\n"));
+                res.status(500).send('err occur ');
+            } else {
+                res.json(items);
+            }
         });
 });
 
 // Create Product Category
 router.post(mongodbConfig.url.product_category.createProductCategory, function (req, res) {
     var ProductCategory = req.body;
-//    console.log('create product category ' + ProductCategory);
     var createDate = new Date ();
     createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
     ProductCategory.CreateDate = createDate;
     ProductCategory.UpdateDate = createDate;
     db.collection(mongodbConfig.mongodb.product_category.name)
         .insert(ProductCategory,
-            function (error, result) {
-                if (error) throw error
-                res.json(result);
+            function (err, result) {
+                if (err) {
+                    console.log(err, err.stack.split("\n"));
+                    res.status(500).send('error occur ');
+                } else {
+                    res.json(result);
+                }
             });
 });
 
@@ -216,9 +223,13 @@ router.post(mongodbConfig.url.product_category.updateProductCategory, function (
                     'UpdateDate' : updateDate
                 }
             },
-            function (error, result) {
-                if (error) console.log(error, error.stack.split("\n"));
-                res.json(result);
+            function (err, result) {
+                if (err) {
+                    console.log(error, error.stack.split("\n"));
+                    res.status(500).send('error occur ');
+                } else {
+                    res.json(result);
+                }
             });
 });
 
@@ -230,10 +241,13 @@ router.get(mongodbConfig.url.product_category.deleteProductCategoryByProductCate
     db.collection(mongodbConfig.mongodb.product_category.name)
         .remove({
             _id: o_id
-        }, function (error, result) {
-            if (error) console.log(error, error.stack.split("\n"));
-
-            res.json(result);
+        }, function (err, result) {
+            if (err)  {
+                console.log(error, error.stack.split("\n"));
+                res.status(500).send('error occur ');
+            } else {
+                res.json(result);
+            }
         });
 });
 module.exports = router;

@@ -3,7 +3,7 @@
         <div class="card-image">
             <img class="img-responsive" ng-src="{{article.SourceImageThumbnail}}" ng-if="article.SourceImageThumbnail !== undefined">
             <img class="img-responsive" 
-            src="http://placehold.it/400x200" 
+            src="https://placeimg.com/600/400/tech/sepia" 
             ng-if="(article.SourceImageThumbnail === undefined || article.SourceImageThumbnail.length <= 0)">
             <span class="card-title">{{article.Title}}</span>
         </div>
@@ -15,10 +15,7 @@
         <div class="card-action">
             <a href="/article/{{article._id}}" ><i class="fa fa-eye" aria-hidden="true"></i> View</a>
             <a href="/article/{{article._id}}" ><i class="fa fa-comments-o" aria-hidden="true"></i> Comments</a>
-        <!--    <a href="#" target="new_blank">Link</a>
-            <a href="#" target="new_blank">Link</a>
-            <a href="#" target="new_blank">Link</a>
-            <a href="#" target="new_blank">Link</a>-->
+ 
         </div>
     </div>
 </div>

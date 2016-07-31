@@ -15,14 +15,13 @@ router.get('/LoadProductForPromotion', function (req, res) {
         })
         .limit(100)
         .toArray(function (err, items) {
-            if (items) {
-                res.json(items);
+            if (err) {
+                console.log(err, err.stack.split("\n"));
+                res.status(500).send('err occur');
             } else if (!items) {
-                return;
+                res.status(404).send('not found !!');
             } else {
-                console.log(error, error.stack.split("\n"));
-                res.sendStatus(500);
-                return;
+                res.json(items);
             }
         });
 });
@@ -33,13 +32,6 @@ function GenerateTextQuery (searchArray) {
         query += '^(?=.*\\b' + searchArray[0] + '\\b).*$';
     } else {
         for (var ix = 0; ix < searchArray.length; ix++) {
-        /*    or in regex |
-            if (ix >=  searchArray.length - 1) {
-                query += searchArray[ix];
-            } else {
-                query += searchArray[ix] + '|';
-            }
-            */
             if (ix == 0) { // first one
                 query += '^';
             }
@@ -99,6 +91,7 @@ router.get('/LoadProductByCondition/:ProductCode/:ProductName/:ProductCategoryCo
         .toArray(function (err, items) {
             if (err) {
                 console.log('err ', err);
+                res.status(500).send('error occur ');
             } else {
                 console.log('items ', items);
                 res.json(items);
@@ -116,16 +109,6 @@ router.get(mongodbConfig.url.product.loadAllProduct, function (req, res) {
         })
         .limit(100)
         .toArray(function (err, items) {
-       /*     findUomPromise({
-                $or: [{
-                    UomCode: 'UO0001'
-                    }, {
-                    UomCode: 'UO0001'
-                    }]
-            })
-    .then(function(data) {
-        console.log('findUomPromise', data);
-    });*/
             if (items) {
                 var productsToFind = items.length;
                 var products = [];
@@ -940,14 +923,14 @@ router.get(mongodbConfig.url.product.loadProductByProductCategoryCode, function 
         return FindUomPromise( products);
     }, function(err, status) {
         console.log(err, err.stack.split("\n"));
-        res.sendStatus(500);
+        res.status(500).send('The error occur');
         return;
     }).then(function(data, status) {
         console.log('after find uom ', data);
         res.json(data);
     }, function(err, status) {
         console.log(err, err.stack.split("\n"));
-        res.sendStatus(500);
+        res.status(500).send('The error occur');
         return;
     });
 });
@@ -965,9 +948,13 @@ router.post(mongodbConfig.url.product.createProduct, function (req, res) {
 
     db.collection(mongodbConfig.mongodb.product.name)
         .insert(Product,
-            function (error, result) {
-                if (error) throw error
-                res.json(result);
+            function (err, result) {
+                if (err) {
+                    console.log(err, err.stack.split("\n"));
+                    res.status(500).send('The error occur');
+                } else {
+                    res.json(result);
+                }
             });
 });
 
@@ -1050,14 +1037,14 @@ router.post(mongodbConfig.url.product.updateProduct, function (req, res) {
     }
     UpdateProductPromise().then(function(data, status) {
         if(!data) {
-            res.sendStatus(404);
+            res.status(404).send('not found');
             return;
         } else {
             res.json(data); 
         }
     }, function(err, status) {
         console.log(err, err.stack.split("\n"));
-        res.sendStatus(500);
+        res.send(500).send('error occur');
         return;
     });
 });
@@ -1069,15 +1056,6 @@ router.post(mongodbConfig.url.product.deleteProductByProductId, function (req, r
     var ProductId = Product._id;
     var o_id = bson.BSONPure.ObjectID(ProductId.toString());
     
-/*    db.collection(mongodbConfig.mongodb.product.name)
-        .remove({
-            _id: o_id
-        }, function (error, result) {
-            if (error) throw error
-
-            res.json(result);
-        });
-*/
     var DeleteProductByProductIdPromise = function() {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.product.name)
@@ -1097,7 +1075,7 @@ router.post(mongodbConfig.url.product.deleteProductByProductId, function (req, r
         res.json(data);
     }, function(err, status) {
         console.log(err, err.stack.split("\n"));
-        res.sendStatus(500);
+        res.status(500).send('err occur when delete');
         return;
     });
 });
@@ -1111,8 +1089,13 @@ router.get('/GetCountProductFromProductCategory/:ProductCategoryCode', function 
             }
         })
         .toArray(function (err, items) {
-         //   console.log(ProductCategoryCode ,items.length);
-            res.json(items.length);
+            if (err) {
+                console.log(err, err.stack.split("\n"));
+                res.status(500).send('err occur when delete');
+            } else {
+                res.json(items.length);
+            }
+            
         });
 });
 function isEmpty(obj) {

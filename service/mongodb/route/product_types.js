@@ -17,8 +17,8 @@ router.get(mongodbConfig.url.product_type.loadAllProductType, function (req, res
         .toArray(function (err, items) {
             if (err) {
                 console.log(err);
+                res.sendStatus(500);
             } else {
-            //    console.log(items);
                 res.json(items);
             }
         });
@@ -67,9 +67,8 @@ router.get('/LoadProductTypeByCondition/:ProductTypeCode/:ProductTypeName', func
         .toArray(function (err, items) {
             if (err) {
                 console.log(err);
-                //       callback(err);
+                res.status(500).send('There is error occur');
             } else {
-        //         console.log(items);
                 res.json(items);
             }
         });
@@ -85,11 +84,8 @@ router.get(mongodbConfig.url.product_type.loadProductTypeByObjId, function (req,
         }, function (err, doc) {
             if (err) {
                 console.log(err);
-                //       callback(err);
+                res.status(500).send('There is error occur');
             } else {
-                // call your callback with no error and the data
-            //    console.log(doc);
-                //     callback(null, doc);
                 res.json(doc);
             }
         });
@@ -102,9 +98,11 @@ router.get(mongodbConfig.url.product_type.loadProductTypeById, function (req, re
             'Id': parseInt(TypeId)
         })
         .toArray(function (err, items) {
-    //        console.log(items);
-            res.json(items);
-
+            if (err) {
+                res.status(500).send('There is error occur');
+            } else {
+                res.json(items);
+            }
         });
 });
 
@@ -116,24 +114,29 @@ router.get(mongodbConfig.url.product_type.loadProductTypeByCode, function (req, 
             'ProductTypeCode': ProductTypeCode
         })
         .toArray(function (err, items) {
-            console.log(items);
-            res.json(items);
+            if (err) {
+                res.status(500).send('There is error occur');
+            } else {
+                console.log(items);
+                res.json(items);
+            }
         });
 });
 // Create Product Type
 router.post(mongodbConfig.url.product_type.createProductType, function (req, res) {
     var ProductType = req.body;
-  //  console.log('create product type ' + ProductType);
-
     var createDate = new Date ();
     createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
     ProductType.CreateDate = createDate;
     ProductType.UpdateDate = createDate;
     db.collection('ProductType')
         .insert(ProductType,
-            function (error, result) {
-                if (error) throw error
-                res.json(result);
+            function (err, result) {
+                if (err) {
+                    res.status(500).send('There is error occur');
+                } else {
+                    res.json(result);
+                }
             });
 });
 
@@ -159,10 +162,12 @@ router.post(mongodbConfig.url.product_type.updateProductType, function (req, res
                     'UpdateDate' : updateDate
                 }
             },
-            function (error, result) {
-                if (error) throw error
-//                console.log(result.ProductTypeNameEn);
-                res.json(result);
+            function (err, result) {
+                if (err) {
+                    res.status(500).send('There is error occur');
+                } else {
+                    res.json(result);
+                }
             });
 });
 
@@ -175,9 +180,14 @@ router.get(mongodbConfig.url.product_type.deleteProductTypeByProductTypeId, func
         .remove({
             _id: o_id
         }, function (err, result) {
-            if (err) console.log(err, err.stack.split("\n"));
-            console.log('success ');
-            res.json(result);
+            if (err) {
+                console.log(err, err.stack.split("\n"));
+                res.status(500).send('There is error occur');
+            } else {
+                console.log('success ');
+                res.json(result);
+            }
+            
         });
 });
 

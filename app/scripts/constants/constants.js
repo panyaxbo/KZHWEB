@@ -2,6 +2,6 @@
 
  angular.module('CONFIG', ['ngLocale'])
 
-.constant('ENV', {name:'production',apiEndpoint:'https://www.kzhparts.com'})
+.constant('ENV', {name:'development',apiEndpoint:'http://localhost:3000'})
 
 ;

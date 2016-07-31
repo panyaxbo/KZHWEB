@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html class="no-js" ng-app="KZHWEB" >
 <head >
+<meta name="fragment" content="!">
     <meta charset="utf-8" http-equiv="imagetoolbar" content="no">
     <title>โค้ว ซุ่น เฮง - ศูนย์รวมอะไหล่มอเตอร์ไซค์, ยาง และ น้ำมันเครื่อง</title>
     <meta name="description" content="ค้าปลีก-ส่ง น้ำมันเครื่อง,ยางนอก,ยางใน,อะไหล่มอเตอร์ไซค์,รถยนต์,รถไถ, ไฟฟ้า, การเกษตร, ประปา สินค้าราคาถูก น่าเชื่อถือ">
     <meta name="keywords" content="น้ำมันเครื่อง,ยางนอก,ยางใน,อะไหล่มอเตอร์ไซค์,รถยนต์,รถไถ, ไฟฟ้า, การเกษตร, ประปา, ฮอนด้า, ยามาฮ่า, ซูซุกิ">
     <meta property="fb:app_id" content="320977548070994" />
-    <meta property="og:type" content="" > 
-    <meta property="og:url" content="" />
-    <meta property="og:title" content="" > 
-    <meta property="og:image" content="" >  
+    <meta property="og:type" content="website" > 
+    <meta property="og:url" content="https://www.kzhparts.com" />
+    <meta property="og:title" content="โค้ว ซุ่น เฮง - ศูนย์รวมอะไหล่มอเตอร์ไซค์, ยาง และ น้ำมันเครื่อง" > 
+    <meta property="og:image" content="https://s3-ap-southeast-1.amazonaws.com/kzhweb/kzh-mkt-02.png">
     <meta property="og:site_name" content="KZH Parts" > 
-    <meta property="og:description" content="" > 
+    <meta property="og:description" content="ค้าปลีก-ส่ง น้ำมันเครื่อง,ยางนอก,ยางใน,อะไหล่มอเตอร์ไซค์,รถยนต์,รถไถ, ไฟฟ้า, การเกษตร, ประปา สินค้าราคาถูก น่าเชื่อถือ" > 
     <meta property="og:locale" content="th_TH" >
     <meta name="author" content="KZHParts.com">
     <meta name="viewport" content="width=device-width">
     <meta property="fb:likes_and_comments" content="enable">
     <meta property="fb:pages" content="571156579574584" />
+    
     <link rel="shortcut icon" href="/images/favicon.ico">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     
@@ -168,7 +170,7 @@
                         </li>
                         <li>
                             <div>
-                                <a href="/login" class="btn btn-primary" ng-if="!IsLogin || (IsLogin === undefined)">
+                                <a href="#/login" class="btn btn-primary" ng-if="!IsLogin || (IsLogin === undefined)">
                                     <span class="glyphicon glyphicon-log-in"></span> {{'HEAD.SIGNIN' | translate}}
                                 </a>
                                 <a href="" class="btn btn-danger" ng-if="IsLogin && (IsLogin !== undefined)" ng-click="Logout()"> 
@@ -485,6 +487,7 @@
     <script src="bower_components/angular-select2/dist/angular-select2.js"></script>
     <script src="bower_components/Chart.js/dist/Chart.js"></script>
     <script src="bower_components/angular-update-meta/dist/update-meta.js"></script>
+    <script src="bower_components/angular-seo/angular-seo.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

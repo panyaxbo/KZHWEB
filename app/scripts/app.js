@@ -2,7 +2,7 @@
 
 var app = angular.module('KZHWEB', ['ngRoute', 'ngAnimate', 'ui.bootstrap', 'ngFileUpload', '720kb.datepicker',
     'ngPasswordStrength', 'ngTable','pascalprecht.translate', 'vcRecaptcha', 'ngGeolocation', 'updateMeta', 
-    'ngCookies', 'CONFIG','angularMoment', 'textAngular', 'ngTagsInput','bsLoadingOverlay']);
+    'ngCookies', 'CONFIG','angularMoment', 'textAngular', 'ngTagsInput','bsLoadingOverlay', 'seo']);
 
 app.run(function ($rootScope, $location, bsLoadingOverlayService) {
     $rootScope.$on('handleHeadMenuEmit', function (event, args) {

@@ -4,8 +4,60 @@ var util = require('util');
 var bodyParser = require('body-parser');
 var path = require('path');
 var jsonParser = bodyParser.json();
-var requestify = require('requestify');
-var braintree = require('braintree');
+var cookieParser = require('cookie-parser');
+var modRewrite = require('connect-modrewrite');
+
+/*const throng = require('throng');
+
+var WORKERS = process.env.WEB_CONCURRENCY || 1;
+var PORT = process.env.PORT || 3000;
+var BLITZ_KEY = process.env.BLITZ_KEY;
+
+
+var start = function() {
+  var crypto = require('crypto');
+  var express = require('express');
+ // var blitz = require('blitzkrieg');
+  var app = express();
+
+  app
+  //  .use(blitz(BLITZ_KEY))
+    .get('/cpu', cpuBound)
+    .get('/memory', memoryBound)
+    .get('/io', ioBound)
+    .listen(PORT, onListen);
+
+  function cpuBound(req, res, next) {
+    var key = Math.random() < 0.5 ? 'ninjaturtles' : 'powerrangers';
+    var hmac = crypto.createHmac('sha512WithRSAEncryption', key);
+    var date = Date.now() + '';
+    hmac.setEncoding('base64');
+    hmac.end(date, function() {
+      res.send('A hashed date for you! ' + hmac.read());
+    });
+  }
+
+  function memoryBound(req, res, next) {
+    var hundredk = new Array(100 * 1024).join('X');
+    setTimeout(function sendResponse() {
+      res.send('Large response: ' + hundredk);
+    }, 20).unref();
+  }
+
+  function ioBound(req, res, next) {
+    setTimeout(function SimulateDb() {
+      res.send('Got response from fake db!');
+    }, 300).unref();
+  }
+
+  function onListen() {
+    console.log('Listening on', PORT);
+  }
+}
+var isfunc = typeof startFn !== 'function';
+console.log('is start funcrtion? => ', isfunc);
+throng(start);*/
+
 
 global.mongodbConfig = require('../mongodb_config.json');
 global.serverConfig = require('../server-config.js');
@@ -25,8 +77,6 @@ global.collection;
 app.use(express.static('./app'));
 app.use(express.static(path.resolve(__dirname, '../../')));
 app.use(express.static('./bower_components'));
-
-//app.use(express.static(appRoot + '/controllers'));
 
 var oauthConfig = require('../oauth/oauth-config.js');
 
@@ -69,10 +119,16 @@ var services = require('./route/services');
 var entrepreneurs = require('./route/entrepreneurs');
 
 //app.use(logger('dev'));
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.engine('.html', require('ejs').renderFile);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
 }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(cors());
 app.use('/', index);
 app.use('/appconfig', appconfig);
@@ -112,6 +168,10 @@ app.use('/technicians', technicians);
 app.use('/services', services);
 app.use('/entrepreneurs', entrepreneurs);
 
+// Use SEOjs
+var seojs = require('express-seojs');
+app.use(seojs('escpyr2n9k2rgyxn3x2w508pi'));
+
 var environment = process.env.NODE_ENV || '';
 var port = process.env.PORT || 3000;
 
@@ -126,9 +186,8 @@ mongodb.MongoClient.connect(mongolab_uri, function (err, database) {
    
 });
 
-app.set('', port);
 console.log('appRoot ', appRoot.path + '/app/index.html');
-console.log('path.resolve(__dirname) ', path.resolve(__dirname, '../../') + 'app/index.html');
+console.log('path.resolve(__dirname) ', path.resolve(__dirname, '/../../') + 'app/index.html');
 
 app.get('/', function(req, res) {
   console.log('app.get / ');
@@ -141,11 +200,20 @@ app.get('/', function(req, res) {
     }
 
 });
+// app.use('/js', express.static(path.resolve(__dirname, '/../../') + '/app/scripts'));
+// app.use('/dist', express.static(path.resolve(__dirname, '/../../') + '/dist'));
+// app.use('/css', express.static(path.resolve(__dirname, '/../../') + '/app/styles'));
+// app.use('/partials', express.static(path.resolve(__dirname, '/../../') +  '/app/views'));
 
-
-app.listen(port, function () {
-	console.log("Start server port " + port + " is OK...");
+// app.all('/*', function(req, res, next) {
+//     // Just send the index.html for other files to support HTML5Mode
+//     res.sendFile('index.html', { root: path.resolve(__dirname, '../../')+'/app' });
+// });
+app.use(function (req, res) {
+    res.sendfile(__dirname + '/app/index.html');
 });
+
+app.listen(port);
 
 app.on('close', function() {
 	
@@ -192,28 +260,36 @@ process.on('uncaughtException', function (err) {
     console.log(err, err.stack.split("\n"));
 }); 
 
-// Add headers
-app.use(function (req, res, next) {
 
-    // Website you wish to allow to connect
-  //  if (environment !== 'production') {
-  //    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:9999');
-  //  } else {
-      res.setHeader('Access-Control-Allow-Origin', 'https://www.kzhparts.com');
-  //  }
-  
-    // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+/// catch 404 and forwarding to error handler
+app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
 
-    // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+/// error handlers
 
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', true);
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
+    });
+}
 
-    // Pass to next layer of middleware
-    next();
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
 });
 
 module.exports = app;
