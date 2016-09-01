@@ -25,6 +25,7 @@ router.get(mongodbConfig.url.appconfig.getNewCodeByModule, function (req, res) {
         }, function (err, appConfig) {
             if (err) {
                 console.log(err);
+                res.status(500).send('error occur create new code ', err);
                 //       callback(err);
             } else {
                 // call your callback with no error and the data

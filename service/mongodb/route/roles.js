@@ -36,16 +36,19 @@ router.get(mongodbConfig.url.role.loadRoleByObjId, function (req, res) {
         });
 });
 
-/* GET users listing. */
-router.get(mongodbConfig.url.role.loadRoleByRoleCode, function (req, res) {
+/* GET role by roleCode */
+router.get('/FindRoleByRoleCode/:RoleCode', function (req, res) {
     var RoleCode = req.params.RoleCode;
     db.collection(mongodbConfig.mongodb.role.name)
-        .find({
+        .findOne({
             'RoleCode': RoleCode
-        })
-        .toArray(function (err, items) {
-            console.log(items);
-            res.json(items);
+        }, function (err, role) {
+        //    console.log(items);
+            if (err) {
+                res.status(500).send('error occur when find role');
+            } else {
+                res.json(role);
+            }
         });
 });
 

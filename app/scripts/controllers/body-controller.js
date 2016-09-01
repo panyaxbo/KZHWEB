@@ -288,7 +288,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
                 VatAmount: 0,
                 Amount: 0
             };
-            console.log($scope.Company, $scope.Company.VatRate);
+        //    console.log($scope.Company, $scope.Company.VatRate);
             ROLine.ProductCode = SelectedProduct.ProductCode;
             ROLine.ProductNameTh = SelectedProduct.ProductNameTh;
             ROLine.Quantity = BuyQty;

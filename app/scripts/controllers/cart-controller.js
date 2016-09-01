@@ -7,7 +7,7 @@ app.controller("CartController", [ "$scope", "$http", "$rootScope", "$location",
      $scope.CurrencySymbol = "฿";
      $scope.User = DataModelFactory.getUser();
      $scope.ROHead = DataModelFactory.getReceipt();
-    console.log('$scope.ROHead ', $scope.ROHead);
+ //   console.log('$scope.ROHead ', $scope.ROHead);
   	$rootScope.$on('handleReceiptOrderBroadcast', function (event, args) {
         $scope.ROHead = args.ROHead;
         console.log('args.ROHead ', args.ROHead);

@@ -14,7 +14,8 @@ router.get('/LoadCompany', function(req, res) {
         .findOne({
         }, function (err, company) {
             if( err ) {
-                console.log(err);
+                console.log(err, err.stack.split("\n"));
+                res.status(500).send('err occur when load company ');
             } else {
                 console.log(company)
                 res.json(company); 

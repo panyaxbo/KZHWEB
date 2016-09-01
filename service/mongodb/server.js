@@ -7,58 +7,6 @@ var jsonParser = bodyParser.json();
 var cookieParser = require('cookie-parser');
 var modRewrite = require('connect-modrewrite');
 
-/*const throng = require('throng');
-
-var WORKERS = process.env.WEB_CONCURRENCY || 1;
-var PORT = process.env.PORT || 3000;
-var BLITZ_KEY = process.env.BLITZ_KEY;
-
-
-var start = function() {
-  var crypto = require('crypto');
-  var express = require('express');
- // var blitz = require('blitzkrieg');
-  var app = express();
-
-  app
-  //  .use(blitz(BLITZ_KEY))
-    .get('/cpu', cpuBound)
-    .get('/memory', memoryBound)
-    .get('/io', ioBound)
-    .listen(PORT, onListen);
-
-  function cpuBound(req, res, next) {
-    var key = Math.random() < 0.5 ? 'ninjaturtles' : 'powerrangers';
-    var hmac = crypto.createHmac('sha512WithRSAEncryption', key);
-    var date = Date.now() + '';
-    hmac.setEncoding('base64');
-    hmac.end(date, function() {
-      res.send('A hashed date for you! ' + hmac.read());
-    });
-  }
-
-  function memoryBound(req, res, next) {
-    var hundredk = new Array(100 * 1024).join('X');
-    setTimeout(function sendResponse() {
-      res.send('Large response: ' + hundredk);
-    }, 20).unref();
-  }
-
-  function ioBound(req, res, next) {
-    setTimeout(function SimulateDb() {
-      res.send('Got response from fake db!');
-    }, 300).unref();
-  }
-
-  function onListen() {
-    console.log('Listening on', PORT);
-  }
-}
-var isfunc = typeof startFn !== 'function';
-console.log('is start funcrtion? => ', isfunc);
-throng(start);*/
-
-
 global.mongodbConfig = require('../mongodb_config.json');
 global.serverConfig = require('../server-config.js');
 global.appRoot = require('app-root-path');
@@ -80,7 +28,7 @@ app.use(express.static('./bower_components'));
 
 var oauthConfig = require('../oauth/oauth-config.js');
 
-var cors = require('cors');
+var cors = require('express-cors');
 var index = require('./route/index');
 var appconfig = require('./route/appconfig');
 var products = require('./route/products');
@@ -118,18 +66,39 @@ var technicians = require('./route/technicians');
 var services = require('./route/services');
 var entrepreneurs = require('./route/entrepreneurs');
 
-//app.use(logger('dev'));
-// view engine setup
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Cache-Control, Pragma, Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Max-Age", "1728000");
+  next();
+});
+
+app.get('/', function(req, res, next) {
+  // Handle the get for this route
+});
+
+app.post('/', function(req, res, next) {
+ // Handle the post for this route
+});
+
 app.set('views', path.join(__dirname, 'views'));
 app.engine('.html', require('ejs').renderFile);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
 }));
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(cors());
+//app.use(cors());
+
+app.use(cors({
+    allowedOrigins: [
+        'kzh-parts.herokuapp.com', 'kzhparts.com'
+    ]
+}))
 app.use('/', index);
 app.use('/appconfig', appconfig);
 app.use('/products', products);
@@ -168,9 +137,25 @@ app.use('/technicians', technicians);
 app.use('/services', services);
 app.use('/entrepreneurs', entrepreneurs);
 
-// Use SEOjs
-var seojs = require('express-seojs');
-app.use(seojs('escpyr2n9k2rgyxn3x2w508pi'));
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "X-Requested-With");
+//     res.header("Access-Control-Allow-Headers", "Content-Type");
+//     res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+//     next();
+// });
+
+
+
+// app.configure(function() {
+//     app.use(express.bodyParser());
+//     app.use(express.cookieParser());
+//     app.use(express.session({ secret: 'cool beans' }));
+//     app.use(express.methodOverride());
+//     app.use(allowCrossDomain);
+//     app.use(app.router);
+//     app.use(express.static(__dirname + '/public'));
+// });
 
 var environment = process.env.NODE_ENV || '';
 var port = process.env.PORT || 3000;
@@ -184,6 +169,20 @@ mongodb.MongoClient.connect(mongolab_uri, function (err, database) {
  //   console.log(database);
     db = database;
    
+   if (err) {
+        console.log(err);
+        process.exit(1);
+      }
+
+      // Save database object from the callback for reuse.
+      db = database;
+      console.log("Database connection ready");
+
+      // Initialize the app.
+      var server = app.listen(port, function () {
+        var port = server.address().port;
+        console.log("App now running on port", port);
+      });
 });
 
 console.log('appRoot ', appRoot.path + '/app/index.html');
@@ -212,9 +211,11 @@ app.get('/', function(req, res) {
 app.use(function (req, res) {
     res.sendfile(__dirname + '/app/index.html');
 });
-
-app.listen(port);
-
+/*
+app.listen(port, function() {
+  console.log('KZHWEB App started on port 3000.');
+});
+*/
 app.on('close', function() {
 	
 });

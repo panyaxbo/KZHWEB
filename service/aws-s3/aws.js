@@ -66,6 +66,7 @@ router.post('/uploadProductCategoryImage/:ProductCategoryId/:ProductCategoryCode
 
       if (err) {
         console.log(err, err.stack.split("\n"));
+        res.status(500).send('error occur when insert ');
       }
       else {
         console.log("success");
@@ -79,8 +80,7 @@ router.post('/uploadProductCategoryImage/:ProductCategoryId/:ProductCategoryCode
             function (err, result) {
               if (err) {
                 console.log(err, err.stack.split("\n"));
-                res.sendStatus(500);
-                return;
+                res.status(500).send('error occur when insert ');
               } else {
                 var image_id = bson.BSONPure.ObjectID(result._id);
                 db.collection(mongodbConfig.mongodb.product_category.name)
@@ -94,10 +94,9 @@ router.post('/uploadProductCategoryImage/:ProductCategoryId/:ProductCategoryCode
                         function (error, data) {
                             if (error) {
                               console.log(err, err.stack.split("\n"));
-                              res.sendStatus(500);
-                              return;
+                              res.status(500).send('error occur when upload product category');
                             } else {
-                              res.sendStatus(200);
+                              res.status(200);
                             }
                         });
               }
@@ -149,7 +148,9 @@ router.post('/uploadProductCategoryImage/:ProductCategoryId/:ProductCategoryCode
         file.uploadDate = updateDate;
 
     }, function(err) {
-
+        if (err) {
+          res.status(500).send('error occur');
+        }
     })
   });
 
@@ -185,8 +186,7 @@ router.post('/uploadProductImage/:ProductId/:ProductCode/:Username', function (r
             function (err, result) {
               if (err) {
                 console.log(err, err.stack.split("\n"));
-                res.sendStatus(500);
-                return;
+                res.status(500).send('err occur when upload product image');
               } else {
                 var image_id = bson.BSONPure.ObjectID(result._id);
                 db.collection(mongodbConfig.mongodb.product.name)
@@ -197,19 +197,21 @@ router.post('/uploadProductImage/:ProductId/:ProductCode/:Username', function (r
                                 'ProductImageRefId': image_id
                             }
                         },
-                        function (error, data) {
-                            if (error) {
+                        function (err, data) {
+                            if (err) {
                               console.log(err, err.stack.split("\n"));
-                              res.sendStatus(500);
-                              return;
+                              res.status(500).send('err occur when upload product image', err.stack.split("\n"));
                             } else {
-                              res.sendStatus(200);
+                              res.status(200);
                             }
                         });
               }
             });
     }, function(err) {
-      console.log(err, err.stack.split("\n"));
+      if (err) {
+        console.log(err, err.stack.split("\n"));
+        res.status(500).send('err occur when upload product image', err.stack.split("\n"));
+      }
   });
 
   var InsertFilePromise = function() {
@@ -281,22 +283,18 @@ router.get("/downloadProductImageShop/:ProductId/:ProductCode",  function (req, 
    .findOne({ 'name' : ProductCode }
    , function(err, file) {
     if (err) {
-      res.sendStatus(500);
+      res.status(500).send('error occur when find product ref id');
     } else if (!file) {
-      res.sendStatus(404);
-      return;
+      res.status(404).send('not found product ref id');
     } else if (file != null && file != undefined) {
       product_s3fsImpl.readFile(file.originalFilename, function (err, data) {
         if (err) {
           console.log(err, err.stack.split("\n"));
-          res.sendStatus(500);
-          return;
+          res.status(500).send('error occur when find product ref id');
         }
-        if (!file) { 
-          res.sendStatus(404);
-          return;
+        else if (!file) { 
+          res.status(404).send('not found product ref id');
         } else if (file) {
-     //     console.log('file not null');
           var base64 = (data.toString('base64')); 
       //    var base64 = (data.Body.toString('base64')); 
           res.send('<img src="data:image/jpeg;base64,' + base64 + '" class="img-responsive" style="max-height: 200px;max-width: 200px;margin: 0 auto;">');
@@ -397,29 +395,25 @@ router.get("/downloadProductImageShopMobile/:ProductId/:ProductCode",  function 
 
   findProductByProductCodePromise().then(function(file, status) {
       if (!file) {
-        res.sendStatus(200);
-        return;
+        res.status(200);
       } else {
         return product_s3fsImpl.readFile(file.originalFilename)
             .then(function(data, status) {
               console.log(data);
               if (!data) { 
-                res.sendStatus(404);
-                return;
+                res.status(404).send('not found product ref id');;
               } else if (data) {
                 var base64 = (data.Body.toString('base64')); 
                 res.send('data:image/jpeg;base64,' + base64 );
               }
             }, function (err, status) {
               console.log(err, err.stack.split("\n"));
-              res.sendStatus(500);
-              return;
+              res.status(500).send('error occur when find product promise');
             });
       }
   }, function(err, status) {
       console.log(err, err.stack.split("\n"));
-      res.sendStatus(500);
-      return;
+      res.status(500).send('error occur when find product promise');
   });
 });
 

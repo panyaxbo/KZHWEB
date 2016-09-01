@@ -1,8 +1,8 @@
 "use strict";
 app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "ENV", "$window", "$timeout",
-  "UserService", "CredentialService", "UtilService", "CryptoService", "EmailService", "DataModelFactory", 
+  "UserService", "CredentialService", "UtilService", "CryptoService", "EmailService", "RoleService", "DataModelFactory", 
   function ($scope, $http, $location, $filter, ENV, $window, $timeout,
-    UserService, CredentialService, UtilService, CryptoService, EmailService, DataModelFactory) {
+    UserService, CredentialService, UtilService, CryptoService, EmailService, RoleService, DataModelFactory) {
     $scope.User = DataModelFactory.getUser();
     $scope.ForgetPasswordProgressValue = 0;
     $scope.IsAdmin = false;
@@ -16,40 +16,35 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
       var appuser = {};
       UserService.LoginWithUsernameAndPassword($scope.username, $scope.password)
       .then(function(data, status) {
+   //     console.log(data);
           if (!data || data === undefined) {
               swal("Error", "Cannot login maybe username or password incorrect", "error");
               $scope.User = [];
               $scope.IsAdmin = false;
               $scope.IsGuest = false;
+
               return;
           } else {
             appuser = data;
           }
+          
           return UserService.CheckIsUserActivate($scope.username, $scope.password);
       })
       .then(function (data, status) {
+     //     console.log(data);
           if (!data || data === undefined) {
             swal("Error", "Sorry, your account is not activated yet, please check your email.", "error");
           } else {
             $scope.User.Id = appuser._id;
             $scope.User.Username = appuser.Username;
             $scope.User.Password = appuser.Password;
-            $scope.User.Role = {
-              RoleCode: appuser.Role.RoleCode,
-              RoleNameEn: appuser.Role.RoleCode,
-              RoleNameTh: appuser.Role.RoleNameTh
-            }
+         
             $scope.Firstname = appuser.Firstname;
             $scope.Lastname = appuser.Lastname;
             $scope.User.Email = appuser.Email;
-            if ($scope.User.Role.RoleNameEn == 'Admin') {
-                $scope.IsAdmin = true;
-                $scope.IsGuest = false;
-            } else {
-              $scope.IsAdmin = false;
-              $scope.IsGuest = false;
-            }
+            
             $scope.IsLogin = true;
+       //    console.log($scope.User);
             document.getElementById('LoginDataNotReady').style.display = 'none';
             if ($scope.RememberMe) {
               var now = new Date();
@@ -65,8 +60,32 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
           } else {
             $location.path('/');
           }
-          
+          return RoleService.FindRoleByRoleCode(appuser.RoleCode);
+      //    return UserService.DownloadUserProfileImage($scope.User.Id, $scope.User.Username);
+      }, function(err, status) {
+        if (status == 404) {
+          console.log(err);
+        } else {
+          console.log(err);
+        
+        }
+      })
+      .then(function(role, status) {
+          $scope.User.Role = {
+             RoleCode: role.RoleCode,
+             RoleNameEn: role.RoleNameEn,
+             RoleNameTh: role.RoleNameTh
+          }
+          if ($scope.User.Role.RoleNameEn == 'Admin') {
+              $scope.IsAdmin = true;
+              $scope.IsGuest = false;
+          } else {
+            $scope.IsAdmin = false;
+            $scope.IsGuest = false;
+          }
           return UserService.DownloadUserProfileImage($scope.User.Id, $scope.User.Username);
+      },function(err, status) {
+
       })
       .then(function(profile_image, status) {
 

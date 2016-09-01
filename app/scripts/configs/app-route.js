@@ -149,15 +149,15 @@ app.config(function($routeProvider, $locationProvider) {
         templateUrl: '/views/setting/product-type-detail.html',
         controller: 'ProductTypeController'
       })
-      .when('/technicians', {
+      .when('/kzh-technicians', {
         templateUrl: '/views/technician/technicians.html',
         controller: 'TechnicianController'
       })
-      .when('/technician', {
+      .when('/kzh-technician', {
         templateUrl: '/views/technician/technician-detail.html',
         controller: 'TechnicianController'
       })
-      .when('/technician/:technicianId', {
+      .when('/kzh-technician/:technicianId', {
         templateUrl: '/views/technician/technician-detail.html',
         controller: 'TechnicianController'
       })

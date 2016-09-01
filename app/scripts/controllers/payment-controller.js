@@ -3,7 +3,7 @@ app.controller("PaymentController", [ "$scope", "$http", "$rootScope", "$locatio
 	"ReceiptOrderService", "CredentialService", "UserService", 'UtilService', 'AppConfigService', 'EmailService', 'DataModelFactory',
   function ($scope, $http, $rootScope, $location,
   	ReceiptOrderService, CredentialService, UserService, UtilService, AppConfigService,EmailService, DataModelFactory) {
-  	console.log('in payment con');
+ // 	console.log('in payment con');
 	$scope.User = DataModelFactory.getUser();
 	$scope.ROHead = DataModelFactory.getReceipt();
 	$scope.Company = DataModelFactory.getCompany();
@@ -195,7 +195,7 @@ app.controller("PaymentController", [ "$scope", "$http", "$rootScope", "$locatio
             console.log('payment success');
             document.getElementById('ProcessingPurchaseOrder').style.display = 'none';
             document.getElementById('ProcessedPurchaseOrder').style.display = 'block';
-            $ROHead.ROLineList.length = 0;
+            $scope.ROHead.ROLineList.length = 0;
             
             $location.path('payment-success');
         }, function(err, status) {

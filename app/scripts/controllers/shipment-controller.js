@@ -79,7 +79,7 @@ app.controller("ShipmentController", [ "$scope", "$http", "$rootScope", "$locati
             $scope.SelectBillingZipCodeList = zipcode;
             $scope.ROHead.BillingZipCode = zipcode.ZipCode;
 
-            console.log($scope.ROHead);
+     //       console.log($scope.ROHead);
         }, function(err, status) {
             console.log(err);
         });
@@ -163,10 +163,10 @@ app.controller("ShipmentController", [ "$scope", "$http", "$rootScope", "$locati
             swal("เตือน", "่หมายเลขไม่ถูกต้อง", "warning");
             return;
         }
-		console.log($scope.ROHead);
+	//	console.log($scope.ROHead);
         DataModelFactory.setReceipt($scope.ROHead);
         $scope.step = 2;
-        console.log('after validate ', $scope.ROHead);
+   //     console.log('after validate ', $scope.ROHead);
         $location.path('/payment');
         $("#nav-step2").removeAttr("disabled");
         $("#nav-step2").addClass("btn-primary");

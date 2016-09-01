@@ -3,8 +3,7 @@ app.controller("ContactController", [ "$scope", "$http", "CredentialService", "U
 	function ($scope, $http, CredentialService, UtilService, DataModelFactory) {
 
 	$scope.Company = DataModelFactory.getCompany();
-	console.log($scope.Company);
-
+	
 	$scope.ValidateFeedback = function() {
         if ($scope.Feedback.Name === undefined || $scope.Feedback.Name.length <= 0) {
         }
@@ -34,11 +33,10 @@ app.controller("ContactController", [ "$scope", "$http", "CredentialService", "U
                 $scope.Feedback.Message = '';
           }, function(err, status) {
                 swal("คำเตือน !!!", "เกิดข้อผิดพลาด", "warning");
-                 $scope.Feedback.Subject = '';
+                $scope.Feedback.Subject = '';
                 $scope.Feedback.Message = '';
           });
 
         }
-
     }
 }]);

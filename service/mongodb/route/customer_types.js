@@ -23,14 +23,14 @@ router.get(mongodbConfig.url.customer_type.loadAllCustomerType, function (req, r
     }
     loadCustomerTypePromise().then(function(data, status) {
         if(!data) {
-            res.sendStatus(404);
+            res.status(404).send('Not found ');
             return;
         } else {
             res.json(data); 
         }
     }, function(err, status) {
         console.log(err, err.stack.split("\n"));
-        res.sendStatus(500);
+        res.status(500).status(err.stack.split("\n"));
         return;
     });
 });
@@ -67,15 +67,13 @@ router.get(mongodbConfig.url.customer_type.loadCustomerTypeByObjId, function (re
     }
     loadCustomerTypeByObjIdPromise().then(function(data, status) {
         if(!data) {
-            res.sendStatus(404);
-            return;
+            res.status(404).send('not found customer type ');
         } else {
             res.json(data); 
         }
     }, function(err, status) {
         console.log(err, err.stack.split("\n"));
-        res.sendStatus(500);
-        return;
+        res.status(500).send('error occur ');
     });
 });
 

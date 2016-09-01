@@ -6,7 +6,7 @@
     <title>โค้ว ซุ่น เฮง - ศูนย์รวมอะไหล่มอเตอร์ไซค์, ยาง และ น้ำมันเครื่อง</title>
     <meta name="description" content="ค้าปลีก-ส่ง น้ำมันเครื่อง,ยางนอก,ยางใน,อะไหล่มอเตอร์ไซค์,รถยนต์,รถไถ, ไฟฟ้า, การเกษตร, ประปา สินค้าราคาถูก น่าเชื่อถือ">
     <meta name="keywords" content="น้ำมันเครื่อง,ยางนอก,ยางใน,อะไหล่มอเตอร์ไซค์,รถยนต์,รถไถ, ไฟฟ้า, การเกษตร, ประปา, ฮอนด้า, ยามาฮ่า, ซูซุกิ">
-    <meta property="fb:app_id" content="320977548070994" />
+ <!--   <meta property="fb:app_id" content="320977548070994" />
     <meta property="og:type" content="website" > 
     <meta property="og:url" content="https://www.kzhparts.com" />
     <meta property="og:title" content="โค้ว ซุ่น เฮง - ศูนย์รวมอะไหล่มอเตอร์ไซค์, ยาง และ น้ำมันเครื่อง" > 
@@ -18,7 +18,7 @@
     <meta name="viewport" content="width=device-width">
     <meta property="fb:likes_and_comments" content="enable">
     <meta property="fb:pages" content="571156579574584" />
-    
+    -->
     <link rel="shortcut icon" href="/images/favicon.ico">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     
@@ -87,21 +87,23 @@
                             data-toggle="collapse" data-parent="#ProductType" ng-if="SelectedLocale=='th'" onclick="return false;">
                                 {{ProductType.ProductTypeNameTh}}
                                 <span class="label label-pill label-success pull-right span-side-menu">
-                                {{ProductType.ProductCategories.length}}</span>
+                                {{ProductType.ProductCategoryCount}}</span>
                             </a>
                             <a href="#{{ProductType.ProductTypeCode}}" class="list-group-item list-group-item-success" 
                             data-toggle="collapse" data-parent="#ProductType" ng-if="SelectedLocale=='us'" onclick="return false;">
                             {{ProductType.ProductTypeNameEn}}
-                            <span class="label label-pill label-success pull-right span-side-menu">{{ProductType.ProductCategories.length}}</span>
+                            <span class="label label-pill label-success pull-right span-side-menu">{{ProductType.ProductCategoryCount}}</span>
                             </a>
                             <a href="#{{ProductType.ProductTypeCode}}" class="list-group-item list-group-item-success" 
                             data-toggle="collapse" data-parent="#ProductType" ng-if="SelectedLocale=='cn'" onclick="return false;" >
                             {{ProductType.ProductTypeNameCn}} 
-                            <span class="label label-pill label-success pull-right span-side-menu">{{ProductType.ProductCategories.length}}</span>
+                            <span class="label label-pill label-success pull-right span-side-menu">{{ProductType.ProductCategoryCount}}</span>
                             </a>
                             <div class="collapse" id="{{ProductType.ProductTypeCode}}" >
                                 <div ng-repeat="ProductCategory in ProductType.ProductCategories" >
-                                    <div ng-init="GetProductLengthFromProductCategory(ProductCategory.ProductCategoryCode)">
+                                    <div 
+                                    //ng-init="GetProductLengthFromProductCategory(ProductCategory.ProductCategoryCode)"
+                                    >
                                         <a href="" class="list-group-item" ng-if="SelectedLocale=='th'" 
                                         ng-click="LoadProductByProductCategoryCode(ProductCategory.ProductCategoryCode)" >{{ProductCategory.ProductCategoryNameTh}}
                                         <span class="label label-pill label-primary pull-right span-side-menu" id="{{ProductCategory.ProductCategoryCode}}"></span>
@@ -170,7 +172,7 @@
                         </li>
                         <li>
                             <div>
-                                <a href="#/login" class="btn btn-primary" ng-if="!IsLogin || (IsLogin === undefined)">
+                                <a href="/login" class="btn btn-primary" ng-if="!IsLogin || (IsLogin === undefined)">
                                     <span class="glyphicon glyphicon-log-in"></span> {{'HEAD.SIGNIN' | translate}}
                                 </a>
                                 <a href="" class="btn btn-danger" ng-if="IsLogin && (IsLogin !== undefined)" ng-click="Logout()"> 
@@ -503,6 +505,7 @@
     <script src="/scripts/controllers/article-controller.js"></script>
     <script src="/scripts/controllers/history-controller.js"></script>
     <script src="/scripts/controllers/contact-controller.js"></script>
+    <script src="/scripts/controllers/about-controller.js"></script>
     <script src="/scripts/controllers/cart-controller.js"></script>
     <script src="/scripts/controllers/login-controller.js"></script>
     <script src="/scripts/controllers/shipment-controller.js"></script>
@@ -563,6 +566,7 @@
     <script src="/scripts/services/entrepreneur-service.js"></script>
     <script src="/scripts/services/geolocation-service.js"></script>
     <script src="/scripts/services/service-service.js"></script>
+    <script src="/scripts/services/role-service.js"></script>
     <script src="/scripts/filters/html-filter.js"></script>
     <script src="/scripts/filters/cut-more-filter.js"></script>
     <script src="/scripts/factories/data-model-factory.js"></script>

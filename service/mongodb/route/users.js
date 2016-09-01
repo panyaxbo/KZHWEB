@@ -10,12 +10,6 @@ var Base64 = require(appRoot + '/node_modules/js-base64/base64.min.js').Base64;
 
 /* GET users listing. */
 router.get(mongodbConfig.url.user.loadAllUser, function (req, res) {
-  /*  db.collection(mongodbConfig.mongodb.user.name)
-        .find({})
-        .toArray(function (err, items) {
-            console.log(items);
-            res.json(items);
-        });*/
     var loadAllUserPromise = function() {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.user.name)
@@ -31,29 +25,17 @@ router.get(mongodbConfig.url.user.loadAllUser, function (req, res) {
     }
     loadAllUserPromise().then(function(data, status) {
         if(!data) {
-            res.sendStatus(404);
-            return;
+            res.status(404).send('not found any users');
         } else {
             res.json(data); 
         }
     }, function(err, status) {
         console.log(err, err.stack.split("\n"));
-        res.sendStatus(500);
-        return;
+        res.status(500).send('error occur when load all user ', err.stack.split("\n"));
     });
 });
 
 router.get(mongodbConfig.url.user.loadAppUserById, function (req, res) {
- /*   console.log('user.js -> /users ');
-    var AppUserId = req.params.AppUserId;
-    db.collection(mongodbConfig.mongodb.user.name)
-        .find({
-            'Id': AppUserId
-        })
-        .toArray(function (err, items) {
-            console.log(items);
-            res.json(items);
-        });*/
     var loadAppUserByIdPromise = function() {
         var defer = Q.defer();
         console.log('user.js -> /users ');
@@ -74,15 +56,13 @@ router.get(mongodbConfig.url.user.loadAppUserById, function (req, res) {
     }
     loadAppUserByIdPromise().then(function (data, status) {
         if(!data) {
-            res.sendStatus(404);
-            return;
+            res.status(404).send('not found users');
         } else {
-            res.json(data); 
+            res.status(201).json(data); 
         }
     }, function(err, status) {
         console.log(err, err.stack.split("\n"));
-        res.sendStatus(500);
-        return;
+        res.status(500).send('error occur when find user by id ', err.stack.split("\n"));
     });
 });
 
@@ -96,6 +76,7 @@ router.get(mongodbConfig.url.user.loadAppUserByObjId, function (req, res) {
         }, function (err, doc) {
             if (err) {
                 console.log(err);
+                res.status(500).send('err occur when find one user');
                 //       callback(err);
             } else {
                 // call your callback with no error and the data
@@ -107,6 +88,7 @@ router.get(mongodbConfig.url.user.loadAppUserByObjId, function (req, res) {
 
 router.get('/FindByUsernameAndPassword/:Email/:Password', function (req, res) {
     console.log('user.js -> /users ');
+    console.time('find user log in');
     var findOneAppUserPromise = function (query) {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.user.name)
@@ -124,11 +106,12 @@ router.get('/FindByUsernameAndPassword/:Email/:Password', function (req, res) {
     var findOneRolePromise = function (queryRole) {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.role.name)
-            .findOne(queryRole, function (err, doc) {
+            .findOne(queryRole, function (err, role) {
             if (err) {
                 defer.reject(err);
             } else {
-                defer.resolve(doc);
+                console.log(role);
+                defer.resolve(role);
             }
         });
         return defer.promise;
@@ -157,6 +140,18 @@ router.get('/FindByUsernameAndPassword/:Email/:Password', function (req, res) {
         });
         return defer.promise;
     }
+    var CheckPassword = function(ui_password, db_password) {
+        var defer = Q.defer();
+        bcrypt_then.compare(ui_password, db_password).then(function ( valid) {
+            console.log('valid', valid);
+          if (valid) {
+            defer.resolve(valid);
+          } else {
+            defer.reject('error occur ');
+          }
+        });
+        return defer.promise;
+    }
 
     var Username = req.params.Email;
     var Password = req.params.Password;
@@ -166,39 +161,31 @@ router.get('/FindByUsernameAndPassword/:Email/:Password', function (req, res) {
     findFirstAppUserFromUI(queryFindUserFirst)
     .then(function(data, status) {
         if(!data) {
-            res.sendStatus(404);
-            return;
+            res.status(404).send('xpjs - not found user ');
         } else {
-        /*    var compare = bcrypt.compare(Password, data.Password, function(err, result) {
-                console.log('compare ' + result);
-                if (result) {
-                    var queryOneAppUser = {
-                       $or: [ { Username: Username }, { Email : Username } ],
-                       Terminal : 'web'
-                    };
-                    return findOneAppUserPromise(queryOneAppUser);
-                }
-            });*/
-
-        return  bcrypt_then.compare(Password, data.Password).then(function (valid) {
-                if (valid) {
-                    var queryOneAppUser = {
-                       $or: [ { Username: Username }, { Email : Username } ],
-                       Terminal : 'web'
-                    };
-                    return findOneAppUserPromise(queryOneAppUser);
-                }
-            });
+            // bcrypt.compare(Password, data.Password, function(err, result) {
+            //     console.log('compare ' + result);
+            //     if (result) {
+            //     //    var queryOneAppUser = {
+            //    //        $or: [ { Username: Username }, { Email : Username } ],
+            //     //       Terminal : 'web'
+            //     //    };
+            //         AppUser = data;
+            //         console.log('finduser ' , AppUser);
+            //         var qRole = { 'RoleCode': data.RoleCode };
+            //         return findOneRolePromise(qRole);
+            //     } 
+            // });
+            AppUser = data;
+            return CheckPassword(Password, data.Password);
         }
     }, function(err, status) {
         console.log(err, err.stack.split("\n"));
-        res.sendStatus(500);
-        return;
+        res.status(500).send('error occur when find role ');
     })
-    .then(function(data, status) {
+ /*   .then(function(data, status) {
         if(!data) {
-            res.sendStatus(404);
-            return;
+            res.status(404).send('not found ');
         } else {
             AppUser = data;
             var qRole = { 'RoleCode': data.RoleCode };
@@ -208,22 +195,22 @@ router.get('/FindByUsernameAndPassword/:Email/:Password', function (req, res) {
         }
     }, function(err, status) {
         console.log(err, err.stack.split("\n"));
-        res.sendStatus(500);
-        return;
-    })
+        res.status(500).send('error occur when find role ');
+    })*/
     .then(function(data, status) {
-        if(!data) {
-            res.sendStatus(404);
-            return;
-        } else {
-            AppUser.Role = data;
-            console.log('after one user', AppUser);
+    //    if(!data) {
+    //        res.status(404).send('not found role ');
+   //     } else {
+            console.log('data ', data);
+            console.log('AppUser ', AppUser);
+    //        AppUser.Role = data;
+    //        console.log('after one user', AppUser);
+            console.timeEnd('find user log in');
             res.json(AppUser); 
-        }
+    //    }
     }, function(err, status) {
         console.log(err, err.stack.split("\n"));
-        res.sendStatus(500);
-        return;
+        res.status(500).send('error occur ', err.stack.split("\n"));
     });
 /*
     db.collection(mongodbConfig.mongodb.user.name)
@@ -284,39 +271,6 @@ router.get('/FindByUsernameAndPassword/:Email/:Password', function (req, res) {
         } 
     });
 */
-    var findOneAppUser = function (query, callback) {
-        db.collection(mongodbConfig.mongodb.user.name).findOne(query, function (err, doc) {
-            if (err) {
-                console.log(err);
-            } else {
-                callback(null, doc);
-            }
-        });
-    }
-    var findOneRole = function (queryRole, callback) {
-        db.collection(mongodbConfig.mongodb.role.name).findOne(queryRole, function (err, doc) {
-            if (err) {
-             //   console.log(err);
-             //   res.json(500).json(err);
-            return;
-            } else {
-            //    console.log(doc);
-                callback(null, doc);
-            }
-        });
-    }
-    var findOneStaff = function (queryStaff, callback) {
-        db.collection(mongodbConfig.mongodb.staff.name).findOne(queryStaff, function (err, doc) {
-            if (err) {
-            //    console.log(err);
-            //    res.json(500).json(err);
-            //    return;
-            } else {
-             //   console.log(doc);
-                callback(null, doc);
-            }
-        });
-    }
     
 }); // End Find by Username and Password
 // Create AppUser
@@ -357,8 +311,7 @@ router.post(mongodbConfig.url.user.createAppUser, function (req, res) {
         res.json(appuser);
     }, function(err, status) {
         console.log(err, err.stack.split("\n"));
-        res.sendStatus(500);
-        return;
+        res.status(500).send('error occur ');
     })
 });
 
@@ -397,14 +350,6 @@ router.post(mongodbConfig.url.user.updateAppUser, function (req, res) {
 router.get(mongodbConfig.url.user.deleteAppUserByAppUserId, function (req, res) {
     var AppUserId = req.params.AppUserId;
     var o_id = bson.BSONPure.ObjectID(AppUserId.toString());
- /*   db.collection(mongodbConfig.mongodb.user.name)
-        .remove({
-            _id: o_id
-        }, function (error, result) {
-            if (error) throw error
-
-            res.json(result);
-        });*/
     var deleteAppUserByIdPromise = function() {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.user.name)
@@ -425,8 +370,7 @@ router.get(mongodbConfig.url.user.deleteAppUserByAppUserId, function (req, res) 
         }
     }, function(err, status) {
         console.log(err, err.stack.split("\n"));
-        res.sendStatus(500);
-        return;
+        res.status(500).send('error occur ');
     });
 });
 
@@ -440,8 +384,7 @@ router.get(mongodbConfig.url.user.isExistUsername, function(req, res) {
         , function (err, user) {
         if (err) {
             console.log(err);
-            res.json(500, err);
-            return;
+            res.status(500).send('error occur ');
         } else {
             if (user)  {
                 res.json(true);
@@ -462,8 +405,7 @@ router.get(mongodbConfig.url.user.isExistEmail, function(req, res) {
         , function (err, user) {
         if (err) {
             console.log(err);
-            res.json(500, err);
-            return;
+            res.status(500).send('error occur ');
         } else {
             if (user)  {
                 res.json(true);
@@ -498,8 +440,7 @@ router.post(mongodbConfig.url.user.createAppUserByUsernameAndPasswordAndEmail, f
         .insert(appuser, function (error, result) {
             if (error) {
                 console.log('error ' + error);
-                res.json(500, error);
-                return;
+                res.status(500).send('error occur ');
             } else {
                 console.log('good ' + result);
                 if (result)  {
@@ -576,9 +517,9 @@ router.post("/ActivateAppUser", function (req, res) {
             },
             function (error, stat) {
                 if (error) {
-                    res.sendStatus(500);
+                    res.status(500).send('error occur ');
                 } else {
-                    res.sendStatus(200);
+                    res.status(200);
                 }
             });
 });
@@ -596,8 +537,7 @@ router.get(mongodbConfig.url.user.isActivateUser, function (req, res) {
         , function (err, user) {
         if (err) {
             console.log(err);
-            res.json(500, err);
-            return;
+            res.status(500).send('error occur ');
         } else if (user){
             if (user.IsActivate)  {
                 res.json(true);
@@ -628,9 +568,9 @@ router.get('/PerformChangePassword/:Email/:Password', function (req, res) {
             function (error, result) {
                 if (error) {
                     console.log(error, error.stack.split("\n"));
-                    res.sendStatus(500);
+                    res.status(500).send('error occur ');
                 } else {
-                    res.sendStatus(200);
+                    res.status(200);
                 }
             });
 });
@@ -719,9 +659,6 @@ router.post('/CreateAndUpdateWithSocial', function (req, res) {
                 .insert(appuser, function (err, result) {
                     if (err) {
                         defer.reject(err);
-                    //    console.log(err, err.stack.split("\n"));
-                    //    res.json(500, err);
-                    //    return;
                     } else {
                         defer.resolve(result);
                     }
@@ -738,15 +675,14 @@ router.post('/CreateAndUpdateWithSocial', function (req, res) {
         }
     },function (err, status) {
         console.log(err, err.stack.split("\n"));
-        res.json(500, err);
-        return;
+        res.status(500).send('error occur ', err.stack.split("\n"));
     })
     .then(function(data, status) {
         res.json(data);
     }, function(err, status) {
         console.log(err, err.stack.split("\n"));
-        res.json(500, err);
-        return;
+        res.status(500).send('error occur ', err.stack.split("\n"));
     });
 });
+
 module.exports = router;

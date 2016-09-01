@@ -13,11 +13,13 @@ router.get('/LoadArticle', function(req, res) {
         })
         .toArray(function (err, items) {
         	if (err) {
-                console.log('2', err, err.stack.split("\n"));
-        	} else {
-	        //    console.log(items);
-	            res.json(items);
-	        }
+                console.log(err, err.stack.split("\n"));
+                res.status(500).send('err occur');
+            } else if (!items) {
+                res.status(404).send('not found !!');
+            } else {
+                res.json(items);
+            }
         });
 
 });
@@ -78,20 +80,9 @@ router.get('/LoadArticleById/:ArticleId', function(req, res) {
         }
     }, function(err, status) {
         console.log('2', err, err.stack.split("\n"));
+        res.status(500).send('err occur when load article by Id ');
     });
    
-   /* db.collection('Article')
-        .findOne({
-            '_id': o_id
-        }, function (err, doc) {
-            if (err) {
-                console.log(err);
- 
-            } else {
-
-                res.json(doc);
-            }
-        });*/
 
 });
 router.post('/CreateArticle', function(req, res) {
@@ -104,9 +95,15 @@ router.post('/CreateArticle', function(req, res) {
     
     db.collection('Article')
         .insert(Article,
-            function (error, result) {
-                if (error) throw error
-                res.json(result);
+            function (err, result) {
+                if (err) {
+                    console.log(err, err.stack.split("\n"));
+                    res.status(500).send('err occur', err.stack.split("\n"));
+                } else if (!result) {
+                    res.status(404).send('not found !!');
+                } else {
+                    res.json(result);
+                }
             });
 });
 
