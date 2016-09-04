@@ -13,7 +13,12 @@ router.get('/LoadTechnicianService', function(req, res) {
         })
         .toArray(function (err, items) {
         //    console.log(items);
-            res.json(items);
+            if (err) {
+            	console.log(err);
+            	res.status(404).send('not found any technicians');
+            } else {
+	            res.json(items);
+	        }
         });
 });
 

@@ -19,6 +19,7 @@ router.get('/LoadTechnicians', function (req, res) {
         .toArray(function (err, items) {
             if (err) {
                 console.log('1',err, err.stack.split("\n"));
+                res.status(404).send('not found any technicians');
             } else {
                 console.log(items);
                 res.json(items);
@@ -35,12 +36,8 @@ router.get('/LoadTechnicianById/:TechnicianId', function (req, res) {
             '_id': o_id
         }, function (err, technician) {
             if (err) {
-                console.log(err);
-                //       callback(err);
+                res.status(404).send('not found any technician');
             } else {
-                // call your callback with no error and the data
-            //    console.log(doc);
-                //     callback(null, doc);
                 res.json(technician);
             }
         });

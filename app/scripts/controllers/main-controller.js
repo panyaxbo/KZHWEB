@@ -24,7 +24,7 @@ app.controller("MainController", [ "$scope", "$http" , "$timeout", "ngTableParam
     $scope.IsLogin = false;
     $scope.IsProductTypeDataReady = false;
     $scope.ProductTypes = [];
-    
+    /*
     ProductTypeService.LoadProductType()
         .then(function(types, status) {
             $scope.ProductTypes = types;
@@ -75,7 +75,7 @@ app.controller("MainController", [ "$scope", "$http" , "$timeout", "ngTableParam
         }, function(err, status) {
             sweetAlert("Error !!", "Cannot get Product data from Server..", "error");
         });
-    };
+    };*/
     $scope.InitPaymentAndDeliveryMethod = function() {
         WeightRateService.GetNormalWeightRate()
         .then(function(data, status) {

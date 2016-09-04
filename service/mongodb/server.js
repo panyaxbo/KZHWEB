@@ -6,6 +6,7 @@ var path = require('path');
 var jsonParser = bodyParser.json();
 var cookieParser = require('cookie-parser');
 var modRewrite = require('connect-modrewrite');
+var helmet = require('helmet');
 
 global.mongodbConfig = require('../mongodb_config.json');
 global.serverConfig = require('../server-config.js');
@@ -13,7 +14,7 @@ global.appRoot = require('app-root-path');
 global.mongodb = require('mongodb');
 global.mongodb_promise = require('mongodb-promise');
 global.bson = require('bson');
-global.http = require('http');
+var http = require('http');
 //global.https = require('https');
 //var enforce = require('express-sslify');
 var fs = require('fs');
@@ -98,7 +99,8 @@ app.use(cors({
     allowedOrigins: [
         'kzh-parts.herokuapp.com', 'kzhparts.com'
     ]
-}))
+}));
+app.use(helmet());
 app.use('/', index);
 app.use('/appconfig', appconfig);
 app.use('/products', products);

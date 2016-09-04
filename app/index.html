@@ -80,7 +80,7 @@
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             <div class="row text-center aside-header"><h3>ชนิดสินค้า</h3></div>
             <div class="col-xs-12 col-sm-12 col-md-12 " style="word-wrap: break-word;">
-                <div id="ProductType" >
+            <!--    <div id="ProductType" >
                     <div class="list-group panel" style="background-color: #EEEEEE">
                         <div ng-if="IsProductTypeDataReady" ng-repeat="ProductType in ProductTypes">
                             <a href="#{{ProductType.ProductTypeCode}}" class="list-group-item list-group-item-success" 
@@ -127,7 +127,7 @@
                             </center>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="container">
@@ -494,9 +494,11 @@
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTee4bgz7iWRFTldB3upIjbv0YYUqSP8o"></script>
+ <!--   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTee4bgz7iWRFTldB3upIjbv0YYUqSP8o"></script>
     <script src="https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit"
-  async defer></script>
+  async defer></script>-->
+  <script src="/scripts/map-google.js"></script>
+  <script src="/scripts/recaptcha.js"></script>
     <script src="/scripts/app.js"></script>
     <script src="/scripts/controllers/main-controller.js"></script>
     <script src="/scripts/controllers/header-controller.js"></script>
