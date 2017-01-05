@@ -966,37 +966,7 @@ router.post(mongodbConfig.url.product.updateProduct, function (req, res) {
     var updateDate = new Date ();
     updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
     Product.UpdateDate = updateDate;
- /*   db.collection(mongodbConfig.mongodb.product.name)
-        .update({
-                _id: o_id
-            }, {
-                $set: {
-                    'ProductNameTh': Product.ProductNameTh,
-                    'ProductNameEn': Product.ProductNameEn,
-                    'ProductNameCn': Product.ProductNameCn,
-                    'Quantity': Product.Quantity,
-                    'CostPrice': Product.CostPrice,
-                    'ProductCategoryCode': Product.ProductCategoryCode,
-                    'UomCode': Product.UomCode,
-                    'ContainUomCode': Product.ContainUomCode,
-                    'WholesalePrice': Product.WholesalePrice,
-                    'SpecialPrice': Product.SpecialPrice,
-                    'ContainCostPrice': Product.ContainCostPrice,
-                    'IsHot' : Product.IsHot,
-                    'IsDeactive' : Product.IsDeactive,
-                    'ContainWholesalePrice': Product.ContainWholesalePrice,
-                    'ContainSpecialPrice': Product.ContainSpecialPrice,
-                    'ContainQuantity': Product.ContainQuantity,
-                    'UpdateBy' : Product.UpdateBy,
-                    'UpdateDate': Product.UpdateDate
-                }
-            },
-            function (error, result) {
-                if (error) throw error
-                console.log(result.ProductNameEn);
-                res.json(result);
-            });
-*/
+ 
     var UpdateProductPromise = function() {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.product.name)

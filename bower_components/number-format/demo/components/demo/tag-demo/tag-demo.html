@@ -1,0 +1,61 @@
+<link rel="import" href="../../../components/polymer/polymer.html">
+<polymer-element name="tag-demo" attributes="element attrs input">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      .element-start, .element-end {
+        font-family: "Courier New";
+        font-size: 20px;
+        color: #777;
+      }
+      .element-content {
+        text-align: center;
+        border: 0;
+        background-color: transparent;
+        outline: none;
+        font-family: "Courier New";
+        font-size: 20px;
+        width: 150px;
+        font-weight: bold;
+      }
+      .element-content:focus {
+        background-color: #B3BBE7;
+      }
+      .element-output {
+        width: 30%;
+        font-size: 50px;
+        margin: 30px auto;
+      }
+    </style>
+
+    <div>
+      <span class="element-start">{{tagOpen}}</span>
+      <input class="element-content" type="text" value="{{input}}" maxlength="15">
+      <span class="element-end">{{tagClose}}</span>
+    </div>
+
+    <div class="element-output"><div id="o"></div></div>
+
+  </template>
+  <script>
+    Polymer('tag-demo', {
+      ready: function() {
+
+        this.tagOpen = (this.attrs) ? '<'+this.element+' '+this.attrs+'>' : '<'+this.element+'>';
+        this.tagClose = '</'+this.element+'>';
+
+        this.$.o.innerHTML = this.tagOpen + this.input + this.tagClose;
+
+      },
+      observe: {
+        'input': 'modelUpdated'
+      },
+      modelUpdated: function(oldValue, newValue) {
+        var value = Path.get('input').getValueFrom(this);
+        this.$.o.innerHTML = this.tagOpen + value + this.tagClose;
+      }
+    });
+  </script>
+</polymer-element>

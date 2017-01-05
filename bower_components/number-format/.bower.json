@@ -1,0 +1,33 @@
+{
+  "name": "number-format",
+  "description": "A custom element that uses the library Accounting.js",
+  "license": "MIT",
+  "main": "src/number-format.html",
+  "keywords": [
+    "web-components",
+    "accountingjs",
+    "accounting",
+    "custom elements",
+    "number",
+    "format",
+    "number-format"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "platform": "Polymer/platform#~0.3.3"
+  },
+  "homepage": "https://github.com/obetomuniz/number-format",
+  "_release": "801885d700",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "801885d700d3a4c2e4f5021fc7a4e3b016e2d5c9"
+  },
+  "_source": "https://github.com/obetomuniz/number-format.git",
+  "_target": "*",
+  "_originalSource": "number-format"
+}

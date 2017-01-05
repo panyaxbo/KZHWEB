@@ -1,0 +1,38 @@
+{
+  "name": "layzr.js",
+  "version": "1.4.3",
+  "description": "A small, fast, modern, and dependency-free library for lazy loading.",
+  "homepage": "http://callmecavs.github.io/layzr.js/",
+  "main": [
+    "dist/layzr.js"
+  ],
+  "author": [
+    "Michael Cavalea <callmecavs@gmail.com>"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/callmecavs/layzr.js.git"
+  },
+  "keywords": [
+    "images",
+    "lazy",
+    "load",
+    "scroll"
+  ],
+  "ignore": [
+    "**/.*",
+    "README.md",
+    "gulpfile.js",
+    "package.json"
+  ],
+  "_release": "1.4.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.4.3",
+    "commit": "5266f94cc345620c19680c82c72f0d4d33ea77c4"
+  },
+  "_source": "https://github.com/callmecavs/layzr.js.git",
+  "_target": "~1.4.3",
+  "_originalSource": "layzr.js"
+}

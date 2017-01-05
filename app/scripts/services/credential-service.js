@@ -1,5 +1,5 @@
 "use strict";
-app.service("CredentialService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
+app.service("CredentialService", ["$q", "$http", "ENV", "$timeout", function ($q, $http, ENV, $timeout) {
     return {
     	LoadOAuth: function() {
     		var defer = $q.defer();
@@ -18,8 +18,10 @@ app.service("CredentialService", ["$q", "$http", "ENV", function ($q, $http, ENV
     		var compnyaURL = ENV.apiEndpoint + "/companies/LoadCompany";
 		    $http.get(compnyaURL)
 		    .success(function (data, status) {
-		    
-		    	defer.resolve(data);
+		    	$timeout(function() {
+		    		defer.resolve(data);
+		    	}, 30000)
+		    	
 		    })
 		    .error(function (error, status) {
 			      console.log('cannot load company');

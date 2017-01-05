@@ -17,7 +17,7 @@ router.get('/LoadCompany', function(req, res) {
                 console.log(err, err.stack.split("\n"));
                 res.status(500).send('err occur when load company ');
             } else {
-                console.log(company)
+      //          console.log(company)
                 res.json(company); 
         }
     });

@@ -255,8 +255,19 @@
   padding: 0;
   text-shadow: 0px 1px 0 #a2a2a2;
   
-  &-top {
-    color: #e7711b;
+}
+.star-ratings-css-top {
+    unicode-bidi: bidi-override;
+  color: #c5c5c5;
+  font-size: 25px;
+  height: 25px;
+  width: 100px;
+  margin: 0 auto;
+  position: relative;
+  padding: 0;
+  text-shadow: 0px 1px 0 #a2a2a2;
+
+color: #e7711b;
     padding: 0;
     position: absolute;
     z-index: 1;
@@ -264,12 +275,21 @@
     top: 0;
     left: 0;
     overflow: hidden;
-  }
-  &-bottom {
+}
+..star-ratings-css-bottom {
+unicode-bidi: bidi-override;
+  color: #c5c5c5;
+  font-size: 25px;
+  height: 25px;
+  width: 100px;
+  margin: 0 auto;
+  position: relative;
+  padding: 0;
+  text-shadow: 0px 1px 0 #a2a2a2;
+
     padding: 0;
     display: block;
     z-index: 0;
-  }
 }
 
 .google-map-container { 

@@ -1,0 +1,24 @@
+{
+  "name": "number-format",
+  "version": "1.0.1",
+  "description": "A custom element that uses the library Accounting.js",
+  "license": "MIT",
+  "main": "src/number-format.html",
+  "keywords": [
+    "web-components",
+    "accountingjs",
+    "accounting",
+    "custom elements",
+    "number",
+    "format",
+    "number-format"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "platform": "Polymer/platform#~0.3.3"
+  }
+}

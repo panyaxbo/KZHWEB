@@ -30,6 +30,8 @@ var modRewrite = require('connect-modrewrite');
   // Project configuration.
   var pkg = require('./package.json');
 
+  var aws_ed2_pkg = require('./aws-ec2.json');
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 

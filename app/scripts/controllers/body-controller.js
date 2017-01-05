@@ -217,28 +217,31 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     $scope.bigCurrentPage = 1;
 
 
-    ProductService.LoadProduct()
-    .then(function(data, status) {
+    $timeout(function() {
+        ProductService.LoadProduct()
+        .then(function(data, status) {
 
-        $scope.Products = data;
-        $scope.totalItems = $scope.Products.length;
-        $scope.bigTotalItems = $scope.Products.length;
+            $scope.Products = data;
+            $scope.totalItems = $scope.Products.length;
+            $scope.bigTotalItems = $scope.Products.length;
 
-        $scope.IsProductDataReady = true;
-        document.getElementById('ProductDataReady').style.display = 'block';
-        document.getElementById('ProductDataNotReady').style.display = 'none';
+            $scope.IsProductDataReady = true;
+            document.getElementById('ProductDataReady').style.display = 'block';
+            document.getElementById('ProductDataNotReady').style.display = 'none';
 
-        if ($scope.SelectedLocale === 'th') {
-          (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
-        } else if ($scope.SelectedLocale === 'us') {
-          (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
-        } else if ($scope.SelectedLocale === 'cn') {
-          (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
-        }
-    }, function (err, status) {
+            if ($scope.SelectedLocale === 'th') {
+              (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
+            } else if ($scope.SelectedLocale === 'us') {
+              (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
+            } else if ($scope.SelectedLocale === 'cn') {
+              (document.getElementsByTagName("title"))[0].text = $filter('translate')('TITLE.NAME');
+            }
+        }, function (err, status) {
 
-    });
- 
+        });
+    }, 30000);
+   
+
     $scope.setPage = function (pageNo) {
         $scope.currentPage = pageNo;
     };
