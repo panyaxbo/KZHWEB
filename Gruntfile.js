@@ -11,6 +11,9 @@ module.exports = function (grunt) {
 
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
+  grunt.loadNpmTasks('grunt-ng-constant');
+  grunt.loadNpmTasks('grunt-angular-templates');
+  grunt.loadNpmTasks('grunt-autoprefixer');
 var modRewrite = require('connect-modrewrite');
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
@@ -29,8 +32,6 @@ var modRewrite = require('connect-modrewrite');
 
   // Project configuration.
   var pkg = require('./package.json');
-
-  var aws_ed2_pkg = require('./aws-ec2.json');
 
   // Define the configuration for all the tasks
   grunt.initConfig({
@@ -775,7 +776,6 @@ var modRewrite = require('connect-modrewrite');
         wrap: '"use strict";\n\n {%= __ngModule %}',
         name : 'CONFIG'
       },
-      // Environment targets
       development: {
         options :{
           dest: '<%= yeoman.app %>/scripts/constants/constants.js'
@@ -805,7 +805,7 @@ var modRewrite = require('connect-modrewrite');
         constants: {
           ENV: {
             name: 'production',
-            apiEndpoint: 'https://www.kzhparts.com'
+            apiEndpoint: 'https://kzh-parts.herokuapp.com'
           }
         }
       }

@@ -1,11 +1,6 @@
 "use strict";
 app.config(function($routeProvider, $locationProvider) {
-  if (window.history && window.history.pushState) {
-    $locationProvider.html5Mode({
-        enabled: true,
-        requireBase: false
-    });
-  }
+ 
   $routeProvider
       .when('/', {
         templateUrl: '/views/main.html'
@@ -179,4 +174,6 @@ app.config(function($routeProvider, $locationProvider) {
       .otherwise({
         redirectTo: '/404'
       });
+      $locationProvider.html5Mode(true);
+  $locationProvider.hashPrefix('!');
 });

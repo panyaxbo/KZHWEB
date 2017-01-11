@@ -53,7 +53,7 @@ router.post('/uploadProductCategoryImage/:ProductCategoryId/:ProductCategoryCode
   var ProductCategoryId = req.params.ProductCategoryId;
   var ProductCategoryCode = req.params.ProductCategoryCode;
   var Username = req.params.Username;
-  var o_id = bson.BSONPure.ObjectID(ProductCategoryId);
+  var o_id = bson.BSONPure.ObjectID(ProductCategoryId.toString());
   var gfs = grid(db, mongodb);
 
   var updateDate = new Date ();
@@ -274,7 +274,7 @@ router.get("/downloadProductImageShop/:ProductId/:ProductCode",  function (req, 
   var ProductId = req.params.ProductId;
   var ProductCode = req.params.ProductCode;
   var gfs = grid(db, mongodb);
-  var o_id = bson.BSONPure.ObjectID(ProductId);
+  var o_id = ObjectID(ProductId);
 
   var ProductId = req.params.ProductId;
   var ProductCode = req.params.ProductCode;

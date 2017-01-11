@@ -1,5 +1,5 @@
 var express = require('express');
-var $ = require('jquery')(require("jsdom").jsdom().parentWindow);
+//var $ = require('jquery')(require("jsdom").jsdom().parentWindow);
 var router = express.Router();
 var Q = require('q');
 
@@ -56,6 +56,7 @@ router.get('/in', function (req, res, next) {
 });
 
 //$.inArray(value, array)
+/*
 router.get('/array', function (req, res) {
 	db.collection(mongodbConfig.mongodb.promotion.name)
         .find({})
@@ -77,7 +78,7 @@ router.get('/array', function (req, res) {
             }
         });
 })
-
+*/
 
 router.get('/LoadAllPromotion', function(req, res, next) {
 /*	db.collection(mongodbConfig.mongodb.promotion.name)

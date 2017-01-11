@@ -35,7 +35,7 @@ router.get(mongodbConfig.url.user.loadAllUser, function (req, res) {
     });
 });
 
-router.get(mongodbConfig.url.user.loadAppUserById, function (req, res) {
+router.get('/LoadAppUserById/:AppUserId', function (req, res) {
     var loadAppUserByIdPromise = function() {
         var defer = Q.defer();
         console.log('user.js -> /users ');
@@ -206,11 +206,11 @@ router.get('/FindByUsernameAndPassword/:Email/:Password', function (req, res) {
     //        AppUser.Role = data;
     //        console.log('after one user', AppUser);
             console.timeEnd('find user log in');
-            res.json(AppUser); 
+            res.status(200).json(AppUser); 
     //    }
     }, function(err, status) {
         console.log(err, err.stack.split("\n"));
-        res.status(500).send('error occur ', err.stack.split("\n"));
+        res.status(500).json({ error: 'err occur when delete' });
     });
 /*
     db.collection(mongodbConfig.mongodb.user.name)
