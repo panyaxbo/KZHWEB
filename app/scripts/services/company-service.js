@@ -1,5 +1,5 @@
 "use strict";
-app.service("CompanyService", function () {
+app.service("CompanyService", () => {
     this.Company = {};
 
     return {

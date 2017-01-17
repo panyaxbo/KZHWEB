@@ -1,42 +1,42 @@
 "use strict";
-app.service("GeolocationService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
+app.service("GeolocationService", ["$q", "$http", "ENV", ($q, $http, ENV) => {
 	return {
-		GetAddressFromGeolocation: function(lat, long) {
+		GetAddressFromGeolocation: (lat, long) => {
 			var defer = $q.defer();
     		var addressUrl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + long + '&key=AIzaSyDTee4bgz7iWRFTldB3upIjbv0YYUqSP8o';
             console.log(addressUrl);
             $http.get(addressUrl)
-            .success(function (results) {
+            .success((results) => {
                 console.log(results);
                 defer.resolve(results);
             })
-            .error(function (err) {
+            .error((err) => {
                 defer.reject(err);
             });
 	        return defer.promise;
 		},
-        GetFullAddress: function(results) {
+        GetFullAddress: (results) => {
             return results.results[0].formatted_address;
         },
-        GetProvince: function(results) {
+        GetProvince: (results) => {
             return results.results[0].address_components[3].long_name;
         },
-        GetDistrict: function(results) {
+        GetDistrict: (results) => {
             return results.esults[0].address_components[2].long_name;
         },
-        GetSubDistrict: function(results) {
+        GetSubDistrict: (results) => {
             return results.results[0].address_components[1].long_name;
         },
-        GetStreet: function(results) {
+        GetStreet: (results) => {
             return results.results[0].address_components[0].long_name;
         },
-        GetZipCode: function(results) {
+        GetZipCode: (results) => {
             return results.results[0].address_components[5].long_name;
         },
-        GetCountry: function(results) {
+        GetCountry: (results) => {
             return results.results[0].address_components[4].long_name;
         },
-        GetCountryShortname: function(results) {
+        GetCountryShortname: (results) => {
             return results.results[0].address_components[4].short_name;
         }
 	}

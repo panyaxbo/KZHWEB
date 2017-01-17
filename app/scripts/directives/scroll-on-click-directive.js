@@ -1,10 +1,10 @@
 "use strict";
-app.directive('scrollOnClick', function() {
+app.directive('scrollOnClick', () => {
   return {
     restrict: 'A',
-    link: function(scope, $elm, attrs) {
+    link: (scope, $elm, attrs) => {
       var idToScroll = attrs.href;
-      $elm.on('click', function() {
+      $elm.on('click', () => {
         var $target;
         if (idToScroll) {
           $target = $(idToScroll);

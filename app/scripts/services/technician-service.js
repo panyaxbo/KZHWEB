@@ -1,28 +1,28 @@
 "use strict";
-app.service("TechnicianService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
+app.service("TechnicianService", ["$q", "$http", "ENV", ($q, $http, ENV) => {
     return {
     	
-        LoadTechnicians: function() {
+        LoadTechnicians: () => {
             var defer = $q.defer();
             var url = ENV.apiEndpoint + "/technicians/LoadTechnicians";
             $http.get(url)
-            .success(function (technicians) {
+            .success((technicians) => {
                 console.log(' ser ', technicians);
                 defer.resolve(technicians);
             })
-            .error(function (err) {
+            .error((err) => {
                 defer.reject(err);
             });
             return defer.promise; 
         },
-        LoadTechnicianById: function(technicianId) {
+        LoadTechnicianById: (technicianId) => {
             var defer = $q.defer();
             var url = ENV.apiEndpoint + "/technicians/LoadTechnicianById/" + technicianId;
             $http.get(url)
-            .success(function (technician) {
+            .success((technician) => {
                 defer.resolve(technician);
             })
-            .error(function (err) {
+            .error((err) => {
                 defer.reject(err);
             });
             return defer.promise; 

@@ -42,6 +42,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         Subject : '',
         Message : ''
     }
+    $scope.ShopProductDetail = {};
     $scope.FirstPage = 1;
     $scope.LastPage = 0;
     $scope.NumberPerPage = 50;
@@ -98,7 +99,6 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
     $scope.SubDistricts = [];
     $scope.PaymentBank = false;
     $scope.PaymentType= "";
-
     $scope.Paypal = {};
     $scope.$on('handlePaypalBroadcast', function (event, args) {
         $scope.Paypal = args.Paypal;
@@ -474,14 +474,14 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         $("#div-product-type-table").hide("slow");
         $("#div-product-type-detail").show("slow");
     }
-    $scope.ConsiderDeleteProductType = function (mode, data) {
+    $scope.ConsiderDeleteProductType = (mode, data) => {
         if (mode === 'search') {
             $scope.DeleteProductType(data);
         } else if (mode === 'edit') {
             $scope.DeleteProductType($scope.ViewProductTypeData);
         }
     }
-    $scope.DeleteProductType = function (ProductTypeData) {
+    $scope.DeleteProductType = (ProductTypeData) => {
         swal({
           title: "Are you sure?",
           text: "คุณต้องการลบรายการชนิดสินค้า " + ProductTypeData.ProductTypeCode + " !",
@@ -509,34 +509,34 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
           }
         });
     }
-    $scope.CancelProductType = function () {
+    $scope.CancelProductType = () => {
         $scope.SearchProductType();
 
         $("#div-product-type-table").show("slow");
         $("#div-product-type-detail").hide("slow");
     }
-    $scope.$watch('ProductTypeCreateDate', function (newValue) {
+    $scope.$watch('ProductTypeCreateDate', (newValue) => {
         $scope.ViewProductTypeData.CreateDate = $filter('date')(newValue, 'dd/MM/yyyy HH:mm'); // Or whatever format your real model should use
     });
 
-    $scope.$watch('ViewProductTypeData.CreateDate', function (newValue) {
+    $scope.$watch('ViewProductTypeData.CreateDate', (newValue) => {
         $scope.ProductTypeCreateDate = $filter('date')(newValue, 'dd/MM/yyyy HH:mm'); // Or whatever format your input should use
     });
-    $scope.$watch('ProductTypeUpdateDate', function (newValue) {
+    $scope.$watch('ProductTypeUpdateDate', (newValue) => {
         $scope.ViewProductTypeData.UpdateDate = $filter('date')(newValue, 'dd/MM/yyyy HH:mm'); // Or whatever format your real model should use
     });
 
-    $scope.$watch('ViewProductTypeData.UpdateDate', function (newValue) {
+    $scope.$watch('ViewProductTypeData.UpdateDate', (newValue) => {
         $scope.ProductTypeUpdateDate = $filter('date')(newValue, 'dd/MM/yyyy HH:mm'); // Or whatever format your input should use
     });
-    $scope.SaveProductType = function () {
+    $scope.SaveProductType = () => {
         if ($scope.ViewProductTypeData._id == '' || $scope.ViewProductTypeData._id == undefined) {
             $scope.CreateProductType();
         } else if ($scope.ViewProductTypeData._id != '') {
             $scope.UpdateProductType();
         }
     }
-    $scope.CreateProductType = function () {
+    $scope.CreateProductType = () => {
         swal({
           title: "Are you sure?",
           text: "คุณต้องการสร้างรายการ ชนิดสินค้า " + $scope.ViewProductTypeData.ProductTypeNameTh + " ใช่ หรือ ไม่?",
@@ -548,7 +548,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
           closeOnConfirm: false,
           closeOnCancel: false
         },
-        function(isConfirm){
+        (isConfirm) => {
           if (isConfirm) {
             var NewProductTypeCode = "";
             var GenCodeURL = ENV.apiEndpoint + "/appconfig/GetNewCode/PT";
@@ -577,8 +577,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
           }
         });
     }
-    $scope.UpdateProductType = function () {
-     
+    $scope.UpdateProductType = () => {
         swal({
           title: "Are you sure?",
           text: "คุณต้องการแก้ไขรายการ ชนิดสินค้า " + $scope.ViewProductTypeData.ProductTypeNameTh + " ใช่ หรือ ไม่?",
@@ -590,7 +589,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
           closeOnConfirm: false,
           closeOnCancel: false
         },
-        function(isConfirm){
+        (isConfirm) => {
           if (isConfirm) {
             var url = ENV.apiEndpoint +  "/product_types/UpdateProductType/";
             $scope.ViewProductTypeData.UpdateBy = $scope.User.Username;
@@ -1233,7 +1232,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
         }
     }
 
-    $scope.LoadProductImageByProductCode = function(refId, id, code) {
+    $scope.LoadProductImageByProductCode = (refId, id, code) => {
         var downloadUrl = ENV.apiEndpoint + '/aws/downloadProductImageShop/' + id + '/' + code;
         $http.get(downloadUrl)
         .success(function (data, status, headers, config) {
@@ -1250,22 +1249,21 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             if (status === 404) {
                 document.getElementById('ImageDataReady_'+code).style.display = 'none';
             }
-        
         });
     }
-    $scope.CheckPromotionIsExpire = function(expireDate) {
+
+    $scope.CheckPromotionIsExpire = (expireDate) => {
         if (Date.parse(expireDate) > new Date()) {
             return true;
         } else if (Date.parse(expireDate) <= new Date()) {
             return false;
         }
     }
-    $scope.SearchPromotion = function () {
+    $scope.SearchPromotion = () => {
         var url = ENV.apiEndpoint + "/promotions/LoadAllPromotion";
         $http.get(url)
         .success(function (data) {
                 $scope.SearchPromotions = data;
-
                 $scope.PromotionTableParams = new ngTableParams({
                     page: 1,            // show first page
                     count: 10           // count per page
@@ -1281,11 +1279,9 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
             });
         $("#div-promotion-table").show("slow");
         $("#div-promotion-detail").hide("slow");
-
     }
     
-    
-    $scope.SearchPromotionProduct = function() {
+    $scope.SearchPromotionProduct = () => {
         var load_product_url = ENV.apiEndpoint + "/products/LoadProduct";
         $('#SelectProductPromotionList').select2({ 
             ajax: {
@@ -1310,7 +1306,7 @@ app.controller('BodyController', [ "$scope", "$location", "$window", "$timeout",
          console.log(item);
         return item.ProductNameTh; 
     };
-    $scope.NewPromotion = function () {
+    $scope.NewPromotion = () => {
         $scope.ViewPromotionData = {
             PromotionCode : "",
             PMDate : new Date(),

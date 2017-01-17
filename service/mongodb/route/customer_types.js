@@ -2,17 +2,17 @@ var express = require('express');
 var router = express.Router();
 var Q = require('q');
 /* GET users listing. */
-router.get(mongodbConfig.url.customer_type.home, function (req, res, next) {
+router.get(mongodbConfig.url.customer_type.home, (req, res, next) => {
     res.send('respond with a resource');
 });
 
-router.get(mongodbConfig.url.customer_type.loadAllCustomerType, function (req, res) {
+router.get(mongodbConfig.url.customer_type.loadAllCustomerType, (req, res) => {
     console.log('customertypes.js');
-    var loadCustomerTypePromise = function() {
+    var loadCustomerTypePromise = () => {
         var defer = Q.defer();
-        db.collection(mongodbConfig.mongodb.customer_type.name)
+        db.collection('CustomerType')
             .find()
-            .toArray(function (err, items) {
+            .toArray((err, items) => {
                 if (err) {
                     defer.reject(err);
                 } else {
@@ -21,24 +21,23 @@ router.get(mongodbConfig.url.customer_type.loadAllCustomerType, function (req, r
             });
         return defer.promise;
     }
-    loadCustomerTypePromise().then(function(data, status) {
+    loadCustomerTypePromise()
+    .then((data, status) => {
         if(!data) {
-            res.status(404).send('Not found ');
-            return;
+            res.status(404).json('Not found ');
         } else {
-            res.json(data); 
+            res.status(200).json(data); 
         }
-    }, function(err, status) {
+    }, (err, status) => {
         console.log(err, err.stack.split("\n"));
         res.status(500).status(err.stack.split("\n"));
-        return;
     });
 });
 
-router.get(mongodbConfig.url.customer_type.loadCustomerTypeByObjId, function (req, res) {
+router.get(mongodbConfig.url.customer_type.loadCustomerTypeByObjId, (req, res) => {
     console.log("type id " + req.params.CustomerTypeId);
     var TypeId = req.params.CustomerTypeId;
-    var o_id = bson.BSONPure.ObjectID(TypeId.toString());
+    var o_id = ObjectID(TypeId.toString());
  /*   db.collection(mongodbConfig.mongodb.customer_type.name)
         .findOne({
             '_id': o_id
@@ -51,12 +50,12 @@ router.get(mongodbConfig.url.customer_type.loadCustomerTypeByObjId, function (re
             
         });
         */
-    var loadCustomerTypeByObjIdPromise = function() {
+    var loadCustomerTypeByObjIdPromise = () => {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.customer_type.name)
             .findOne({
                 '_id': o_id
-            }, function (err, doc) {
+            }, (err, doc) => {
                 if (err) {
                     defer.reject(err);
                 } else {
@@ -65,19 +64,20 @@ router.get(mongodbConfig.url.customer_type.loadCustomerTypeByObjId, function (re
             });
         return defer.promise;
     }
-    loadCustomerTypeByObjIdPromise().then(function(data, status) {
+    loadCustomerTypeByObjIdPromise()
+    .then((data, status) => {
         if(!data) {
-            res.status(404).send('not found customer type ');
+            res.status(404).json('not found customer type ');
         } else {
-            res.json(data); 
+            res.status(200).json(data); 
         }
-    }, function(err, status) {
+    }, (err, status) => {
         console.log(err, err.stack.split("\n"));
         res.status(500).send('error occur ');
     });
 });
 
-router.get(mongodbConfig.url.customer_type.loadCustomerTypeyById, function (req, res) {
+router.get(mongodbConfig.url.customer_type.loadCustomerTypeyById, (req, res) => {
     console.log("type id " + req.params.CustomerTypeId);
     var customerTypeId = req.params.CustomerTypeId;
 
@@ -87,29 +87,33 @@ router.get(mongodbConfig.url.customer_type.loadCustomerTypeyById, function (req,
     db.collection(mongodbConfig.mongodb.customer_type.name)
         .find(query)
         .toArray(function (err, items) {
-            if (err) console.log(err, err.stack.split("\n"));
-            res.json(items);
+            if (err) {
+                console.log(err, err.stack.split("\n"));
+                res.status(500).send('error occur ');
+            } else {
+                res.status(200).json(items); 
+            }
         });
 });
 
-router.get(mongodbConfig.url.customer_type.loadCustomerTypeByCustomerTypeCode, function (req, res) {
+router.get(mongodbConfig.url.customer_type.loadCustomerTypeByCustomerTypeCode, (req, res) => {
     console.log('customertypes.js');
     var CustomerTypeCode = req.params.CustomerTypeCode;
     db.collection(config.mongodb.customer_type.name)
         .find({
             'CustomerTypeCode': CustomerTypeCode
         })
-        .toArray(function (err, items) {
+        .toArray((err, items) => {
             console.log(items);
             res.json(items);
         });
-    var loadCustomerTypeByCustomerTypeCodePromise = function() {
+    var loadCustomerTypeByCustomerTypeCodePromise = () => {
         var defer = Q.defer();
         db.collection(config.mongodb.customer_type.name)
         .find({
             'CustomerTypeCode': CustomerTypeCode
         })
-        .toArray(function (err, items) {
+        .toArray((err, items) => {
             if (err) {
                 defer.reject(err);
             } else {
@@ -119,22 +123,21 @@ router.get(mongodbConfig.url.customer_type.loadCustomerTypeByCustomerTypeCode, f
         return defer.promise;
     }
 
-    loadCustomerTypeByCustomerTypeCodePromise().then(function(data, status) {
+    loadCustomerTypeByCustomerTypeCodePromise()
+    .then((data, status) => {
         if(!data) {
-            res.sendStatus(404);
-            return;
+            res.status(404).json('data not found');
         } else {
-            res.json(data); 
+            res.status(200).json(data); 
         }
-    }, function(err,  status) {
+    }, (err,  status) => {
         console.log(err, err.stack.split("\n"));
-        res.sendStatus(500);
-        return;
+        res.status(500).send('error occur ');
     });
 });
 
 // Create Customer Type
-router.post(mongodbConfig.url.customer_type.createCustomerType, function (req, res) {
+router.post(mongodbConfig.url.customer_type.createCustomerType, (req, res) => {
     var CustomerType = req.body;
     console.log('create customer type ' + CustomerType);
     var createDate = new Date ();
@@ -149,11 +152,10 @@ router.post(mongodbConfig.url.customer_type.createCustomerType, function (req, r
                 res.json(result);
             });
 */
-    var createCustomerTypePromise = function() {
+    var createCustomerTypePromise = () => {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.customer_type.name)
-        .insert(CustomerType,
-            function (err, result) {
+        .insert(CustomerType, (err, result) => {
                 if (err) {
                     defer.reject(err);
                 } else {
@@ -162,20 +164,20 @@ router.post(mongodbConfig.url.customer_type.createCustomerType, function (req, r
             });
         return defer.promise;
     }
-    createCustomerTypePromise().then(function(data, status) {
-        res.json(data);
-    }, function (err, status) {
+    createCustomerTypePromise()
+    .then((data, status) => {
+        res.status(200).json(data);
+    }, (err, status) => {
         console.log(err, err.stack.split("\n"));
-        res.sendStatus(500);
-        return;
+        res.status(500).json('error occur ');
     })
 });
 
 // Update Customer Type
-router.post(mongodbConfig.url.customer_type.updateCustomerType, function (req, res) {
+router.post(mongodbConfig.url.customer_type.updateCustomerType, (req, res) => {
     console.log('Update customer type 1 ' + req.body);
     var CustomerType = req.body;
-    var o_id = bson.BSONPure.ObjectID(CustomerType._id.toString());
+    var o_id = ObjectID(CustomerType._id.toString());
     var updateDate = new Date ();
     updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
     
@@ -191,13 +193,12 @@ router.post(mongodbConfig.url.customer_type.updateCustomerType, function (req, r
                     'UpdateBy' : CustomerType.UpdateBy,
                     'UpdateDate' : updateDate
                 }
-            },
-            function (err, result) {
+            }, (err, result) => {
                 if (err) console.log(err, err.stack.split("\n"));
                 console.log(result.CustomerTypeNameEn);
                 res.json(result);
             });
-    var updateCustomerTypePromise = function() {
+    var updateCustomerTypePromise = () => {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.customer_type.name)
         .update({
@@ -211,8 +212,7 @@ router.post(mongodbConfig.url.customer_type.updateCustomerType, function (req, r
                     'UpdateBy' : CustomerType.UpdateBy,
                     'UpdateDate' : updateDate
                 }
-            },
-            function (err, result) {
+            }, (err, result) => {
                 if (err) {
                     defer.reject(err);
                 } else {
@@ -221,26 +221,28 @@ router.post(mongodbConfig.url.customer_type.updateCustomerType, function (req, r
             });
         return defer.promise;
     }
-    updateCustomerTypePromise().then(function(data, status) {
-        res.json(data);
-    }, function(err, status) {
+    updateCustomerTypePromise().then((data, status) => {
+        res.status(200).json(data);
+    }, (err, status) => {
         console.log(err, err.stack.split("\n"));
-        res.sendStatus(500);
-        return;
+        res.status(500).json('error occur ');
     })
 });
 
 // Delete Customer Type
-router.get(mongodbConfig.url.customer_type.deleteCustomerTypeByCustomerTypeId, function (req, res) {
+router.get(mongodbConfig.url.customer_type.deleteCustomerTypeByCustomerTypeId, (req, res) => {
     var CustomerTypeId = req.params.CustomerTypeId;
     console.log('create customer type ' + CustomerTypeId);
-    var o_id = bson.BSONPure.ObjectID(CustomerTypeId.toString());
+    var o_id = ObjectID(CustomerTypeId.toString());
     db.collection(mongodbConfig.mongodb.customer_type.name)
         .remove({
             _id: o_id
         }, function (err, result) {
-            if (err) console.log(err, err.stack.split("\n"));
-            res.json(result);
+            if (err) {
+                res.status(500).json('error occur ');
+            } else {
+                res.status(200).json(result);
+            }
         });
 });
 

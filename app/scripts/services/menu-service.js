@@ -1,5 +1,5 @@
 "use strict";
-app.service("MenuService", function () {
+app.service("MenuService", () => {
     return {
         Menu: {
             SelectedMenu: "product"

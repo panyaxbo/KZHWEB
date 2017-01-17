@@ -3,23 +3,26 @@ var router = express.Router();
 var Q = require('q');
 
 // Create Subscribe
-router.post('/CreateSubscribe', function (req, res) {
+router.post('/CreateSubscribe', (req, res) => {
     var Subscribe = req.body;
     var subscribeDate = new Date ();
     subscribeDate.setHours ( subscribeDate.getHours() + 7 );// GMT Bangkok +7
     Subscribe.SubscribeDate = subscribeDate;
 
     db.collection('Subscriber')
-        .insert(Subscribe,
-            function (error, result) {
-                if (error) throw error
-                res.json(result);
-            });
+        .insert(Subscribe, (err, result) => {
+            if (err) {
+                console.log('1',err, err.stack.split("\n"));
+                res.status(500).send('error occur ');
+            } else {
+                res.status(200).json(result);
+            }
+        });
 });
 
-router.post('/CheckExistEmailSubscribe', function(req, res) {
+router.post('/CheckExistEmailSubscribe', (req, res) => {
     var Subscribe = req.body;
-    var findExistEmailSubscribe = function () {
+    var findExistEmailSubscribe = () => {
         var defer = Q.defer();
         db.collection('Subscriber')
             .findOne({
@@ -35,14 +38,14 @@ router.post('/CheckExistEmailSubscribe', function(req, res) {
     }
 
     findExistEmailSubscribe()
-    .then(function(data, status) {
+    .then((data, status) => {
         console.log('found subscriber ?', data);
         if (!data) {
             return false;
         } else {
             return true;
         }
-    }, function(err, status) {
+    }, (err, status) => {
         console.log(err);
     })
 });

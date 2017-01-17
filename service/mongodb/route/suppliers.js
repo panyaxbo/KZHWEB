@@ -2,23 +2,27 @@ var express = require('express');
 var router = express.Router();
 
 /* GET users listing. */
-router.get(mongodbConfig.url.supplier.home, function (req, res, next) {
+router.get(mongodbConfig.url.supplier.home, (req, res, next) => {
     res.send('respond with a resource');
 });
 
 /* GET users listing. */
-router.get(mongodbConfig.url.supplier.loadAllSupplier, function (req, res) {
+router.get(mongodbConfig.url.supplier.loadAllSupplier, (req, res) => {
     db.collection(mongodbConfig.mongodb.supplier.name)
         .find({})
         .limit(100)
         .toArray(function (err, items) {
-            if (err) throw err;
-            res.json(items);
+            if (err) {
+                console.log('1',err, err.stack.split("\n"));
+                res.status(500).send('error occur ');
+            } else {
+                res.status(200).json(items);
+            }
         });
 });
 
 // Create Supplier
-router.post(mongodbConfig.url.supplier.createSupplier, function (req, res) {
+router.post(mongodbConfig.url.supplier.createSupplier, (req, res) => {
     var Supplier = req.body;
     console.log('create supplier ' + Supplier);
     var createDate = new Date ();
@@ -26,18 +30,21 @@ router.post(mongodbConfig.url.supplier.createSupplier, function (req, res) {
     Supplier.CreateDate = createDate;
     Supplier.UpdateDate = createDate;
     db.collection(mongodbConfig.mongodb.supplier.name)
-        .insert(Product,
-            function (error, result) {
-                if (error) throw error
-                res.json(result);
-            });
+        .insert(Product, (error, result) => {
+            if (err) {
+                console.log('1',err, err.stack.split("\n"));
+                res.status(500).send('error occur ');
+            } else {
+                res.status(200).json(result);
+            }
+        });
 });
 
 // Update Supplier
-router.post(mongodbConfig.url.supplier.updateSupplier, function (req, res) {
+router.post(mongodbConfig.url.supplier.updateSupplier, (req, res) => {
     console.log('Update supplier ' + req.body);
     var Supplier = req.body;
-    var o_id = bson.BSONPure.ObjectID(Supplier._id.toString());
+    var o_id = ObjectID(Supplier._id.toString());
     var updateDate = new Date ();
     updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
     db.collection(mongodbConfig.mongodb.supplier.name)
@@ -56,26 +63,31 @@ router.post(mongodbConfig.url.supplier.updateSupplier, function (req, res) {
                     'UpdateBy': Supplier.UpdateBy,
                     'UpdateDate': updateDate
                 }
-            },
-            function (error, result) {
-                if (error) throw error
-                console.log(result.SupplierNameEn);
-                res.json(result);
+            }, (err, result) => {
+                if (err) {
+                    console.log('1',err, err.stack.split("\n"));
+                    res.status(500).send('error occur ');
+                } else {
+                    res.status(200).json(result);
+                }
             });
 });
 
 // Delete Supplier 
-router.get(mongodbConfig.url.supplier.deleteSupplierBySupplierId, function (req, res) {
+router.get(mongodbConfig.url.supplier.deleteSupplierBySupplierId, (req, res) => {
     var SupplierId = req.params.SupplierId;
     console.log('create supplier ' + SupplierId);
-    var o_id = bson.BSONPure.ObjectID(SupplierId.toString());
+    var o_id = ObjectID(SupplierId.toString());
     db.collection(mongodbConfig.mongodb.supplier.name)
         .remove({
             _id: o_id
-        }, function (error, result) {
-            if (error) throw error
-
-            res.json(result);
+        }, (err, result) => {
+            if (err) {
+                console.log('1',err, err.stack.split("\n"));
+                res.status(500).send('error occur ');
+            } else {
+                res.status(200).json(result);
+            }
         });
 });
 module.exports = router;

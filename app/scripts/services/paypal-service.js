@@ -1,22 +1,22 @@
 "use strict";
-app.service("PaypalService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
+app.service("PaypalService", ["$q", "$http", "ENV", ($q, $http, ENV) => {
     return {
-    	GetPayWithPaypal: function() {
+    	GetPayWithPaypal: () => {
     		var defer = $q.defer();
     		var paypalUrl = ENV.apiEndpoint + "/paypal/paypalCreate/" ;
             $http.get(paypalUrl)
-            .success(function (newcode) {
+            .success((newcode) => {
                 defer.resolve(newcode);
             })
-            .error(function (err) {
+            .error((err) => {
                 defer.reject(err);
             });
 	        return defer.promise;
     	},
-        PaypalCheckout: function() {
+        PaypalCheckout: () => {
             
         },
-        PaypalDummyCheckout: function() {
+        PaypalDummyCheckout: () => {
             
         }
     };

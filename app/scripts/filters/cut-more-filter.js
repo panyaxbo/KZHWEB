@@ -1,6 +1,6 @@
 "use strict";
-app.filter('limitText', function () {
-    return function (value, wordwise, max, tail) {
+app.filter('limitText', () => {
+    return (value, wordwise, max, tail) => {
         if (!value) return '';
 
         max = parseInt(max, 10);

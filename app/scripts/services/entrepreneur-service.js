@@ -1,17 +1,17 @@
 "use strict";
-app.service("EntrepreneurService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
+app.service("EntrepreneurService", ["$q", "$http", "ENV", ($q, $http, ENV) => {
     return {
-    	CreateSubscribe: function(Email) {
+    	CreateSubscribe: (Email) => {
     		var defer = $q.defer();
             var SubscribeObj = {
                 Email: Email
             }
     		var subscribeUrl = ENV.apiEndpoint + '/subscribes/CreateSubscribe/';
             $http.post(subscribeUrl, SubscribeObj)
-            .success(function (data, status) {
+            .success((data, status) => {
                 defer.resolve(data);
             })
-            .error(function (err, status) {
+            .error((err, status) => {
                 defer.reject(err);
             });
 	        return defer.promise;

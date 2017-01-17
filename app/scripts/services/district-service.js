@@ -1,14 +1,14 @@
 "use strict";
-app.service("DistrictService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
+app.service("DistrictService", ["$q", "$http", "ENV", ($q, $http, ENV) => {
     return {
-    	LoadDistrictByProvince: function(ProvinceId) {
+    	LoadDistrictByProvince: (ProvinceId) => {
     		var defer = $q.defer();
     		var url = ENV.apiEndpoint + "/districts/LoadDistrictByProvinceId/"+  ProvinceId;
             $http.get(url)
-            .success(function (districts) {
+            .success((districts) => {
                 defer.resolve(districts);
             })
-            .error(function (err) {
+            .error((err) => {
                 defer.reject(err);
             });
 	        return defer.promise;

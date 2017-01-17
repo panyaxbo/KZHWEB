@@ -85,16 +85,19 @@
                     ng-model="currentPage" boundary-links="true" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" class="pagination" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
                         </div>
                         <div class="row">
-                            <div class="col-xs-12 col-sm-6 col-md-3 text-center" ng-repeat="p in Products.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage))">
+                            <div class="col-xs-12 col-sm-6 col-md-3 text-center"
+                            ng-repeat="p in Products.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage))">
                                 <div class="product-detail">
                                     <div class="product-gallery-footer">
                                         <div class="thumbnailProductImage" style="height:200px; width:200px">
-                                            <img src="/images/no-image.png" class="img-responsive" ng-show="p.ProductImageRefId.length <= 0 || p.ProductImageRefId === undefined">
+                                            <img src="/images/no-image.png" ng-click="SelectShopProductDetail(p._id)" class="img-responsive" ng-show="p.ProductImageRefId.length <= 0 || p.ProductImageRefId === undefined">
                                             <div class="label-hot animated infinite pulse" ng-show="p.IsHot"> {{'BODY.SECTION.PRODUCT.LABEL_HOT' | translate}}</div>
                                             <span class="sale animated infinite pulse" ng-show="p.IsHot">
                                                 <img src="/images/sale.png" width="70" height="70">
                                             </span>
-                                            <div id="ThumbnailProductImage_{{p.ProductCode}}" ng-init="LoadProductImageByProductCode(p.ProductImageRefId, p._id, p.ProductCode)" class="img-container" >
+                                            <div id="ThumbnailProductImage_{{p.ProductCode}}" ng-click="SelectShopProductDetail(p._id)"
+                                            ng-init="LoadProductImageByProductCode(p.ProductImageRefId, p._id, p.ProductCode)" 
+                                            class="img-container" >
                                                 <div ng-if="p.ImageDataReady">
                                                     <div class="label_product_new" ng-show="p.IsNew">{{'BODY.SECTION.PRODUCT.LABEL_NEW' | translate}}</div>
                                                     <div style="position:absolute;" ng-show="p.IsNew">

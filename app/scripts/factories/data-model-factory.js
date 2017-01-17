@@ -1,7 +1,6 @@
 "use strict";
 
-app.factory('DataModelFactory', ['$q', '$http', 'ENV', 
-    function ($q, $http, ENV) {
+app.factory('DataModelFactory', ['$q', '$http', 'ENV', ($q, $http, ENV) => {
     var DataModel =  {
         user :{},
         company :{},
@@ -10,34 +9,34 @@ app.factory('DataModelFactory', ['$q', '$http', 'ENV',
 
     };
 
-    DataModel.setUser = function (data) {
+    DataModel.setUser = (data) => {
         DataModel.user = data;
     };
 
-    DataModel.getUser = function () {
+    DataModel.getUser = () => {
         return DataModel.user;
     };
 
-    DataModel.setCompany = function (data) {
+    DataModel.setCompany = (data) => {
         DataModel.company = data;
     };
 
-    DataModel.getCompany = function() {
+    DataModel.getCompany = () => {
         return DataModel.company;
     }
     
-    DataModel.setBrowserKey = function (data) {
+    DataModel.setBrowserKey = (data) => {
          DataModel.browser_key = data;
     };
 
-    DataModel.getBrowserKey = function() {
+    DataModel.getBrowserKey = () => {
         return DataModel.browser_key;
     }
-    DataModel.setReceipt = function (data) {
+    DataModel.setReceipt = (data) => {
          DataModel.receipt = data;
     };
 
-    DataModel.getReceipt = function() {
+    DataModel.getReceipt = () => {
         return DataModel.receipt;
     }
     return DataModel;

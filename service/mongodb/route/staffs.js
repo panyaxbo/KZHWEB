@@ -2,69 +2,72 @@ var express = require('express');
 var router = express.Router();
 
 /* Test HOME Staff*/
-router.get(mongodbConfig.url.staff.home, function (req, res, next) {
+router.get(mongodbConfig.url.staff.home, (req, res, next) => {
     res.send('staffs HOME ');
 });
 
-router.get(mongodbConfig.url.staff.loadAllStaff, function (req, res) {
+router.get(mongodbConfig.url.staff.loadAllStaff, (req, res) => {
     console.log('staff load all');
     db.collection(mongodbConfig.mongodb.staff.name)
         .find({})
-        .toArray(function (err, items) {
+        .toArray((err, items) => {
             console.log(items);
             res.json(items);
         });
 });
 
-router.get(mongodbConfig.url.staff.loadStaffById, function (req, res) {
+router.get(mongodbConfig.url.staff.loadStaffById, (req, res) => {
     var StaffId = req.params.StaffId;
     console.log('staff find by id ' + StaffId);
     db.collection(mongodbConfig.mongodb.staff.name)
         .find({
             'Id': StaffId
         })
-        .toArray(function (err, items) {
+        .toArray((err, items) => {
             console.log(items);
             res.json(items);
         });
 });
 
-router.get(mongodbConfig.url.staff.loadStaffByObjId, function (req, res) {
+router.get(mongodbConfig.url.staff.loadStaffByObjId, (req, res) => {
     console.log("staff id " + req.params.StaffId);
     var Id = req.params.StaffId;
-    var o_id = bson.BSONPure.ObjectID(Id.toString());
+    var o_id = ObjectID(Id.toString());
     db.collection(mongodbConfig.mongodb.staff.name)
         .findOne({
             '_id': o_id
-        }, function (err, staff) {
+        }, (err, staff) => {
             if (err) {
-                console.log(err);
-                //       callback(err);
+                console.log('1',err, err.stack.split("\n"));
+                res.status(500).send('error occur ');
             } else {
-                // call your callback with no error and the data
                 console.log(staff);
-                //     callback(null, doc);
-                res.json(staff);
+                res.status(200).json(staff);
             }
         });
 });
 
 /* GET users listing. */
-router.get(mongodbConfig.url.staff.loadStaffByStaffCode, function (req, res) {
+router.get(mongodbConfig.url.staff.loadStaffByStaffCode, (req, res) => {
     console.log('staff.js ->  FindStaffByStaffCode ');
     var StaffCode = req.params.StaffCode;
     db.collection(mongodbConfig.mongodb.staff.name)
         .find({
             'StaffCode': StaffCode
         })
-        .toArray(function (err, items) {
-            console.log(items);
-            res.json(items);
+        .toArray((err, items) => {
+            if (err) {
+                console.log('1',err, err.stack.split("\n"));
+                res.status(500).send('error occur ');
+            } else {
+                res.status(200).json(items);
+            }
+
         });
 });
 
 // Create Staff
-router.post(mongodbConfig.url.staff.createStaff, function (req, res) {
+router.post(mongodbConfig.url.staff.createStaff, (req, res) => {
     var Staff = req.body;
     console.log('create staff ' + Staff);
     var createDate = new Date ();
@@ -72,20 +75,23 @@ router.post(mongodbConfig.url.staff.createStaff, function (req, res) {
     Staff.CreateDate = createDate;
     Staff.UpdateDate = createDate;
     db.collection(mongodbConfig.mongodb.staff.name)
-        .insert(Staff,
-            function (error, staff) {
-                if (error) throw error
-                res.json(staff);
-            });
+    .insert(Staff, (err, staff) => {
+        if (err) {
+            console.log('1',err, err.stack.split("\n"));
+            res.status(500).send('error occur ');
+        } else {
+            res.status(200).json(staff);
+        }
+    });
 });
 
 // Update Staff
-router.post(mongodbConfig.url.staff.updateStaff, function (req, res) {
+router.post(mongodbConfig.url.staff.updateStaff, (req, res) => {
     console.log('update staff ' + req.body);
     var Staff = req.body;
 
     var id = Staff._id;
-    var o_id = bson.BSONPure.ObjectID(id.toString());
+    var o_id = ObjectID(id.toString());
     var updateDate = new Date ();
     updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
     Staff.UpdateDate = updateDate;
@@ -110,25 +116,31 @@ router.post(mongodbConfig.url.staff.updateStaff, function (req, res) {
                     'UpdateBy' : Staff.UpdateBy,
                     'UpdateDate' : updateDate
                 }
-            },
-            function (error, staff) {
-                if (error) throw error
-                res.json(staff);
+            }, (err, staff) => {
+                if (err) {
+                    console.log('1',err, err.stack.split("\n"));
+                    res.status(500).send('error occur ');
+                } else {
+                    res.status(200).json(staff);
+                }
             });
 });
 
 // Delete Staff
-router.get(mongodbConfig.url.staff.deleteStaffByStaffId, function (req, res) {
+router.get(mongodbConfig.url.staff.deleteStaffByStaffId, (req, res) => {
     var StaffId = req.params.StaffId;
     console.log('create staff ' + StaffId);
-    var o_id = bson.BSONPure.ObjectID(StaffId.toString());
+    var o_id = ObjectID(StaffId.toString());
     db.collection(mongodbConfig.mongodb.staff.name)
         .remove({
             _id: o_id
-        }, function (error, staff) {
-            if (error) throw error
-
-            res.json(staff);
+        }, (err, staff) => {
+            if (err) {
+                console.log('1',err, err.stack.split("\n"));
+                res.status(500).send('error occur ');
+            } else {
+                res.status(200).json(staff);
+            }
         });
 });
 

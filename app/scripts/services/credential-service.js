@@ -1,67 +1,67 @@
 "use strict";
-app.service("CredentialService", ["$q", "$http", "ENV", "$timeout", function ($q, $http, ENV, $timeout) {
+app.service("CredentialService", ["$q", "$http", "ENV", "$timeout", ($q, $http, ENV, $timeout) => {
     return {
-    	LoadOAuth: function() {
+    	LoadOAuth: () => {
     		var defer = $q.defer();
 			var oauthURL = ENV.apiEndpoint + "/oauths/GetPublicKey";
 		    $http.get(oauthURL)
-		    .success(function(data, status) {
+		    .success((data, status) => {
 		    	  defer.resolve(data);
 		    })
-		    .error(function(error, status) {
+		    .error((error, status) => {
 		    	  defer.reject(error);
 		    });
 	        return defer.promise;
     	},
-    	LoadCompany: function() {
+    	LoadCompany: () => {
     		var defer = $q.defer();
     		var compnyaURL = ENV.apiEndpoint + "/companies/LoadCompany";
 		    $http.get(compnyaURL)
-		    .success(function (data, status) {
-		    	$timeout(function() {
+		    .success((data, status) => {
+		    	$timeout(() => {
 		    		defer.resolve(data);
 		    	}, 30000)
 		    	
 		    })
-		    .error(function (error, status) {
+		    .error((error, status) => {
 			      console.log('cannot load company');
 			      defer.reject(error);
 		    });
 		    return defer.promise;
     	},
-    	LoadPaypal: function() {
+    	LoadPaypal: () => {
     		var defer = $q.defer();
     		var paypalUrl = ENV.apiEndpoint + "/paypal/GetPaypalInformation";
 		    $http.get(paypalUrl)
-		    .success(function(data, status) {
+		    .success((data, status) => {
 		    	defer.resolve(data);
 		    })
-		    .error(function (error, status) {
+		    .error((error, status) => {
 		    	defer.reject(error);
 		    });
 		    return defer.promise;
     	},
-    	LoadRecaptcha:function() {
+    	LoadRecaptcha: () => {
     		var defer = $q.defer();
     		var recaptchaURL = ENV.apiEndpoint + "/recaptchas/GetRecaptchaKey";
 		    $http.get(recaptchaURL)
-		    .success(function(data, status) {
+		    .success((data, status) => {
 		    
 		      	defer.resolve(data);
 		    })
-		    .error(function(error, status) {
+		    .error((error, status) => {
 		    	defer.reject(error);
 		    });
     		return defer.promise;
     	},
-    	LoadBrowserAPIKey:function() {
+    	LoadBrowserAPIKey: () => {
     		var defer = $q.defer();
     		var keyURL = ENV.apiEndpoint + "/companies/LoadBrowserAPIKey";
 		    $http.get(keyURL)
-		    .success(function(data, status) {
+		    .success((data, status) => {
 		      	defer.resolve(data);
 		    })
-		    .error(function(error, status) {
+		    .error((error, status) => {
 		    	defer.reject(error);
 		    });
     		return defer.promise;

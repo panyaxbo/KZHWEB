@@ -2,23 +2,17 @@ var express = require('express');
 var router = express.Router();
 var Q = require('q');
 
-router.get(mongodbConfig.url.receipt.home, function (req, res) {
+router.get(mongodbConfig.url.receipt.home, (req, res) => {
     
 });
 
-router.get(mongodbConfig.url.receipt.loadAllReceipt, function (req, res) {
+router.get(mongodbConfig.url.receipt.loadAllReceipt, (req, res) => {
     console.log('load rohead');
- /*   db.collection(mongodbConfig.mongodb.rohead.name)
-        .find()
-        .toArray(function (err, roheads) {
-            console.log(roheads);
-            res.json(roheads);
-        });*/
-    var loadAllReceiptPromise = function() {
+    var loadAllReceiptPromise = () => {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.rohead.name)
             .find()
-            .toArray(function (err, roheads) {
+            .toArray((err, roheads) => {
                 if (err) {
                     defer.reject(err);
                 } else {
@@ -27,14 +21,15 @@ router.get(mongodbConfig.url.receipt.loadAllReceipt, function (req, res) {
             });
         return defer.promise;
     }
-    loadAllReceiptPromise().then(function(data, status) {
+    loadAllReceiptPromise()
+    .then((data, status) => {
         if(!data) {
             res.sendStatus(404);
             return;
         } else {
             res.json(data); 
         }
-    }, function(err, status) {
+    }, (err, status) => {
         console.log(err, err.stack.split("\n"));
         res.sendStatus(500);
         return;
@@ -42,18 +37,17 @@ router.get(mongodbConfig.url.receipt.loadAllReceipt, function (req, res) {
 });
 
 // Load ROHead by HeadId
-router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, res) {
+router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, (req, res) => {
     console.log('Receipt id ' + req.params.ROHeadId);
     var ROHeadId = req.params.ROHeadId;
-    var BSON = mongodb.BSONPure;
-    var o_id = bson.BSONPure.ObjectID(ROHeadId);
+    var o_id = ObjectID(ROHeadId);
     var ROHead = {};
-    var loadROHeadROLineByROHeadIdPromise = function() {
+    var loadROHeadROLineByROHeadIdPromise = () => {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.rohead.name)
         .findOne({
             '_id': o_id
-        }, function (err, ROHead) {
+        }, (err, ROHead) => {
             if (err) {
                 console.log(err, err.stack.split("\n"));
                 defer.reject(err);
@@ -63,14 +57,14 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
         });
         return defer.promise;
     }
-    var LoadROLineListPromise = function(ROHeadId) {
+    var LoadROLineListPromise = (ROHeadId) => {
         var defer = Q.defer();
-        var obj_id = bson.BSONPure.ObjectID(ROHeadId);
+        var obj_id = ObjectID(ROHeadId);
         db.collection(mongodbConfig.mongodb.roline.name)
             .find({
                 'ROHeadId': obj_id
             })
-            .toArray(function (err, ROLineList) {
+            .toArray((err, ROLineList) => {
               if (err) {
                 console.log(err, err.stack.split("\n"));
                 defer.reject(err);
@@ -82,13 +76,13 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
         });
         return defer.promise;
     }
-    var LoadBillingProvincePromise = function(BillingProvinceId) {
+    var LoadBillingProvincePromise = (BillingProvinceId) => {
         var defer = Q.defer();
-        var province_id = bson.BSONPure.ObjectID(BillingProvinceId);
+        var province_id = ObjectID(BillingProvinceId);
         db.collection(mongodbConfig.mongodb.province.name)
             .findOne({
                 '_id': province_id
-            }, function (err, Province) {
+            }, (err, Province) => {
               if (err) {
                 console.log(err, err.stack.split("\n"));
                 defer.reject(err);
@@ -100,13 +94,13 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
         });
         return defer.promise;
     }
-    var LoadBillingDistrictPromise = function(BillingDistrictId) {
+    var LoadBillingDistrictPromise = (BillingDistrictId) => {
         var defer = Q.defer();
-        var district_id = bson.BSONPure.ObjectID(BillingDistrictId);
+        var district_id = ObjectID(BillingDistrictId);
         db.collection(mongodbConfig.mongodb.district.name)
             .findOne({
                 '_id': district_id
-            }, function (err, District) {
+            }, (err, District) => {
               if (err) {
                 console.log(err, err.stack.split("\n"));
                 defer.reject(err);
@@ -118,13 +112,13 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
         });
         return defer.promise;
     }
-    var LoadBillingSubDistrictPromise = function(BillingSubDistrictId) {
+    var LoadBillingSubDistrictPromise = (BillingSubDistrictId) => {
         var defer = Q.defer();
-        var subdistrict_id = bson.BSONPure.ObjectID(BillingSubDistrictId);
+        var subdistrict_id = ObjectID(BillingSubDistrictId);
         db.collection(mongodbConfig.mongodb.subdistrict.name)
             .findOne({
                 '_id': subdistrict_id
-            }, function (err, SubDistrict) {
+            }, (err, SubDistrict) => {
               if (err) {
                 console.log(err, err.stack.split("\n"));
                 defer.reject(err);
@@ -136,13 +130,13 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
         });
         return defer.promise;
     }
-    var LoadReceiptProvincePromise = function(ReceiptProvinceId) {
+    var LoadReceiptProvincePromise = (ReceiptProvinceId) => {
         var defer = Q.defer();
-        var province_id = bson.BSONPure.ObjectID(ReceiptProvinceId);
+        var province_id = ObjectID(ReceiptProvinceId);
         db.collection(mongodbConfig.mongodb.province.name)
             .findOne({
                 '_id': province_id
-            }, function (err, Province) {
+            }, (err, Province) =>  {
               if ( !err) {
                 defer.resolve(Province);
               }
@@ -153,13 +147,13 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
         });
         return defer.promise;
     }
-    var LoadReceiptDistrictPromise = function(ReceiptDistrictId) {
+    var LoadReceiptDistrictPromise = (ReceiptDistrictId) => {
         var defer = Q.defer();
-        var district_id = bson.BSONPure.ObjectID(ReceiptDistrictId);
+        var district_id = ObjectID(ReceiptDistrictId);
         db.collection(mongodbConfig.mongodb.district.name)
             .findOne({
                 '_id': district_id
-            }, function (err, District) {
+            }, (err, District) => {
               if (!err) {
                 defer.resolve(District);
             }
@@ -170,13 +164,13 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
         });
         return defer.promise;
     }
-    var LoadReceiptSubDistrictPromise = function(ReceiptSubDistrictId) {
+    var LoadReceiptSubDistrictPromise = (ReceiptSubDistrictId) => {
         var defer = Q.defer();
-        var subdistrict_id = bson.BSONPure.ObjectID(ReceiptSubDistrictId);
+        var subdistrict_id = ObjectID(ReceiptSubDistrictId);
         db.collection(mongodbConfig.mongodb.subdistrict.name)
             .findOne({
                 '_id': subdistrict_id
-            }, function (err, SubDistrict) {
+            }, (err, SubDistrict) => {
             if (!err) {
                 defer.resolve(SubDistrict);
             }
@@ -188,64 +182,59 @@ router.get(mongodbConfig.url.receipt.loadROHeadROLineByROHeadId, function (req, 
         return defer.promise;
     }
     loadROHeadROLineByROHeadIdPromise()
-    .then(function(Receipt, status) {
+    .then((Receipt, status) => {
         ROHead = Receipt;
         return LoadROLineListPromise(ROHead._id);
-    }, function(err, status) {
+    }, (err, status) => {
 
     })
-    .then(function(ROLineList, status) {
+    .then((ROLineList, status) => {
         ROHead.ROLineList = ROLineList;
         return LoadBillingProvincePromise(ROHead.BillingProvinceId);
-    }, function(err, status) {
+    }, (err, status) => {
         console.log('err bill rolinelist');
     })
-    .then(function(BillingProvince, status) {
+    .then((BillingProvince, status) => {
         ROHead.BillingProvince = BillingProvince;
         return LoadBillingDistrictPromise(ROHead.BillingDistrictId);
-    }, function(err, status) {
+    }, (err, status) => {
         console.log(err, err.stack.split("\n"));
 
     })
-    .then(function(BillingDistrict, status) {
+    .then((BillingDistrict, status) => {
         ROHead.BillingDistrict = BillingDistrict;
         return LoadBillingSubDistrictPromise(ROHead.BillingSubDistrictId);
-    }, function(err, status) {
+    }, (err, status) => {
         console.log(err, err.stack.split("\n"));
         console.log('err bill district');
     })
-    .then(function(BillingSubDistrict, status) {
+    .then((BillingSubDistrict, status) => {
         ROHead.BillingSubDistrict = BillingSubDistrict;
         res.json(ROHead);
-    },function(err, status) {
+    }, (err, status) => {
         console.log(err, err.stack.split("\n"));
         console.log('err bill sub district');
     });
 });
 
 // Create ROHead & ROLine
-router.post(mongodbConfig.url.receipt.createReceipt, function (req, res) {
+router.post(mongodbConfig.url.receipt.createReceipt, (req, res) => {
     var ROHead = req.body;
     var ROLineList = ROHead.ROLineList;
 
-    ROHead.UserId = bson.BSONPure.ObjectID(ROHead.UserId);
+    ROHead.UserId = ObjectID(ROHead.UserId);
 
-    ROHead.BillingProvinceId = bson.BSONPure.ObjectID(ROHead.BillingProvinceId);
-    ROHead.BillingDistrictId = bson.BSONPure.ObjectID(ROHead.BillingDistrictId);
-    ROHead.BillingSubDistrictId = bson.BSONPure.ObjectID(ROHead.BillingSubDistrictId);
-
- //   ROHead.ReceiptProvinceId = bson.BSONPure.ObjectID(ROHead.ReceiptProvinceId);
- //   ROHead.ReceiptDistrictId = bson.BSONPure.ObjectID(ROHead.ReceiptDistrictId);
- //   ROHead.ReceiptSubDistrictId = bson.BSONPure.ObjectID(ROHead.ReceiptSubDistrictId);
+    ROHead.BillingProvinceId = ObjectID(ROHead.BillingProvinceId);
+    ROHead.BillingDistrictId = ObjectID(ROHead.BillingDistrictId);
+    ROHead.BillingSubDistrictId = ObjectID(ROHead.BillingSubDistrictId);
 
     var curDate = new Date ();
     curDate.setHours ( curDate.getHours() + 7 );// GMT Bangkok +7
     ROHead.RODate = curDate; 
-    var CreateROLine = function (roline, callback) {
+    var CreateROLine = (roline, callback) => {
         delete roline.Uoms;
         db.collection(mongodbConfig.mongodb.roline.name)
-        .insert(roline,
-            function (error, created_roline) {
+        .insert(roline, (error, created_roline) => {
                 if (error) { 
                     console.log(error, error.stack.split("\n"));
                 } else {
@@ -255,8 +244,7 @@ router.post(mongodbConfig.url.receipt.createReceipt, function (req, res) {
     }
     delete ROHead.ROLineList;
     db.collection(mongodbConfig.mongodb.rohead.name)
-        .insert(ROHead,
-            function (error, rohead) {
+        .insert(ROHead, (error, rohead) => {
                 if (error) {
                     console.log(error, error.stack.split("\n"));
                 }
@@ -264,8 +252,8 @@ router.post(mongodbConfig.url.receipt.createReceipt, function (req, res) {
                 var CreateROLineList = [];
                 for (var i = 0; i < ROLineList.length; i++) {
                     var roline = ROLineList[i];
-                    roline.ROHeadId = bson.BSONPure.ObjectID(ROHead._id);
-                    CreateROLine(roline, function (err, created_roline) {
+                    roline.ROHeadId = ObjectID(ROHead._id);
+                    CreateROLine(roline, (err, created_roline) => {
                         if (err) {
                             console.log(err, err.stack.split("\n"));
                         } else {
@@ -281,11 +269,10 @@ router.post(mongodbConfig.url.receipt.createReceipt, function (req, res) {
                     });
                 }
             });
-    var CreateROHeadPromise = function() {
+    var CreateROHeadPromise = () => {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.rohead.name)
-        .insert(ROHead,
-            function (err, rohead) {
+        .insert(ROHead, (err, rohead) => {
                 if (err) {
                     defer.reject(err);
                 } else {
@@ -294,14 +281,13 @@ router.post(mongodbConfig.url.receipt.createReceipt, function (req, res) {
             });
         return defer.promise;
     }
-    var CreateROLinePromise = function(ROLineList) {
+    var CreateROLinePromise = (ROLineList) => {
         var defer = Q.defer();
         var promises = [];
-        ROLineList.forEach(function (roLine) {
+        ROLineList.forEach((roLine) => {
             delete roline.Uoms;
             db.collection(mongodbConfig.mongodb.roline.name)
-            .insert(roline,
-                function (err, created_roline) {
+            .insert(roline, (err, created_roline) => {
                     if (err) { 
                         defer.reject(err);
                     } else {
@@ -315,25 +301,12 @@ router.post(mongodbConfig.url.receipt.createReceipt, function (req, res) {
 });
 
 // Update ROHead
-router.post(mongodbConfig.url.receipt.updateReceipt, function (req, res) {
+router.post(mongodbConfig.url.receipt.updateReceipt, (req, res) => {
     console.log('update ro-head ' + req.body);
     var ROHead = req.body;
-    var o_id = bson.BSONPure.ObjectID(ROHead._id);
-/*    db.collection(mongodbConfig.mongodb.rohead.name)
-        .update({
-                _id: o_id
-            }, {
-                $set: 
-                {
-                    'RONo' : ROHead.RONo,
-                }
-            },
-            function (error, roHead) {
-                if (error) throw error
-                res.json(roHead);
-            });
-*/
-    var UpdateReceiptPromise = function() {
+    var o_id = ObjectID(ROHead._id);
+
+    var UpdateReceiptPromise = () => {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.rohead.name)
         .update({
@@ -343,20 +316,18 @@ router.post(mongodbConfig.url.receipt.updateReceipt, function (req, res) {
                 {
                     'RONo' : ROHead.RONo,
                 }
-            },
-            function (err, roHead) {
+            }, (err, roHead) => {
                 if (err) {
                     defer.reject(err);
                 } else {
                     defer.resolve(roHead);
                 }
-            //    res.json(roHead);
             });
         return defer.promise;
     }
-    UpdateReceiptPromise().then(function(data, status) {
+    UpdateReceiptPromise().then((data, status) => {
         res.json(roHead);
-    }, function(err, status) {
+    }, (err, status) => {
         console.log(err, err.stack.split("\n"));
         res.sendStatus(500);
         return;
@@ -364,21 +335,21 @@ router.post(mongodbConfig.url.receipt.updateReceipt, function (req, res) {
 });
 
 // Delete ROHead
-router.get(mongodbConfig.url.receipt.deleteReceiptByROHeadId, function (req, res) {
+router.get(mongodbConfig.url.receipt.deleteReceiptByROHeadId, (req, res) => {
     var ROHeadId = req.params.ROHeadId;
-    var o_id = bson.BSONPure.ObjectID(RoleId);
+    var o_id = ObjectID(RoleId);
     db.collection(mongodbConfig.mongodb.rohead.name)
         .remove({
             _id: o_id
-        }, function (error, role) {
+        }, (error, role) => {
             if (error) throw error
             res.json(role);
         });
 });
 
 // Load History ROHead by UserId
-router.get(mongodbConfig.url.receipt.loadROHeadByUserIdAndStatus, function (req, res) {
-    var userId = bson.BSONPure.ObjectID(req.params.UserId);
+router.get(mongodbConfig.url.receipt.loadROHeadByUserIdAndStatus, (req, res) => {
+    var userId = ObjectID(req.params.UserId);
     var paymentStatus = req.params.PaymentStatus;
     var shippingStatus = req.params.ShippingStatus;
     var StartDate =("0" + Number(req.params.StartDate)).slice(-2);
@@ -401,7 +372,7 @@ router.get(mongodbConfig.url.receipt.loadROHeadByUserIdAndStatus, function (req,
             ShippingStatus: shippingStatus,
             UserId: userId
         })
-        .toArray(function (err, roheads) {
+        .toArray( (err, roheads) => {
             if (err) {
                 console.log(err, err.stack.split("\n"));
             }
@@ -409,7 +380,7 @@ router.get(mongodbConfig.url.receipt.loadROHeadByUserIdAndStatus, function (req,
             res.json(roheads);
         });
 */
-    var loadROHeadByUserIdAndStatusPromise = function() {
+    var loadROHeadByUserIdAndStatusPromise = () => {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.rohead.name)
             .find({
@@ -423,7 +394,7 @@ router.get(mongodbConfig.url.receipt.loadROHeadByUserIdAndStatus, function (req,
                 ShippingStatus: shippingStatus,
                 UserId: userId
             })
-            .toArray(function (err, roheads) {
+            .toArray((err, roheads) => {
                 if (err) {
                     defer.reject(err);
                 } else {
@@ -432,9 +403,10 @@ router.get(mongodbConfig.url.receipt.loadROHeadByUserIdAndStatus, function (req,
             });
         return defer.promise;
     }
-    loadROHeadByUserIdAndStatusPromise().then(function(roheads, status) {
+    loadROHeadByUserIdAndStatusPromise()
+    .then((roheads, status) => {
         res.json(roheads);
-    }, function(err, status) {
+    }, (err, status) => {
         console.log(err, err.stack.split("\n"));
         res.sendStatus(500);
         return;
@@ -442,14 +414,14 @@ router.get(mongodbConfig.url.receipt.loadROHeadByUserIdAndStatus, function (req,
 });
 
 // Load Customer Order from Staff
-router.get(mongodbConfig.url.receipt.loadROHeadByStaff, function (req, res) {
+router.get(mongodbConfig.url.receipt.loadROHeadByStaff, (req, res) => {
     var roNo =  req.params.RONo;
     var name =  req.params.CustomerName;
     var userId = '';
     if (name === '$') {
         userId = '';
     } else {
-        userId = bson.BSONPure.ObjectID(req.params.CustomerName);
+        userId = ObjectID(req.params.CustomerName);
     }
     var paymentStatus = req.params.PaymentStatus;
     var shippingStatus = req.params.ShippingStatus;
@@ -489,7 +461,7 @@ router.get(mongodbConfig.url.receipt.loadROHeadByStaff, function (req, res) {
 /*
     db.collection(mongodbConfig.mongodb.rohead.name)
             .find(query)
-            .toArray(function (err, roheads) {
+            .toArray( (err, roheads) => {
                 if (err) {
                     console.log(err, err.stack.split("\n"));
                 }
@@ -497,11 +469,11 @@ router.get(mongodbConfig.url.receipt.loadROHeadByStaff, function (req, res) {
                 res.json(roheads);
             });
             */
-    var LoadROHeadByStaffPromise = function() {
+    var LoadROHeadByStaffPromise = () => {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.rohead.name)
             .find(query)
-            .toArray(function (err, roheads) {
+            .toArray((err, roheads) => {
                 if (err) {
                     defer.reject(err);
                 } else {
@@ -512,14 +484,15 @@ router.get(mongodbConfig.url.receipt.loadROHeadByStaff, function (req, res) {
             });
         return defer.promise;
     }
-    LoadROHeadByStaffPromise().then(function(roheads, status) {
+    LoadROHeadByStaffPromise()
+    .then((roheads, status) => {
         res.json(roheads);
-    }, function(err, status) {
+    }, (err, status) => {
         console.log(err, err.stack.split("\n"));
     })
 });
 
-router.get('/ApprovePayment/:RONo', function(req, res) {
+router.get('/ApprovePayment/:RONo', (req, res) => {
     var RONo = req.params.RONo;
   /*  db.collection(mongodbConfig.mongodb.rohead.name)
         .update({
@@ -530,8 +503,7 @@ router.get('/ApprovePayment/:RONo', function(req, res) {
                     PaymentStatus : 'Y',
                     StaffApprovePaymentStatus : 'Y'
                 }
-            },
-            function (err, result) {
+            }, (err, result) => {
                 if (err) {
                     console.log(err, err.stack.split("\n"));
                     res.sendStatus(500);
@@ -539,7 +511,7 @@ router.get('/ApprovePayment/:RONo', function(req, res) {
                 }
                 res.sendStatus(200);
     });*/
-    var ApprovePaymentPromise = function() {
+    var ApprovePaymentPromise = () => {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.rohead.name)
             .update({
@@ -550,8 +522,7 @@ router.get('/ApprovePayment/:RONo', function(req, res) {
                         PaymentStatus : 'Y',
                         StaffApprovePaymentStatus : 'Y'
                     }
-                },
-                function (err, result) {
+                }, (err, result) => {
                     if (err) {
                         defer.reject(err);
                     } else {
@@ -560,12 +531,13 @@ router.get('/ApprovePayment/:RONo', function(req, res) {
             });
         return defer.promise;
     }
-    ApprovePaymentPromise().then(function(data, status) {
+    ApprovePaymentPromise().then((data, status) => {
         res.sendStatus(200);
-    }, function(err, status) {
+    }, (err, status) => {
         console.log(err, err.stack.split("\n"));
         res.sendStatus(500);
         return;
     });
 });
+
 module.exports = router;

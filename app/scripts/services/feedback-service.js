@@ -1,7 +1,7 @@
 "use strict";
-app.service("FeedbackService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
+app.service("FeedbackService", ["$q", "$http", "ENV", ($q, $http, ENV) => {
     return {
-    	CreateFeedback: function(Name, Email, Subject, Message) {
+    	CreateFeedback: (Name, Email, Subject, Message) => {
     		var defer = $q.defer();
             var FeedbackObj = {
                 Name : Name,
@@ -11,10 +11,10 @@ app.service("FeedbackService", ["$q", "$http", "ENV", function ($q, $http, ENV) 
             }
     		var feedbackUrl = ENV.apiEndpoint + '/feedbacks/CreateFeedback/';
             $http.post(feedbackUrl, FeedbackObj)
-            .success(function (data, status) {
+            .success((data, status) => {
                 defer.resolve(data);
             })
-            .error(function (err, status) {
+            .error((err, status) => {
                 defer.reject(err);
             });
 	        return defer.promise;

@@ -3,9 +3,9 @@ var router = express.Router();
 var Q = require('q');
 
 /* GET users listing. */
-router.get('/GetDefaultWeightRate/:Weight', function (req, res, next) {
+router.get('/GetDefaultWeightRate/:Weight', (req, res, next) => {
     var rate = parseInt(req.params.Weight);
-    var GetWeightRatePromise = function() {
+    var GetWeightRatePromise = () => {
     	var defer = Q.defer();
         db.collection('WeightRate')
             .findOne({
@@ -16,7 +16,7 @@ router.get('/GetDefaultWeightRate/:Weight', function (req, res, next) {
 			    MaxRate: {
 			        $gte: rate
 			    }
-            }, function (err, result) {
+            }, (err, result) => {
             if (err) {
             	console.log(err, err.stack.split("\n"));
                 defer.reject(err);
@@ -28,7 +28,7 @@ router.get('/GetDefaultWeightRate/:Weight', function (req, res, next) {
         return defer.promise;
     }
 
-    GetWeightRatePromise().then(function(rate, status) {
+    GetWeightRatePromise().then((rate, status) => {
     	if (!rate) {
     		res.SendStatus(404);
     	} else {
@@ -40,10 +40,10 @@ router.get('/GetDefaultWeightRate/:Weight', function (req, res, next) {
     });
 });
 
-router.get('/GetWeightRateByPostTypeAndWeight/:PostType/:Weight', function (req, res, next) {
+router.get('/GetWeightRateByPostTypeAndWeight/:PostType/:Weight', (req, res, next) => {
     var type = req.params.PostType;
     var rate = parseInt(req.params.Weight);
-    var GetWeightRatePromise = function() {
+    var GetWeightRatePromise = () => {
     	var defer = Q.defer();
         db.collection('WeightRate')
             .findOne({
@@ -54,7 +54,7 @@ router.get('/GetWeightRateByPostTypeAndWeight/:PostType/:Weight', function (req,
 			    MaxRate: {
 			        $gte: rate
 			    }
-            }, function (err, result) {
+            }, (err, result) => {
             if (err) {
             	console.log(err, err.stack.split("\n"));
                 defer.reject(err);
@@ -66,26 +66,26 @@ router.get('/GetWeightRateByPostTypeAndWeight/:PostType/:Weight', function (req,
         return defer.promise;
     }
 
-    GetWeightRatePromise().then(function(rate, status) {
+    GetWeightRatePromise().then((rate, status) => {
     	if (!rate) {
     		res.SendStatus(404);
     	} else {
     		res.json(rate);
     	}
-    }, function(error, status) {
+    }, (error, status) => {
     	console.log(err, err.stack.split("\n"));
     	res.SendStatus(500);
     });
 });
 
-router.get('/GetNormalWeightRate', function(req, res) {
-    var GetWeightRatePromise = function() {
+router.get('/GetNormalWeightRate', (req, res) => {
+    var GetWeightRatePromise = () => {
         var defer = Q.defer();
         db.collection('WeightRate')
             .find({
                 PostType: 'Normal'
             })
-             .toArray(function (err, items) {
+             .toArray( (err, items) => {
             if (err) {
                 console.log(err, err.stack.split("\n"));
                 defer.reject(err);
@@ -96,13 +96,13 @@ router.get('/GetNormalWeightRate', function(req, res) {
         });
         return defer.promise;
     }
-    GetWeightRatePromise().then(function(rate, status) {
+    GetWeightRatePromise().then((rate, status) => {
         if (!rate) {
             res.SendStatus(404);
         } else {
             res.json(rate);
         }
-    }, function(error, status) {
+    }, (error, status) => {
         console.log(err, err.stack.split("\n"));
         res.SendStatus(500);
     });

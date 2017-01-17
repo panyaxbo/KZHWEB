@@ -23,10 +23,11 @@ app.controller("PaymentController", [ "$scope", "$http", "$rootScope", "$locatio
         data["quantity_" + ctr] = item.Quantity; 
         data["amount_" + ctr] = item.Price; 
       }
-      data["tax"] = $scope.ROHead.SumVatAmount;
+      data["tax_rate"] = $scope.ROHead.SumVatAmount;
       data["shipping"] = $scope.ROHead.WeightAmount;
       data["amount"] = $scope.ROHead.NetAmount;
       data["currency_code"] = "THB"; 
+   //   data["button_subtype"] = "services";
       data["country_code"] = "TH";
       data["first_name"] = $scope.ROHead.BillingFirstName;
       data["last_name"] = $scope.ROHead.BillingLastName;
@@ -37,10 +38,13 @@ app.controller("PaymentController", [ "$scope", "$http", "$rootScope", "$locatio
       data["zip"] = $scope.ROHead.ZipCode;
       data["lc"] = "TH";
       data["email"] = $scope.ROHead.BillingEmail;
+
       data["image_url"] = "https://s3-ap-southeast-1.amazonaws.com/kzhweb/kzhapp-100x100.png";
       var form = $('<form/></form>'); 
       form.attr("action", "https://www.paypal.com/cgi-bin/webscr"); 
-      form.attr("method", "POST"); 
+      form.attr("method", "post"); 
+      form.attr("target", "_top"); 
+      console.log(data);
       form = UtilService.addFormFields(form, data); 
       var imgHidden = $("<input></input>").attr("type", "image").attr("src", "http://www.paypal.com/en_US/i/btn/x-click-but01.gif")
       .attr("name", "submit").attr("alt","Make payments with PayPal - it's fast, free and secure!").val('');
@@ -82,6 +86,7 @@ app.controller("PaymentController", [ "$scope", "$http", "$rootScope", "$locatio
       data["lc"] = "TH";
       data["email"] = $scope.ROHead.BillingEmail;
       data["image_url"] = "https://s3-ap-southeast-1.amazonaws.com/kzhweb/kzhapp-100x100.png";
+      
       var form = $('<form/></form>'); 
       form.attr("action", "https://www.paypal.com/cgi-bin/webscr"); 
       form.attr("method", "POST"); 

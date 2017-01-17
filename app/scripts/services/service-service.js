@@ -1,14 +1,14 @@
 "use strict";
-app.service("ServiceService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
+app.service("ServiceService", ["$q", "$http", "ENV", ($q, $http, ENV) => {
     return {
-    	LoadTechnicianService: function() {
+    	LoadTechnicianService: () => {
     		var defer = $q.defer();
     		var url = ENV.apiEndpoint + "/services/LoadTechnicianService";
             $http.get(url)
-            .success(function (services) {
+            .success((services) => {
                 defer.resolve(services);
             })
-            .error(function (err) {
+            .error((err) => {
                 defer.reject(err);
             });
 	        return defer.promise;

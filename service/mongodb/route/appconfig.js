@@ -2,27 +2,27 @@ var express = require('express');
 var router = express.Router();
 
 /* GET users listing. */
-router.get(mongodbConfig.url.appconfig.home, function (req, res, next) {
+router.get(mongodbConfig.url.appconfig.home, (req, res, next) => {
  //   res.send('app config');
  //   db.collection.find().sort({_id:-1}).limit(1).pretty()
  //   db.collection.findOne({$query:{},$orderby:{_id:-1}})
      
  /*    db.collection(mongodbConfig.mongodb.rohead.name)
             .findOne({$query:{},$orderby:{_id:-1}}
-                ,function(err, result) { 
+                , (err, result) => { 
                     if (err) throw err 
                     res.json(result);
                  });
       */
 });
 
-router.get(mongodbConfig.url.appconfig.getNewCodeByModule, function (req, res) {
+router.get(mongodbConfig.url.appconfig.getNewCodeByModule, (req, res) => {
     var Module = req.params.Module;
     console.log('Module ' + Module);
     db.collection(mongodbConfig.mongodb.appconfig.name)
         .findOne({
             'AppCode': Module
-        }, function (err, appConfig) {
+        }, (err, appConfig) => {
             if (err) {
                 console.log(err);
                 res.status(500).send('error occur create new code ', err);
@@ -38,7 +38,7 @@ router.get(mongodbConfig.url.appconfig.getNewCodeByModule, function (req, res) {
                     var NextRun = ZeroPad(MaxIncOne, Format[1].length);
                     var NewCode = Format[0] + NextRun;
 
-                    UpdateAppConfig(Module, MaxIncOne, function (err, result) {
+                    UpdateAppConfig(Module, MaxIncOne, (err, result) => {
                         if (err) throw err
                         console.log(NewCode);
                         res.json(NewCode);
@@ -48,7 +48,7 @@ router.get(mongodbConfig.url.appconfig.getNewCodeByModule, function (req, res) {
                     var CurrentMonth = ZeroPad(DateNow.getMonth() + 1, 2);
                     var CurrentYear = ZeroPad(DateNow.getFullYear(), 4);
                     var MaxCurrent = DateNow.getMonth() + DateNow.getFullYear();
-                    FindMaxDateFromModule(Module, function(err, roHead) {
+                    FindMaxDateFromModule(Module, (err, roHead) => {
                         if (err)  {
                             console.log("err " + err);
                         } else {
@@ -71,7 +71,7 @@ router.get(mongodbConfig.url.appconfig.getNewCodeByModule, function (req, res) {
                                 var NextRun = ZeroPad(MaxIncOne, Format[3].length);
                                 var NewCode = Module + CurrentYear + CurrentMonth + NextRun;
                             //    console.log(NewCode +"|" +CurrentYear +"|"+CurrentMonth +"|"+NextRun +"|");
-                                UpdateAppConfig(Module, MaxIncOne, function (err, result) {
+                                UpdateAppConfig(Module, MaxIncOne, (err, result) => {
                                     if (err) throw err
                                 //    console.log(NewCode);
                                     res.json(NewCode);
@@ -82,7 +82,7 @@ router.get(mongodbConfig.url.appconfig.getNewCodeByModule, function (req, res) {
                                 var Format = appConfig.AppValue.split('|');
                                 var NextRun = ZeroPad(MaxIncOne, Format[3].length);
                                 var NewCode = Module + CurrentYear + CurrentMonth + NextRun;
-                                UpdateAppConfig(Module, MaxIncOne, function (err, result) {
+                                UpdateAppConfig(Module, MaxIncOne, (err, result) => {
                                     if (err) throw err
                                  //   console.log(NewCode);
                                     res.json(NewCode);
@@ -100,7 +100,7 @@ router.get(mongodbConfig.url.appconfig.getNewCodeByModule, function (req, res) {
         });
 
     //    function FindCurrent
-    function UpdateAppConfig(AppCode, nextRun, callback) {
+    var UpdateAppConfig = (AppCode, nextRun, callback) => {
         db.collection(mongodbConfig.mongodb.appconfig.name)
             .update({
                     'AppCode': AppCode
@@ -108,24 +108,23 @@ router.get(mongodbConfig.url.appconfig.getNewCodeByModule, function (req, res) {
                     $set: {
                         'AppRunData': nextRun
                     }
-                },
-                function (error, result) {
+                }, (error, result) => {
                     if (error) throw error
                     console.log('update app config ' + result);
                     callback();
                 });
     }
 
-    function FindMaxDateFromModule(Module, callback) {
+    var FindMaxDateFromModule = (Module, callback) => {
         
             db.collection(mongodbConfig.mongodb.rohead.name)
             .findOne({
-                }, function(err, result) { 
+                }, (err, result) => { 
                     if (err) throw err 
                     callback(null, result);
                  });
     }
-    function ZeroPad(num, places) {
+    var ZeroPad = (num, places) => {
         var zero = places - num.toString().length + 1;
         return Array(+(zero > 0 && zero)).join("0") + num;
     }

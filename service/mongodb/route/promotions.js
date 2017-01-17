@@ -4,18 +4,17 @@ var router = express.Router();
 var Q = require('q');
 
 /* GET users listing. */
-router.get(mongodbConfig.url.promotion.home, function (req, res, next) {
- //   res.send('this is promotion module');
- 	db.collection(mongodbConfig.mongodb.promotion.name)
+router.get(mongodbConfig.url.promotion.home, (req, res, next) => {
+ 	db.collection('Promotion')
         .find({})
-        .toArray(function (err, promotion) {
+        .toArray((err, promotion) => {
 
 			var diff = new Date() - promotion[0].PMDate;
 			var datediff = diff/(1000*60*60*24);
 			var monthdiff = datediff/(30);
 			var yeardiff = monthdiff/(12);
 
-            var promise = new Promise(function(resolve, reject) {
+            var promise = new Promise((resolve, reject) => {
               // do a thing, possibly async, then…
 
               if ( 1===1 /* everything turned out fine */) {
@@ -25,18 +24,16 @@ router.get(mongodbConfig.url.promotion.home, function (req, res, next) {
                 reject(Error("It broke"));
               }
             });
-            promise.then(function( message ) {
+            promise.then(( message ) => {
               console.log( message );
               res.send(message);
-            },
-            function( err ) {
-            //  console.log( err );
+            }, ( err ) => {
               res.send(err);
             });
         });
 });
 
-router.get('/in', function (req, res, next) {
+router.get('/in', (req, res, next) => {
  	var currentDate = new Date().toISOString().split('T')[0].split('-');
 
  	db.collection(mongodbConfig.mongodb.promotion.name)
@@ -50,7 +47,7 @@ router.get('/in', function (req, res, next) {
                $gte: new Date(currentDate[0]+"-"+currentDate[1]+"-"+currentDate[2]+"T00:00:00.000Z")
             }
         })
-        .toArray(function (err, promotion) {
+        .toArray((err, promotion) => {
         	if (err) console.log(err, err.stack.split("\n"));
         });
 });
@@ -80,18 +77,18 @@ router.get('/array', function (req, res) {
 })
 */
 
-router.get('/LoadAllPromotion', function(req, res, next) {
+router.get('/LoadAllPromotion', (req, res, next) => {
 /*	db.collection(mongodbConfig.mongodb.promotion.name)
         .find({})
-        .toArray(function (err, promotions) {
+        .toArray((err, promotions) => {
         //    console.log(promotions);
             res.json(promotions);
         });*/
-    var loadPromotionPromise = function() {
+    var loadPromotionPromise = () => {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.promotion.name)
             .find({})
-            .toArray(function (err, promotions) {
+            .toArray((err, promotions) => {
             //    console.log(promotions);
                 if (err) {
                     defer.reject(err);
@@ -101,28 +98,26 @@ router.get('/LoadAllPromotion', function(req, res, next) {
             });
         return defer.promise;
     }
-    loadPromotionPromise().then(function(data, status) {
+    loadPromotionPromise().then((data, status) => {
         if (data) {
-            res.json(data);
+            res.status(200).json(data);
         } else if (!data) {
-            res.sendStatus(404);
-            return;
+            res.status(404).send('data not found ');
         }
-    }, function(err, status) {
-        console.log(error, error.stack.split("\n"));
-        res.sendStatus(500);
-        return;
+    }, (err, status) => {
+        console.log('1',err, err.stack.split("\n"));
+        res.status(500).send('error occur ');
     });
 });
 
-router.get('/LoadPromotionByObjId/:PromotionId', function (req, res, next) {
+router.get('/LoadPromotionByObjId/:PromotionId', (req, res, next) => {
 	console.log('Product id ' + req.params.PromotionId);
     var PromotionId = req.params.PromotionId;
-    var o_id = bson.BSONPure.ObjectID(PromotionId.toString());
+    var o_id = ObjectID(PromotionId.toString());
   /*  db.collection(mongodbConfig.mongodb.promotion.name)
         .findOne({
             '_id': o_id
-        }, function (err, promotion) {
+        }, (err, promotion) => {
             if (err) {
                 console.log(err);
                 //       callback(err);
@@ -132,12 +127,12 @@ router.get('/LoadPromotionByObjId/:PromotionId', function (req, res, next) {
             }
         });
 */
-    var loadPromotionByObjIdPromise = function() {
+    var loadPromotionByObjIdPromise = () => {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.promotion.name)
             .findOne({
                 '_id': o_id
-            }, function (err, promotion) {
+            }, (err, promotion) => {
                 if (err) {
                     defer.reject(err);
                 } else {
@@ -148,21 +143,20 @@ router.get('/LoadPromotionByObjId/:PromotionId', function (req, res, next) {
             });
         return defer.promise;
     }
-    loadPromotionByObjIdPromise().then(function(data, status) {
+    loadPromotionByObjIdPromise()
+    .then((data, status) => {
         if (data) {
-            res.json(data);
+            res.status(200).json(data);
         } else if (!data) {
-            res.sendStatus(404);
-            return;
+            res.status(404).send('not found promotion');
         }
-    }, function(err, status) {
-        console.log(error, error.stack.split("\n"));
-        res.sendStatus(500);
-        return;
+    }, (err, status) => {
+        console.log('1',err, err.stack.split("\n"));
+        res.status(500).send('error occur ');
     });
 });
 
-router.post('/CreatePromotion', function (req, res) {
+router.post('/CreatePromotion', (req, res) => {
 	var Promotion = req.body;
     console.log('create Promotion ' + Promotion);
     var createDate = new Date ();
@@ -174,14 +168,17 @@ router.post('/CreatePromotion', function (req, res) {
     delete Promotion.AddDiscountPercent;
 
     db.collection(mongodbConfig.mongodb.promotion.name)
-        .insert(Promotion,
-            function (error, result) {
-                if (error) throw error
-                res.json(result);
-            });
+    .insert(Promotion, (err, result) => {
+            if(err) {
+                console.log('1',err, err.stack.split("\n"));
+                res.status(500).send('error occur ');
+            } else {
+                res.status(200).json(result);
+            }
+        });
 });
 
-router.post('/UpdatePromotion', function (req, res) {
+router.post('/UpdatePromotion', (req, res) => {
     var Promotion = req.body;
     var o_id = bson.BSONPure.ObjectID(Promotion._id.toString());
     var updateDate = new Date ();
@@ -198,31 +195,36 @@ router.post('/UpdatePromotion', function (req, res) {
                     'UpdateDate' : updateDate,
                     'ProductPromotionList' : Promotion.ProductPromotionList
                 }
-            },
-            function (error, result) {
-                if (error) throw error
-                console.log(result.PromotionCode);
-                res.json(result);
+            }, (err, result) => {
+                if (err) {
+                    console.log('1',err, err.stack.split("\n"));
+                    res.status(500).send('error occur ');
+                } else {
+                    res.status(200).json(result);
+                }
             });
 });
 
 //Delete Promotion By Id
-router.post('/DeletePromotion/:PromotionId', function (req, res) {
+router.post('/DeletePromotion/:PromotionId', (req, res) => {
 	var PromotionId = req.params.PromotionId;
     console.log('create product ' + PromotionId);
     var o_id = bson.BSONPure.ObjectID(PromotionId.toString());
     db.collection(mongodbConfig.mongodb.promotion.name)
         .remove({
             _id: o_id
-        }, function (error, result) {
-            if (error) throw error
-
-            res.json(result);
+        }, (err, result) => {
+            if (err) {
+                console.log('1',err, err.stack.split("\n"));
+                res.status(500).send('error occur ');
+            } else {
+                res.status(200).json(result);
+            }
         });
 
 });
 
-function RemoveUnusedField(promotion) {
+var RemoveUnusedField = (promotion) => {
     
 }
 

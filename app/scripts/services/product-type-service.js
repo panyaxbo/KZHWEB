@@ -1,15 +1,15 @@
 "use strict";
-app.service("ProductTypeService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
+app.service("ProductTypeService", ["$q", "$http", "ENV", ($q, $http, ENV) => {
     var ProductTypes = [];
     return {
-    	LoadProductType: function() {
+    	LoadProductType: () => {
     		var defer = $q.defer();
     		var url = ENV.apiEndpoint + '/product_types/LoadProductType';
         	$http.get(url)
-            .success(function (data) {
+            .success((data) => {
             	defer.resolve(data);
             })
-            .error(function (err) {
+            .error((err) => {
             	defer.reject(err);
             });
 	        return defer.promise;

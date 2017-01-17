@@ -1,5 +1,5 @@
 "use strict";
-app.service("LocaleService", function () {
+app.service("LocaleService", () => {
     return {
         Locale: {
             SelectedLocale: "th"

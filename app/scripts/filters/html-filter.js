@@ -1,6 +1,6 @@
 "use strict";
-app.filter('htmlToPlaintext', function() {
-    return function(text) {
+app.filter('htmlToPlaintext', () => {
+    return (text) => {
       return angular.element(text).text();
     }
 });

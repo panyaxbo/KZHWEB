@@ -1,14 +1,14 @@
 "use strict";
-app.service("RoleService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
+app.service("RoleService", ["$q", "$http", "ENV", ($q, $http, ENV) => {
     return {
-    	FindRoleByRoleCode: function(RoleCode) {
+    	FindRoleByRoleCode: (RoleCode) => {
     		var defer = $q.defer();
 		    var linkRoleUrl = ENV.apiEndpoint + "/roles/FindRoleByRoleCode/" + RoleCode;
 		    $http.get(linkRoleUrl)
-		    .success(function(data, status) {
+		    .success((data, status) => {
 	            defer.resolve(data);
 		    })
-		    .error(function(error, status) {
+		    .error((error, status) => {
 		    	defer.reject(error);
 		    });
 	        return defer.promise;

@@ -1,22 +1,14 @@
 var express = require('express');
 var router = express.Router();
 var Q = require('q');
-router.get(mongodbConfig.url.subdistrict.home, function (req, res, next) {
+router.get(mongodbConfig.url.subdistrict.home, (req, res, next) => {
     res.send('subdistrict');
 });
 
-router.get(mongodbConfig.url.subdistrict.loadSubDistrictByDistrictId, function (req, res) {
+router.get(mongodbConfig.url.subdistrict.loadSubDistrictByDistrictId, (req, res) => {
     var DistrictId = req.params.DistrictId;
-    var o_id = bson.BSONPure.ObjectID(DistrictId.toString());
-/*    db.collection(mongodbConfig.mongodb.subdistrict.name)
-        .find({
-            "$query":{'DistrictId' : o_id}, "$orderby":{ "SubDistrict": 1 }
-        })
-        .toArray(function (err, subdistricts) {
-            res.json(subdistricts);
-        });*/
-
-    var loadSubDistrictByDistrictIdPromise = function() {
+    var o_id = ObjectID(DistrictId.toString());
+    var loadSubDistrictByDistrictIdPromise = () => {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.subdistrict.name)
             .find({
@@ -25,7 +17,7 @@ router.get(mongodbConfig.url.subdistrict.loadSubDistrictByDistrictId, function (
             .sort({
                 SubDistrict: 1
             })
-            .toArray(function (err, subdistricts) {
+            .toArray((err, subdistricts) => {
                 if (err) {
                     defer.reject(err);
                 } else {
@@ -35,26 +27,19 @@ router.get(mongodbConfig.url.subdistrict.loadSubDistrictByDistrictId, function (
         return defer.promise;
     }
 
-    loadSubDistrictByDistrictIdPromise().then(function(data, status) {
-        res.json(data);
-    }, function(err, status) {
-        console.log(err, err.stack.split("\n"));
-        res.sendStatus(500);
-        return;
+    loadSubDistrictByDistrictIdPromise()
+    .then((data, status) => {
+        res.status(200).json(data);
+    }, (err, status) => {
+        console.log('1',err, err.stack.split("\n"));
+        res.status(500).send('error occur ');
     });
 });
 
-router.get(mongodbConfig.url.subdistrict.loadSubDistrictBySubDistrictId, function (req, res) {
+router.get(mongodbConfig.url.subdistrict.loadSubDistrictBySubDistrictId, (req, res) => {
     var SubDistrictId = req.params.SubDistrictId;
-    var o_id = bson.BSONPure.ObjectID(SubDistrictId.toString());
-/*    db.collection(mongodbConfig.mongodb.subdistrict.name)
-        .find({
-            "$query":{'_id' : o_id}, "$orderby":{ "SubDistrict": 1 }
-        })
-        .toArray(function (err, subdistricts) {
-            res.json(subdistricts);
-        }); */
-    var loadSubDistrictBySubDistrictIdPromise = function () {
+    var o_id = ObjectID(SubDistrictId.toString());
+    var loadSubDistrictBySubDistrictIdPromise = () => {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.subdistrict.name)
             .find({
@@ -63,7 +48,7 @@ router.get(mongodbConfig.url.subdistrict.loadSubDistrictBySubDistrictId, functio
             .sort({
                 SubDistrict : 1
             })
-            .toArray(function (err, subdistricts) {
+            .toArray((err, subdistricts) => {
                 if (err) {
                     defer.reject(err);
                 } else {
@@ -72,12 +57,12 @@ router.get(mongodbConfig.url.subdistrict.loadSubDistrictBySubDistrictId, functio
             });
         return defer.promise;
     }
-    loadSubDistrictBySubDistrictIdPromise().then(function(data, status) {
-        res.json(data);
-    }, function(err, status) {
-        console.log(err, err.stack.split("\n"));
-        res.sendStatus(500);
-        return;
+    loadSubDistrictBySubDistrictIdPromise()
+    .then((data, status) => {
+        res.status(200).json(data);
+    }, (err, status) => {
+        console.log('1',err, err.stack.split("\n"));
+        res.status(500).send('error occur ');
     });
 });
 

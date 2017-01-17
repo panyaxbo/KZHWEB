@@ -1,7 +1,7 @@
 "use strict";
-app.service("ProductService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
+app.service("ProductService", ["$q", "$http", "ENV", ($q, $http, ENV) => {
     return {
-    	LoadProduct: function() {
+    	LoadProduct: () => {
     		var defer = $q.defer();
     		var url = ENV.apiEndpoint + '/products/LoadProduct';
         	$http.get(url)
@@ -13,7 +13,7 @@ app.service("ProductService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
             });
 	        return defer.promise;
     	},
-    	LoadProductByProductCategoryCode: function(ProductCategoryCode) {
+    	LoadProductByProductCategoryCode: (ProductCategoryCode) => {
     		var defer = $q.defer();
     		var url = ENV.apiEndpoint + "/products/LoadProductByProductCategoryCode/" + ProductCategoryCode;
 	        $http.get(url)
@@ -25,7 +25,7 @@ app.service("ProductService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
 	            });
     		return defer.promise;
     	},
-    	SearchProductWithCondition: function(SearchAllText) {
+    	SearchProductWithCondition: (SearchAllText) => {
     		var defer = $q.defer();
     		var searchProductURL = ENV.apiEndpoint + "/products/SearchProductWithCondition/" + SearchAllText;
 		    $http.get(searchProductURL)
@@ -48,6 +48,18 @@ app.service("ProductService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
                 defer.reject(error);
             });
             return defer.promise;
-        }
+        },
+		LoadProductByProductId: (productId) => {
+			var defer = $q.defer();
+    		var url = ENV.apiEndpoint + "/products/LoadProductByObjId/" + productId;
+	        $http.get(url)
+	            .success(function (data) {
+	                defer.resolve(data);
+	            })
+	            .error(function (err) {
+	               defer.reject(err);
+	            });
+    		return defer.promise;
+		}
     };
 }]);

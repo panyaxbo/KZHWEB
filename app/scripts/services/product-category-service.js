@@ -1,30 +1,30 @@
 "use strict";
-app.service("ProductCategoryService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
+app.service("ProductCategoryService", ["$q", "$http", "ENV", ($q, $http, ENV) => {
     return {
-    	LoadProductCategory: function() {
+    	LoadProductCategory: () => {
     		var defer = $q.defer();
     		var url = ENV.apiEndpoint  + '/product_categories/LoadProductCategory';
         	$http.get(url)
-            .success(function (data) {
+            .success((data) => {
                 defer.resolve(data);
             })
-            .error(function (err) {
+            .error((err) => {
             	defer.reject(err);
             });
 	        return defer.promise;
     	},
 
-        LoadProductCategoryByProductType: function(ProductTypes) {
+        LoadProductCategoryByProductType: (ProductTypes) => {
             var promises = [];
-            angular.forEach(ProductTypes, function(ProductType){
+            angular.forEach(ProductTypes, (ProductType) => {
                 var defer = $q.defer();
                 var categoryUrl = ENV.apiEndpoint + '/product_categories/LoadProductCategoryByProductType/' + ProductType.ProductTypeCode;
                 $http.get(categoryUrl)
-                .success(function (data, status) {
+                .success((data, status) => {
                     ProductType.ProductCategories = data;
                     defer.resolve(data);
                 })
-                .error(function (err, status) {
+                .error((err, status) => {
                     console.log(err);
                     defer.reject(err);
                 });

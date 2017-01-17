@@ -1,7 +1,7 @@
 "use strict";
-app.service("SocialService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
+app.service("SocialService", ["$q", "$http", "ENV", ($q, $http, ENV) => {
     return {
-    	SearchProductWithCondition: function(SearchAllText) {
+    	SearchProductWithCondition: (SearchAllText) => {
     		var defer = $q.defer();
     	
 	        return defer.promise;

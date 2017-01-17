@@ -69,7 +69,7 @@ router.get('/LoadAppUserById/:AppUserId', function (req, res) {
 router.get(mongodbConfig.url.user.loadAppUserByObjId, function (req, res) {
     console.log('appuser id ' + req.params.AppUserId);
     var AppUserId = req.params.AppUserId;
-    var o_id = bson.BSONPure.ObjectID(AppUserId);
+    var o_id = ObjectID(AppUserId);
     db.collection(mongodbConfig.mongodb.user.name)
         .findOne({
             '_id': o_id
@@ -318,7 +318,7 @@ router.post(mongodbConfig.url.user.createAppUser, function (req, res) {
 // Update AppUser
 router.post(mongodbConfig.url.user.updateAppUser, function (req, res) {
     var AppUser = req.body;
-    var o_id = bson.BSONPure.ObjectID(AppUser._id.toString());
+    var o_id = ObjectID(AppUser._id.toString());
     var updateDate = new Date ();
     updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
     db.collection(mongodbConfig.mongodb.user.name)
@@ -349,7 +349,7 @@ router.post(mongodbConfig.url.user.updateAppUser, function (req, res) {
 // Delete AppUser
 router.get(mongodbConfig.url.user.deleteAppUserByAppUserId, function (req, res) {
     var AppUserId = req.params.AppUserId;
-    var o_id = bson.BSONPure.ObjectID(AppUserId.toString());
+    var o_id = ObjectID(AppUserId.toString());
     var deleteAppUserByIdPromise = function() {
         var defer = Q.defer();
         db.collection(mongodbConfig.mongodb.user.name)

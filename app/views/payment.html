@@ -4,8 +4,6 @@
             <div class="col-md-12">
                 <h3>{{'BODY.SECTION.SHIPMENT.PAYMENT.STEP' | translate}}</h3>
                 <div class="row form-group">
-                    <!-- You can make it whatever width you want. I'm making it full width
-                         on <= small devices and 4/12 page width on >= medium devices -->  
                     <div class="col-xs-12">
                         <div class="col-xs-4">
                              <label style="color:white">{{'BODY.SECTION.SHIPMENT.PAYMENT.PAYMENT_TYPE' | translate}}</label>
@@ -217,10 +215,26 @@
                                         <div class="row text-center">
                                             <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/cc-badges-ppmcvdam.png" alt="Buy now with PayPal" />
                                         </div>
-                                    </div>                    
+                                    </div>         
+                           <!--
+                                        <input type="hidden" name="cmd" value="_xclick" />
+                                        <input type="hidden" name="business" value="kzh.parts@gmail.com" />
+                                        <input type="hidden" name="lc" value="CA" />
+                                        <input type="hidden" name="item_name" value="ยางใน vee rubber " />
+                                        <input type="hidden" name="item_number" value="10" />
+                                        <input type="hidden" name="amount" value="3000000" />
+                                        <input type="hidden" name="currency_code" value="THB" />
+                                        <input type="hidden" name="button_subtype" value="services" />
+                                        <input type="hidden" name="no_note" value="Test no note" />
+                                        <input type="hidden" name="tax_rate" value="7.0" />
+                                        <input type="hidden" name="shipping" value="150" />
+                                        <input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHostedGuest" />
+                                        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
+                                        <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+                                    </form>  -->          
                                 </div>
                                 <div class="panel-body text-center">
-                                    <a style="cursor:pointer" ng-click="PaypalDummyCheckout()"><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!"></a>
+                                    <a style="cursor:pointer" ng-click="PaypalCheckout()"><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!"></a>
                                 </div>
                             </div>            
                         <!-- PAYPAL FORM ENDS HERE -->

@@ -1,12 +1,12 @@
 "use strict";
-app.directive('file', function() {
+app.directive('file', () => {
   return {
     restrict: 'AE',
     scope: {
       file: '@'
     },
-    link: function(scope, el, attrs){
-      el.bind('change', function(event){
+    link: (scope, el, attrs) => {
+      el.bind('change', (event) => {
         var files = event.target.files;
         var file = files[0];
         scope.file = file;

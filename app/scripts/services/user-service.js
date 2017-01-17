@@ -1,20 +1,20 @@
 "use strict";
-app.service("UserService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
+app.service("UserService", ["$q", "$http", "ENV", ($q, $http, ENV) => {
     return {
-    	DownloadUserProfileImage: function(UserId, Username) {
+    	DownloadUserProfileImage: (UserId, Username) => {
     		var defer = $q.defer();
     		var downloadUrl = ENV.apiEndpoint + '/aws/downloadUserImageProfile/'+ UserId + '/' + Username;
 	        $http.get(downloadUrl)
-	        .success(function (data, status) {
+	        .success((data, status) => {
 	            defer.resolve(data);
 	        })
-	        .error(function (error, status) {
+	        .error((error, status) => {
 	            console.log(error);
 	            defer.reject(error);
 	        });
 	        return defer.promise;
     	},
-    	ActivateAppUser: function(UserBackFromEmailUrl) {
+    	ActivateAppUser: (UserBackFromEmailUrl) => {
     		var defer = $q.defer();
     		var url = UserBackFromEmailUrl.substr(UserBackFromEmailUrl.indexOf("confirm=") + 8);
             console.log(url);
@@ -23,15 +23,15 @@ app.service("UserService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
                ActivateLink : url
             }
 	        $http.post(updateActivateUrl, MailActivateForm)
-	        .success(function(data, status) {
+	        .success((data, status) => {
 	        	defer.resolve(data);
 	        })
-	        .error(function(error, status) {
+	        .error((error, status) => {
 	        	defer.reject(error);
 	        });
 	        return defer.promise;
     	},
-    	UpdateEmailForgetPassword: function(UserBackFromEmailUrl) {
+    	UpdateEmailForgetPassword: (UserBackFromEmailUrl) => {
     		var defer = $q.defer();
     		var url = UserBackFromEmailUrl.substr(UserBackFromEmailUrl.indexOf("forget=") + 7);
 
@@ -40,110 +40,110 @@ app.service("UserService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
             EncodeUrl : url
           }
           $http.post(getemailfromencode, encodeObj)
-	        .success(function(data, status, headers, config ) {
+	        .success((data, status, headers, config) => {
 	          	defer.resolve(data);
 	        })
-	        .error(function(error, status, headers, config) {
+	        .error((error, status, headers, config) => {
 	        	defer.reject(error);
 	        });
 	        return defer.promise;
     	},
-    	PerformChangePassword: function(ForgetPasswordEmail, ChangeForgetPassword) {
+    	PerformChangePassword: (ForgetPasswordEmail, ChangeForgetPassword) => {
     		var defer = $q.defer();
     		var changePasswordUrl = ENV.apiEndpoint + "/users/PerformChangePassword/" + ForgetPasswordEmail 
 		        + "/" + ChangeForgetPassword;
 	        $http.get(changePasswordUrl)
-	        .success(function(data, status) {
+	        .success((data, status) => {
 	        	defer.resolve(data);
 	        })
-	        .error(function(error, status) {
+	        .error((error, status) => {
 	        	defer.reject(error);
 	        });
 		    return defer.promise;
     	},
-    	CreateUserEmailActivate: function(Username, Password, Email, UserObject) {
+    	CreateUserEmailActivate: (Username, Password, Email, UserObject) => {
         console.log('sinn up ');
     		var defer = $q.defer();
     		var createUserURL = ENV.apiEndpoint + "/users/CreateAppUser/" + Username + "/" + Password + "/"+ Email;
     		$http.post(createUserURL, UserObject)
-        	.success(function(data, status) {
+        	.success((data, status) => {
         		defer.resolve(data);
         	})
-        	.error(function(error, reject) {
+        	.error((error, reject) => {
         		defer.resolve(error);
         	});
     		return defer.promise;
     	},
-    	IsExistUsername: function(Username) {
+    	IsExistUsername: (Username) => {
     		var defer = $q.defer();
     		var url = ENV.apiEndpoint + "/users/IsExistUsername/" + Username;
           	$http.get(url)
-            .success(function(data, status) {
+            .success((data, status) => {
               	defer.resolve(data);
             })
-            .error(function(error, status) {
+            .error((error, status) => {
             	defer.reject(error);
             });
     		return defer.promise;
     	},
-    	IsExistEmail: function(Email) {
+    	IsExistEmail: (Email) => {
     		var defer = $q.defer();
     		var url = ENV.apiEndpoint + "/users/IsExistEmail/" + Email;
 	        $http.get(url)
-	          .success(function(data, status) {
+	          .success((data, status) => {
 	              console.log('email exist ' + data);
 	              defer.resolve(data);
 	          })
-	          .error(function(error, status) {
+	          .error((error, status) => {
 	          	  defer.reject(error);
 	          });
     		return defer.promise;
     	},
-    	LoginWithUsernameAndPassword: function(username, password) {
+    	LoginWithUsernameAndPassword: (username, password) => {
     		var defer = $q.defer();
     		var url = ENV.apiEndpoint + "/users/FindByUsernameAndPassword/" + username + "/" + password;
       		$http.get(url)
-          	.success(function (data, status) {
+          	.success((data, status) => {
           		defer.resolve(data);
           	})
-          	.error(function(error, status) {
+          	.error((error, status) => {
           		defer.reject(error);
           	});
           	return defer.promise;
     	},
-    	CheckIsUserActivate: function(username, password) {
+    	CheckIsUserActivate: (username, password) => {
     		var defer = $q.defer();
     		var activateUrl = ENV.apiEndpoint + "/users/isActivateUser/" + username + "/" + password;
               $http.get(activateUrl)
-              .success(function (data, status) {
+              .success((data, status) => {
               	defer.resolve(data);
               })
-              .error(function(error ,status) {
+              .error((error ,status) => {
               	defer.reject(error);
               });
     		return defer.promise;
     	},
-    	DownloadUserProfileImage: function(UserId, Username) {
+    	DownloadUserProfileImage: (UserId, Username) => {
     		var defer = $q.defer();
     		var downloadUrl = ENV.apiEndpoint + '/aws/downloadUserImageProfile/'+ UserId + '/'+ Username;
             $http.get(downloadUrl)
-            .success(function (data, status) {
+            .success((data, status) => {
             	defer.resolve(data);
             })
-            .error(function (error, status) {
+            .error((error, status) => {
                 console.log(error);
               	defer.reject(error);
             });
     		return defer.promise;
     	},
-    	DownloadUserThumbnailImage: function(UserId, Username) {
+    	DownloadUserThumbnailImage: (UserId, Username) => {
     		var defer = $q.defer();
 	        var downloadThumbnailUrl = ENV.apiEndpoint + '/aws/downloadUserImageThumbnail/'+ UserId + '/'+ Username;
 	        $http.get(downloadThumbnailUrl)
-	        .success(function (data, status) {
+	        .success((data, status) => {
 	         	 defer.resolve(data);
 	         })
-	         .error(function (error, status) {
+	         .error((error, status) => {
 	            console.log(error);
 	            defer.reject(error);
 	        });

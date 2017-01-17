@@ -1,5 +1,5 @@
 "use strict";
-app.service("CurrencyService", function () {
+app.service("CurrencyService", () => {
     return {
         Currency: {
             SelectedCurrency: "thb", 

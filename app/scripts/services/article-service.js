@@ -1,42 +1,42 @@
 "use strict";
-app.service("ArticleService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
+app.service("ArticleService", ["$q", "$http", "ENV", ($q, $http, ENV) => {
     var Articles = [];
     var Article = {};
     return {
-    	LoadArticles: function() {
+    	LoadArticles: () => {
     		var defer = $q.defer();
     		var url = ENV.apiEndpoint + "/articles/LoadArticle";
             $http.get(url)
-            .success(function (articles) {
+            .success((articles) => {
                 Articles = articles;
                 defer.resolve(articles);
             })
-            .error(function (err) {
+            .error((err) => {
                 defer.reject(err);
             });
 	        return defer.promise;
     	},
-        LoadArticleById: function(articleId) {
+        LoadArticleById: (articleId) => {
             var defer = $q.defer();
             var url = ENV.apiEndpoint + "/articles/LoadArticleById/" + articleId;
             $http.get(url)
-            .success(function (article) {
+            .success((article) => {
                 Article = article;
                 defer.resolve(article);
             })
-            .error(function (err) {
+            .error((err) => {
                 defer.reject(err);
             });
             return defer.promise;
         },
-        CreateArticle: function(ArticleObject) {
+        CreateArticle: (ArticleObject) => {
             var defer = $q.defer();
             var url = ENV.apiEndpoint + "/articles/CreateArticle";
             $http.post(url, ArticleObject)
-            .success(function (articles) {
+            .success((articles) => {
                 defer.resolve(articles);
             })
-            .error(function (err) {
+            .error((err) => {
                 defer.reject(err);
             });
             return defer.promise;

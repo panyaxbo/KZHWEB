@@ -1,9 +1,9 @@
 "use strict";
-app.directive('ngEnter', function() {
-        return function(scope, element, attrs) {
-            element.bind("keydown keypress", function(event) {
+app.directive('ngEnter', () => {
+        return (scope, element, attrs) => {
+            element.bind("keydown keypress", (event) => {
                 if(event.which === 13) {
-                    scope.$apply(function(){
+                    scope.$apply(() => {
                         scope.$eval(attrs.ngEnter, {'event': event});
                     });
 

@@ -195,9 +195,10 @@ app.controller("CartController", [ "$scope", "$http", "$rootScope", "$location",
           $scope.ROHead.SumDiscountAmount = sumDiscAmt;
           $scope.ROHead.NetAmount = netAmt;
           $scope.ROHead.SumWeight = sumWt;
+          console.log('UpdateCartSummary ', $scope.ROHead);
         }
     }
-  	$scope.ValidateShipmentProcess = function() {
+  	$scope.ValidateShipmentProcess = () => {
       if (UtilService.isEmpty($scope.User)) {
         var log = 0;
         console.log('user not login');
@@ -211,13 +212,14 @@ app.controller("CartController", [ "$scope", "$http", "$rootScope", "$location",
           cancelButtonText: "ไม่ใช่",
           closeOnConfirm: true,
           closeOnCancel: false
-        }).then(function(){
+        }).then(() => {
           $scope.User.ComeFrom = '/cart';
           DataModelFactory.setUser($scope.User);
-          $scope.$apply(function () {
+          $scope.$apply(() => {
+            DataModelFactory.setReceipt($scope.ROHead);
             $location.path('/login');
           })
-        },function(dismiss) {
+        }, (dismiss) => {
 
         });
 

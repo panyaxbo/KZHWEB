@@ -4,28 +4,27 @@ var Q = require('q');
 var serverConfig = require('../../server-config.js');
 
 /* GET users listing. */
-router.get('/', function (req, res, next) {
+router.get('/', (req, res, next) => {
     // res.send('respond with a resource');
 });
 
-router.get('/LoadCompany', function(req, res) {
+router.get('/LoadCompany', (req, res) => {
 
     db.collection('Company')
         .findOne({
-        }, function (err, company) {
+        }, (err, company) => {
             if( err ) {
                 console.log(err, err.stack.split("\n"));
-                res.status(500).send('err occur when load company ');
+                res.status(500).json('err occur when load company ');
             } else {
-      //          console.log(company)
-                res.json(company); 
+                res.status(200).json(company); 
         }
     });
 
 });
 
-router.get('/LoadBrowserAPIKey', function(req, res) {
-    res.json(serverConfig.browser.key);
+router.get('/LoadBrowserAPIKey', (req, res) => {
+    res.status(200).json(serverConfig.browser.key);
 });
 
 module.exports = router;

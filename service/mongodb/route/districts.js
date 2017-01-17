@@ -2,31 +2,23 @@ var express = require('express');
 var router = express.Router();
 var Q = require('q');
 
-router.get(mongodbConfig.url.district.home, function (req, res, next) {
+router.get(mongodbConfig.url.district.home, (req, res, next) => {
     res.send(' district');
 });
 
-router.get(mongodbConfig.url.district.loadDistrictByProvinceId, function (req, res) {
+router.get(mongodbConfig.url.district.loadDistrictByProvinceId, (req, res) => {
     var ProvinceId = req.params.ProvinceId;
-    var o_id = bson.BSONPure.ObjectID(ProvinceId.toString());
-/*    db.collection(mongodbConfig.mongodb.district.name)
-        .find({
-            "$query":{'ProvinceId' : o_id}, "$orderby":{ "District": 1 }
-        })
-        .toArray(function (err, districts) {
-            res.json(districts);
-        });*/
-    var loadDistrictByProvinceIdPromise = function() {
+    var o_id = ObjectID(ProvinceId.toString());
+    var loadDistrictByProvinceIdPromise = () => {
         var defer = Q.defer();
-        db.collection(mongodbConfig.mongodb.district.name)
+        db.collection('District')
             .find({
                ProvinceId : o_id
             })
             .sort({
                 District: 1
             })
-            .toArray(function (err, districts) {
-             //   res.json(districts);
+            .toArray((err, districts) => {
                 if (err) {
                     defer.reject(err);
                 } else {
@@ -35,17 +27,16 @@ router.get(mongodbConfig.url.district.loadDistrictByProvinceId, function (req, r
             });
         return defer.promise;
     }
-    loadDistrictByProvinceIdPromise().then(function(data, status) {
+    loadDistrictByProvinceIdPromise()
+    .then((data, status) => {
         if(!data) {
-            res.sendStatus(404);
-            return;
+            res.status(404).json('Not found District');
         } else {
-            res.json(data); 
+            res.status(200).json(data); 
         }
-    }, function(err, status) {
+    }, (err, status) => {
         console.log(err, err.stack.split("\n"));
-        res.sendStatus(500);
-        return;
+        res.status(500).json('erorr occur ');
     });
 });
 

@@ -1,14 +1,14 @@
 "use strict";
-app.service("ProvinceService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
+app.service("ProvinceService", ["$q", "$http", "ENV", ($q, $http, ENV) => {
     return {
-    	LoadProvince: function() {
+    	LoadProvince: () => {
     		var defer = $q.defer();
     		var url = ENV.apiEndpoint + '/provinces/LoadProvince';
         	$http.get(url)
-            .success(function (data) {
+            .success((data) => {
             	defer.resolve(data);
             })
-            .error(function (err) {
+            .error((err) => {
             	defer.reject(err);
             });
 	        return defer.promise;

@@ -1,5 +1,5 @@
 "use strict";
-app.config(function ($translateProvider) {
+app.config(($translateProvider) => {
     $translateProvider.translations('th', {
         TITLE: {
             NAME: 'โค้ว ซุ่น เฮง - ศูนย์รวมอะไหล่มอเตอร์ไซค์, ยาง และ น้ำมันเครื่อง',

@@ -2,21 +2,21 @@ var express = require('express');
 var router = express.Router();
 var Q = require('q');
 /* GET users listing. */
-router.get(mongodbConfig.url.province.home, function (req, res, next) {
+router.get(mongodbConfig.url.province.home, (req, res, next) => {
     res.send(' province');
 });
 
-router.get(mongodbConfig.url.province.loadAllProvince, function (req, res) {
+router.get(mongodbConfig.url.province.loadAllProvince, (req, res) => {
 
-    var loadProvincePromise = function() {
+    var loadProvincePromise = () => {
         var defer = Q.defer();
-        db.collection(mongodbConfig.mongodb.province.name)
+        db.collection('Province')
             .find({
             })
             .sort({
                 Province : 1
             })
-            .toArray(function (err, provinces) {
+            .toArray((err, provinces) => {
                 console.log('has provinces');
                 if (err) {
                     defer.reject(err);
@@ -26,17 +26,15 @@ router.get(mongodbConfig.url.province.loadAllProvince, function (req, res) {
             });
         return defer.promise;
     }
-    loadProvincePromise().then(function(data, status) {
+    loadProvincePromise().then((data, status) => {
         if (data) {
-            res.json(data);
+            res.status(200).json(data);
         } else if (!data) {
-            res.sendStatus(404);
-            return;
+            res.status(404).send('not found ');
         }
-    }, function(err, status) {
-        console.log(error, error.stack.split("\n"));
-        res.sendStatus(500);
-        return;
+    }, (err, status) => {
+        console.log('1',err, err.stack.split("\n"));
+        res.status(500).send('error occur ');
     });
 });
 

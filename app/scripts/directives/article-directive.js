@@ -1,6 +1,6 @@
 "use strict";
 
-app.directive('articleCardList', function() {
+app.directive('articleCardList', () => {
 	return {
 		restrict : 'E',
 		scope: {
@@ -8,7 +8,7 @@ app.directive('articleCardList', function() {
 		},
 		templateUrl: '/views/templates/articleCardList.html',
 		replace: true,
-		constroller: function($scope) {
+		constroller: ($scope) => {
 		}
 	};
 });

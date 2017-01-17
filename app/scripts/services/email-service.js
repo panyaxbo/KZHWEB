@@ -1,111 +1,111 @@
 "use strict";
-app.service("EmailService", ["$q","$http", "ENV", function ($q, $http, ENV) {
+app.service("EmailService", ["$q","$http", "ENV", ($q, $http, ENV) => {
     return {
-        SendEmailConfirmation: function(mailActivateObject) {
+        SendEmailConfirmation: (mailActivateObject) => {
     		var defer = $q.defer();
 		    var emailConfirmURL = ENV.apiEndpoint + "/mails/SendEmailConfirmation";
 	         $http.post(emailConfirmURL, mailActivateObject)
-	         .success(function (data, status) {
+	         .success((data, status) => {
 	        	defer.resolve(data);
 	        })
-	        .error(function (error, status) {
+	        .error((error, status) => {
 	        	defer.reject(error);
 	        });
 	        return defer.promise;
     	},
-    	SendEmailForgetPassword: function(mailForgetObj) {
+    	SendEmailForgetPassword: (mailForgetObj) => {
     		var defer = $q.defer();
 	          var forgetPasswordEmailUrl = ENV.apiEndpoint + "/mails/SendEmailForgetPassword";
 	      
 	          $http.post(forgetPasswordEmailUrl, mailForgetObj)
-	          .success(function(data, status) {
+	          .success((data, status) => {
 	          	 defer.resolve(data);
 	          })
-	          .error(function(error, status) {
+	          .error((error, status) => {
 	        	 defer.reject(error);  
 	          });
     		return defer.promise;
     	},
-    	SendEmailStaffNewOrder: function(NewRONo) {
+    	SendEmailStaffNewOrder: (NewRONo) => {
     		var defer = $q.defer();
     		var sendEmailStaffUrl = ENV.apiEndpoint + "/mails/SendEmailStaffNewOrder/" + NewRONo;
     		$http.get(sendEmailStaffUrl)
-            .success(function (data, status) {
+            .success((data, status) => {
             	defer.resolve(data);
             })
-            .error(function(error, status) {
+            .error((error, status) => {
     			defer.reject(error);
              });
     		return defer.promise;
     	},
-    	SendEmailCustomerNewOrder: function(UserEmail, NewRONo) {
+    	SendEmailCustomerNewOrder: (UserEmail, NewRONo) => {
     		var defer = $q.defer();
     		var sendEmailCustomerUrl = ENV.apiEndpoint + "/mails/SendEmailCustomerNewOrder/" + UserEmail + "/" + NewRONo;
     		$http.get(sendEmailCustomerUrl)
-            .success(function (data, status) {
+            .success((data, status) => {
             	defer.resolve(data);
             })
-            .error(function(error, status) {
+            .error((error, status) => {
     			defer.reject(error);
              });
     		return defer.promise;
     	},
-    	SendEmailApprovePayment: function(UserId) {
+    	SendEmailApprovePayment: (UserId) => {
     		var defer = $q.defer();
     		var approveMailUrl = ENV.apiEndpoint + '/mails/ApprovePaymentDocument/' + UserId;
             $http.get(approveMailUrl)
-            .success(function (data, status) {
+            .success((data, status) => {
             	defer.resolve(data);
             })
-            .error(function(err, status) {
+            .error((err, status) => {
             	defer.reject(err);
             })
     		return defer.promise;
     	},
-    	SendEmailRejectPayment: function(ValidateForm) {
+    	SendEmailRejectPayment: (ValidateForm) => {
     		var defer = $q.defer();
     		var rejectMailUrl = ENV.apiEndpoint + '/mails/RejectPaymentDocument';
             $http.post(rejectMailUrl, ValidateForm)
-            .success(function (data, status) {
+            .success((data, status) => {
                 defer.resolve(data);
             })
-            .error(function (err, status) {
+            .error((err, status) => {
                 defer.reject(err);
             });
     		return defer.promise;
     	},
-        SendEmailReviewPayment : function(mailObj) {
+        SendEmailReviewPayment : (mailObj) => {
             var defer = $q.defer();
             var reviewUrl = ENV.apiEndpoint + '/mails/ReviewPaymentDocument';
             $http.post(reviewUrl, mailObj)
-            .success(function (data, status) {
+            .success((data, status) => {
                 defer.resolve(data);
             })
-            .error(function (err, status) {
+            .error((err, status) => {
                 defer.reject(err);
             });
             return defer.promise;
         }, 
-        SendEmailNotifyCustomerShipping: function(mailObj) {
+        SendEmailNotifyCustomerShipping: (mailObj) => {
             var defer = $q.defer();
             var notifyUrl = ENV.apiEndpoint + '/mails/NofityCustomerShipping';
             $http.post(notifyUrl, mailObj)
-            .success(function (data, status) {
+            .success((data, status) => {
                 defer.resolve(data);
             })
-            .error(function (err, status) {
+            .error((err, status) => {
                 defer.reject(err);
             });
             return defer.promise;
         },
-        SendEmailFeedback: function(mailObj) {
+        SendEmailFeedback: (mailObj) => {
             var defer = $q.defer();
             var feedbackUrl = ENV.apiEndpoint + '/mails/CustomerSendFeedback';
             $http.post(feedbackUrl, mailObj)
-            .success(function (data, status) {
+            .success((data, status) => {
                 defer.resolve(data);
             })
-            .error(function (err, status) {
+            .error((err, status) => {
                 defer.reject(err);
             });
             return defer.promise;

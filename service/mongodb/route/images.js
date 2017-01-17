@@ -9,12 +9,12 @@ var grid = require('gridfs-stream');
 var multipartMiddleware = multipart();
 
 /* Upload User Image */
-router.post("/uploadUserImage/:UserId/:Username", multipartMiddleware,  function (req, res) {
+router.post("/uploadUserImage/:UserId/:Username", multipartMiddleware, (req, res) => {
 	var UserId = req.params.UserId;
 	var Username = req.params.Username;
 //    console.log(req.body, req.files.file);
 
-    var o_id = bson.BSONPure.ObjectID(UserId);
+    var o_id = ObjectID(UserId);
     var gfs = grid(db, mongodb);
     var uploadDir = 'upload/user/';
     var fileExt = getFileExtension(req.files.file.originalFilename);
@@ -85,11 +85,11 @@ router.post("/uploadUserImage/:UserId/:Username", multipartMiddleware,  function
     	});
 });
 
-router.get("/downloadUserImageProfile/:UserId/:Username", multipartMiddleware,  function (req, res) {
+router.get("/downloadUserImageProfile/:UserId/:Username", multipartMiddleware, (req, res) => {
 	var UserId = req.params.UserId;
 	var Username = req.params.Username;
 	var gfs = grid(db, mongodb);
-	var o_id = bson.BSONPure.ObjectID(UserId);
+	var o_id = ObjectID(UserId);
 //	var fileExt = getFileExtension(req.files.file.originalFilename);
 	db.collection('fs.files')
    .find({ "metadata.refId" : o_id})

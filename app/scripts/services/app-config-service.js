@@ -1,14 +1,14 @@
 "use strict";
-app.service("AppConfigService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
+app.service("AppConfigService", ["$q", "$http", "ENV", ($q, $http, ENV) => {
     return {
-    	GetNewCode: function(Module) {
+    	GetNewCode: (Module) => {
     		var defer = $q.defer();
     		var newCodeUrl = ENV.apiEndpoint + "/appconfig/GetNewCode/" + Module;
             $http.get(newCodeUrl)
-            .success(function (newcode) {
+            .success((newcode) => {
                 defer.resolve(newcode);
             })
-            .error(function (err) {
+            .error((err) => {
                 defer.reject(err);
             });
 	        return defer.promise;

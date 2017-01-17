@@ -1,5 +1,5 @@
 "use strict";
-app.directive("menuItem", function() {
+app.directive("menuItem", () => {
      return {
          restrict: "E",
          template: "<div ng-click='navigate()' ng-transclude></div>",
@@ -7,8 +7,8 @@ app.directive("menuItem", function() {
          scope: {
              hash: "@"
          },
-         link: function($scope) {
-             $scope.navigate = function() {
+         link: ($scope) => {
+             $scope.navigate = () => {
                  window.location.hash = $scope.hash;
              }
          }

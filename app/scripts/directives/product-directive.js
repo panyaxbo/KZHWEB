@@ -1,12 +1,12 @@
 "use strict";
-app.directive('loadProduct', function() {
+app.directive('loadProduct', () => {
 	return {
 		restrict : 'E',
 		scope: {
 			product : '='
 		},
 		template: '',
-		constroller: function($scope) {
+		constroller: ($scope) => {
 			console.log($scope.product);
 		}
 	};

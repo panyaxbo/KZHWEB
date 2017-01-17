@@ -1,20 +1,20 @@
 "use strict";
-app.service("WeightRateService", ["$q","$http", "ENV", function ($q, $http, ENV) {
+app.service("WeightRateService", ["$q","$http", "ENV", ($q, $http, ENV) => {
     return {
         
-        GetDefaultWeightRate: function(Weight) {
+        GetDefaultWeightRate: (Weight) => {
         	var defer = $q.defer();
         	var weightRateURL = ENV.apiEndpoint + "/weight/GetDefaultWeightRate/" + Weight;
 	         $http.get(weightRateURL)
-	         .success(function (rate, status) {
+	         .success((rate, status) => {
 	        	defer.resolve(rate);
 	        })
-	        .error(function (error, status) {
+	        .error((error, status) => {
 	        	defer.reject(error);
 	        });
         	return defer.promise;
         },
-        GetWeightRateByPostTypeAndWeight: function(PostType, Weight) {
+        GetWeightRateByPostTypeAndWeight: (PostType, Weight) => {
             if (PostType === 'Normal') {
                 var weight_rate = this.GetWeightRateNormal(Weight);
                 return weight_rate;
@@ -22,40 +22,40 @@ app.service("WeightRateService", ["$q","$http", "ENV", function ($q, $http, ENV)
                 var defer = $q.defer();
                 var weightRateURL = ENV.apiEndpoint + "/weight/GetWeightRateByPostTypeAndWeight/" + PostType + "/" + Weight;
                  $http.get(weightRateURL)
-                 .success(function (data, status) {
+                 .success((data, status) => {
                     defer.resolve(data);
                 })
-                .error(function (error, status) {
+                .error((error, status) => {
                     defer.reject(error);
                 });
                 return defer.promise;
             }
         },
-        GetNormalWeightRate: function() {
+        GetNormalWeightRate: () => {
             var defer = $q.defer();
             var weightRateURL = ENV.apiEndpoint + "/weight/GetNormalWeightRate/";
              $http.get(weightRateURL)
-             .success(function (data, status) {
+             .success((data, status) => {
                 defer.resolve(data);
             })
-            .error(function (error, status) {
+            .error((error, status) => {
                 defer.reject(error);
             });
             return defer.promise;
         },
-        GetEMSWeightRate: function() {
+        GetEMSWeightRate: () => {
             var defer = $q.defer();
             var weightRateURL = ENV.apiEndpoint + "/weight/GetEMSWeightRate/";
              $http.get(weightRateURL)
-             .success(function (data, status) {
+             .success((data, status) => {
                 defer.resolve(data);
             })
-            .error(function (error, status) {
+            .error((error, status) => {
                 defer.reject(error);
             });
             return defer.promise;
         },
-        GetWeightRateNormal: function(weight) {
+        GetWeightRateNormal: (weight) => {
             var weight_rate = 0;
             if (weight <= 1000) {
                 weight_rate = 20;

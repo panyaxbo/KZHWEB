@@ -1,65 +1,65 @@
 "use strict";
-app.service("ReceiptOrderService", ["$q","$http", "ENV", function ($q, $http, ENV) {
+app.service("ReceiptOrderService", ["$q","$http", "ENV", ($q, $http, ENV) => {
 
     return {
-        CreateReceiptOrder: function(ROHeadObject) {
+        CreateReceiptOrder: (ROHeadObject) => {
             var defer = $q.defer();
             var createReceiptUrl = ENV.apiEndpoint + '/receipts/CreateReceipt';
             $http.post(createReceiptUrl, ROHeadObject)
-            .success(function (data, status) {
+            .success((data, status) => {
                 defer.resolve(data);
             })
-            .error(function(err, status) {
+            .error((err, status) => {
                 defer.reject(err);
             });
             return defer.promise;
         },
-        LoadROHeadByUserIdAndStatus: function(UserId, PaymentStatus, ShippingStatus, StartDate, EndDate) {
+        LoadROHeadByUserIdAndStatus: (UserId, PaymentStatus, ShippingStatus, StartDate, EndDate) => {
             var defer = $q.defer();
             var historyReceiptUrl = ENV.apiEndpoint + "/receipts/LoadROHeadByUserIdAndStatus/" + UserId + "/" + PaymentStatus
             + "/" + ShippingStatus + "/" + StartDate + "/" + EndDate;
             $http.get(historyReceiptUrl)
-            .success(function (data) {
+            .success((data) => {
                 defer.resolve(data);
             })
-            .error(function (err) {
+            .error((err) => {
                 defer.reject(err);
             });
             return defer.promise;
         },
-        LoadROHeadByStaff: function(CustomerRONo, CustomerName, CustomerOrderPaymentStatus, CustomerOrderShippingStatus, CustomerOrderStartDate, CustomerOrderEndDate) {
+        LoadROHeadByStaff: (CustomerRONo, CustomerName, CustomerOrderPaymentStatus, CustomerOrderShippingStatus, CustomerOrderStartDate, CustomerOrderEndDate) => {
             var defer = $q.defer();
             var CustomerOrderUrl = ENV.apiEndpoint + "/receipts/LoadROHeadByStaff/"+ CustomerRONo +"/"+ CustomerName+"/"+CustomerOrderPaymentStatus+"/"+ CustomerOrderShippingStatus +"/"+CustomerOrderStartDate+"/"+CustomerOrderEndDate;
             console.log(CustomerOrderUrl);
             $http.get(CustomerOrderUrl)
-            .success(function (data, status) {
+            .success((data, status) => {
                 defer.resolve(data);
             })
-            .error(function (err, status) {
+            .error((err, status) => {
                 defer.reject(err);
             });
             return defer.promise;
         },
-        LoadROHeadROLineByROHeadId: function(ROHeadId) {
+        LoadROHeadROLineByROHeadId: (ROHeadId) => {
             var defer = $q.defer();
             var loadROHeadLineUrl = ENV.apiEndpoint + "/receipts/LoadROHeadROLineByObjId/" + ROHeadId;
             $http.get(loadROHeadLineUrl)
-            .success(function (data, status) {
+            .success((data, status) => {
                 defer.resolve(data);
             })
-            .error(function(error, status) {
+            .error((error, status) => {
                 defer.resolve(error);
             });
             return defer.promise;
         },
-        PerformApprovePayment: function(RONo) {
+        PerformApprovePayment: (RONo) => {
             var defer = $q.defer();
             var approvePaymentUrl = ENV.apiEndpoint + '/receipts/ApprovePayment/' + RONo;
             $http.get(approvePaymentUrl)
-            .success(function (data, status) {
+            .success((data, status) => {
                 defer.resolve(data);
             })
-            .error(function(error, status) {
+            .error((error, status) => {
                 defer.reject(error);
             });
             return defer.promise;

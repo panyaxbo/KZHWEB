@@ -1,5 +1,5 @@
 "use strict";
-app.directive('productTypeList', function() {
+app.directive('productTypeList', () => {
 	return {
 		restrict : 'E',
 		scope: {
@@ -7,7 +7,7 @@ app.directive('productTypeList', function() {
 		},
 		templateUrl: '/views/templates/productTypeList.html',
 		replace: true,
-		constroller: function($scope) {
+		constroller: ($scope) => {
 			console.log('p t d ', $scope.ProductType);
 		}
 	};

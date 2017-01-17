@@ -1,8 +1,8 @@
 "use strict";
-app.controller("MainController", [ "$scope", "$http" , "$timeout", "ngTableParams", 
+app.controller("MainController", [ "$scope", "$http" , "$location", "$timeout", "ngTableParams", 
     "ProductTypeService", "ProductCategoryService", "ProductService", "WeightRateService", "UtilService", "SubscribeService",
     "DataModelFactory",
-	 function ($scope, $http, $timeout, ngTableParams, 
+	 function ($scope, $http, $location, $timeout, ngTableParams, 
         ProductTypeService, ProductCategoryService, ProductService, WeightRateService, UtilService, SubscribeService,
         DataModelFactory) {
 
@@ -24,7 +24,7 @@ app.controller("MainController", [ "$scope", "$http" , "$timeout", "ngTableParam
     $scope.IsLogin = false;
     $scope.IsProductTypeDataReady = false;
     $scope.ProductTypes = [];
-    /*
+    /* Start Load Product Type in SideNav */
     ProductTypeService.LoadProductType()
         .then(function(types, status) {
             $scope.ProductTypes = types;
@@ -53,32 +53,37 @@ app.controller("MainController", [ "$scope", "$http" , "$timeout", "ngTableParam
         }, function(err, status) {
         });
     };
-    $scope.LoadProductByProductCategoryCode = function (ProductCategoryCode) {
-        $scope.IsProductDataReady = false;
-        document.getElementById('ProductDataReady').style.display = 'none';
-        document.getElementById('ProductDataNotReady').style.display = 'block';
-        $('html, body').animate({ scrollTop: $('#product-section').offset().top }, 'slow');
 
-        ProductService.LoadProductByProductCategoryCode(ProductCategoryCode)
-        .then(function(data, status) {
-            $scope.Products = data;
+    $scope.LoadProductByProductCategoryCode = (ProductCategoryCode) => {
+       if (!document.getElementById('ProductDataReady').style || document.getElementById('ProductDataReady').style != null) {
+            $scope.IsProductDataReady = false;
+            document.getElementById('ProductDataReady').style.display = 'none';
+            document.getElementById('ProductDataNotReady').style.display = 'block';
+            $('html, body').animate({ scrollTop: $('#product-section').offset().top }, 'slow');
 
-            $scope.totalItems = $scope.Products.length;
-            $scope.bigTotalItems = $scope.Products.length;
-            $scope.SelectedMenu = "product";
-            $scope.$emit('handleBodyMenuEmit', {
-                SelectedMenu: "product"
+            ProductService.LoadProductByProductCategoryCode(ProductCategoryCode)
+            .then((data, status) => {
+                $scope.Products = data;
+
+                $scope.totalItems = $scope.Products.length;
+                $scope.bigTotalItems = $scope.Products.length;
+                $scope.SelectedMenu = "product";
+                $scope.$emit('handleBodyMenuEmit', {
+                    SelectedMenu: "product"
+                });
+                $scope.IsProductDataReady = true;
+                document.getElementById('ProductDataReady').style.display = 'block';
+                document.getElementById('ProductDataNotReady').style.display = 'none';
+            }, function(err, status) {
+                sweetAlert("Error !!", "Cannot get Product data from Server..", "error");
             });
-            $scope.IsProductDataReady = true;
-            document.getElementById('ProductDataReady').style.display = 'block';
-            document.getElementById('ProductDataNotReady').style.display = 'none';
-        }, function(err, status) {
-            sweetAlert("Error !!", "Cannot get Product data from Server..", "error");
-        });
-    };*/
-    $scope.InitPaymentAndDeliveryMethod = function() {
+        }
+    };
+    /* End Load Product Type in SideNav */
+    
+    $scope.InitPaymentAndDeliveryMethod = () => {
         WeightRateService.GetNormalWeightRate()
-        .then(function(data, status) {
+        .then((data, status) => {
             $scope.NormalTableParams = new ngTableParams({
                     page: 1,            // show first page
                     count: 10           // count per page
@@ -106,20 +111,21 @@ app.controller("MainController", [ "$scope", "$http" , "$timeout", "ngTableParam
             console.log(err);
         })
     };
-    $scope.Subscribe = function() {
+
+    $scope.Subscribe = () => {
         if (UtilService.validateEmail($scope.EmailSubscriber)) {
             swal("เตือน", "อีเมลไม่ถูกต้อง", "warning");
             return;
         } else {
             SubscribeService.CheckExistEmailSubscribe($scope.EmailSubscriber)
-            .then(function(data, status) {
+            .then((data, status) => {
                 if (!data) {
                     return SubscribeService.CreateSubscribe($scope.EmailSubscriber)
                 } else {
                     swal("สำเร็จ", "Email นี้ ได้ subscribe เรียบร้อยแล้ว", "warning");
                 }
             })
-            .then(function(data, status) {
+            .then((data, status) => {
                 if (data) {
                     swal("สำเร็จ", "ท่านได้ subscribe เรียบร้อย", "success");
                 } else {
@@ -129,4 +135,21 @@ app.controller("MainController", [ "$scope", "$http" , "$timeout", "ngTableParam
 
         }
     };
+
+    $scope.SelectShopProductDetail = (productId) => {
+        console.log('product ud ', productId);
+        ProductService.LoadProductByProductId(productId)
+        .then((data, status) => {
+            if (data) {
+                console.log(data);
+                $scope.ShopProductDetail = data;
+                console.log($scope.ShopProductDetail);
+                $location.path('/product/' + productId);
+            } else if (!data) {
+                swal("Your data not found", "Cannot find your product detail.", "warning");
+            }
+        }, (err, status) => {
+            console.log(err);
+        });
+    }
 }]);

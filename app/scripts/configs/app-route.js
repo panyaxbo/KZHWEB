@@ -1,12 +1,17 @@
 "use strict";
-app.config(function($routeProvider, $locationProvider) {
- 
+app.config(($routeProvider, $locationProvider) => {
+  $locationProvider.hashPrefix('!');
+  $locationProvider.html5Mode(true);
   $routeProvider
       .when('/', {
         templateUrl: '/views/main.html'
       })
       .when('/product', {
         templateUrl: '/views/main.html',
+        controller: 'MainController'
+      })
+      .when('/product/:productId', {
+        templateUrl: '/views/shop-product-detail.html',
         controller: 'MainController'
       })
       .when('/login', {
@@ -174,6 +179,4 @@ app.config(function($routeProvider, $locationProvider) {
       .otherwise({
         redirectTo: '/404'
       });
-      $locationProvider.html5Mode(true);
-  $locationProvider.hashPrefix('!');
 });

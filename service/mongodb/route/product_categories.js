@@ -3,27 +3,27 @@ var router = express.Router();
 var Q = require('q');
 
 /* GET users listing. */
-router.get(mongodbConfig.url.product_category.home, function (req, res, next) {
+router.get(mongodbConfig.url.product_category.home, (req, res, next) => {
     res.send('ProductCategories');
 });
 
-router.get(mongodbConfig.url.product_category.loadAllProductCategory, function (req, res) {
+router.get(mongodbConfig.url.product_category.loadAllProductCategory, (req, res) => {
     db.collection(mongodbConfig.mongodb.product_category.name)
         .find({})
-        .toArray(function (err, items) {
+        .toArray((err, items) => {
             if (err){
                 console.log(error, error.stack.split("\n"));
-                res.status(500).send('error occur when load all product category');
+                res.status(500).json('error occur when load all product category');
                 return;
             } else if (!items) {
-                res.status(404).send('not found all product category');
+                res.status(404).json('not found all product category');
                 return;
             } else if (items){
-                res.json(items);
+                res.status(200).json(items);
             }
         });
 });
-function GenerateTextStringQuery (searchArray) {
+var GenerateTextStringQuery = (searchArray) => {
     var query = '';
     for (var ix = 0; ix < searchArray.length; ix++) {
         // last
@@ -36,7 +36,7 @@ function GenerateTextStringQuery (searchArray) {
     return query; 
 }
 
-router.get('/LoadProductCategoryByCondition/:ProductCategoryCode/:ProductCategoryName/:ProductTypeCode', function (req, res) {
+router.get('/LoadProductCategoryByCondition/:ProductCategoryCode/:ProductCategoryName/:ProductTypeCode', (req, res) => {
     var CatCode = req.params.ProductCategoryCode;
     var CatName = req.params.ProductCategoryName;
     var TypeCode = req.params.ProductTypeCode;
@@ -70,7 +70,7 @@ router.get('/LoadProductCategoryByCondition/:ProductCategoryCode/:ProductCategor
             $query: searchquery ,
             $orderby: { ProductCategoryCode : 1 }
         })
-        .toArray(function (err, items) {
+        .toArray((err, items) => {
             if (err) {
                 res.status(500).send('cannot find product category ');
             } else {
@@ -79,17 +79,17 @@ router.get('/LoadProductCategoryByCondition/:ProductCategoryCode/:ProductCategor
         });
 });
 
-router.get('/LoadProductCategoryByProductType/:ProductTypeCode/', function (req, res) {
+router.get('/LoadProductCategoryByProductType/:ProductTypeCode/', (req, res) => {
     var TypeCode = req.params.ProductTypeCode;
 
-    var LoadProductCategoryByProductTypePromise = function() {
+    var LoadProductCategoryByProductTypePromise = () => {
         var defer = Q.defer();
         
         db.collection(mongodbConfig.mongodb.product_category.name)
             .find({
                 'ProductTypeCode' : TypeCode
             })
-            .toArray(function (err, items) {
+            .toArray((err, items) => {
                 if (err) {
                     defer.reject(err)
                 } else {
@@ -100,32 +100,31 @@ router.get('/LoadProductCategoryByProductType/:ProductTypeCode/', function (req,
     }
 
     LoadProductCategoryByProductTypePromise()
-    .then(function(data, status) {   
+    .then((data, status) => {   
         if (!data) {
-            res.status(404).send('not found product category by product type');
+            res.status(404).json('not found product category by product type');
         } else {
-            res.json(data);
+            res.status(200).json(data);
         }
-    },function(err, status) {
+    },(err, status) => {
         console.log(err,status);     
-        res.status(500).send('err occur ');
-        return;
+        res.status(500).json('err occur ');
     });
     
 });
 
-router.get(mongodbConfig.url.product_category.loadProductCategoryByObjId, function (req, res) {
+router.get(mongodbConfig.url.product_category.loadProductCategoryByObjId, (req, res) => {
     var ProductCategoryId = req.params.ProductCategoryId;
-    var o_id = bson.BSONPure.ObjectID(ProductCategoryId);
+    var o_id = ObjectID(ProductCategoryId);
     db.collection(mongodbConfig.mongodb.product_category.name)
         .findOne({
             '_id': o_id
-        }, function (err, ProductCategory) {
+        }, (err, ProductCategory) => {
             if (err) {
                 res.status(500).send('err has occur : cannot load product category by id ');
             } else {
                
-                FindProductTypeByProductTypeCode(ProductCategory.ProductTypeCode, function (err, ProductType) {
+                FindProductTypeByProductTypeCode(ProductCategory.ProductTypeCode, (err, ProductType) => {
                     ProductCategory.ProductType = ProductType;
                     res.json(ProductCategory);
                 });
@@ -133,11 +132,11 @@ router.get(mongodbConfig.url.product_category.loadProductCategoryByObjId, functi
             }
         });
 
-        function FindProductTypeByProductTypeCode(ProductTypeCode, callback) {
+        var FindProductTypeByProductTypeCode = (ProductTypeCode, callback) => {
             db.collection(mongodbConfig.mongodb.product_type.name)
             .findOne({
                 'ProductTypeCode': ProductTypeCode
-            }, function (err, ProductType) {
+            }, (err, ProductType) => {
                 if (err) {
                     callback(err);
                 } else {
@@ -147,66 +146,65 @@ router.get(mongodbConfig.url.product_category.loadProductCategoryByObjId, functi
         }
 });
 
-router.get(mongodbConfig.url.product_category.loadProductCategoryById, function (req, res) {
+router.get(mongodbConfig.url.product_category.loadProductCategoryById, (req, res) => {
     console.log('ProductCategories id ' + req.params.ProductCategoryId);
     var ProductCategoryId = req.params.ProductCategoryId;
     db.collection(mongodbConfig.mongodb.product_category.name)
         .find({
             'Id': parseInt(ProductCategoryId)
         })
-        .toArray(function (err, items) {
+        .toArray((err, items) => {
             if (err) {
                 console.log(err, err.stack.split("\n"));
                 res.status(500).send('error occur ');
             } else {
-                res.json(items);
+                res.status(200).json(items);
             }
         });
 });
 
-router.get(mongodbConfig.url.product_category.loadProductCategoryByProductCategoryCode, function (req, res) {
+router.get(mongodbConfig.url.product_category.loadProductCategoryByProductCategoryCode, (req, res) => {
     console.log('ProductCategory Code ' + req.params.ProductCategoryCode);
     var ProductCategoryCode = req.params.ProductCategoryCode;
     db.collection(mongodbConfig.mongodb.product_category.name)
         .find({
             'ProductCategoryCode': ProductCategoryCode
         })
-        .toArray(function (err, items) {
+        .toArray((err, items) => {
             if (err) {
                 console.log(err, err.stack.split("\n"));
                 res.status(500).send('err occur ');
             } else {
-                res.json(items);
+                res.status(200).json(items);
             }
         });
 });
 
 // Create Product Category
-router.post(mongodbConfig.url.product_category.createProductCategory, function (req, res) {
+router.post(mongodbConfig.url.product_category.createProductCategory, (req, res) => {
     var ProductCategory = req.body;
     var createDate = new Date ();
     createDate.setHours ( createDate.getHours() + 7 );// GMT Bangkok +7
     ProductCategory.CreateDate = createDate;
     ProductCategory.UpdateDate = createDate;
     db.collection(mongodbConfig.mongodb.product_category.name)
-        .insert(ProductCategory,
-            function (err, result) {
-                if (err) {
-                    console.log(err, err.stack.split("\n"));
-                    res.status(500).send('error occur ');
-                } else {
-                    res.json(result);
-                }
-            });
+    .insert(ProductCategory, (err, result) => {
+            if (err) {
+                console.log(err, err.stack.split("\n"));
+                res.status(500).json('error occur ');
+            } else {
+                res.status(200).json(result);
+            }
+        });
 });
 
 // Update Product Category
-router.post(mongodbConfig.url.product_category.updateProductCategory, function (req, res) {
+router.post(mongodbConfig.url.product_category.updateProductCategory, (req, res) => {
     console.log('update product category ' + req.body);
     var ProductCategory = req.body;
     
     var id = ProductCategory._id;
-    var o_id = bson.BSONPure.ObjectID(id.toString());
+    var o_id = ObjectID(id.toString());
     var updateDate = new Date ();
     updateDate.setHours ( updateDate.getHours() + 7 );// GMT Bangkok +7
     ProductCategory.UpdateDate = updateDate;
@@ -222,31 +220,30 @@ router.post(mongodbConfig.url.product_category.updateProductCategory, function (
                     'UpdateBy' : ProductCategory.UpdateBy,
                     'UpdateDate' : updateDate
                 }
-            },
-            function (err, result) {
+            }, (err, result) => {
                 if (err) {
                     console.log(error, error.stack.split("\n"));
-                    res.status(500).send('error occur ');
+                    res.status(500).json('error occur ');
                 } else {
-                    res.json(result);
+                    res.status(200).json(result);
                 }
             });
 });
 
 // Delete Product Category
-router.get(mongodbConfig.url.product_category.deleteProductCategoryByProductCategoryId, function (req, res) {
+router.get(mongodbConfig.url.product_category.deleteProductCategoryByProductCategoryId, (req, res) => {
     var ProductCategoryId = req.params.ProductCategoryId;
     console.log('delete cat ' + ProductCategoryId);
-    var o_id = bson.BSONPure.ObjectID(ProductCategoryId.toString());
+    var o_id = ObjectID(ProductCategoryId.toString());
     db.collection(mongodbConfig.mongodb.product_category.name)
         .remove({
             _id: o_id
-        }, function (err, result) {
+        }, (err, result) => {
             if (err)  {
                 console.log(error, error.stack.split("\n"));
-                res.status(500).send('error occur ');
+                res.status(500).json('error occur ');
             } else {
-                res.json(result);
+                res.status(200).json(result);
             }
         });
 });

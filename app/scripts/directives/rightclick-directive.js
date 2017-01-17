@@ -1,9 +1,9 @@
 "use strict";
-app.directive("ngRightClick", function($parse) {
-    return function(scope, element, attrs) {
+app.directive("ngRightClick", ($parse) => {
+    return (scope, element, attrs) => {
         var fn = $parse(attrs.ngRightClick);
-        element.bind('contextmenu', function(event) {
-            scope.$apply(function() {
+        element.bind('contextmenu', (event) => {
+            scope.$apply(() => {
                 event.preventDefault();
                 fn(scope, {$event:event});
             });

@@ -1,15 +1,15 @@
 "use strict";
-app.service("UomService", ["$q", "$http", "ENV", function ($q, $http, ENV) {
+app.service("UomService", ["$q", "$http", "ENV", ($q, $http, ENV) => {
     return {
-    	LoadUomByUomCode: function(UomCode) {
+    	LoadUomByUomCode: (UomCode) => {
     		var defer = $q.defer();
     		var url = ENV.apiEndpoint + "/uoms/LoadUomByUomCode/" + UomCode;
 		     $http.get(url)
-		     .success(function (data, status) {
+		     .success((data, status) => {
 		     	defer.resolve(data);
 		   
 		    })
-		    .error(function (error, status) {
+		    .error((error, status) => {
 		    	defer.reject(error);
 		    });
     		return defer.promise;
