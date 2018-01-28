@@ -1,21 +1,26 @@
 "use strict";
 app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "ENV", "$window", "$timeout",
   "UserService", "CredentialService", "UtilService", "CryptoService", "EmailService", "RoleService", "DataModelFactory", 
-  function ($scope, $http, $location, $filter, ENV, $window, $timeout,
-    UserService, CredentialService, UtilService, CryptoService, EmailService, RoleService, DataModelFactory) {
+    ($scope, $http, $location, $filter, ENV, $window, $timeout,
+    UserService, CredentialService, UtilService, CryptoService, EmailService, RoleService, DataModelFactory) => {
     $scope.User = DataModelFactory.getUser();
     $scope.ForgetPasswordProgressValue = 0;
     $scope.IsAdmin = false;
     $scope.IsGuest = true;
     $scope.IsLogin = false;
 
- //   console.log($scope.User);
+    // Register Check Params
+    $scope.IsExistUsername = false;
+    $scope.IsExistEmail = false;
+    $scope.IsValidEmail = false;
+    $scope.IsHuman = false;
+    $scope.IsAcceptCondition = false;
 
-    $scope.Login = function () {
+    $scope.Login = () => {
       document.getElementById('LoginDataNotReady').style.display = 'block';
       var appuser = {};
       UserService.LoginWithUsernameAndPassword($scope.username, $scope.password)
-      .then(function(data, status) {
+      .then((data, status) => {
    //     console.log(data);
           if (!data || data === undefined) {
               swal("Error", "Cannot login maybe username or password incorrect", "error");
@@ -30,7 +35,7 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
           
           return UserService.CheckIsUserActivate($scope.username, $scope.password);
       })
-      .then(function (data, status) {
+      .then((data, status) => {
      //     console.log(data);
           if (!data || data === undefined) {
             swal("Error", "Sorry, your account is not activated yet, please check your email.", "error");
@@ -62,15 +67,14 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
           }
           return RoleService.FindRoleByRoleCode(appuser.RoleCode);
       //    return UserService.DownloadUserProfileImage($scope.User.Id, $scope.User.Username);
-      }, function(err, status) {
+      }, (err, status) => {
         if (status == 404) {
           console.log(err);
         } else {
           console.log(err);
-        
         }
       })
-      .then(function(role, status) {
+      .then((role, status) => {
           $scope.User.Role = {
              RoleCode: role.RoleCode,
              RoleNameEn: role.RoleNameEn,
@@ -84,19 +88,19 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
             $scope.IsGuest = false;
           }
           return UserService.DownloadUserProfileImage($scope.User.Id, $scope.User.Username);
-      },function(err, status) {
+      }, (err, status) => {
 
       })
-      .then(function(profile_image, status) {
+      .then((profile_image, status) => {
 
         $scope.User.ProfileImage = profile_image;
           $('#UserProfileImage').children("img").remove();
           $('#UserProfileImage').append(profile_image);
           return UserService.DownloadUserThumbnailImage($scope.User.Id, $scope.User.Username);
-      }, function(err, status) {
+      }, (err, status) => {
          console.log('download user image fail no problem goes on ');
       })
-      .then(function(thumbnail_image, status) {
+      .then((thumbnail_image, status) => {
           $('#ThumbnailProfileImage').children("img").remove();
           $('#ThumbnailProfileImage').append(thumbnail_image);
           $scope.username = "";
@@ -104,7 +108,7 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
           $scope.$emit('handleUserEmit', {
               User: $scope.User
           });
-      }, function(error, status) {
+      },  (error, status) => {
           console.log('error', error);
           console.log("Log in Not found");
           $scope.LoginErrorMessage = "Error! Wrong Username or Password";
@@ -115,7 +119,7 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
       });
     }
 
-    $scope.Logout = function () {
+    $scope.Logout = () => {
         var int = 1;
         swal({
           title: "Are you sure?",
@@ -127,9 +131,8 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
           cancelButtonText: "No, cancel please!",
           closeOnConfirm: false,
           closeOnCancel: false
-        },
-        function(isConfirm){
-            $scope.$apply(function() {
+        }, (isConfirm) => {
+            $scope.$apply(() => {
               if (isConfirm) {
                 swal("Success", "Log out success", "success");
                 $scope.User = {};
@@ -148,13 +151,13 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
         });
     }
 
-    $scope.AddNoProfileUserImage = function() {
+    $scope.AddNoProfileUserImage = () => {
       $('#UserProfileImage').children("img").remove();
       var imageNoProfile = "<img src=\"/images/noProfileImg.png\"  class=\"img-circle\" width=\"40\" height=\"40\">";
       $('#UserProfileImage').append(imageNoProfile);
     }
 
-  	$scope.LoginWithSocial = function (provider) {
+  	$scope.LoginWithSocial = (provider) => {
         OAuth.popup(provider)
         .done(function(result) {
             result.me()
@@ -560,4 +563,80 @@ app.controller("LoginController", [ "$scope", "$http", "$location", "$filter", "
           vcRecaptchaService.reload($scope.widgetId);
         }
     };
+    $scope.ValidateEmail = () => {
+        var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        if (!filter.test($scope.Email) || (!$scope.Email && $scope.Email.length > 0)) {
+            $scope.ValidateSignupEmail = false;
+            $scope.IsValidEmail = false;
+            $scope.EmailValidateMessage = "Warning! Not an email format.";
+            $('#EmailAlert').removeClass("alert-success")
+            $('#EmailAlert').addClass("alert-warning");
+            $('#EmailAlert').show();
+        } else {
+            $scope.ValidateSignupEmail = true;
+            $scope.IsValidEmail = true;
+            $scope.EmailValidateMessage = "This email is valid format.";
+            $('#EmailAlert').removeClass("alert-warning");
+            $('#EmailAlert').addClass("alert-success");
+            $('#EmailAlert').show();
+        }
+        if($scope.ValidEmail == true) {
+          $scope.ValidateExistEmail();
+        }
+    }
+
+    $scope.ValidateExistEmail = () => {
+      if ($scope.Email.length > 0) {
+        UserService.IsExistEmail($scope.Email)
+        .then((data, status) => {
+            if (!data) {
+                  $scope.EmailValidateMessage = "Success! This Email is usable";
+                  $scope.IsExistEmail = false;
+                  $('#EmailAlert').removeClass("alert-warning");
+                  $('#EmailAlert').addClass("alert-success");
+                  $('#EmailAlert').show();
+
+              } else {
+                  $scope.EmailValidateMessage = "Warning! This Email is reseved";
+                  $scope.IsExistEmail = true;
+                  $('#EmailAlert').removeClass("alert-success");
+                  $('#EmailAlert').addClass("alert-warning");
+                  $('#EmailAlert').show();
+              }
+        }, (error, status) => {
+
+        });
+      }
+    }
+    $scope.ValidateExistUsername = () => {
+        if ($scope.Username.length > 0) {
+          UserService.IsExistUsername($scope.Username)
+          .then((data, status) => {
+              if (!data) {
+                  $scope.IsExistUsername = false;
+                  $scope.UsernameValidateMessage = "Success! This Username is usable.";
+                  $('#UsernameAlert').removeClass("alert-warning");
+                  $('#UsernameAlert').addClass("alert-success");
+                  $('#UsernameAlert').show();
+                           
+              } else {
+                  $scope.IsExistUsername = true;
+                  $scope.UsernameValidateMessage = "Warning! This Username is reserved.";
+                  $('#UsernameAlert').removeClass("alert-success");
+                  $('#UsernameAlert').addClass("alert-warning");
+                  $('#UsernameAlert').show();
+              }
+          }, (error, status) => {
+
+          });
+        }
+    }
+    $scope.Display = () => {
+      //ExistUsername || ExistEmail || !ValidEmail || !IsHuman || !IsAcceptCondition
+      console.log('IsHuman ', $scope.IsHuman);
+      console.log('IsValidEmail ', $scope.IsValidEmail);
+      console.log('IsAccept ', $scope.IsAcceptCondition);
+      console.log('IsExistEmail ', $scope.IsExistEmail);
+      console.log('IsExistUsername ', $scope.IsExistUsername);
+    }
 }]);

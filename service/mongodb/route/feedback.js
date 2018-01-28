@@ -14,7 +14,7 @@ router.post('/CreateFeedback', (req, res) => {
         .insert(Feedback, (err, result) => {
                 if (err) {
                     console.log(err, err.stack.split("\n"));
-                    res.status(500).send('There is error occur');
+                    res.status(500).json('There is error occur');
                 } else {
                     res.status(200).json(result);
                 }

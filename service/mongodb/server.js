@@ -1,3 +1,4 @@
+"use string"
 var express = require('express');
 var app = express();
 var cors = require('express-cors');
@@ -27,7 +28,6 @@ app.use(require('prerender-node').set('prerenderToken', 'JUktA92vYRxfg2BTKrn0'))
 app.use(express.static('./app'));
 app.use(express.static(path.resolve(__dirname, '../../')));
 app.use(express.static('./bower_components'));
-
 
 var oauthConfig = require('../oauth/oauth-config.js');
 
@@ -67,6 +67,7 @@ var subscribes = require('./route/subscribes');
 var technicians = require('./route/technicians');
 var services = require('./route/services');
 var entrepreneurs = require('./route/entrepreneurs');
+var visa = require('../visa/visa');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -134,6 +135,7 @@ app.use('/subscribes', subscribes);
 app.use('/technicians', technicians);
 app.use('/services', services);
 app.use('/entrepreneurs', entrepreneurs);
+app.use('/visa', visa);
 
 var environment = process.env.NODE_ENV || '';
 var port = process.env.PORT || 3000;
@@ -146,7 +148,7 @@ mongodb.MongoClient.connect(mongolab_uri, function (err, database) {
     if (err) console.log(err, err.stack.split("\n"));
  //   console.log(database);
     db = database;
-   
+
    if (err) {
         console.log(err);
         process.exit(1);

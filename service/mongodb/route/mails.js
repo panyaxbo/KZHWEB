@@ -1,5 +1,6 @@
 var express = require('express');
 var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
 var mailConfig = require(appRoot +'/service/mail/mail-config.js');
 var Q = require('q');
 var router = express.Router();
@@ -68,6 +69,67 @@ attachments : mailConfig.MAIL_ATTACHMENTS
 		});
 });
 
+router.post('/SendEmailConfirmationV270', function (req, res) {
+	console.log(req.body );
+	var mailObj = req.body;
+	var host = mailObj.Host;
+	var email = mailObj.Email;
+	var back2Url = mailObj.BacktoUrl;
+
+	var activateLink = "http://" + host + '/#/?confirm='+ back2Url;
+	
+	var smtpConfig = {
+		service: 'gmail',
+    host: 'smtp.gmail.com',
+  //  port: 587,
+  //  secure: true, 
+    auth: {
+        user: 'kzh.parts@gmail.com',
+        pass: 'P@ssw0rd6126'
+    }
+};
+smtpTransport = nodemailer.createTransport(smtpConfig);
+//	smtpTransport = nodemailer.createTransport('smtps://kzh.parts@gmail.com:P@ssw0rd6126@smtp.gmail.com');
+
+	var mailOptions = {
+		  from: "KZH Parts <kzh.parts@gmail.com>", // sender address
+		  to: email,
+		  subject: "ยืนยันการเปิดใช้งานอีเมล ✔", // Subject line
+		  generateTextFromHTML: true,
+		  html : mailConfig.MAIL_CONTENT_TITLE +
+
+'<table style="background-color:#fff">'+
+	'<tbody>'+
+		'<tr>'+
+			'<td style="border-top:#e41f28 solid 6px;font:normal 13px/18px Arial,Helvetica,sans-serif;padding:45px 17px 30px 17px" valign="top">'+
+			'<h2 style="font:normal"><img height="15" src="cid:email@kzh.parts.co.th" style="margin-right:10px" width="21" >&nbsp;&nbsp;Email Confirm Activation </h2>'+
+			'<p>เรียนท่านลูกค้า ,<br>'+
+			'<br>'+
+			'อีเมลของท่านได้ลงทะเบียนกับทางระบบของเราเรียบร้อยซึ่งเกือบสมบูรณ์แล้ว ท่านจำเป็นต้องกดปุ่มด้านล่างเพื่อเสร็จสิ้นการลงทะเบียน<br><br>'+
+			'<br>'+
+			'<a href="' + activateLink + '" style="background-color:#F64747;border-radius:4px;color:#ffffff;display:inline-block;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:bold;line-height:50px;text-align:center;text-decoration:none;width:240px;align:center; " target="_blank">เปิดใช้งานบัญชีของท่าน</a>'+
+			'<br>'+
+			'</p>'+
+			'<p>&nbsp;</p>'+
+'			<p><strong>ขอขอบคุณสำหรับการช้อปปิ้งออนไลน์กับเรา&nbsp;</strong></p>'+
+'			<p><strong>KZH Parts Team&nbsp;</strong></p>'+
+			'</td>'+
+		'</tr>'+
+	'</tbody>'+
+'</table>'+
+mailConfig.MAIL_CONTENT_FOOTER,
+attachments : mailConfig.MAIL_ATTACHMENTS
+		}
+		smtpTransport.sendMail(mailOptions, function(error, response){
+		   if(error){
+		       console.log(error);
+		   }else{
+		       console.log("Message sent: " + response.message);
+		   }
+		   smtpTransport.close();
+		   res.sendStatus(200);
+		});
+});
 router.get('/SendEmailCustomerNewOrder/:CustomerEmail/:RONo', function (req, res) {
 	var email = req.params.CustomerEmail;
 	var roNo = req.params.RONo;
@@ -115,20 +177,20 @@ mailConfig.MAIL_CONTENT_FOOTER,
 attachments : mailConfig.MAIL_ATTACHMENTS_CUSTOMER
 	}
 
-	smtpTransport.sendMail(mailOptions, function(error, response){
-		   if(error){
-		    //   console.log(error);
-		       res.sendStatus(500);
+	smtpTransport.sendMail(mailOptions, (err, response) => {
+		   if(err){
+				 	console.log(err, err.stack.split("\n"));
+					res.status(500).json('error occur when sent confirm purchase');
 		   }else{
-		    //   console.log("Message sent: " + response.message);
+				 	smtpTransport.close();
+		   		res.status(200).json('sent confirm purchase success');
 		   }
-		   smtpTransport.close();
-		   res.sendStatus(200);
+		   
 		});
 });
 
 // Staff receive mail after customer create Receipt
-router.get('/SendEmailStaffNewOrder/:RONo', function (req, res) {
+router.get('/SendEmailStaffNewOrder/:RONo', (req, res) => {
 //	var email = req.params.CustomerEmail;
 	var roNo = req.params.RONo;
 
@@ -175,20 +237,20 @@ mailConfig.MAIL_CONTENT_FOOTER,
 attachments : mailConfig.MAIL_ATTACHMENTS_STAFF
 	}
 
-	smtpTransport.sendMail(mailOptions, function(error, response){
-		   if(error){
-		    //   console.log(error);
-		       res.sendStatus(500);
+	smtpTransport.sendMail(mailOptions, (err, response) => {
+		   if(err){
+		      console.log(err, err.stack.split("\n"));
+					res.status(500).json('error occur when sent email inform staff');
 		   }else{
-		    //   console.log("Message sent: " + response.message);
+		      smtpTransport.close();
+		   		res.status(200).json('sent email inform staff success');
 		   }
-		   smtpTransport.close();
-		   res.sendStatus(200);
+		   
 		});
 });
 
 // Send recovery link to input password
-router.post('/SendEmailForgetPassword', function (req, res) {
+router.post('/SendEmailForgetPassword', (req, res) => {
 	var mailObj = req.body;
 	var CustomerEmail = mailObj.Email;
 	var Host = mailObj.Host;
@@ -221,7 +283,7 @@ router.post('/SendEmailForgetPassword', function (req, res) {
 		  subject: "การเรียกคืนรหัสผ่านของท่าน", // Subject line
 		  generateTextFromHTML: true,
 		  html : mailConfig.MAIL_CONTENT_TITLE +
-'<table style="background-color:#fff"  width="650">'+
+'<table style="background-color:#fff" width="650">'+
 '	<tbody>'+
 '		<tr>'+
 '			<td style="border-top:#e41f28 solid 6px;font:normal 13px/18px Arial,Helvetica,sans-serif;padding:45px 17px 30px 17px" valign="top">'+
@@ -243,21 +305,20 @@ mailConfig.MAIL_CONTENT_FOOTER,
 attachments : mailConfig.MAIL_ATTACHMENTS_FORGET_PASSWORD
 	}
 
-	smtpTransport.sendMail(mailOptions, function(error, response){
-		   if(error){
-		       console.log(error, error.stack.split("\n"));
-		       res.sendStatus(500);
-		   }else{
-		    //   console.log("Message sent: " + response.message);
+	smtpTransport.sendMail(mailOptions, (err, response) => {
+		   if(err) {
+		      console.log(err, error.stack.split("\n"));
+					res.status(500).json('error occur sent email forget password');
+		   } else {
+				 	smtpTransport.close();
+		   		res.status(200).json('sent email forget password success');
 		   }
-		   smtpTransport.close();
-		   res.sendStatus(200);
 		});
 });
 
 
 // Send Mail to staff for reviewing payment document
-router.post('/ReviewPaymentDocument', function (req, res) {
+router.post('/ReviewPaymentDocument', (req, res) => {
 	var mailObj = req.body;
 	var RONo = mailObj.RONo;
 	var smtpTransport = nodemailer.createTransport(mailConfig.MAIL_TRANSFER_PROTOCOL, {
@@ -301,27 +362,27 @@ mailConfig.MAIL_CONTENT_FOOTER,
 attachments : mailConfig.MAIL_ATTACHMENTS_REVIEW_PAYMENT
 	}
 
-	smtpTransport.sendMail(mailOptions, function(error, response){
-		   if(error){
+	smtpTransport.sendMail(mailOptions, (error, response) => {
+		   if(error) {
 		       console.log(error, error.stack.split("\n"));
 		       res.sendStatus(500);
-		   }else{
-		    //   console.log("Message sent: " + response.message);
+		   } else {
+				   smtpTransport.close();
+		   		 res.sendStatus(200);
 		   }
-		   smtpTransport.close();
-		   res.sendStatus(200);
+		   
 		});
 });
 // Approve Payment Document
-router.get('/ApprovePaymentDocument/:UserId', function (req, res) {
+router.get('/ApprovePaymentDocument/:UserId', (req, res) => {
 	var UserId = req.params.UserId;
 	// Load USer
-    var LoadUserPromise = new Promise(function(resolve, reject) {
+    var LoadUserPromise = new Promise((resolve, reject) => {
         var user_id = bson.BSONPure.ObjectID(UserId);
         db.collection(mongodbConfig.mongodb.user.name)
             .findOne({
                 '_id': user_id
-            }, function (err, user) {
+            }, (err, user) => {
               if ( !err) {
                 resolve(user);
               }
@@ -331,7 +392,7 @@ router.get('/ApprovePaymentDocument/:UserId', function (req, res) {
               }
         });
     });
-    LoadUserPromise.then(function( CustomerUser ) {
+    LoadUserPromise.then(( CustomerUser ) => {
         console.log( CustomerUser );
         var smtpTransport = nodemailer.createTransport(mailConfig.MAIL_TRANSFER_PROTOCOL, {
 		  service: mailConfig.MAIL_SERVICE,
@@ -374,7 +435,7 @@ router.get('/ApprovePaymentDocument/:UserId', function (req, res) {
 			attachments : mailConfig.MAIL_ATTACHMENTS_APPROVE
 		}
 
-		smtpTransport.sendMail(mailOptions, function(error, response){
+		smtpTransport.sendMail(mailOptions, (error, response) => {
 		   if(error){
 		       console.log(error, error.stack.split("\n"));
 		       res.sendStatus(500);
@@ -384,27 +445,25 @@ router.get('/ApprovePaymentDocument/:UserId', function (req, res) {
 		   smtpTransport.close();
 		   res.sendStatus(200);
 		});
-    },
-    function ( err ) {
+    }, ( err ) => {
         console.log(err, err.stack.split("\n"));
     });
 	
 });
 
 // Reject Payment Document
-router.post('/RejectPaymentDocument', function (req, res) {
+router.post('/RejectPaymentDocument', (req, res) => {
 	var ValidateForm = req.body;
 	var UserId = ValidateForm.UserId;
 	var RejectReason = ValidateForm.RejectReason;
 	console.log( 'UserId' + UserId );
 	console.log( 'RejectReason ' + RejectReason);
-	var LoadUserPromise = new Promise(function(resolve, reject) {
+	var LoadUserPromise = new Promise((resolve, reject) => {
     	var user_id = bson.BSONPure.ObjectID(UserId);
 	    db.collection(mongodbConfig.mongodb.user.name)
 	        .findOne({
 	            '_id': user_id
-	        },
-	        function (err, User) {
+	        },(err, User) => {
 	          if ( !err) {
 	            resolve(User);
 	          }
@@ -414,7 +473,7 @@ router.post('/RejectPaymentDocument', function (req, res) {
 	          }
 	    });
 	});
-	LoadUserPromise.then(function( CustomerUser ) {
+	LoadUserPromise.then(( CustomerUser ) => {
 	    console.log( CustomerUser );
 	    var smtpTransport = nodemailer.createTransport(mailConfig.MAIL_TRANSFER_PROTOCOL, {
 		  service: mailConfig.MAIL_SERVICE,
@@ -461,7 +520,7 @@ router.post('/RejectPaymentDocument', function (req, res) {
 			attachments : mailConfig.MAIL_ATTACHMENTS_REJECT
 		}
 
-		smtpTransport.sendMail(mailOptions, function(error, response){
+		smtpTransport.sendMail(mailOptions, (error, response) => {
 		   if(error){
 		       console.log(error, error.stack.split("\n"));
 		       res.sendStatus(500);
@@ -471,19 +530,18 @@ router.post('/RejectPaymentDocument', function (req, res) {
 		   smtpTransport.close();
 		   res.sendStatus(200);
 		});
-	},
-	function ( err ) {
+	}, ( err ) => {
 	    console.log(err, err.stack.split("\n"));
 	});
 });
 
 // Send Mail to customer for inform product is shpped
-router.post('/NofityCustomerShipping', function (req, res) {
+router.post('/NofityCustomerShipping', (req, res) => {
 	var mailObj = req.body;
 	var CustomerEmail = mailObj.Email;
 	var RONo = mailObj.RONo;
 
-	var UpdateShippingStatusPromise = function() {
+	var UpdateShippingStatusPromise = () => {
 		var defer = Q.defer();
 		db.collection(mongodbConfig.mongodb.rohead.name)
 	        .update({
@@ -493,8 +551,7 @@ router.post('/NofityCustomerShipping', function (req, res) {
                 {
                     ShippingStatus : 'Y',
                 }
-            },
-	        function (err, data) {
+            }, (err, data) => {
 	          if ( !err) {
 	            defer.resolve(data);
 	          }
@@ -507,9 +564,10 @@ router.post('/NofityCustomerShipping', function (req, res) {
 	    return defer.promise;
 	}
 
-	UpdateShippingStatusPromise().then(function(data, status) {
+	UpdateShippingStatusPromise()
+	.then((data, status) => {
 		console.log('shipping status y ');
-	}, function(err, status) {
+	}, (err, status) => {
 		console.log('err ', err);
 	})
 
@@ -554,7 +612,7 @@ mailConfig.MAIL_CONTENT_FOOTER,
 attachments : mailConfig.MAIL_ATTACHMENTS_NOTIFY_CUSTOMER_SHIPPING
 	}
 
-	smtpTransport.sendMail(mailOptions, function(error, response){
+	smtpTransport.sendMail(mailOptions, (error, response) => {
 		   if(error){
 		       console.log(error, error.stack.split("\n"));
 		       res.sendStatus(500);
@@ -567,7 +625,7 @@ attachments : mailConfig.MAIL_ATTACHMENTS_NOTIFY_CUSTOMER_SHIPPING
 });
 
 // Customer send mail feedback
-router.post('/CustomerSendFeedback', function (req, res) {
+router.post('/CustomerSendFeedback', (req, res) => {
 	var mailObj = req.body;
 	var subject = '';
 	if (mailObj.Subject === 'general_usage') {
@@ -629,7 +687,7 @@ mailConfig.MAIL_CONTENT_FOOTER,
 attachments : mailConfig.MAIL_ATTACHMENTS_CUSTOMER_FEEDBACK
 	}
 
-	smtpTransport.sendMail(mailOptions, function(error, response){
+	smtpTransport.sendMail(mailOptions, (error, response) => {
 		   if(error){
 		       console.log(error, error.stack.split("\n"));
 		       res.sendStatus(500);

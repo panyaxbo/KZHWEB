@@ -3,7 +3,7 @@ app.service("EmailService", ["$q","$http", "ENV", ($q, $http, ENV) => {
     return {
         SendEmailConfirmation: (mailActivateObject) => {
     		var defer = $q.defer();
-		    var emailConfirmURL = ENV.apiEndpoint + "/mails/SendEmailConfirmation";
+		    var emailConfirmURL = ENV.apiEndpoint + "/mails/SendEmailConfirmationV270";
 	         $http.post(emailConfirmURL, mailActivateObject)
 	         .success((data, status) => {
 	        	defer.resolve(data);

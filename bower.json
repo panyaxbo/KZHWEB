@@ -47,7 +47,8 @@
     "angular-update-meta": "^1.9.0",
     "es6-promise": "^3.2.2",
     "phantom": "^2.1.1",
-    "angular-seo": "*"
+    "angular-seo": "*",
+    "card": "^2.1.1"
   },
   "devDependencies": {},
   "appPath": "app",

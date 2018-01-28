@@ -1,0 +1,90 @@
+<div class="form-container">
+    <div class="row">
+        <div class="col-md-12 card-input">
+            <label style="color:whitesmoke"><h2>Credit Card Payment</h2></label>
+        </div>
+    </div>
+    <div class='card-wrapper'></div>
+    <!-- CSS is included via this JavaScript file -->
+    <form ng-submit="PerformCreditcardPayment()">
+        <div class="row">
+            
+            <div class="col-md-12 card-input">
+                <input class="form-control" type="text" name="number" 
+                placeholder="•••• •••• •••• ••••" ng-model="Card.CardNumber">
+            </div>
+            <div class="col-md-12 card-input">
+                <input class="form-control" type="text" name="name" 
+                placeholder="Full Name" ng-model="Card.CardFullname"/>
+            </div>
+            <div class="col-md-6 card-input">
+                <input class="form-control" type="text" name="expiry" placeholder="••/••••" ng-model="Card.CardExpiry"/>
+            </div>
+            <div class="col-md-6 card-input">
+                <input class="form-control" type="text" name="cvc" placeholder="•••" maxlength="3" ng-model="Card.CardCvc"/>
+            </div>
+            <!--
+            <div class="col-md-12 card-input text-center">
+                <button class="btn btn-success" ng-click="a()">
+                    <i class="fa fa-credit-card" aria-hidden="true"></i> Submit
+                </button>
+            </div>-->
+        </div>
+    </form>
+    <div class="text-center card-input"><img alt="Visa Checkout" class="v-button" role="button"
+    src="https://sandbox.secure.checkout.visa.com/wallet-services-web/xo/button.png"/></div>
+    
+    <script type="text/javascript"
+        src="https://sandbox-assets.secure.checkout.visa.com/
+        checkout-widget/resources/js/integration/v1/sdk.js">
+    </script>
+    
+</div>
+<!--
+<div class="form-container">
+    <div class='card-wrapper'></div>
+        <form >
+            <div class="row collapse">
+                <div class="small-6 columns">
+                    <input placeholder="Card number" type="text" name="number">
+                </div>
+                <div class="small-6 columns">
+                    <input placeholder="Full name" type="text" name="name">
+                </div>
+            </div>
+            <div class="row collapse">
+                <div class="small-3 columns">
+                    <input placeholder="MM/YY" type="text" name="expiry">
+                </div>
+
+                <div class="small-3 columns">
+                    <input placeholder="CVC" type="text" name="cvc">
+                </div>
+
+                <div class="small-6 columns">
+                    <input type="submit" value="Submit" class="button postfix">
+                </div>
+            </div>
+        </form>
+    
+</div>-->
+<script>
+
+    var card = new Card({
+        form: 'form',
+        container: '.card-wrapper',
+
+        placeholders: {
+            number: '•••• •••• •••• ••••',
+            name: 'Firstname Lastname',
+            expiry: '••/••••',
+            cvc: '•••'
+        },
+        // Strings for translation - optional
+        messages: {
+            validDate: 'valid\ndate', // optional - default 'valid\nthru'
+            monthYear: 'mm/yyyy', // optional - default 'month/year'
+        },
+        debug: true
+    });
+    </script>

@@ -173,6 +173,10 @@ app.config(($routeProvider, $locationProvider) => {
         templateUrl: '/views/entrepreneur/entrepreneur-detail.html',
         controller: 'EntrepreneurController'
       })
+      .when('/card', {
+        templateUrl: '/views/credit-card.html',
+        controller: 'CardController'
+      })
       .when('/404', {
         templateUrl: '/404.html'
       })

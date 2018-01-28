@@ -125,16 +125,16 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
       $('#SearchCriteria').addClass("open");      
     }
 
-    $scope.HideSearch = function() {
+    $scope.HideSearch = () => {
       $('#SearchCriteria').removeClass("open");      
     }
     
-    $scope.Search = function() {
+    $scope.Search = () => {
       ProductService.SearchProductWithCondition($scope.SearchAllText)
-      .then(function(data, status) {
+      .then((data, status) => {
           $scope.Product = data;
           $scope.SelectedHeadMenu("product");
-      }, function(error, status) {
+      }, (error, status) => {
           console.log('error', error);
       });
     }
@@ -146,35 +146,36 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
         console.log('oauth err ', error);
     });
     $scope.Company = {};
+
     CredentialService.LoadCompany()
-    .then(function(data, status) {
+    .then((data, status) => {
       $scope.Company = data;
       DataModelFactory.setCompany(data);
       $scope.$emit('handleCompanyEmit', {
           Company: data
       });
-    }, function (error, status) {
+    }, (error, status) => {
         console.log('company err ', error);
     });
     
     CredentialService.LoadBrowserAPIKey()
-    .then(function(data, status) {
+    .then((data, status) => {
     //  console.log('data', data);
       DataModelFactory.setBrowserKey(data);
     });
 
     $scope.LoginErrorMessage = "";
 
-    $scope.$on('handleBodyMenuBroadcast', function (event, args) {
+    $scope.$on('handleBodyMenuBroadcast', (event, args) => {
         $scope.SelectedMenu = args.SelectedMenu;
     });
 
-    $scope.$on('handleReceiptOrderBroadcast', function (event, args) {
+    $scope.$on('handleReceiptOrderBroadcast', (event, args) => {
         $scope.ROHead = args.ROHead;
         $scope.ROLineList = args.ROHead.ROLineList;
     });
 
-    $scope.SelectedHeadMenu = function (menu) {
+    $scope.SelectedHeadMenu = (menu) => {
         $scope.SelectedMenu = menu;
 
         if (menu == "product") {
@@ -208,14 +209,12 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
         $scope.$emit('handleHeadMenuEmit', {
             SelectedMenu: menu
         });
-
-
     }
     function ZeroPad(num, places) {
         var zero = places - num.toString().length + 1;
         return Array(+(zero > 0 && zero)).join("0") + num;
     }
-    $scope.SelectedHeadCurrency = function (currency) {
+    $scope.SelectedHeadCurrency = (currency) => {
         $scope.SelectedCurrency = currency;
         if (currency == "thb") {
             CurrencyService.Currency.SelectedCurrency = "thb";
@@ -257,7 +256,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
             MultiplierTHB2CNY : 0.18
         });
     }
-    $scope.SelectedLocale = function (locale) {
+    $scope.SelectedLocale = (locale) => {
         if (locale == "th") {
             $scope.Locale = "th";
             LocaleService.Locale.SelectedLocale = "th";
@@ -280,91 +279,11 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
         document.getElementsByTagName('title')[0].text = $filter('translate')('TITLE.NAME');
     }
 
-    $scope.CheckSigninEmail = function () {
-    //  console.log('CheckSigninEmail' + $scope.username);
-    }
-
-    $scope.CheckSignupEmail = function () {
-    //  console.log('CheckSignupEmail' + $scope.Email);
-    }
-    $scope.CheckSignupUsername = function () {
-   //   console.log('CheckSignupUsername ' + $scope.Username);
-    }
-    $scope.ValidateExistUsername = function () {
-        if ($scope.Username.length > 0) {
-          UserService.IsExistUsername($scope.Username)
-          .then(function(data, status) {
-              if (!data) {
-                  $scope.ExistUsername = false;
-                  $scope.UsernameValidateMessage = "Success! This Username is usable.";
-                  $('#UsernameAlert').removeClass("alert-warning");
-                  $('#UsernameAlert').addClass("alert-success");
-                  $('#UsernameAlert').show();
-                           
-              } else {
-                  $scope.ExistUsername = true;
-                  $scope.UsernameValidateMessage = "Warning! This Username is reserved.";
-                  $('#UsernameAlert').removeClass("alert-success");
-                  $('#UsernameAlert').addClass("alert-warning");
-                  $('#UsernameAlert').show();
-              }
-          }, function(error, status) {
-
-          });
-        }
-    }
-    
-    $scope.ValidateEmail = function () {
-        var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-        if (!filter.test($scope.Email) || (!$scope.Email && $scope.Email.length > 0)) {
-            $scope.ValidateSignupEmail = false;
-            $scope.ValidEmail = false;
-            $scope.EmailValidateMessage = "Warning! Not an email format.";
-            $('#EmailAlert').removeClass("alert-success")
-            $('#EmailAlert').addClass("alert-warning");
-            $('#EmailAlert').show();
-        } else {
-            $scope.ValidateSignupEmail = true;
-            $scope.ValidEmail = true;
-            $scope.EmailValidateMessage = "This email is valid format.";
-            $('#EmailAlert').removeClass("alert-warning");
-            $('#EmailAlert').addClass("alert-success");
-            $('#EmailAlert').show();
-        }
-        if($scope.ValidEmail == true) {
-          $scope.ValidateExistEmail();
-        }
-    }
-
-    $scope.ValidateExistEmail = function () {
-      if ($scope.Email.length > 0) {
-        UserService.IsExistEmail($scope.Email)
-        .then(function (data, status) {
-            if (!data) {
-                  $scope.EmailValidateMessage = "Success! This Email is usable";
-                  $scope.ExistEmail = false;
-                  $('#EmailAlert').removeClass("alert-warning");
-                  $('#EmailAlert').addClass("alert-success");
-                  $('#EmailAlert').show();
-
-              } else {
-                  $scope.EmailValidateMessage = "Warning! This Email is reseved";
-                  $scope.ExistEmail = true;
-                  $('#EmailAlert').removeClass("alert-success");
-                  $('#EmailAlert').addClass("alert-warning");
-                  $('#EmailAlert').show();
-              }
-        }, function(error, status){
-
-        });
-      }
-    }
-
-    $scope.Login = function () {
+    $scope.Login = () => {
       document.getElementById('LoginDataNotReady').style.display = 'block';
       var appuser = {};
       UserService.LoginWithUsernameAndPassword($scope.username, $scope.password)
-      .then(function(data, status) {
+      .then((data, status) => {
           if (!data || data === undefined) {
               swal("Error", "Cannot login maybe username or password incorrect", "error");
               $scope.User = [];
@@ -376,7 +295,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
           }
           return UserService.CheckIsUserActivate($scope.username, $scope.password);
       })
-      .then(function (data, status) {
+      .then((data, status) => {
           if (!data || data === undefined) {
             swal("Error", "Sorry, your account is not activated yet, please check your email.", "error");
           } else {
@@ -408,15 +327,15 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
           }
           return UserService.DownloadUserProfileImage($scope.User.Id, $scope.User.Username);
       })
-      .then(function(profile_image, status) {
+      .then((profile_image, status) => {
         $scope.User.ProfileImage = profile_image;
           $('#UserProfileImage').children("img").remove();
           $('#UserProfileImage').append(profile_image);
           return UserService.DownloadUserThumbnailImage($scope.User.Id, $scope.User.Username);
-      }, function(err, status) {
+      }, (err, status) => {
     //     console.log('download user image fail no problem goes on ');
       })
-      .then(function(thumbnail_image, status) {
+      .then((thumbnail_image, status) => {
           $('#ThumbnailProfileImage').children("img").remove();
           $('#ThumbnailProfileImage').append(thumbnail_image);
           $scope.username = "";
@@ -424,7 +343,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
           $scope.$emit('handleUserEmit', {
               User: $scope.User
           });
-      }, function(error, status) {
+      }, (error, status) => {
           console.log('error', error);
           console.log("Log in Not found");
           $scope.LoginErrorMessage = "Error! Wrong Username or Password";
@@ -435,7 +354,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
       });
     }
 
-    $scope.Logout = function () {
+    $scope.Logout = () => {
         var int = 1;
         swal({
           title: "Are you sure?",
@@ -447,9 +366,8 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
           cancelButtonText: "No, cancel please!",
           closeOnConfirm: false,
           closeOnCancel: false
-        },
-        function(isConfirm){
-            $scope.$apply(function() {
+        }, (isConfirm) => {
+            $scope.$apply(() => {
               if (isConfirm) {
                 swal("Success", "Log out success", "success");
                 $scope.User = {};
@@ -468,12 +386,12 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
         });
     }
 
-    $scope.AddNoProfileUserImage = function() {
+    $scope.AddNoProfileUserImage = () => {
       $('#UserProfileImage').children("img").remove();
       var imageNoProfile = "<img src=\"/images/noProfileImg.png\"  class=\"img-circle\" width=\"40\" height=\"40\">";
       $('#UserProfileImage').append(imageNoProfile);
     }
-    $scope.ViewCart = function () {
+    $scope.ViewCart = () => {
         if ($scope.ROHead.ROLineList.length <= 0 || $scope.ROHead.ROLineList === undefined) {
                 document.getElementById('HideCartTable').style.display = 'block';
                 document.getElementById('ShowCartTable').style.display = 'none';
@@ -482,10 +400,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
                 document.getElementById('ShowCartTable').style.display = 'block';
               }
     }
-
-    
-
-    function getBase64Image(img) {
+    var getBase64Image = (img) => {
       var canvas = document.createElement("canvas");
       canvas.width = img.width;
       canvas.height = img.height;
@@ -494,7 +409,7 @@ app.controller('HeaderController', ["$scope", "$location", "$window", "$filter",
       var dataURL = canvas.toDataURL("image/png");
       return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
     }
-    $scope.jsPDF = function() {
+    $scope.jsPDF = () => {
       var doc = new jsPDF();
 
       var specialElementHandlers = {

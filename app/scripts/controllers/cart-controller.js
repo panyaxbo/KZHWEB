@@ -3,11 +3,11 @@ app.controller("CartController", [ "$scope", "$http", "$rootScope", "$location",
  "UserService", "ReceiptOrderService", "CredentialService", "UtilService", "UomService", "WeightRateService", "DataModelFactory",
   function ($scope, $http, $rootScope, $location, $timeout, $window,
     UserService, ReceiptOrderService, CredentialService, UtilService, UomService, WeightRateService, DataModelFactory) {
-     $scope.Multiplier = 1;
-     $scope.CurrencySymbol = "฿";
-     $scope.User = DataModelFactory.getUser();
-     $scope.ROHead = DataModelFactory.getReceipt();
- //   console.log('$scope.ROHead ', $scope.ROHead);
+    $scope.Multiplier = 1;
+    $scope.CurrencySymbol = "฿";
+    $scope.User = DataModelFactory.getUser();
+    $scope.ROHead = DataModelFactory.getReceipt(); 
+    $scope.Company = DataModelFactory.getCompany();
   	$rootScope.$on('handleReceiptOrderBroadcast', function (event, args) {
         $scope.ROHead = args.ROHead;
         console.log('args.ROHead ', args.ROHead);
@@ -217,6 +217,7 @@ app.controller("CartController", [ "$scope", "$http", "$rootScope", "$location",
           DataModelFactory.setUser($scope.User);
           $scope.$apply(() => {
             DataModelFactory.setReceipt($scope.ROHead);
+            console.log('go to loggon ', DataModelFactory.getReceipt());
             $location.path('/login');
           })
         }, (dismiss) => {
@@ -225,6 +226,7 @@ app.controller("CartController", [ "$scope", "$http", "$rootScope", "$location",
 
       } else {
         DataModelFactory.setReceipt($scope.ROHead);
+        console.log('go to bill step ',DataModelFactory.getReceipt());
           $location.path('/shipment');
       }
     }

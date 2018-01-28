@@ -1,0 +1,29 @@
+.form-container 
+{
+  width: 350px;
+  margin: 30px auto;
+  margin-top: 40px; 
+}
+.form-container label 
+{
+    font-size: 12px;
+    text-transform: lowercase;
+    margin-bottom: 4px; 
+}
+.form-container input {
+    -webkit-box-shadow: none;
+    box-shadow: none; 
+}
+.form-container input[name="number"], .form-container input[name="expiry"] 
+{
+    border-right: none; 
+}
+.form-container input:focus 
+{
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-color: #BBB; 
+}
+.card-input {
+    margin-top: 1em;
+}

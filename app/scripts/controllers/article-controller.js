@@ -1,14 +1,14 @@
 "use strict";
 app.controller("ArticleController", ['$scope', '$route', '$routeParams', '$location', '$filter',
 	'ArticleService', 'UtilService', 'UserService', 'DataModelFactory', 
-	function ($scope, $route, $routeParams, $location, $filter, 
-	ArticleService, UtilService, UserService, DataModelFactory) {
-	  $scope.$on('handleUserBroadcast', function (event, args) {
+	($scope, $route, $routeParams, $location, $filter, 
+	ArticleService, UtilService, UserService, DataModelFactory) => {
+	  $scope.$on('handleUserBroadcast', (event, args) => {
 	      $scope.User = args.User;
 	  });
 	  $scope.User = DataModelFactory.getUser();
 	  
-	  $scope.$on('$routeChangeSuccess', function() {
+	  $scope.$on('$routeChangeSuccess', () => {
         if (UtilService.isEmpty($routeParams)) {
             $scope.Page.Mode = 'new';
         } else {
@@ -26,10 +26,10 @@ app.controller("ArticleController", ['$scope', '$route', '$routeParams', '$locat
 	}
 	$scope.ArticlesDataReady = false;
 	
-	$scope.LoadArticles = function() {
+	$scope.LoadArticles = () => {
 		ArticleService.LoadArticles()
-		.then(function(data, status) {
-			angular.forEach(data, function(article) {
+		.then((data, status) => {
+			angular.forEach(data, (article) => {
 				var div = document.createElement('div');
 				div.innerHTML = article.Content;
 				var firstImage = div.getElementsByTagName('img')[0];
@@ -39,15 +39,13 @@ app.controller("ArticleController", ['$scope', '$route', '$routeParams', '$locat
 			})
 	
 			$scope.ArticlesDataReady = true;
-		}, function(error, status) {
+		}, (error, status) => {
 			console.log('error');
 		});
 	}
 	
-	$scope.CreateArticle = function() {
-	//	console.log($scope.User);
+	$scope.CreateArticle = () => {
 		if ($scope.User === undefined || UtilService.isEmpty($scope.User)) {
-	//		console.log('user empty ');
 			swal({
 	          title: "ท่านยังไม่ได้เข้าสู่ระบบ?",
 	          text: "คุณต้องการเข้าสู่ระบบ ใช่ หรือ ไม่?",
@@ -58,17 +56,16 @@ app.controller("ArticleController", ['$scope', '$route', '$routeParams', '$locat
 	          cancelButtonText: "ไม่ใช่",
 	          closeOnConfirm: true,
 	          closeOnCancel: true
-	        }).then(function() {
+	        }).then(() => {
                 $scope.User.ComeFrom = '/articles';
                 DataModelFactory.setUser($scope.User);
-                $scope.$apply(function() {
+                $scope.$apply(() => {
                 	$location.path('/login');
                 });
-	        }, function(dismiss) {
+	        }, (dismiss) => {
 
 	        });
 		} else {
-//			console.log('user NOT empty ');
 			$scope.Page.Mode = 'new';
 			$location.path('/article');
 		}
@@ -76,7 +73,7 @@ app.controller("ArticleController", ['$scope', '$route', '$routeParams', '$locat
 		$scope.Page.Mode = 'new';
 	}
 
-	$scope.SaveArticle = function() {
+	$scope.SaveArticle = () => {
 		swal({
           title: "Are you sure?",
           text: "คุณต้องการตั้งกระทู้ ใช่หรือไม่ ?",
@@ -87,22 +84,21 @@ app.controller("ArticleController", ['$scope', '$route', '$routeParams', '$locat
           cancelButtonText: "ไม่, ยกเลิก!",
           closeOnConfirm: false,
           closeOnCancel: false
-        },
-        function(isConfirm){
+        }, (isConfirm) => {
           if (isConfirm) {
           	ArticleService.CreateArticle($scope.Article)
-          	.then(function(data, status) {
+          	.then((data, status) => {
           		swal("สำเร็จ !!!", "สร้างกระทู้สำเร็จ", "success");
           		ArticleService.LoadArticles()
-				.then(function(data, status) {
+				.then((data, status) => {
 					console.log('data ',data);
 					$scope.Articles = data;
 					document.getElementById('ViewArticle').style.display = 'block';
 					document.getElementById('NewArticle').style.display = 'none';
-				}, function(error, status) {
+				}, (error, status) => {
 					console.log('error');
 				});
-          	}, function(error, status) {
+          	}, (error, status) => {
 
           	});
             

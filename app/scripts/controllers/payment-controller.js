@@ -24,7 +24,7 @@ app.controller("PaymentController", [ "$scope", "$http", "$rootScope", "$locatio
         data["amount_" + ctr] = item.Price; 
       }
       data["tax_rate"] = $scope.ROHead.SumVatAmount;
-      data["shipping"] = $scope.ROHead.WeightAmount;
+      data["shipping"] = $scope.ROHead.SumWeightAmount;
       data["amount"] = $scope.ROHead.NetAmount;
       data["currency_code"] = "THB"; 
    //   data["button_subtype"] = "services";

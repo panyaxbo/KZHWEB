@@ -59,7 +59,25 @@
     <link rel="stylesheet" href="styles/kzh-google-map.css">
     <link rel="stylesheet" href="styles/thbanklogos.min.css">
     <link rel="stylesheet" href="styles/shop-product-detail.css">
+    <link rel="stylesheet" href="styles/card.css">
     <!-- endbuild -->
+    <script type="text/javascript">
+    function onVisaCheckoutReady (){
+        V.init({ 
+            apikey: "7O07VN664O10JW6A9ESS113p8sf9JeGzr6_2haC9F9m_ANtLM",
+            paymentRequest : {
+                currencyCode: "USD",
+                total: "11.00"
+            }
+        });
+        V.on("payment.success", function(payment) {alert(JSON.stringify(payment)); });
+        V.on("payment.cancel", function(payment) {alert(JSON.stringify(payment)); });
+        V.on("payment.error", function(payment,error) {alert(JSON.stringify(error));});
+
+    }
+    
+    
+  </script>
     <base href="/" >
     
 </head>
@@ -495,13 +513,20 @@
     <script src="bower_components/Chart.js/dist/Chart.js"></script>
     <script src="bower_components/angular-update-meta/dist/update-meta.js"></script>
     <script src="bower_components/angular-seo/angular-seo.js"></script>
+    <script src="bower_components/card/dist/card.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTee4bgz7iWRFTldB3upIjbv0YYUqSP8o"></script>
- <!--   <script src="https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit"
-  async defer></script>-->
+   <script src="https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit"
+  async defer></script>
+  <script src="https://cdn.omise.co/omise.js"></script>
+  <script type="text/javascript"
+src="https://sandbox-assets.secure.checkout.visa.com/
+checkout-widget/resources/js/integration/v1/sdk.js">
+</script>
+</body>
     <script src="/scripts/app.js"></script>
     <script src="/scripts/controllers/main-controller.js"></script>
     <script src="/scripts/controllers/header-controller.js"></script>
@@ -529,6 +554,7 @@
     <script src="/scripts/controllers/setting/role-controller.js"></script>
     <script src="/scripts/controllers/setting/staff-controller.js"></script>
     <script src="/scripts/controllers/setting/uom-controller.js"></script>
+    <script src="/scripts/controllers/card-controller.js"></script>
 
     <script src="/scripts/configs/app-translate.js"></script>
     <script src="/scripts/configs/app-route.js"></script>
